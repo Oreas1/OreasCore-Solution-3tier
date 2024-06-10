@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Product Type";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/SetUp/producttypeindex.0.1.js"></script>
+}
+<div ng-controller="ProductTypeMasterCtlr" class="container">
+
+    <div id="ProductTypeMasterCtlr">
+        <MyViewName>Product Type</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_ProductType.ID", "{{tbl_Inv_ProductType.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Type</span>
+                            <input type="text" id="tbl_Inv_ProductType.ProductType" name="tbl_Inv_ProductType.ProductType" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Type" value="tbl_Inv_ProductType.ProductType" ng-model="tbl_Inv_ProductType.ProductType" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.ProductType" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Prefix</span>
+                            <input type="text" id="tbl_Inv_ProductType.Prefix" name="tbl_Inv_ProductType.Prefix" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Prefix" value="tbl_Inv_ProductType.Prefix" ng-model="tbl_Inv_ProductType.Prefix" ng-disabled="ng_readOnly" minlength="1" maxlength="5" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.Prefix" required="true" minlength="1" maxlength="5"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Default QC Action on PN</span>
+                            <select id="tbl_Inv_ProductType.FK_tbl_Qc_ActionType_ID_PurchaseNote" name="tbl_Inv_ProductType.FK_tbl_Qc_ActionType_ID_PurchaseNote" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ActionName for x in ActionList" data-ng-model="tbl_Inv_ProductType.FK_tbl_Qc_ActionType_ID_PurchaseNote" ng-disabled="ng_readOnly" required>
+                                <option value="">Select Action</option>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.FK_tbl_Qc_ActionType_ID_PurchaseNote" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductType.CreatedBy}}" ng-model="tbl_Inv_ProductType.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductType.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductType.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductType.ModifiedBy}}" ng-model="tbl_Inv_ProductType.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductType.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductType.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Product Type
+                    </th>
+                    <th>
+                        Prefix
+                    </th>
+                    <th>
+                        Default QC Action On PN
+                    </th>
+                    <th>
+                        # Categories
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.ProductType}}
+                    </td>
+                    <td>
+                        {{itm.Prefix}}
+                    </td>
+                    <td style="background-color:{{itm.FK_tbl_Qc_ActionType_ID_PurchaseNote === 1 ? 'lightsteelblue':itm.FK_tbl_Qc_ActionType_ID_PurchaseNote === 2 ? 'lightgreen' : 'lightcoral'}}">
+                        {{itm.FK_tbl_Qc_ActionType_ID_PurchaseNoteName}}
+                    </td>
+                    <td>
+                        {{itm.NoOfCategories}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('ProductTypeDetailCtlr',itm,'ProductTypeMasterCtlr','ProductTypeDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Category">Category <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ProductTypeMasterCtlr")
+    </div>
+
+
+    <div ng-controller="ProductTypeDetailCtlr">
+        <div id="ProductTypeDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("ProductTypeDetail")
+        </div>
+    </div>
+        
+</div>
+
+
+
+

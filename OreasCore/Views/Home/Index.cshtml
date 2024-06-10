@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<hr />
+
+@if (User.Identity.IsAuthenticated)
+{
+
+
+
+    <h3 class="text-center">
+        <img src="~/images/OreasHome.png" />
+    </h3>
+
+    <div ng-controller="HeaderCtlr">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-2 col-md-4 col-sm-4" style="border: 5px solid transparent;" ng-repeat="item in AreaList">
+                <a href="/{{item.Area}}/Home/Index" style="text-decoration:none;">
+                    <div class="row border" style="color:white; background-color:darkgray">
+                        <div class="col-6 px-0">
+                            <img ng-src="/images/{{item.Area}}.png" class="img-fluid" />
+                        </div>
+                        <div class="col-6 align-self-center">
+                            {{item.Description}}
+                        </div>
+                    </div>
+                </a>
+
+
+
+                @*<div class="card">
+                        <img src="~/images/{{item.Area}}.png" class="card-img-top img-fluid" />
+                        <div class="card-body text-center">
+                            <a href="/{{item.Area}}/Home/Index" class="stretched-link btn-light card-text" style="text-decoration:none;">{{item.Description}}</a>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col center-bl">
+            <div class="page-hero d-flex align-items-center justify-content-center">
+                <div class="ratio ratio-4x3" style="max-width:550px; max-height: 350px;">
+                    <video controls="controls">
+                        <source src="~/images/intro.mp4" type="video/mp4" />
+                    </video>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+}
+
+
+
+
+
+
+
+
+
+
+

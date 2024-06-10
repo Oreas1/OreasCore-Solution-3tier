@@ -1,0 +1,43 @@
+﻿@*-----------------------------------SubDistributor Search Modal-----------------------------*@
+<div class="modal fade" id="SDSearchModalGeneral" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Select SubDistributor</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by</span>
+                            <select id="SDFilterBy" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                    ng-options="o.v as o.n for o in [{ n: 'Name', v: 'byName' }]"
+                                    ng-model="SDFilterBy" ng-disabled="ng_readOnly">
+                            </select>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter Value</span>
+                            <input id="SDFilterValue" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Type to search" ng-model="SDFilterValue" />
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div class="justify-content-between">
+                            <span class="btn btn-danger" ng-click="General_SDSelectedAc({'ID': 0});" data-bs-dismiss="modal"><span class="fa fa-cancel"></span> De-Select</span>
+                            <input type="submit" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="General_SDSearch();" />
+                        </div>
+                    </div>
+                </form>
+
+                <div ng-repeat="item in SDSearchResult" style="overflow:auto">
+                    <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_SDSelectedAc(item);" data-bs-dismiss="modal">{{item.Name}} <span style="font-size:xx-small">[{{item.Address}}]</span></MyButton>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

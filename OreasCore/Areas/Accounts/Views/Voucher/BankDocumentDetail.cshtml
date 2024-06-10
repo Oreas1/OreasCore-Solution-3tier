@@ -1,0 +1,242 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'BankDocumentDetailCtlr','BankDocumentMasterCtlr', this);">Bank {{IsFor}} Document</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Voucher No
+                    </th>
+                    <th>
+                        Voucher Date
+                    </th>
+                    <th>
+                        From Account
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.VoucherNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.VoucherDate}}
+                    </td>
+                    <td style="background-color:lightsteelblue;">
+                        <b>{{MasterObject.FK_tbl_Ac_ChartOfAccounts_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.Debit1_Credit0 ? 'Receive' : 'Payment'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Ac_V_BankDocumentDetail.ID", "{{tbl_Ac_V_BankDocumentDetail.ID}}")
+            @Html.Hidden("tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_V_BankDocumentMaster_ID", "{{tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_V_BankDocumentMaster_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Transaction Mode</span>
+                        <select id="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_V_BankTransactionMode_ID" name="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_V_BankTransactionMode_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.BankTransactionMode for x in BankTransactionModeList" data-ng-model="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_V_BankTransactionMode_ID" ng-disabled="ng_readOnly || disabledOnDetailAdd" required>
+                            <option value="">Select Mode</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_V_BankTransactionMode_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Account To</span>
+                        <MyButtonModal fieldname="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_IDName" ng-click="OpenCOASearchModalGeneral('BankDocDetail', 0, 'tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_IDName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Posting Date</span>
+                        <input id="tbl_Ac_V_BankDocumentDetail.PostingDate" name="tbl_Ac_V_BankDocumentDetail.PostingDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_V_BankDocumentDetail.PostingDate}}" ng-model="tbl_Ac_V_BankDocumentDetail.PostingDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.PostingDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Amount</span>
+                        <input id="tbl_Ac_V_BankDocumentDetail.Amount" name="tbl_Ac_V_BankDocumentDetail.Amount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_V_BankDocumentDetail.Amount" ng-disabled="ng_readOnly || disabledOnDetailAdd" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.Amount" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Instrument Date</span>
+                        <input id="tbl_Ac_V_BankDocumentDetail.InstrumentDate" name="tbl_Ac_V_BankDocumentDetail.InstrumentDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_V_BankDocumentDetail.InstrumentDate}}" ng-model="tbl_Ac_V_BankDocumentDetail.InstrumentDate" ng-disabled="ng_readOnly || disabledOnDetailAdd" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.InstrumentDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Narration</span>
+                        <input id="tbl_Ac_V_BankDocumentDetail.Narration" name="tbl_Ac_V_BankDocumentDetail.Narration" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_V_BankDocumentDetail.Narration" ng-model="tbl_Ac_V_BankDocumentDetail.Narration" ng-disabled="ng_readOnly || disabledOnDetailAdd" minlength="1" maxlength="100" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.Narration" required="true" minlength="1" maxlength="100"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Instrument No</span>
+                        <input id="tbl_Ac_V_BankDocumentDetail.InstrumentNo" name="tbl_Ac_V_BankDocumentDetail.InstrumentNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_V_BankDocumentDetail.InstrumentNo" ng-model="tbl_Ac_V_BankDocumentDetail.InstrumentNo" ng-disabled="ng_readOnly || disabledOnDetailAdd" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.InstrumentNo" required="true" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Posting Action</span>
+                        <select id="tbl_Ac_V_BankDocumentDetail.Cleared1_Cancelled0" name="tbl_Ac_V_BankDocumentDetail.Cleared1_Cancelled0" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Cleared', v: true }, { n: 'Cancelled', v: false }, { n: 'Pending', v: null }]" data-ng-model="tbl_Ac_V_BankDocumentDetail.Cleared1_Cancelled0" ng-disabled="ng_readOnly" ng-required="ng_entryPanelSubmitBtnText==='Save New' && tbl_Ac_V_BankDocumentDetail.ID > 0">
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.Cleared1_Cancelled0" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Account For</span>
+                        <MyButtonModal fieldname="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_ID_ForName" ng-click="OpenCOASearchModalGeneral('BankDocDetail', 0, 'tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_ID_ForName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_ID_ForName'].$dirty=true;" ng-disabled="ng_readOnly || disabledOnDetailAdd"></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_V_BankDocumentDetail.FK_tbl_Ac_ChartOfAccounts_ID_ForName"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_V_BankDocumentDetail.CreatedBy}}" ng-model="tbl_Ac_V_BankDocumentDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_V_BankDocumentDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_V_BankDocumentDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_V_BankDocumentDetail.ModifiedBy}}" ng-model="tbl_Ac_V_BankDocumentDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_V_BankDocumentDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_V_BankDocumentDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Transaction Mode
+                </th>
+                <th>
+                    Account Name
+                </th>
+                <th>
+                    Posting Date
+                </th>
+                <th>
+                    Debit/Credit
+                </th>
+                <th>
+                    Instrument No
+                </th>
+                <th>
+                    Instrument Date
+                </th>
+                <th>
+                    Narration
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Posting Action
+                </th>
+                <th>
+                    Ac For
+                </th>
+                <th>
+                    Supervised
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Ac_V_BankTransactionMode_IDName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Ac_ChartOfAccounts_IDName}}
+                </td>
+                <td>
+                    {{itm.PostingDate}}
+                </td>
+                <td>
+                    {{MasterObject.Debit1_Credit0 ? 'Credit' : 'Debit'}}
+                </td>
+                <td>
+                    {{itm.InstrumentNo}}
+                </td>
+                <td>
+                    {{itm.InstrumentDate}}
+                </td>
+                <td>
+                    {{itm.Narration}}
+                </td>
+                <td>
+                    {{itm.Amount}}
+                </td>
+                <td>
+                    {{itm.Cleared1_Cancelled0 === true ? 'Cleared': itm.Cleared1_Cancelled0 === false ? 'Cancelled' : 'Pending' }}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Ac_ChartOfAccounts_ID_ForName}}
+                </td>
+                <td>
+                    <i class="fa fa-lightbulb" style="color: green; font-size: large;" ng-hide="itm.IsSupervised===false"></i>
+                    <i class="fa fa-lightbulb" style="color: red; font-size: large;" ng-hide="itm.IsSupervised===true"></i>
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv" ng-hide="itm.Cleared1_Cancelled0 != null">
+                        <button type="button" class="btn btn-sm" ng-click="GetRow(itm.ID,'Add')">Post</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "BankDocumentDetailCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

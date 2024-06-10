@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "Calendar";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Calendar/calendarindex.0.1.js"></script>
+}
+<div ng-controller="CalendarIndexCtlr" class="container">
+
+    <div id="CalendarIndexCtlr">
+        <MyViewName>Calendar</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_WPT_CalendarYear.ID", "{{tbl_WPT_CalendarYear.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Calendar Year</span>
+                            <input id="tbl_WPT_CalendarYear.CalendarYear" name="tbl_WPT_CalendarYear.CalendarYear" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_CalendarYear.CalendarYear" ng-disabled="ng_readOnly" min="2022" max="2099" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_CalendarYear.CalendarYear" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear.CreatedBy}}" ng-model="tbl_WPT_CalendarYear.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_CalendarYear.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear.ModifiedBy}}" ng-model="tbl_WPT_CalendarYear.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_CalendarYear.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Calendar Year
+                    </th>
+                    <th>
+                        No Of Leave Emp
+                    </th>
+                    <th>
+                        Open
+                    </th>
+                    <th>
+                        Closed
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td style="font-size:xx-large; font-weight:bold;">
+                        {{itm.CalendarStartYear}} <span style="font-size:small">{{itm.CalendarStartMonthSName}}</span> - {{itm.CalendarEndYear}} <span style="font-size:small">{{itm.CalendarEndMonthName}}</span>
+                    </td>
+                    <td>
+                        {{itm.NoOfLeaveEmp}}
+                    </td>
+                    <td>
+                        {{itm.NoOfOpen}}
+                    </td>
+                    <td>
+                        {{itm.NoOfClosed}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('CalendarMonthCtlr',itm,'CalendarIndexCtlr','CalendarMonthCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Month">Calendar-Months<span class="fa fa-calendar"></span></button>|
+                            <button ng-click="DivHideShow('CalendarEmployeeForPLCtlr',itm,'CalendarIndexCtlr','CalendarEmployeeForPLCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Employee for Paid Leave">Employee-Leaves<span class="fa fa-user"></span></button>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv" ng-hide="itm.NoOfOpen===0">
+                            <button class="btn" ng-click="CloseYear(itm.ID)">Close Year<span class="fa fa-level-up"></span></button>|
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "CalendarIndexCtlr")
+    </div>
+
+    <div ng-controller="CalendarMonthCtlr">
+        <div id="CalendarMonthCtlr" style="display: none;">
+            @await Html.PartialAsync("CalendarMonth")
+        </div>
+    </div>
+    <div ng-controller="CalendarEmployeeForPLCtlr">
+        <div id="CalendarEmployeeForPLCtlr" style="display: none;">
+            @await Html.PartialAsync("CalendarEmployeeForPL")                
+        </div>
+        <div ng-controller="CalendarPLOfEmployeeCtlr">
+            <div id="CalendarPLOfEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("CalendarPLOfEmployee")
+            </div>
+        </div>
+          
+    </div>
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+        
+</div>
+
+
+
+

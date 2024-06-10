@@ -1,0 +1,170 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'RequestDetailTRCFPCtlr','RequestMasterCtlr', this.$parent);">Trial Request</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'RequestDetailTRCFPCtlr','RequestDetailTRCtlr', this);">Trial BMR</a>
+    <MyViewName child="true"> Trial CFP</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Mfg Date
+                    </th>
+                    <th>
+                        Trial Batch#
+                    </th>
+                    <th>
+                        Trial Batch Size
+                    </th>
+                    <th>
+                        Semi Finish
+                    </th>
+                    <th>
+                        Primary Unit
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.MfgDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.TrialBatchNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.TrialBatchSizeInSemiUnits}} {{MasterObject.MasterObject.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.FK_tbl_Inv_ProductRegistrationDetail_IDName}} {{MasterObject.MasterObject.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_PD_RequestDetailTR_CFP.ID", "{{tbl_PD_RequestDetailTR_CFP.ID}}")
+            @Html.Hidden("tbl_PD_RequestDetailTR_CFP.FK_tbl_PD_RequestDetailTR_ID", "{{tbl_PD_RequestDetailTR_CFP.FK_tbl_PD_RequestDetailTR_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Composition Type</span>
+                        <select id="tbl_PD_RequestDetailTR_CFP.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" name="tbl_PD_RequestDetailTR_CFP.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.FilterName for x in CompositionFilterList" data-ng-model="tbl_PD_RequestDetailTR_CFP.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" ng-disabled="ng_readOnly || tbl_PD_RequestDetailTR_CFP.TotalDetail > 0" required>
+                            <option value="">Select Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_PD_RequestDetailTR_CFP.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse</span>
+                        <MyButtonModal fieldname="tbl_PD_RequestDetailTR_CFP.FK_tbl_Inv_WareHouseMaster_IDName" ng-click="OpenWHMSearchModalGeneral('General', 0, 'tbl_PD_RequestDetailTR_CFP.FK_tbl_Inv_WareHouseMaster_IDName', WHMSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_PD_RequestDetailTR_CFP.FK_tbl_Inv_WareHouseMaster_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_PD_RequestDetailTR_CFP.FK_tbl_Inv_WareHouseMaster_IDName" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_PD_RequestDetailTR_CFP.CreatedBy}}" ng-model="tbl_PD_RequestDetailTR_CFP.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_PD_RequestDetailTR_CFP.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_PD_RequestDetailTR_CFP.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_PD_RequestDetailTR_CFP.ModifiedBy}}" ng-model="tbl_PD_RequestDetailTR_CFP.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_PD_RequestDetailTR_CFP.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_PD_RequestDetailTR_CFP.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Composition Filter Policy
+                </th>
+                <th>
+                    WareHouse
+                </th>
+                <th>
+                    Dispensed
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Pro_CompositionFilterPolicyDetail_IDName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                </td>
+                <td>
+                    {{itm.IsDispensedAll === true ? 'Yes' : 'No'}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('RequestDetailTRCFPItemCtlr',itm,'RequestDetailTRCFPCtlr','RequestDetailTRCFPItemCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Ingredients Items">Ingredients <span class="fa fa-cubes"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "RequestDetailTRCFPCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

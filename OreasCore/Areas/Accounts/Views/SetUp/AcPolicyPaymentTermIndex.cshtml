@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "PolicyPaymentTerm";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Accounts/SetUp/acpolicypaymenttermindex.0.1.js"></script>
+}
+<div ng-controller="PolicyPaymentTermCtlr" class="container">
+
+    <div id="PolicyPaymentTermCtlr">
+        <MyViewName>Policy Payment Term</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Ac_PolicyPaymentTerm.ID", "{{tbl_Ac_PolicyPaymentTerm.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Policy Name</span>
+                            <input id="tbl_Ac_PolicyPaymentTerm.Name" name="tbl_Ac_PolicyPaymentTerm.Name" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_PolicyPaymentTerm.Name" ng-model="tbl_Ac_PolicyPaymentTerm.Name" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_PolicyPaymentTerm.Name" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Days Limit</span>
+                            <input id="tbl_Ac_PolicyPaymentTerm.DaysLimit" name="tbl_Ac_PolicyPaymentTerm.DaysLimit" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_PolicyPaymentTerm.DaysLimit" ng-disabled="ng_readOnly" min="1" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_PolicyPaymentTerm.DaysLimit" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Advance %</span>
+                            <input id="tbl_Ac_PolicyPaymentTerm.AdvancePercentage" name="tbl_Ac_PolicyPaymentTerm.AdvancePercentage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_PolicyPaymentTerm.AdvancePercentage" ng-disabled="ng_readOnly" min="0" max="100" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_PolicyPaymentTerm.AdvancePercentage" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_PolicyPaymentTerm.CreatedBy}}" ng-model="tbl_Ac_PolicyPaymentTerm.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_PolicyPaymentTerm.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_PolicyPaymentTerm.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_PolicyPaymentTerm.ModifiedBy}}" ng-model="tbl_Ac_PolicyPaymentTerm.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_PolicyPaymentTerm.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_PolicyPaymentTerm.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Policy Name
+                    </th>
+                    <th>
+                        Days Limit
+                    </th>
+                    <td>
+                        Advance %
+                    </td>
+                    <th>
+                        Total Account
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.Name}}
+                    </td>
+                    <td>
+                        {{itm.DaysLimit}}
+                    </td>
+                    <td>
+                        {{itm.AdvancePercentage}}%
+                    </td>
+                    <td>
+                        {{itm.TotalAc}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('PolicyPaymentTermCOACtlr',itm,'PolicyPaymentTermCtlr','PolicyPaymentTermCOACtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Linked Accounts">Linked Accounts <span class="fa fa-joint"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PolicyPaymentTermCtlr")
+    </div>
+
+
+    <div ng-controller="PolicyPaymentTermCOACtlr">
+        <div id="PolicyPaymentTermCOACtlr" style="display: none;">
+            @await Html.PartialAsync("AcPolicyPaymentTermCOA")
+        </div>
+    </div>
+
+        
+</div>
+
+
+
+

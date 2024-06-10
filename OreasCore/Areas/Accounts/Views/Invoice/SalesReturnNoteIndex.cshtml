@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "Sales Return Note Invoice";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Accounts/Invoice/salesreturnnoteinvoiceindex.140524.js"></script>
+}
+<div ng-controller="SalesReturnNoteMasterCtlr" class="container">
+
+    <div id="SalesReturnNoteMasterCtlr">
+        <MyViewName>Sales Return Note Invoice</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.CancelOfAdd"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow('Load'); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_SalesReturnNoteMaster.ID", "{{tbl_Inv_SalesReturnNoteMaster.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                            <input id="tbl_Inv_SalesReturnNoteMaster.DocNo" name="tbl_Inv_SalesReturnNoteMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Inv_SalesReturnNoteMaster.DocNo" ng-model="tbl_Inv_SalesReturnNoteMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc Date</span>
+                            <input id="tbl_Inv_SalesReturnNoteMaster.DocDate" name="tbl_Inv_SalesReturnNoteMaster.DocDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_SalesReturnNoteMaster.DocDate}}" ng-model="tbl_Inv_SalesReturnNoteMaster.DocDate" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">WareHouse</span>
+                            <input type="text" id="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Inv_WareHouseMaster_IDName" name="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Inv_WareHouseMaster_IDName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Inv_WareHouseMaster_IDName" ng-model="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Inv_WareHouseMaster_IDName" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Customer A/c</span>
+                            <input type="text" id="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_IDName" name="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_IDName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_IDName" ng-model="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_IDName" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Transporter A/c</span>
+                            <input type="text" id="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_ID_TransporterName" name="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_ID_TransporterName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_ID_TransporterName" ng-model="tbl_Inv_SalesReturnNoteMaster.FK_tbl_Ac_ChartOfAccounts_ID_TransporterName" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Transporter Bilty#</span>
+                            <input id="tbl_Inv_SalesReturnNoteMaster.TransporterBiltyNo" name="tbl_Inv_SalesReturnNoteMaster.TransporterBiltyNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Inv_SalesReturnNoteMaster.TransporterBiltyNo" ng-model="tbl_Inv_SalesReturnNoteMaster.TransporterBiltyNo" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Transport Charges</span>
+                            <input id="tbl_Inv_SalesReturnNoteMaster.TransportCharges" name="tbl_Inv_SalesReturnNoteMaster.TransportCharges" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_SalesReturnNoteMaster.TransportCharges" ng-disabled="ng_readOnly" min="0" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_SalesReturnNoteMaster.TransportCharges" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                            <input type="text" id="tbl_Inv_SalesReturnNoteMaster.Remarks" name="tbl_Inv_SalesReturnNoteMaster.Remarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Remarks" value="tbl_Inv_SalesReturnNoteMaster.Remarks" ng-model="tbl_Inv_SalesReturnNoteMaster.Remarks" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_SalesReturnNoteMaster.CreatedBy}}" ng-model="tbl_Inv_SalesReturnNoteMaster.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_SalesReturnNoteMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_SalesReturnNoteMaster.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_SalesReturnNoteMaster.ModifiedBy}}" ng-model="tbl_Inv_SalesReturnNoteMaster.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_SalesReturnNoteMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_SalesReturnNoteMaster.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Ware House
+                    </th>
+                    <th>
+                        Customer A/c
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        Transporter
+                    </th>
+                    <th>
+                        Total Net
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Ac_ChartOfAccounts_IDName}}
+                        <br />
+                        {{itm.FK_tbl_Ac_CustomerSubDistributorList_IDName}}
+                    </td>
+                    <td style="font-size:xx-small">
+                        {{itm.Remarks}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Ac_ChartOfAccounts_ID_TransporterName}}
+                        <br />
+                        Charges: {{itm.TransportCharges}}
+                        <br />
+                        Bilty #: {{itm.TransporterBiltyNo}}
+                    </td>
+                    <td>
+                        {{itm.TotalNetAmount}}
+                    </td>
+                    <td>
+                        <i class="fa fa-lightbulb" style="color: green; font-size: large;" ng-hide="itm.IsProcessedAll===false"></i>
+                        <i class="fa fa-lightbulb" style="color: red; font-size: large;" ng-hide="itm.IsProcessedAll===true"></i>
+                        Processed
+                        <br />
+                        <i class="fa fa-lightbulb" style="color: green; font-size: large;" ng-hide="itm.IsSupervisedAll===false"></i>
+                        <i class="fa fa-lightbulb" style="color: red; font-size: large;" ng-hide="itm.IsSupervisedAll===true"></i>
+                        Supervised
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.AddDetail" ng-click="GetRow(itm.ID,'Add')" ng-hide="itm.TransportCharges>0"></MyButton>
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')" ng-hide="!itm.TransportCharges>0"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('SalesReturnNoteDetailCtlr',itm,'SalesReturnNoteMasterCtlr','SalesReturnNoteDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Category">Detail <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "SalesReturnNoteMasterCtlr")
+    </div>
+
+
+    <div ng-controller="SalesReturnNoteDetailCtlr">
+        <div id="SalesReturnNoteDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("SalesReturnNoteDetail")
+        </div>
+    </div>
+
+</div>
+
+
+
+

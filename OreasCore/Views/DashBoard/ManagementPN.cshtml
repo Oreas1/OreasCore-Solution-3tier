@@ -1,0 +1,66 @@
+﻿<MyViewName>Purchase Note For {{IsFor}} <button class="btn btn-danger" ng-click="ClosePanel('ManagementPNCtlr');"><i class="fa fa-multiply"></i></button></MyViewName>
+
+<div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Invoice #
+                </th>
+                <th>
+                    Invoice Date
+                </th>
+                <th>
+                    Supplier Name
+                </th>
+                <th>
+                    QC Actions Completed
+                </th>
+                <th>
+                    Net Amount
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.DocNo}}
+                </td>
+                <td>
+                    {{itm.DocDate}}
+                </td>
+                <td>
+                    {{itm.AccountName}}
+                </td>
+                <td>
+                    {{itm.IsQCAll ? 'Completed' : 'Pending'}}
+                </td>
+                <td>
+                    {{itm.TotalNetAmount}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv" ng-hide="IsFor=='Processed'">
+                        <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button> 
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <a href="/DashBoard/GetPurchaseNoteReport?rn=Current Purchase Note&id={{itm.ID}}" target="_blank" class="btn btn-primary">Report</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "ManagementPNCtlr")
+</div>

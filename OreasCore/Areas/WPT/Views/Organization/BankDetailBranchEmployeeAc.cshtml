@@ -1,0 +1,160 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'BankDetailBranchEmployeeAcCtlr','BanktIndexCtlr', this);">Bank</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'BankDetailBranchEmployeeAcCtlr','BankDetailBranchCtlr', this);">Branch</a>
+    <MyViewName child="true"> Employee A/c</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Bank Name
+                    </th>
+                    <th>
+                        Branch Name
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.BankName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.BranchName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_EmployeeBankDetail.ID", "{{tbl_WPT_EmployeeBankDetail.ID}}")
+            @Html.Hidden("tbl_WPT_EmployeeBankDetail.FK_tbl_WPT_Bank_Branch_ID", "{{tbl_WPT_EmployeeBankDetail.FK_tbl_WPT_Bank_Branch_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                        <MyButtonModal fieldname="tbl_WPT_EmployeeBankDetail.FK_tbl_WPT_Employee_IDName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'tbl_WPT_EmployeeBankDetail.FK_tbl_WPT_Employee_IDName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_WPT_EmployeeBankDetail.FK_tbl_WPT_Employee_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeBankDetail.FK_tbl_WPT_Employee_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Default Bank</span>
+                        <select id="tbl_WPT_EmployeeBankDetail.IsDefaultForBank" name="tbl_WPT_EmployeeBankDetail.IsDefaultForBank" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_EmployeeBankDetail.IsDefaultForBank" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeBankDetail.IsDefaultForBank" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Account No</span>
+                        <input id="tbl_WPT_EmployeeBankDetail.BankAccountNo" name="tbl_WPT_EmployeeBankDetail.BankAccountNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="BankAccountNo" value="tbl_WPT_EmployeeBankDetail.BankAccountNo" ng-model="tbl_WPT_EmployeeBankDetail.BankAccountNo" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeBankDetail.BankAccountNo" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Account Title</span>
+                        <input id="tbl_WPT_EmployeeBankDetail.BankAccountTitle" name="tbl_WPT_EmployeeBankDetail.BankAccountTitle" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="BankAccountTitle" value="tbl_WPT_EmployeeBankDetail.BankAccountTitle" ng-model="tbl_WPT_EmployeeBankDetail.BankAccountTitle" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeBankDetail.BankAccountTitle" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>                    
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeBankDetail.CreatedBy}}" ng-model="tbl_WPT_EmployeeBankDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeBankDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_EmployeeBankDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeBankDetail.ModifiedBy}}" ng-model="tbl_WPT_EmployeeBankDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeBankDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_EmployeeBankDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Employee Name
+                </th>
+                <th>
+                    Bank Account No
+                </th>
+                <th>
+                    Bank Account Title
+                </th>
+                <th>
+                    Default A/c
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_Employee_IDName}}
+                </td>
+                <td>
+                    {{itm.BankAccountNo}}
+                </td>
+                <td>
+                    {{itm.BankAccountTitle}}
+                </td>
+                <td>
+                    {{itm.IsDefaultForBank?'Yes':'No'}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "BankDetailBranchEmployeeAcCtlr")
+
+</div>

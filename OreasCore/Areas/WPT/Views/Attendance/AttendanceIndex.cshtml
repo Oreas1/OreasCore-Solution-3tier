@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "Attendance";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Attendance/attendanceindex.0.1.js"></script>
+}
+<div ng-controller="AttendanceIndexCtlr" class="container">
+    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Month</span>
+        <MyButtonModal fieldname="FK_tbl_WPT_CalendarYear_Months_IDName" ng-click="OpenMonthSearchModalGeneral('All', 0, 'FK_tbl_WPT_CalendarYear_Months_IDName', MonthSearch_CtrlFunction_Ref_InvokeOnSelection); " required></MyButtonModal>
+    </div>
+
+    <div id="AttendanceIndexCtlr">
+
+        <div class="btn-group" role="group" aria-label="Dashboard">
+            <button type="button" class="btn btn-outline-primary">Individual</button>
+            <button type="button" class="btn btn-primary" ng-click="DivHideShow('AttendanceTogetherCtlr',null,'AttendanceIndexCtlr','AttendanceTogetherCtlr', null);">Group</button>
+        </div>
+        @*-----------------------------------this Load Data-----------------------------*@
+        <div>
+            <form name="myform1" role="form" ng-submit="pageNavigation('first'); myform1.$setPristine();" novalidate>
+                <MyFieldSet legendtext="Filter Parameters" style="background-color:lavender;">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date From</span>
+                            <input id="ParaDateFrom" name="ParaDateFrom" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{ParaDateFrom}}" ng-change="pageNavigationParameterChanged();" ng-model="ParaDateFrom" min="{{MonthStart| date:'yyyy-MM-ddTHH:mm:ss'}}" max="{{MonthEnd| date:'yyyy-MM-ddTHH:mm:ss'}}" required />
+                            <MyValidationSpan formname="myform1" fieldname="ParaDateFrom" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date Till</span>
+                            <input id="ParaDateTill" name="ParaDateTill" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{ParaDateTill}}" ng-change="pageNavigationParameterChanged();" ng-model="ParaDateTill" min="{{MonthStart| date:'yyyy-MM-ddTHH:mm:ss'}}" max="{{MonthEnd| date:'yyyy-MM-ddTHH:mm:ss'}}" required />
+                            <MyValidationSpan formname="myform1" fieldname="ParaDateTill" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                            <MyButtonModal fieldname="ParaEmpName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'ParaEmpName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform1['ParaEmpName'].$dirty=true;pageNavigationParameterChanged();"></MyButtonModal>
+                            <MyValidationSpan formname="myform1" fieldname="ParaEmpName"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span class="input-group-text LabelTextNotRequired bg-transparent border-0">&nbsp;</span>
+                            <input type="submit" value="Fetch Result" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" style="width:100%" ng-disabled="myform1.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </form>
+        </div>
+        <hr />
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_WPT_AttendanceLog.ID", "{{tbl_WPT_AttendanceLog.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee Name</span>
+                            <input id="tbl_WPT_AttendanceLog.FK_tbl_WPT_Employee_IDName" name="tbl_WPT_AttendanceLog.FK_tbl_WPT_Employee_IDName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_AttendanceLog.FK_tbl_WPT_Employee_IDName" ng-disabled="true" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_AttendanceLog.FK_tbl_WPT_Employee_IDName" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Machine Name</span>
+                            <input id="tbl_WPT_AttendanceLog.FK_tbl_WPT_Machine_IDName" name="tbl_WPT_AttendanceLog.FK_tbl_WPT_Machine_IDName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_AttendanceLog.FK_tbl_WPT_Machine_IDName" ng-disabled="true" />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">AT DateTime</span>
+                            <input id="tbl_WPT_AttendanceLog.ATDateTime" name="tbl_WPT_AttendanceLog.ATDateTime" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_AttendanceLog.ATDateTime}}" ng-model="tbl_WPT_AttendanceLog.ATDateTime" min="{{ParaDateFrom| date:'yyyy-MM-ddTHH:mm:ss'}}" max="{{ParaDateTill| date:'yyyy-MM-ddTHH:mm:ss'}}" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_AttendanceLog.ATDateTime" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">AT Mode</span>
+                            <select id="tbl_WPT_AttendanceLog.ATInOutMode" name="tbl_WPT_AttendanceLog.ATInOutMode" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ATInOutMode as x.ATInOutModeName for x in ATInOutModeList" data-ng-model="tbl_WPT_AttendanceLog.ATInOutMode" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_AttendanceLog.ATInOutMode" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+
+                </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Employee Name / Machine Enroll#
+                    </th>
+                    <th>
+                        Machine Name
+                    </th>
+                    <th>
+                        In/Out Mode
+                    </th>
+                    <th>
+                        Date Time
+                    </th>
+                    <th>
+                        Logged By
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.FK_tbl_WPT_Employee_IDName}} / {{itm.ATEnrollmentNo}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_WPT_Machine_IDName}}
+                    </td>
+                    <td>
+                        {{itm.ATInOutModeName}}[{{itm.ATInOutMode}}]
+                    </td>
+                    <td>
+                        {{itm.ATDateTime}}
+                    </td>
+                    <td>
+                        {{itm.Loggedby}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @await Html.PartialAsync("_ReportPanelGeneral")
+    </div>
+
+    <div ng-controller="AttendanceTogetherCtlr">
+        <div id="AttendanceTogetherCtlr" style="display: none;">
+            @await Html.PartialAsync("AttendanceTogether")
+        </div>
+    </div>
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_MonthSearchModalGeneral")
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+    
+
+</div>
+
+
+
+
+
+

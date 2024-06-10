@@ -1,0 +1,128 @@
+﻿<MyViewName>    
+    <a href="" ng-click="DivHideShow(null,null,'BMRCostingDetailPackagingMasterCtlr','BMRCostingMasterCtlr', this);">BMR Costing</a>
+    <MyViewName child="true"> Packaging Master Costing</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Batch No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Mfg
+                    </th>
+                    <th>
+                        Expiry
+                    </th>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Batch Size
+                    </th>
+                    <th>
+                        Cost
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.BatchNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.BatchMfgDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.BatchExpiryDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.BatchSize}}-{{MasterObject.BatchSizeUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.Cost}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Packaging Name
+                </th>
+                <th>
+                    Batch Size
+                </th>
+                <th>
+                    Primary Finished
+                </th>
+                <th>
+                    Total Prod Primary
+                </th>
+                <th>
+                    Cost Primary
+                </th>
+                <th>
+                    Order Detail
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.PackagingName}}
+                </td>
+                <td>
+                    {{itm.BatchSize}}-{{itm.BatchSizeUnit}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName}}
+                </td>
+                <td>
+                    {{itm.TotalProd_Primary}}
+                </td>
+                <td style="background-color:lightpink;">
+                    {{itm.Cost_Primary}}
+                </td>
+                <td>
+                    {{itm.OrderDetail}}
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "BMRCostingDetailPackagingMasterCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

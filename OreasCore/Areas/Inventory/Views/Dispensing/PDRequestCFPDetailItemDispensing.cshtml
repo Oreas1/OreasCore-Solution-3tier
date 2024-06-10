@@ -1,0 +1,172 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PDRequestCFPDetailItemDispensingCtlr','PDRequestCFPMasterCtlr', this.$parent);">PD Request Dispensing</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PDRequestCFPDetailItemDispensingCtlr','PDRequestCFPDetailItemCtlr', this);"> Ingredients</a>
+    <MyViewName child="true"> Dispensing</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Batch No
+                    </th>
+                    <th>
+                        Required / Return
+                    </th>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Req Quantity
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.MasterObject.ProductName}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.TrialBatchNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.RequiredTrue_ReturnFalse ? 'Required' : 'Return'}}
+                    </td>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_Inv_ProductRegistrationDetail_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.Quantity}} {{MasterObject.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.Remarks}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Inv_PDRequestDispensing.ID", "{{tbl_Inv_PDRequestDispensing.ID}}")
+            @Html.Hidden("tbl_Inv_PDRequestDispensing.FK_tbl_PD_RequestDetailTR_CFP_Item_ID", "{{tbl_Inv_PDRequestDispensing.FK_tbl_PD_RequestDetailTR_CFP_Item_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Dispensing Date</span>
+                        <input id="tbl_Inv_PDRequestDispensing.DispensingDate" name="tbl_Inv_PDRequestDispensing.DispensingDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PDRequestDispensing.DispensingDate}}" ng-model="tbl_Inv_PDRequestDispensing.DispensingDate" ng-disabled="ng_readOnly" readonly="readonly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PDRequestDispensing.DispensingDate"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Reference No</span>
+                        <MyButtonModal fieldname="tbl_Inv_PDRequestDispensing.ReferenceNo" ng-click="OpenReferenceSearchModalGeneral('PDDispensing', tbl_Inv_PDRequestDispensing.FK_tbl_PD_RequestDetailTR_CFP_Item_ID, 'tbl_Inv_PDRequestDispensing.ReferenceNo', ReferenceSearch_CtrlFunction_Ref_InvokeOnSelection, null, tbl_Inv_PDRequestDispensing.ID); myform['tbl_Inv_PDRequestDispensing.ReferenceNo'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PDRequestDispensing.ReferenceNo" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Quantity [Max: {{Balance}}]</span>
+                        <input id="tbl_Inv_PDRequestDispensing.Quantity" name="tbl_Inv_PDRequestDispensing.Quantity" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PDRequestDispensing.Quantity" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" max="{{Balance}}" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PDRequestDispensing.Quantity" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input type="text" id="tbl_Inv_PDRequestDispensing.Remarks" name="tbl_Inv_PDRequestDispensing.Remarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Remarks" value="tbl_Inv_PDRequestDispensing.Remarks" ng-model="tbl_Inv_PDRequestDispensing.Remarks" ng-disabled="ng_readOnly" />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PDRequestDispensing.CreatedBy}}" ng-model="tbl_Inv_PDRequestDispensing.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PDRequestDispensing.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PDRequestDispensing.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PDRequestDispensing.ModifiedBy}}" ng-model="tbl_Inv_PDRequestDispensing.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PDRequestDispensing.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PDRequestDispensing.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Dispensing Date
+                </th>
+                <th>
+                    Reference No
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.DispensingDate}}
+                </td>
+                <td>
+                    {{itm.ReferenceNo}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{MasterObject.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "PDRequestCFPDetailItemDispensingCtlr")
+</div>

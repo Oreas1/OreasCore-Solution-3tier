@@ -1,0 +1,262 @@
+﻿@{
+    ViewBag.Title = "ATTimeGrace";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Attendance/attimegraceindex.0.1.js"></script>
+}
+<div ng-controller="ATTimeGraceIndexCtlr" class="container">
+
+    <div id="ATTimeGraceIndexCtlr">
+        <MyViewName>AT Time Grace</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_ATTimeGrace.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_WPT_ATTimeGrace.DocNo" name="tbl_WPT_ATTimeGrace.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_WPT_ATTimeGrace.DocNo" ng-model="tbl_WPT_ATTimeGrace.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date From</span>
+                        <input id="tbl_WPT_ATTimeGrace.DateFrom" name="tbl_WPT_ATTimeGrace.DateFrom" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_ATTimeGrace.DateFrom}}" ng-model="tbl_WPT_ATTimeGrace.DateFrom" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.DateFrom" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date Till</span>
+                        <input id="tbl_WPT_ATTimeGrace.DateTill" name="tbl_WPT_ATTimeGrace.DateTill" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_ATTimeGrace.DateTill}}" ng-model="tbl_WPT_ATTimeGrace.DateTill" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.DateTill" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_WPT_ATTimeGrace.Remarks" name="tbl_WPT_ATTimeGrace.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_ATTimeGrace.Remarks" ng-model="tbl_WPT_ATTimeGrace.Remarks" ng-disabled="ng_readOnly" minlength="3" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Remarks" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Late-In</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_LI" name="tbl_WPT_ATTimeGrace.Ignore_LI" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_LI" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Late-In</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_LI" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Early-Out</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_EO" name="tbl_WPT_ATTimeGrace.Ignore_EO" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_EO" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Early-Out</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_EO" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Half-Shift</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_HS" name="tbl_WPT_ATTimeGrace.Ignore_HS" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_HS" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Half-Shift</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_HS" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Over-Time</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_OT" name="tbl_WPT_ATTimeGrace.Ignore_OT" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_OT" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Over-Time</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_OT" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Present</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_Present" name="tbl_WPT_ATTimeGrace.Ignore_Present" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_Present" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Ignore Present</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_Present" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Absent</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_Absent" name="tbl_WPT_ATTimeGrace.Ignore_Absent" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_Absent" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Ignore Absent</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_Absent" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Auto-Leaves</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_AutoLeaves" name="tbl_WPT_ATTimeGrace.Ignore_AutoLeaves" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_AutoLeaves" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Ignore Auto-Leaves</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_AutoLeaves" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ignore Holidays</span>
+                        <select id="tbl_WPT_ATTimeGrace.Ignore_Holidays" name="tbl_WPT_ATTimeGrace.Ignore_Holidays" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_ATTimeGrace.Ignore_Holidays" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Ignore Holidays</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATTimeGrace.Ignore_Holidays" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATTimeGrace.CreatedBy}}" ng-model="tbl_WPT_ATTimeGrace.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATTimeGrace.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_ATTimeGrace.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATTimeGrace.ModifiedBy}}" ng-model="tbl_WPT_ATTimeGrace.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATTimeGrace.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_ATTimeGrace.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        DateFrom
+                    </th>
+                    <th>
+                        DateTill
+                    </th>
+                    <th>
+                        Ignore Late-IN
+                    </th>
+                    <th>
+                        Ignore Early-out
+                    </th>
+                    <th>
+                        Ignore HalfShift
+                    </th>
+                    <th>
+                        Ignore OT
+                    </th>
+                    <th>
+                        Ignore Present
+                    </th>
+                    <th>
+                        Ignore Absent
+                    </th>
+                    <th>
+                        Ignore Auto Leaves
+                    </th>
+                    <th>
+                        Ignore Holidays
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        Total Employees
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b><u>{{itm.DocNo}}</u></b>
+                    </td>
+                    <td>
+                        <b>{{itm.DateFrom}}</b>
+                    </td>
+                    <td>
+                        <b>{{itm.DateTill}}</b>
+                    </td>
+                    <td style="background-color:{{itm.Ignore_LI?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_LI?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_EO?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_EO?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_HS?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_HS?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_OT?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_OT?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_Present?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_Present?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_Absent?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_Absent?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_AutoLeaves?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_AutoLeaves?'Yes':'No'}}
+                    </td>
+                    <td style="background-color:{{itm.Ignore_Holidays?'lightsteelblue':'None'}}">
+                        {{itm.Ignore_Holidays?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.Remarks}}
+                    </td>
+                    <td>
+                        {{itm.TotalEmployees}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('ATTimeGraceEmployeeCtlr',itm,'ATTimeGraceIndexCtlr','ATTimeGraceEmployeeCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Employees <span class="fa fa-user"></span></button>                            
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="14">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ATTimeGraceIndexCtlr")
+    </div>
+
+
+
+    <div ng-controller="ATTimeGraceEmployeeCtlr">
+        <div id="ATTimeGraceEmployeeCtlr" style="display: none;">
+            @await Html.PartialAsync("ATTimeGraceEmployee")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

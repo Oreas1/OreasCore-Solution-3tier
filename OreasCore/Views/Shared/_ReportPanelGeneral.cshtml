@@ -1,0 +1,56 @@
+﻿<fieldset class="border p-4 mt-2" style="background-color:darkgray;" ng-hide="!Privilege.CanViewReport">
+
+    <legend class="w-auto"><span style="background-color:lightgray;border-radius:2px;">&nbsp;Report&nbsp;</span></legend>
+   
+    <div class="row col-lg-12">
+        <div class="col-lg-3" style="padding-top:5px;">
+            <select ng-options="x.ReportName as x.ReportName for x in rptList" ng-model="ReportName" ng-change="onSelectReport(ReportName)" class="form-select input-sm" style="font-weight:bold;" required>
+                <option value="">* Select Report</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="SeekByDiv">
+            <select ng-options="o as o for o in seekbyList" ng-model="_Report_SeekBy" class="form-select input-sm">
+                <option value="">* Select Seek By</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="GroupByDiv">
+            <select ng-options="o as o for o in groupbyList" ng-model="_Report_GroupBy" class="form-select input-sm">
+                <option value="">Select Group By</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="OrderByDiv">
+            <select ng-options="o as o for o in orderbyList" ng-model="_Report_OrderBy" class="form-select input-sm">
+                <option value="">Select Order By</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="SerialDiv">
+            Serial:
+            <input type="number" ng-model="_Report_SerialNoFrom" min="1" ng-change="SetSerialNo();" style="width:40%;" class="form-control input-sm" value="1" />
+            TO
+            <input type="number" ng-model="_Report_SerialNoTill" min="1" style="width:40%;" class="form-control input-sm" value="1" />
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="DateDiv">
+            <input type="datetime-local" ng-model="_Report_DateFrom" class="form-control input-sm" ng-disabled="DisableDateFrom" />
+            Date Between
+            <input type="datetime-local" ng-model="_Report_DateTill" class="form-control input-sm" ng-disabled="DisableDateTill" />
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;">
+            <button ng-click="ReportCalling();" class="btn btn-dark" ng-disabled="(seekbyList.length>0 && _Report_SeekBy === null) || !(ReportName.length>0)"><span class="fa fa-file" style="color:white;"></span> Open Report</button>
+
+        </div>
+    </div>
+</fieldset>
+
+
+
+
+
+
+
+

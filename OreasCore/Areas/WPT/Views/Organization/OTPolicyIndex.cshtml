@@ -1,0 +1,151 @@
+﻿@{
+    ViewBag.Title = "OT Policy Type";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-WPT/Organization/otpolicyindex.0.1.js"></script>
+}
+<div ng-controller="OTPolicyIndexCtlr" class="container">
+    <div id="OTPolicyIndexCtlr">
+        <MyViewName>OT Policy</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_tbl_OTPolicy.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Policy Name</span>
+                        <input type="text" id="tbl_WPT_tbl_OTPolicy.PolicyName" name="tbl_WPT_tbl_OTPolicy.PolicyName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="PolicyName" value="tbl_WPT_tbl_OTPolicy.PolicyName" ng-model="tbl_WPT_tbl_OTPolicy.PolicyName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_tbl_OTPolicy.PolicyName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Fixed Rate</span>
+                        <input id="tbl_WPT_tbl_OTPolicy.FixedRate" name="tbl_WPT_tbl_OTPolicy.FixedRate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_tbl_OTPolicy.FixedRate" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_tbl_OTPolicy.FixedRate" required="true" minlength="0"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">MaximumLimitRate</span>
+                        <input id="tbl_WPT_tbl_OTPolicy.MaximumLimitRate" name="tbl_WPT_tbl_OTPolicy.MaximumLimitRate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_tbl_OTPolicy.MaximumLimitRate" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_tbl_OTPolicy.MaximumLimitRate" required="true" minlength="0"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Multiply Factor</span>
+                        <input id="tbl_WPT_tbl_OTPolicy.MultiplyFactor" name="tbl_WPT_tbl_OTPolicy.MultiplyFactor" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_tbl_OTPolicy.MultiplyFactor" ng-disabled="ng_readOnly" min="1" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_tbl_OTPolicy.MultiplyFactor" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Calculation Method</span>
+                        <select id="tbl_WPT_tbl_OTPolicy.FK_tbl_WPT_CalculationMethod_ID" name="tbl_WPT_tbl_OTPolicy.FK_tbl_WPT_CalculationMethod_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.MethodName for x in CalculationMethodList" data-ng-model="tbl_WPT_tbl_OTPolicy.FK_tbl_WPT_CalculationMethod_ID" ng-disabled="ng_readOnly">
+                            <option value="">Please Select Calculation Method</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_tbl_OTPolicy.FK_tbl_WPT_CalculationMethod_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_tbl_OTPolicy.CreatedBy}}" ng-model="tbl_WPT_tbl_OTPolicy.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_tbl_OTPolicy.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_tbl_OTPolicy.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_tbl_OTPolicy.ModifiedBy}}" ng-model="tbl_WPT_tbl_OTPolicy.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_tbl_OTPolicy.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_tbl_OTPolicy.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Policy Name
+                    </th>
+                    <th>
+                        Fixed Rate
+                    </th>
+                    <th>
+                        Max Limit Rate
+                    </th>
+                    <th>
+                        Multiply Factor
+                    </th>
+                    <th>
+                        Calculation Method
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.PolicyName}}
+                    </td>
+                    <td>
+                        {{itm.FixedRate}}
+                    </td>
+                    <td>
+                        {{itm.MaximumLimitRate}}
+                    </td>
+                    <td>
+                        {{itm.MultiplyFactor}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_WPT_CalculationMethod_IDName}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "OTPolicyIndexCtlr")
+    </div>
+</div>
+
+
+
+

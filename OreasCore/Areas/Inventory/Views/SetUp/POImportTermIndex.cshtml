@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "PO Import Term";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Inventory/SetUp/poimporttermindex.160524.js"></script>
+}
+<div ng-controller="POImportTermIndexCtlr" class="container">
+    <div id="POImportTermIndexCtlr">
+        <MyViewName>Purchase Order Import Term</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_PurchaseOrder_ImportTerms.ID", "{{tbl_Inv_PurchaseOrder_ImportTerms.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Term Name</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrder_ImportTerms.TermName" name="tbl_Inv_PurchaseOrder_ImportTerms.TermName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="TermName" value="tbl_Inv_PurchaseOrder_ImportTerms.TermName" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.TermName" ng-disabled="ng_readOnly" minlength="1" maxlength="100" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_ImportTerms.TermName" required="true" minlength="1" maxlength="100"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">At Sight</span>
+                        <select id="tbl_Inv_PurchaseOrder_ImportTerms.AtSight" name="tbl_Inv_PurchaseOrder_ImportTerms.AtSight" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-change="atSightAtUsanceCheckChanged('AtSight')" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]" data-ng-model="tbl_Inv_PurchaseOrder_ImportTerms.AtSight" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_ImportTerms.AtSight" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">At Usance</span>
+                        <select id="tbl_Inv_PurchaseOrder_ImportTerms.AtUsance" name="tbl_Inv_PurchaseOrder_ImportTerms.AtUsance" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-change="atSightAtUsanceCheckChanged('AtUsance')" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]" data-ng-model="tbl_Inv_PurchaseOrder_ImportTerms.AtUsance" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_ImportTerms.AtUsance" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">At Usance Days</span>
+                        <input id="tbl_Inv_PurchaseOrder_ImportTerms.AtUsanceDays" name="tbl_Inv_PurchaseOrder_ImportTerms.AtUsanceDays" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.AtUsanceDays" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_ImportTerms.AtUsanceDays" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Documents For DIL</span>
+                        <textarea class="form-control" id="tbl_Inv_PurchaseOrder_ImportTerms.DocumentsForDIL" name="tbl_Inv_PurchaseOrder_ImportTerms.DocumentsForDIL" placeholder="Conditions" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.DocumentsForDIL" ng-disabled="ng_readOnly" minlength="1" maxlength="2000" required rows="10"></textarea>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_ImportTerms.DocumentsForDIL" required="true" minlength="1" maxlength="2000"></MyValidationSpan>
+                    </div>
+                </div>
+                
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_ImportTerms.CreatedBy}}" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_ImportTerms.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_ImportTerms.ModifiedBy}}" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_ImportTerms.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrder_ImportTerms.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Term Name
+                    </th>
+                    <th>
+                        At Sight / At Usance
+                    </th>
+                    <th>
+                        Documents For DIL
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.TermName}}
+                    </td>
+                    <td>
+                        AtSight: {{itm.AtSight ? 'Yes' : 'No'}}
+                        <br />
+                        AtUsance: {{itm.AtUsance ? 'Yes' : 'No'}} Days: {{itm.AtUsanceDays}}
+                    </td>
+                    <td>
+                        <span style="font-size:xx-small">{{itm.DocumentsForDIL}}</span>  
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "POImportTermIndexCtlr")
+    </div>
+</div>
+
+
+
+

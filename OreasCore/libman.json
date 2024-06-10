@@ -1,0 +1,89 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "angular.js@1.8.3",
+      "destination": "wwwroot/angular.js/",
+      "files": [
+        "angular-csp.css",
+        "angular-csp.min.css",
+        "angular.js",
+        "angular.min.js",
+        "angular.min.js.map"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/js/signalr/",
+      "files": [
+        "dist/browser/signalr.js",
+        "dist/browser/signalr.min.js"
+      ]
+    },
+    {
+      "library": "font-awesome@6.2.0",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "css/all.css",
+        "css/fontawesome.css",
+        "css/fontawesome.min.css",
+        "js/all.js",
+        "js/all.min.js",
+        "js/fontawesome.js",
+        "js/fontawesome.min.js"
+      ]
+    },
+    {
+      "library": "bootstrap@5.2.2",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "css/bootstrap.css",
+        "css/bootstrap.min.css",
+        "js/bootstrap.bundle.js",
+        "js/bootstrap.bundle.min.js",
+        "js/bootstrap.js"
+      ]
+    },
+    {
+      "library": "froala-editor@4.0.19",
+      "destination": "wwwroot/lib/froala-editor/",
+      "files": [
+        "js/froala_editor.min.js",
+        "css/plugins.pkgd.min.css",
+        "css/froala_style.min.css",
+        "css/froala_editor.pkgd.min.css",
+        "css/froala_editor.min.css",
+        "css/plugins/code_view.min.css",
+        "css/plugins/colors.min.css",
+        "css/plugins/table.min.css",
+        "js/plugins.pkgd.min.js",
+        "js/plugins/align.min.js",
+        "js/plugins/code_beautifier.min.js",
+        "js/plugins/code_view.min.js",
+        "js/plugins/colors.min.js",
+        "js/plugins/draggable.min.js",
+        "js/plugins/link.min.js",
+        "js/plugins/lists.min.js",
+        "js/plugins/paragraph_format.min.js",
+        "js/plugins/paragraph_style.min.js",
+        "js/plugins/table.min.js",
+        "js/plugins/url.min.js",
+        "js/plugins/entities.min.js",
+        "js/plugins/font_size.min.js",
+        "js/plugins/font_family.min.js"
+      ]
+    },
+    {
+      "library": "Chart.js@4.3.1",
+      "destination": "wwwroot/lib/Chart.js/",
+      "files": [
+        "chart.min.js",
+        "chart.umd.js"
+      ]
+    }
+  ]
+}

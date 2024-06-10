@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Leave Policy Non Paid";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Leave/leavepolicynonpaidindex.0.1.js"></script>
+}
+<div ng-controller="LeavePolicyNonPaidIndexCtlr" class="container">
+    <div id="LeavePolicyNonPaidIndexCtlr">
+        <MyViewName>Leave Policy Non Paid</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_WPT_LeavePolicyNonPaid.ID", "{{tbl_WPT_LeavePolicyNonPaid.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Policy Name</span>
+                            <input id="tbl_WPT_LeavePolicyNonPaid.PolicyName" name="tbl_WPT_LeavePolicyNonPaid.PolicyName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. Muhammad" value="tbl_WPT_LeavePolicyNonPaid.PolicyName" ng-model="tbl_WPT_LeavePolicyNonPaid.PolicyName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_LeavePolicyNonPaid.PolicyName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Policy Prefix</span>
+                            <input id="tbl_WPT_LeavePolicyNonPaid.PolicyPrefix" name="tbl_WPT_LeavePolicyNonPaid.PolicyPrefix" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. Muhammad" value="tbl_WPT_LeavePolicyNonPaid.PolicyPrefix" ng-model="tbl_WPT_LeavePolicyNonPaid.PolicyPrefix" ng-disabled="ng_readOnly" minlength="1" maxlength="4" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_LeavePolicyNonPaid.PolicyPrefix" required="true" minlength="1" maxlength="4"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HOS Approval Req</span>
+                            <select id="tbl_WPT_LeavePolicyNonPaid.IsHOSApprovalReq" name="tbl_WPT_LeavePolicyNonPaid.IsHOSApprovalReq" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_LeavePolicyNonPaid.IsHOSApprovalReq" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_LeavePolicyNonPaid.IsHOSApprovalReq" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HR Approval Req</span>
+                            <select id="tbl_WPT_LeavePolicyNonPaid.IsHRApprovalReq" name="tbl_WPT_LeavePolicyNonPaid.IsHRApprovalReq" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_LeavePolicyNonPaid.IsHRApprovalReq" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_LeavePolicyNonPaid.IsHRApprovalReq" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Final Granter</span>
+                            <select id="tbl_WPT_LeavePolicyNonPaid.FinalGranter" name="tbl_WPT_LeavePolicyNonPaid.FinalGranter" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'HOS', v: 'HOS' }, { n: 'HR', v: 'HR' }]" data-ng-model="tbl_WPT_LeavePolicyNonPaid.FinalGranter" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_LeavePolicyNonPaid.FinalGranter" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_LeavePolicyNonPaid.CreatedBy}}" ng-model="tbl_WPT_LeavePolicyNonPaid.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_LeavePolicyNonPaid.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_LeavePolicyNonPaid.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_LeavePolicyNonPaid.ModifiedBy}}" ng-model="tbl_WPT_LeavePolicyNonPaid.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_LeavePolicyNonPaid.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_LeavePolicyNonPaid.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Policy Name
+                    </th>
+                    <th>
+                        Prefix
+                    </th>
+                    <th>
+                        HOS Approval
+                    </th>
+                    <th>
+                        HR Approval
+                    </th>
+                    <th>
+                        Final Granter
+                    </th>
+                    <th>
+                        #Designations
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b><u>{{itm.PolicyName}}</u></b>
+                    </td>
+                    <td>
+                        {{itm.PolicyPrefix}}
+                    </td>
+                    <td>
+                        {{itm.IsHOSApprovalReq?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.IsHRApprovalReq?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.FinalGranter}}
+                    </td>
+                    <td>
+                        {{itm.NoOfDesignations}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('LeavePolicyNonPaidDesignationCtlr',itm,'LeavePolicyNonPaidIndexCtlr','LeavePolicyNonPaidDesignationCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Designation<span class="fa fa-id-badge"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "LeavePolicyNonPaidIndexCtlr")
+    </div>
+
+    <div ng-controller="LeavePolicyNonPaidDesignationCtlr">
+        <div id="LeavePolicyNonPaidDesignationCtlr" style="display: none;">
+            @await Html.PartialAsync("LeavePolicyNonPaidDesignation")
+        </div>
+    </div>
+</div>
+
+
+
+

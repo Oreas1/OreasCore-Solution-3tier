@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "PD Request Dispensing";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Dispensing/pdrequestdispensingindex.0.1.js"></script>
+}
+<div ng-controller="PDRequestCFPMasterCtlr" class="container">
+    <div id="PDRequestCFPMasterCtlr">
+        <MyViewName>PD Request Dispensing</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Batch No
+                    </th>
+                    <th>
+                        Batch Size
+                    </th>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Composition Filter Policy
+                    </th>
+                    <th>
+                        WareHouse
+                    </th>
+                    <th>
+                        Dispensed
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.ProductName}}
+                    </td>
+                    <td>
+                        {{itm.TrialBatchNo}}
+                    </td>
+                    <td>
+                        {{itm.TrialBatchSizeInSemiUnits}} {{itm.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.TrialStatus===true ? 'Sucessfull' : itm.TrialStatus===false ? 'Failed' : 'Pending'}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Pro_CompositionFilterPolicyDetail_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.IsDispensedAll === true ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('PDRequestCFPDetailItemCtlr',itm,'PDRequestCFPMasterCtlr','PDRequestCFPDetailItemCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Ingredients Items">Ingredients <span class="fa fa-cubes"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PDRequestCFPMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Dispensing Qty Can never be exeeded from requested Qty</p>
+            <p>2. Dispensing Date will always be current</p>
+        </div>
+    </div>
+
+
+    <div ng-controller="PDRequestCFPDetailItemCtlr">
+        <div id="PDRequestCFPDetailItemCtlr" style="display: none;">
+            @await Html.PartialAsync("PDRequestCFPDetailItem")
+        </div>
+        <div ng-controller="PDRequestCFPDetailItemDispensingCtlr">
+            <div id="PDRequestCFPDetailItemDispensingCtlr" style="display: none;">
+                @await Html.PartialAsync("PDRequestCFPDetailItemDispensing")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_ReferenceSearchModalGeneral")
+</div>
+
+
+
+

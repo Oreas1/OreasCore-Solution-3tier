@@ -1,0 +1,261 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'ProductRegistrationDetailCtlr','ProductRegistrationMasterCtlr', this);">Product Registration</a>
+    <MyViewName child="true"> Detail Units</MyViewName>
+</MyViewName>
+@*-----------------------------------this is tree view-----------------------------*@
+<div>
+    <h5>Tree View <button class="btn btn-light" ng-click="LoadNode();"><span class="fa fa-refresh"></span></button></h5>
+    <ul>
+        <li style="list-style:none" ng-repeat="node in nodedata" id="">
+            <text ng-repeat="a in range(node.spacing.length) track by $index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+            <span class="btn" ng-click="getchild(node.ID);"><text ng-hide="node.ChildCount<=0">[{{node.sign}}]</text></span>
+            <span ng-style="{ color: node.IsParent ? 'red' : 'black' }">{{node.Unit}} [Description: {{node.Description}} Split: {{node.Split_Into}}]</span>
+            <span class="btn" ng-click="SelectFromTree(node.ID);"><i class="fa fa-edit"></i></span>
+        </li>
+    </ul>
+</div>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Classification
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.ProductName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductClassification_IDName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Inv_ProductRegistrationDetail.ID", "{{tbl_Inv_ProductRegistrationDetail.ID}}")
+            @Html.Hidden("tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationMaster_ID", "{{tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationMaster_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Type Category</span>
+                        <select id="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductType_Category_ID" name="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductType_Category_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.CategoryName + ' [' + x.ID + ']' for x in ProductTypeCategoryList" data-ng-model="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductType_Category_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Category</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductType_Category_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Unit</span>
+                        <select id="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_MeasurementUnit_ID" name="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_MeasurementUnit_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.MeasurementUnit + ' [' + x.ID + ']' for x in MeasurementUnitList" data-ng-model="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_MeasurementUnit_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Unit</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_MeasurementUnit_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup1">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Split Into</span>
+                        <input id="tbl_Inv_ProductRegistrationDetail.Split_Into" name="tbl_Inv_ProductRegistrationDetail.Split_Into" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_ProductRegistrationDetail.Split_Into" ng-disabled="ng_readOnly" min="1" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.Split_Into" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Reorder Level</span>
+                        <input id="tbl_Inv_ProductRegistrationDetail.ReorderLevel" name="tbl_Inv_ProductRegistrationDetail.ReorderLevel" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_ProductRegistrationDetail.ReorderLevel" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.ReorderLevel" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Reorder Alert</span>
+                        <select id="tbl_Inv_ProductRegistrationDetail.ReorderAlert" name="tbl_Inv_ProductRegistrationDetail.ReorderAlert" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Active', v: true }, { n: 'Inactive', v: false }]" data-ng-model="tbl_Inv_ProductRegistrationDetail.ReorderAlert" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.ReorderAlert" required="true"></MyValidationSpan>
+                    </div>
+
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Inventoriable</span>
+                        <select id="tbl_Inv_ProductRegistrationDetail.IsInventory" name="tbl_Inv_ProductRegistrationDetail.IsInventory" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Inv_ProductRegistrationDetail.IsInventory" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Inventoriable</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.IsInventory" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Status</span>
+                        <select id="tbl_Inv_ProductRegistrationDetail.IsDiscontinue" name="tbl_Inv_ProductRegistrationDetail.IsDiscontinue" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Active', v: false }, { n: 'In-Active', v: true }]" data-ng-model="tbl_Inv_ProductRegistrationDetail.IsDiscontinue" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Status</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.IsDiscontinue" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Product Code</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationDetail.ProductCode" name="tbl_Inv_ProductRegistrationDetail.ProductCode" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Code" value="tbl_Inv_ProductRegistrationDetail.ProductCode" ng-model="tbl_Inv_ProductRegistrationDetail.ProductCode" ng-disabled="ng_readOnly" minlength="1" maxlength="15" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.ProductCode" minlength="1" maxlength="15"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Description</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationDetail.Description" name="tbl_Inv_ProductRegistrationDetail.Description" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Description" value="tbl_Inv_ProductRegistrationDetail.Description" ng-model="tbl_Inv_ProductRegistrationDetail.Description" ng-disabled="ng_readOnly" minlength="1" maxlength="20" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.Description" minlength="1" maxlength="20"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Head Unit</span>
+                        <MyButtonModal fieldname="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName" ng-click="OpenProductSearchModalGeneral('Enrollment', tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationMaster_ID, 'tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName', ProductSearch_CtrlFunction_Ref_InvokeOnSelection, null, tbl_Inv_ProductRegistrationDetail.ID); myform['tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Inv_ProductRegistrationDetail.ChildCount"></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Harmonized Code</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationDetail.HarmonizedCode" name="tbl_Inv_ProductRegistrationDetail.HarmonizedCode" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Code" value="tbl_Inv_ProductRegistrationDetail.HarmonizedCode" ng-model="tbl_Inv_ProductRegistrationDetail.HarmonizedCode" ng-disabled="ng_readOnly" minlength="0" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.HarmonizedCode" minlength="0" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">GTIN Code</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationDetail.GTINCode" name="tbl_Inv_ProductRegistrationDetail.GTINCode" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Code" value="tbl_Inv_ProductRegistrationDetail.GTINCode" ng-model="tbl_Inv_ProductRegistrationDetail.GTINCode" ng-disabled="ng_readOnly" minlength="0" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.GTINCode" minlength="0" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Standard MRP</span>
+                        <input id="tbl_Inv_ProductRegistrationDetail.StandardMRP" name="tbl_Inv_ProductRegistrationDetail.StandardMRP" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_ProductRegistrationDetail.StandardMRP" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationDetail.StandardMRP"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationDetail.CreatedBy}}" ng-model="tbl_Inv_ProductRegistrationDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationDetail.ModifiedBy}}" ng-model="tbl_Inv_ProductRegistrationDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Category Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Unit
+                </th>
+                <th>
+                    Split Into
+                </th>
+                <th>
+                    Head Unit
+                </th>
+                <th>
+                    Reorder Level / Alert
+                </th>
+                <th>
+                    Inventoriable
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Other Info
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Inv_ProductType_Category_IDName}}
+                </td>
+                <td>
+                    {{itm.Description}}
+                </td>
+                <td>
+                    {{itm.ProductCode}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_MeasurementUnit_IDName}}
+                </td>
+                <td>
+                    {{itm.Split_Into}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                </td>
+                <td>
+                    {{itm.ReorderLevel}} / {{itm.ReorderAlert ? 'Active' : 'Inactive'}}
+                </td>
+                <td>
+                    {{itm.IsInventory ? 'Yes' : 'No'}}
+                </td>
+                <td style="background-color:{{itm.IsDiscontinue ? 'lightpink' : 'lightgreen'}}">
+                    {{itm.IsDiscontinue ? 'In-Active' :  'Active'}}
+                </td>
+                <td style="font-size:x-small;">
+                    HS:{{itm.HarmonizedCode}} <br /> GTIN:{{itm.GTINCode}} <br /> MRP: {{itm.StandardMRP}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="11">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "ProductRegistrationDetailCtlr")
+
+</div>

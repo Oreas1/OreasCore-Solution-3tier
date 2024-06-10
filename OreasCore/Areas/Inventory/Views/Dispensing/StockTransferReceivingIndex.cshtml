@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "StockTransferReceiving";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Dispensing/stocktransferreceivingindex.0.1.js"></script>
+}
+<div ng-controller="StockTransferReceivingMasterCtlr" class="container">
+
+    <div id="StockTransferReceivingMasterCtlr">
+        <MyViewName>Stock Transfer Receiving</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_StockTransferMaster.ID", "{{tbl_Inv_StockTransferMaster.ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_Inv_StockTransferMaster.DocNo" name="tbl_Inv_StockTransferMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Inv_StockTransferMaster.DocNo" ng-model="tbl_Inv_StockTransferMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
+                        <input id="tbl_Inv_StockTransferMaster.DocDate" name="tbl_Inv_StockTransferMaster.DocDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_StockTransferMaster.DocDate}}" ng-model="tbl_Inv_StockTransferMaster.DocDate" ng-disabled="ng_readOnly || tbl_Inv_StockTransferMaster.TotalDetail > 0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_StockTransferMaster.DocDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse From</span>
+                        <MyButtonModal fieldname="tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_FromName" ng-click="OpenWHMSearchModalGeneral('ByUser', 0, 'tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_FromName', WHMSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_FromName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Inv_StockTransferMaster.TotalDetail > 0" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_FromName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse To</span>
+                        <MyButtonModal fieldname="tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_ToName" ng-click="OpenWHMSearchModalGeneral('General', 0, 'tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_ToName', WHMSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_ToName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Inv_StockTransferMaster.TotalDetail > 0" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_StockTransferMaster.FK_tbl_Inv_WareHouseMaster_ID_ToName" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup5">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input type="text" id="tbl_Inv_StockTransferMaster.Remarks" name="tbl_Inv_StockTransferMaster.Remarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Remarks" value="tbl_Inv_StockTransferMaster.Remarks" ng-model="tbl_Inv_StockTransferMaster.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_StockTransferMaster.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_StockTransferMaster.CreatedBy}}" ng-model="tbl_Inv_StockTransferMaster.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_StockTransferMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_StockTransferMaster.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_StockTransferMaster.ModifiedBy}}" ng-model="tbl_Inv_StockTransferMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_StockTransferMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_StockTransferMaster.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        WareHouse From
+                    </th>
+                    <th>
+                        WareHouse To
+                    </th>
+                    <th>
+                        Received All
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_ID_FromName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_ID_ToName}}
+                    </td>
+                    <td>
+                        {{itm.ReceivedAll === true ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('StockTransferReceivingDetailCtlr',itm,'StockTransferReceivingMasterCtlr','StockTransferReceivingDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "StockTransferReceivingMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. </p>
+        </div>
+    </div>
+
+
+    <div ng-controller="StockTransferReceivingDetailCtlr">
+        <div id="StockTransferReceivingDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("StockTransferReceivingDetail")
+        </div>
+    </div>
+</div>
+
+
+
+

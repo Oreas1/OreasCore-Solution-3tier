@@ -1,0 +1,126 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeWageCtlr','PayRunIndexCtlr', this.$parent);">PayRun</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeWageCtlr','PayRunMasterCtlr', this);">Period</a>
+    <MyViewName child="true">
+        <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeWageCtlr','PayRunMasterDetailEmployeeCtlr', this);"> Employees</a>
+        <MyViewName child="true"> Wage</MyViewName>
+    </MyViewName>
+    
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        PayRun From
+                    </th>
+                    <th>
+                        PayRun To
+                    </th>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        Working Days
+                    </th>
+                    <th>
+                        OverTime
+                    </th>
+                    <th>Wage</th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.StartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.EndDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_WPT_Employee_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.WD}}
+                    </td>
+                    <td>
+                        {{MasterObject.OT}}
+                    </td>
+                    <td>
+                        <b>{{MasterObject.Wage}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Wage Head
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Qty
+                </th>
+                <th>
+                    Debit
+                </th>
+                <th>
+                    Credit
+                </th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>                    
+                    {{
+                    itm.FK_tbl_WPT_EmployeeSalaryStructure_ID_Basic>0?itm.FK_tbl_WPT_EmployeeSalaryStructure_ID_BasicName:
+                    itm.FK_tbl_WPT_PayRunDetail_EmpDetail_WageDetail_Wage_ID>0?itm.FK_tbl_WPT_PayRunDetail_EmpDetail_WageDetail_Wage_IDName:
+                    itm.FK_tbl_WPT_EmployeeSalaryStructureAllowance_ID>0?itm.FK_tbl_WPT_EmployeeSalaryStructureAllowance_IDName:
+                    itm.FK_tbl_WPT_EmployeeSalaryStructureDeductible_ID>0?itm.FK_tbl_WPT_EmployeeSalaryStructureDeductible_IDName:
+                    itm.FK_tbl_WPT_tbl_OTPolicy_ID>0?itm.FK_tbl_WPT_tbl_OTPolicy_IDName:
+                    itm.FK_tbl_WPT_IncentivePolicy_ID>0?itm.FK_tbl_WPT_IncentivePolicy_IDName:
+                    itm.FK_tbl_WPT_LoanDetail_ID>0?itm.FK_tbl_WPT_LoanDetail_IDName:
+                    itm.FK_tbl_WPT_IncrementDetail_ID_Arrear>0?itm.FK_tbl_WPT_IncrementDetail_ID_ArrearName:
+                    itm.FK_tbl_WPT_RewardDetail_ID>0?itm.FK_tbl_WPT_RewardDetail_IDName:
+                    itm.FK_tbl_WPT_LeavePolicy_ID_EL>0?itm.FK_tbl_WPT_LeavePolicy_ID_ELName:
+                    itm.FK_tbl_WPT_EmployeePensionStructure_ID>0?itm.FK_tbl_WPT_EmployeePensionStructure_IDName:
+                    ''
+                    }}
+                </td>
+                <td>
+                    {{itm.Rate}}
+                </td>
+                <td>
+                    {{itm.Qty}}
+                </td>
+                <td style="background-color:lightgreen;">
+                    {{itm.Debit}}
+                </td>
+                <td style="background-color:lightpink;">
+                    {{itm.Credit}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+
+
+</div>

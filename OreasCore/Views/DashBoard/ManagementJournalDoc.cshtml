@@ -1,0 +1,78 @@
+﻿<MyViewName>Journal Document <button class="btn btn-danger" ng-click="ClosePanel('ManagementJournalDocCtlr');"><i class="fa fa-multiply"></i></button></MyViewName>
+
+<div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Voucher #
+                </th>
+                <th>
+                    Voucher Date
+                </th>
+                <th>
+                    From
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    To
+                </th>
+                <th>
+                    Mode
+                </th>
+                <th>
+                    Posting Date
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.VoucherNo}}
+                </td>
+                <td>
+                    {{itm.VoucherDate}}
+                </td>
+                <td>
+                    {{itm.AcFrom}}
+                </td>
+                <td>
+                    {{itm.Amount}}
+                </td>
+                <td>
+                    {{itm.AcTo}}
+                </td>
+                <td>
+                    {{itm.Mode}}
+                </td>
+                <td>
+                    {{itm.PostingDate}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <a href="/DashBoard/GetJournalDocumentReport?rn=Current Journal Doc&id={{itm.MasterID}}" target="_blank" class="btn btn-primary">Report</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "ManagementJournalDocCtlr")
+</div>

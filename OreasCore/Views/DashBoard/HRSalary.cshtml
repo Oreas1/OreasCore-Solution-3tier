@@ -1,0 +1,238 @@
+﻿<div class="btn-group" role="group" aria-label="HR">
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow(null,null,'HRSalaryCtlr','HRCtlr', this);">HR Main</button>
+    <button type="button" class="btn btn-outline-primary">Salary</button>
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRAttendanceCtlr',MasterObject,'HRSalaryCtlr','HRAttendanceCtlr', this);">Attendance</button>
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRTeamCtlr',MasterObject,'HRSalaryCtlr','HRTeamCtlr', this);">Team</button>
+</div>
+<div>
+    <MyFieldSet legendtext="Salary Information">
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <MyFieldSet legendtext="Salary Drawn" child="true">
+                    <div mycssclass="@MyCSSClassName.Table_Div">
+                        <table mycssclass="@MyCSSClassName.Table_Table">
+                            <tr>
+                                <th>
+                                    Month
+                                </th>
+                                <th>
+                                    WD
+                                </th>
+                                <th>
+                                    OT
+                                </th>
+                                <th>
+                                    Drawn
+                                </th>
+                                <th style="width:70%">
+                                    Detail
+                                </th>
+                            </tr>
+                            <tr ng-repeat="itm in pageddata.Data">
+                                <td>
+                                    {{itm.SalaryMonth}}
+                                </td>
+                                <td>
+                                    {{itm.WD}}
+                                </td>
+                                <td>
+                                    {{itm.OT}}
+                                </td>
+                                <td>
+                                    {{itm.Wage}}
+                                </td>
+                                <td>
+                                    <div mycssclass="@MyCSSClassName.Table_Div">
+                                        <table mycssclass="@MyCSSClassName.Table_Table">
+                                            <tr>
+                                                <th style="width:70%">
+                                                    Description
+                                                </th>
+                                                <th style="width:15%">
+                                                    Earnings
+                                                </th>
+                                                <th style="width:15%">
+                                                    Deductions
+                                                </th>
+                                            </tr>
+                                            <tr ng-repeat="itm2 in itm.WageDetail">
+                                                <td>
+                                                    {{itm2.WageDetailName}}
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    {{itm2.Debit}}
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    {{itm2.Credit}}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Grand Total
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    {{itm.TotalDebit}}
+                                                </td>
+                                                <td style="text-align:right;">
+                                                    {{itm.TotalCredit}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </MyFieldSet>                
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <MyFieldSet legendtext="Salary Structure" child="true">
+                    <div mycssclass="@MyCSSClassName.Table_Div" ng-controller="HRSalaryStructureCtlr">
+                        <table mycssclass="@MyCSSClassName.Table_Table">
+                            <tr>
+                                <th width="10%">
+                                    Effective
+                                </th>
+                                <th width="10%">
+                                    Net
+                                </th>
+                                <th width="10%">
+                                    Basic
+                                </th>
+                                <th width="35%">
+                                    Allowances
+                                </th>
+                                <th width="35%">
+                                    Deductibles
+                                </th>
+                            </tr>
+                            <tr ng-repeat="itm in pageddata.Data">
+                                <td>
+                                    {{itm.EffectiveDate}}
+                                </td>
+                                <td>
+                                    {{itm.NetWage}}/-
+                                </td>
+                                <td>
+                                    {{itm.BasicWage}}/-
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr ng-repeat="itmA in itm.Allowances">
+                                            <td width="60%">
+                                                {{itmA.AllowanceName}}
+                                            </td>
+                                            <td width="20%">
+                                                {{itmA.Amount}}/-
+                                            </td>
+                                            <td width="20%">
+                                                {{itmA.CalculationName}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table>
+                                        <tr ng-repeat="itmD in itm.Deductibles">
+                                            <td width="60%">
+                                                {{itmD.DeductibleName}}
+                                            </td>
+                                            <td width="20%">
+                                                {{itmD.Amount}}/-
+                                            </td>
+                                            <td width="20%">
+                                                {{itmD.CalculationName}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </MyFieldSet>
+
+                <MyFieldSet legendtext="Loan Detail" child="true">
+                    <div mycssclass="@MyCSSClassName.Table_Div" ng-controller="HRLoanDetailCtlr">
+                        <table mycssclass="@MyCSSClassName.Table_Table">
+                            <tr>
+                                <th width="50%">
+                                    Loan Type
+                                </th>
+                                <th width="13%">
+                                    Effective
+                                </th>
+                                <th width="13%">
+                                    Loan
+                                </th>
+                                <th width="11%">
+                                    Installment
+                                </th>
+                                <th width="13%">
+                                    Balance
+                                </th>
+                            </tr>
+                            <tr ng-repeat="itm in pageddata.Data">
+                                <td>
+                                    {{itm.LoanType}}
+                                </td>
+                                <td>
+                                    {{itm.EffectiveFrom}}
+                                </td>
+                                <td>
+                                    {{itm.Amount}}
+                                </td>
+                                <td>
+                                    {{itm.InstallmentRate}}/-
+                                </td>
+                                <td>
+                                    {{itm.Balance}}/-
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5">
+                                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </MyFieldSet>
+
+            </div>
+        </div>
+
+    </MyFieldSet>
+
+
+</div>

@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "Policy Penalty";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Organization/policypenaltyindex.0.1.js"></script>
+}
+<div ng-controller="PolicyPenaltyIndexCtlr" class="container">
+
+    <div id="PolicyPenaltyIndexCtlr">
+        <MyViewName>Policy Penalty</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_PolicyPenaltyOnWT.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+                    <fieldset class="border p-2 mt-2 FieldSetChild">
+                        <legend class="w-auto">
+                            <span class="fa fa-circle-info" style="font-size:x-large;"></span> Info
+                        </legend>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Policy Name</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PolicyName" name="tbl_WPT_PolicyPenaltyOnWT.PolicyName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="PolicyName" value="tbl_WPT_PolicyPenaltyOnWT.PolicyName" ng-model="tbl_WPT_PolicyPenaltyOnWT.PolicyName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PolicyName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Remarks</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.Remarks" name="tbl_WPT_PolicyPenaltyOnWT.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Remarks" value="tbl_WPT_PolicyPenaltyOnWT.Remarks" ng-model="tbl_WPT_PolicyPenaltyOnWT.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.Remarks" maxlength="50"></MyValidationSpan>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 mt-2 FieldSetChild">
+                        <legend class="w-auto">
+                            <span class="fa fa-hourglass-start" style="font-size:x-large;"></span> Late-In (LI) Penalty
+                        </legend>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Absent @@ Every LI</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_LI" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_LI" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_LI" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_LI" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HS From Every LI</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_LI" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_LI" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_LI" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_LI" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Monthly LI Grace Limit MGLI</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.MonthlyLateInGraceLimit_Minutes_MGLI" name="tbl_WPT_PolicyPenaltyOnWT.MonthlyLateInGraceLimit_Minutes_MGLI" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.MonthlyLateInGraceLimit_Minutes_MGLI" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.MonthlyLateInGraceLimit_Minutes_MGLI" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HSP From minutes MGLI </span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEveryMinutes_MGLI" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEveryMinutes_MGLI" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEveryMinutes_MGLI" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEveryMinutes_MGLI" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 mt-2 FieldSetChild">
+                        <legend class="w-auto">
+                            <span class="fa fa-hourglass-half" style="font-size:x-large;"></span> Early-Out (EO) Penalty
+                        </legend>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Absent @@ Every EO</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_EO" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_EO" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_EO" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_EO" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HS From Every EO</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_EO" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_EO" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_EO" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftFromEvery_EO" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 mt-2 FieldSetChild">
+                        <legend class="w-auto">
+                            <span class="fa fa-person-half-dress" style="font-size:x-large;"></span> Half-Day (HSP) Penalty
+                        </legend>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Absent @@ Every HSP</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_HS" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_HS" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_HS" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentAtEvery_HS" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Keep HS From Every HSP</span>
+                                <input id="tbl_WPT_PolicyPenaltyOnWT.KeepHalfShiftFromEvery_HS" name="tbl_WPT_PolicyPenaltyOnWT.KeepHalfShiftFromEvery_HS" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyPenaltyOnWT.KeepHalfShiftFromEvery_HS" ng-disabled="ng_readOnly" min="0" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.KeepHalfShiftFromEvery_HS" required="true" minlength="0"></MyValidationSpan>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="border p-2 mt-2 FieldSetChild">
+                        <legend class="w-auto">
+                            <span class="fa fa-fingerprint" style="font-size:x-large;"></span> Missing Punch Penalty
+                        </legend>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Absent On Missing IN/OUT</span>
+                                <select id="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentOnMissingINorOUT" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentOnMissingINorOUT" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentOnMissingINorOUT" ng-disabled="ng_readOnly" required>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyAbsentOnMissingINorOUT" required="true"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HalfShift On Missing IN/OUT</span>
+                                <select id="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftOnMissingINorOUT" name="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftOnMissingINorOUT" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftOnMissingINorOUT" ng-disabled="ng_readOnly" required>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyPenaltyOnWT.PenaltyHalfShiftOnMissingINorOUT" required="true"></MyValidationSpan>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyPenaltyOnWT.CreatedBy}}" ng-model="tbl_WPT_PolicyPenaltyOnWT.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyPenaltyOnWT.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PolicyPenaltyOnWT.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyPenaltyOnWT.ModifiedBy}}" ng-model="tbl_WPT_PolicyPenaltyOnWT.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyPenaltyOnWT.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PolicyPenaltyOnWT.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Policy Name
+                    </th>
+                    <th>
+                        A On Every LI
+                    </th>
+                    <th>
+                        HS From Every LI
+                    </th>
+                    <th>
+                        HSP Minutes MGLI / Limit
+                    </th>
+                    <th>
+                        A On Every EO
+                    </th>
+                    <th>
+                        HS From Every EO
+                    </th>
+                    <th>
+                        A On Every HS
+                    </th>
+                    <th>
+                        Keep HS From Every HS
+                    </th>
+                    <th>
+                        A On Missing Punch
+                    </th>
+                    <th>
+                        HS On Missing Punch
+                    </th>
+                    <th> </th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.PolicyName}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyAbsentAtEvery_LI}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyHalfShiftFromEvery_LI}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyHalfShiftFromEveryMinutes_MGLI}} / {{itm.MonthlyLateInGraceLimit_Minutes_MGLI}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyAbsentAtEvery_EO}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyHalfShiftFromEvery_EO}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyAbsentAtEvery_HS}}
+                    </td>
+                    <td>
+                        {{itm.KeepHalfShiftFromEvery_HS}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyAbsentOnMissingINorOUT?'YES':'NO'}}
+                    </td>
+                    <td>
+                        {{itm.PenaltyHalfShiftOnMissingINorOUT?'YES':'NO'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('PolicyPenaltyDesignationCtlr',itm,'PolicyPenaltyIndexCtlr','PolicyPenaltyDesignationCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Designation <span class="fa fa-id-badge"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="11">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PolicyPenaltyIndexCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p><b>1. Late-IN (There are 2 types of Policies)</b></p>
+            <p>&nbsp;I) Mark absent or half day after counted late-In</p>
+            <p>&nbsp;II) Deduct Minutes from salary after Total Monthly grace Limit of LI</p>
+            <p><b>2. Early-Out (Marked as absent or half day after counted Early-Out)</b></p>
+            <p><b>3. HalfShift (There are 2 types of Policies)</b></p>
+            <p>&nbsp;I) Absent after every counted Halfshift</p>
+            <p>&nbsp;II) Keep halfshift as same after counted Halfshift</p>
+        </div>
+    </div>
+
+
+
+    <div ng-controller="PolicyPenaltyDesignationCtlr">
+        <div id="PolicyPenaltyDesignationCtlr" style="display: none;">
+            @await Html.PartialAsync("PolicyPenaltyDesignation")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "Accounts";
+}
+
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Accounts/accountsdashboard.0.1.js"></script>
+    <script src="~/lib/Chart.js/chart.umd.js"></script>
+
+}
+<div ng-controller="AccountsDashBoardCtlr" class="container">
+    <h1>Welcome to Accounts Module</h1>
+    <MyFieldSet legendtext="Financial Heads">
+        <div class="row">
+            <div class="col" style="min-width:150px;">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-gem" style="color:green;"></i> Assets</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">                                
+                                <h5 class="card-title"> {{data.COA.COA_Assets}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="min-width:150px;">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-sack-dollar" style="color:seagreen;"></i> Capital</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">                                
+                                <h5 class="card-title">{{data.COA.COA_Capital}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="min-width:150px;">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-handshake" style="color:darkred;"></i> Liability</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">                                
+                                <h5 class="card-title">{{data.COA.COA_Liabilities}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="min-width:150px;">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-burger" style="color:hotpink;"></i> Expense</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">                                
+                                <h5 class="card-title">{{data.COA.COA_Expense}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col" style="min-width:150px;">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-briefcase" style="color:steelblue;"></i> Revenue</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">                                
+                                <h5 class="card-title">{{data.COA.COA_Revenue}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </MyFieldSet>
+
+    <div mycssclass="@MyCSSClassName.RowInForm">
+
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+            <MyFieldSet legendtext="Sales vs Purchases">
+                <canvas id="SalePurchase" style="width:100%;max-height:300px;"></canvas>
+            </MyFieldSet>
+        </div>
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+            <MyFieldSet legendtext="Bank Document">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-pencil-square" style="color:pink;"></i> Pending</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <h5 class="card-title"> {{data.Other.BD_Pending}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </MyFieldSet>
+
+        </div>
+    </div>
+
+
+</div>

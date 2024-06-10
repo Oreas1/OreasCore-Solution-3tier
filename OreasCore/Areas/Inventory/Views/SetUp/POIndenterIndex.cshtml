@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "POIndenter";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Inventory/SetUp/poindenterindex.170524.js"></script>
+}
+<div ng-controller="POIndenterIndexCtlr" class="container">
+    <div id="POIndenterIndexCtlr">
+        <MyViewName>Purchase Order Indenter</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_PurchaseOrder_Indenter.ID", "{{tbl_Inv_PurchaseOrder_Indenter.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Name</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrder_Indenter.IndenterName" name="tbl_Inv_PurchaseOrder_Indenter.IndenterName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Chemical Pvt...." value="tbl_Inv_PurchaseOrder_Indenter.IndenterName" ng-model="tbl_Inv_PurchaseOrder_Indenter.IndenterName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_Indenter.IndenterName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup8">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Address</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrder_Indenter.IndenterAddress" name="tbl_Inv_PurchaseOrder_Indenter.IndenterAddress" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Karachi, Pakistan ...." value="tbl_Inv_PurchaseOrder_Indenter.IndenterAddress" ng-model="tbl_Inv_PurchaseOrder_Indenter.IndenterAddress" ng-disabled="ng_readOnly" maxlength="250" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_Indenter.IndenterAddress" maxlength="250" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Contact No</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrder_Indenter.ContactNo" name="tbl_Inv_PurchaseOrder_Indenter.ContactNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="+92 21 ...." value="tbl_Inv_PurchaseOrder_Indenter.ContactNo" ng-model="tbl_Inv_PurchaseOrder_Indenter.ContactNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_Indenter.ContactNo" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Contact Person</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrder_Indenter.ContactPerson" name="tbl_Inv_PurchaseOrder_Indenter.ContactPerson" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Mr...." value="tbl_Inv_PurchaseOrder_Indenter.ContactPerson" ng-model="tbl_Inv_PurchaseOrder_Indenter.ContactPerson" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_Indenter.ContactPerson" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrder_Indenter.Email" name="tbl_Inv_PurchaseOrder_Indenter.Email" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="info@@oreas.com..." value="tbl_Inv_PurchaseOrder_Indenter.Email" ng-model="tbl_Inv_PurchaseOrder_Indenter.Email" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrder_Indenter.Email" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_Indenter.CreatedBy}}" ng-model="tbl_Inv_PurchaseOrder_Indenter.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_Indenter.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrder_Indenter.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_Indenter.ModifiedBy}}" ng-model="tbl_Inv_PurchaseOrder_Indenter.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrder_Indenter.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrder_Indenter.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        <b>Indenter Name</b>
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        ContactNo
+                    </th>
+                    <th>
+                        ContactPerson
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.IndenterName}}
+                    </td>
+                    <td>
+                        {{itm.IndenterAddress}}
+                    </td>
+                    <td>
+                        {{itm.ContactNo}}
+                    </td>
+                    <td>
+                        {{itm.ContactPerson}}
+                    </td>
+                    <td>
+                        {{itm.Email}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "POIndenterIndexCtlr")
+    </div>
+</div>
+
+
+
+

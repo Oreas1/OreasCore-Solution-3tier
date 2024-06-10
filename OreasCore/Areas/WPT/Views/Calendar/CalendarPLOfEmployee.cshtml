@@ -1,0 +1,171 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'CalendarPLOfEmployeeCtlr','CalendarIndexCtlr', this);">Calendar</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'CalendarPLOfEmployeeCtlr','CalendarEmployeeForPLCtlr', this);">Employee For Paid Leaves</a>
+    <MyViewName child="true"> Paid Leaves</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Calendar Year
+                    </th>
+                    <th>
+                        Employee Name
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.CalendarStartYear}} <span style="font-size:small">{{MasterObject.MasterObject.CalendarStartMonthSName}}</span> - {{MasterObject.MasterObject.CalendarEndYear}} <span style="font-size:small">{{MasterObject.MasterObject.CalendarEndMonthName}}</span></b>
+
+                    </td>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_WPT_Employee_IDName}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_CalendarYear_LeaveEmps_Leaves.ID", "{{tbl_WPT_CalendarYear_LeaveEmps_Leaves.ID}}")
+            @Html.Hidden("tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_LeaveEmps_ID", "{{tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_LeaveEmps_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Leave Type</span>
+                        <select id="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_LeavePolicy_ID" name="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_LeavePolicy_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.PolicyName for x in LeavePolicyList" data-ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_LeavePolicy_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Please Select Leave Policy</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_LeavePolicy_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Apply Month</span>
+                        <select id="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Apply" name="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Apply" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Month for x in CalendarMonthList" data-ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Apply" ng-disabled="ng_readOnly" required>
+                            <option value="">Please Select Apply Month</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Apply" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Expire Month</span>
+                        <select id="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Expire" name="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Expire" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Month for x in CalendarMonthList" data-ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Expire" ng-disabled="ng_readOnly">
+                            <option value="">Please Select Expire Month</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_CalendarYear_LeaveEmps_Leaves.FK_tbl_WPT_CalendarYear_Months_ID_Expire"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Opening</span>
+                        <input id="tbl_WPT_CalendarYear_LeaveEmps_Leaves.Opening" name="tbl_WPT_CalendarYear_LeaveEmps_Leaves.Opening" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.Opening" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_CalendarYear_LeaveEmps_Leaves.Opening" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Allowed From Next Year</span>
+                        <input id="tbl_WPT_CalendarYear_LeaveEmps_Leaves.AllowedFromNextYear" name="tbl_WPT_CalendarYear_LeaveEmps_Leaves.AllowedFromNextYear" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.AllowedFromNextYear" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_CalendarYear_LeaveEmps_Leaves.AllowedFromNextYear" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_LeaveEmps_Leaves.CreatedBy}}" ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_LeaveEmps_Leaves.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_LeaveEmps_Leaves.ModifiedBy}}" ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_LeaveEmps_Leaves.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_CalendarYear_LeaveEmps_Leaves.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Policy
+                </th>
+                <th>
+                    Opening
+                </th>
+                <th>
+                    Apply Month
+                </th>
+                <th>
+                    Expire Month
+                </th>
+                <th>
+                    Allowed From Next Year
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_LeavePolicy_IDName}}
+                </td>
+                <th>
+                    {{itm.Opening}}
+                </th>
+                <td>
+                    {{itm.FK_tbl_WPT_CalendarYear_Months_ID_ApplyName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_CalendarYear_Months_ID_ExpireName}}
+                </td>
+                <td>
+                    {{itm.AllowedFromNextYear}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CalendarPLOfEmployeeCtlr")
+
+
+</div>

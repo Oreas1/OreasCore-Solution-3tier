@@ -1,0 +1,175 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'AuthorizationSchemeAreaCtlr','AuthorizationSchemeCtlr', this);">Authorization Scheme</a>
+    <MyViewName child="true"> Area Allocation</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Authorization Scheme Name
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.Name}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="1">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("AspNetOreasAuthorizationScheme_Area.ID", "{{AspNetOreasAuthorizationScheme_Area.ID}}")
+            @Html.Hidden("AspNetOreasAuthorizationScheme_Area.FK_AspNetOreasAuthorizationScheme_ID", "{{AspNetOreasAuthorizationScheme_Area.FK_AspNetOreasAuthorizationScheme_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Area</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.FK_AspNetOreasArea_ID" name="AspNetOreasAuthorizationScheme_Area.FK_AspNetOreasArea_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Area for x in AreaList" data-ng-model="AspNetOreasAuthorizationScheme_Area.FK_AspNetOreasArea_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Please Select Area</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.FK_AspNetOreasArea_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can View</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.CanView" name="AspNetOreasAuthorizationScheme_Area.CanView" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme_Area.CanView" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.CanView" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can View Only Own Data</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.CanViewOnlyOwnData" name="AspNetOreasAuthorizationScheme_Area.CanViewOnlyOwnData" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme_Area.CanViewOnlyOwnData" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.CanViewOnlyOwnData" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can View Report</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.CanViewReport" name="AspNetOreasAuthorizationScheme_Area.CanViewReport" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme_Area.CanViewReport" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.CanViewReport" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can Add</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.CanAdd" name="AspNetOreasAuthorizationScheme_Area.CanAdd" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme_Area.CanAdd" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.CanAdd" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can Edit</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.CanEdit" name="AspNetOreasAuthorizationScheme_Area.CanEdit" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme_Area.CanEdit" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.CanEdit" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can Delete</span>
+                        <select id="AspNetOreasAuthorizationScheme_Area.CanDelete" name="AspNetOreasAuthorizationScheme_Area.CanDelete" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme_Area.CanDelete" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme_Area.CanDelete" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Area
+                </th>
+                <th>
+                    Can View
+                </th>
+                <th>
+                    Can View Only Own Data
+                </th>
+                <th>
+                    Can View Report
+                </th>
+                <th>
+                    Can Add
+                </th>
+                <th>
+                    Can Edit
+                </th>
+                <th>
+                    Can Delete
+                </th>
+                <th>
+                    Total Forms
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_AspNetOreasArea_IDName}}
+                </td>
+                <td>
+                    {{itm.CanView ? 'Yes' : 'No'}}
+                </td>
+                <td>
+                    {{itm.CanViewOnlyOwnData ? 'Yes' : 'No'}}
+                </td>
+                <td>
+                    {{itm.CanViewReport ? 'Yes' : 'No'}}
+                </td>
+                <td>
+                    {{itm.CanAdd ? 'Yes' : 'No'}}
+                </td>
+                <td style="background-color:pink;">
+                    {{itm.CanEdit ? 'Yes' : 'No'}}
+                </td>
+                <td style="background-color:indianred;">
+                    {{itm.CanDelete ? 'Yes' : 'No'}}
+                </td>
+                <td>
+                    {{itm.TotalForms}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="DivHideShow('AuthorizationSchemeAreaFormCtlr',itm,'AuthorizationSchemeAreaCtlr','AuthorizationSchemeAreaFormCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" style="color:darkslateblue" title="Goto Form Section">Form <span class="fa fa-sign-hanging"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "AuthorizationSchemeAreaCtlr")
+
+</div>

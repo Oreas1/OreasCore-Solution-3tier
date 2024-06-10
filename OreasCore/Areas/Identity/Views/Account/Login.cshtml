@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div ng-controller="HeaderCtlr" class="row">
+    <div class="col-md-4">
+        <section>
+            <form name="myform" role="form" ng-submit="Login(); myform.$setPristine();" novalidate="">
+                <h4>Use a local account to log in.</h4>
+                <hr />
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                <input type="hidden" id="LoginModel.returnUrl" name="LoginModel.returnUrl" ng-model="LoginModel.returnUrl" ng-init="LoginModel.returnUrl='@ViewBag.returnUrl'; LoginModel.RememberMe=false; clearAuthorizedAreaStorage();" />
+                <MyFieldSet legendtext="Login Form">
+                    <div class="form-group mt-2">
+                        <span class="input-group-text" style="background-color:steelblue;">User Name</span>
+                        <input id="LoginModel.UserName" name="LoginModel.UserName" type="text" class="form-control" placeholder="...type user name" value="LoginModel.UserName" ng-model="LoginModel.UserName" ng-disabled="ng_readOnly" minlength="5" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="LoginModel.UserName" required="true" minlength="6" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div class="form-group mt-2">
+                        <span class="input-group-text" style="background-color:steelblue;">Password</span>
+                        <input id="LoginModel.Password" name="LoginModel.Password" type="password" class="form-control" placeholder="... type Password" value="LoginModel.Password" ng-model="LoginModel.Password" ng-disabled="ng_readOnly" minlength="6" maxlength="50" ng-required />
+                        <MyValidationSpan formname="myform" fieldname="LoginModel.Password" required="true" minlength="6" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div class="form-group mt-2 col-lg-6">
+                        <span class="input-group-text" style="background-color:steelblue;">Remember Me</span>
+                        <select id="LoginModel.RememberMe" name="LoginModel.RememberMe" class="form-control form-select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="LoginModel.RememberMe" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="LoginModel.RememberMe" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="Login" class="btn btn-primary" ng-disabled="myform.$invalid" />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </form>
+        </section>
+    </div>
+    @*<div class="col-md-6 col-md-offset-2">
+            <section>
+                <h4>Use another service to log in.</h4>
+                <hr />
+
+            </section>
+        </div>*@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

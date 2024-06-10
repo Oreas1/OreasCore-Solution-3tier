@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "Policy General";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-WPT/Organization/policygeneralindex.0.1.js"></script>
+}
+<div ng-controller="PolicyGeneralIndexCtlr" class="container">
+    <div id="PolicyGeneralIndexCtlr">
+        <MyViewName>Policy General</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <div>
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_PolicyGeneral.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Calendar Start Month</span>
+                        <select id="tbl_WPT_PolicyGeneral.CalendarYear_StartMonth" name="tbl_WPT_PolicyGeneral.CalendarYear_StartMonth" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Month for x in [{'ID':1, 'Month': 'January'},{'ID':2, 'Month': 'February'},{'ID':3, 'Month': 'March'},{'ID':4, 'Month': 'April'},{'ID':5, 'Month': 'May'},{'ID':6, 'Month': 'June'},{'ID':7, 'Month': 'July'},{'ID':8, 'Month': 'August'},{'ID':9, 'Month': 'September'},{'ID':10, 'Month': 'October'},{'ID':11, 'Month': 'November'},{'ID':12, 'Month': 'December'}]" data-ng-model="tbl_WPT_PolicyGeneral.CalendarYear_StartMonth" ng-disabled="ng_readOnly" required>
+                            <option value="">Please Select Month</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyGeneral.CalendarYear_StartMonth" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Every Month Start Day</span>
+                        <input id="tbl_WPT_PolicyGeneral.CalendarYear_StartDayNoOfEveryMonth" name="tbl_WPT_PolicyGeneral.CalendarYear_StartDayNoOfEveryMonth" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PolicyGeneral.CalendarYear_StartDayNoOfEveryMonth" ng-disabled="ng_readOnly" min="1" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyGeneral.CalendarYear_StartDayNoOfEveryMonth" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Recreate Calendar At End of</span>
+                        <select id="tbl_WPT_PolicyGeneral.CalendarYear_RecreateOnClosingMonth" name="tbl_WPT_PolicyGeneral.CalendarYear_RecreateOnClosingMonth" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Month for x in [{'ID':1, 'Month': 'January'},{'ID':2, 'Month': 'February'},{'ID':3, 'Month': 'March'},{'ID':4, 'Month': 'April'},{'ID':5, 'Month': 'May'},{'ID':6, 'Month': 'June'},{'ID':7, 'Month': 'July'},{'ID':8, 'Month': 'August'},{'ID':9, 'Month': 'September'},{'ID':10, 'Month': 'October'},{'ID':11, 'Month': 'November'},{'ID':12, 'Month': 'December'}]" data-ng-model="tbl_WPT_PolicyGeneral.CalendarYear_RecreateOnClosingMonth" ng-disabled="ng_readOnly" required>
+                            <option value="">Please Select Month</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyGeneral.CalendarYear_RecreateOnClosingMonth" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Wage Cash Round (Ones) to (Ten)</span>
+                        <div class="input-group">
+                            <input id="tbl_WPT_PolicyGeneral.WageCash_RoundOnesIntoTens" name="tbl_WPT_PolicyGeneral.WageCash_RoundOnesIntoTens" type="range" step="1" max="9" min="0" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Range" style="display: inline-block; max-width:75%;" ng-model="tbl_WPT_PolicyGeneral.WageCash_RoundOnesIntoTens" ng-disabled="ng_readOnly" required />
+                            <input id="tbl_WPT_PolicyGeneral.WageCash_RoundOnesIntoTens" name="tbl_WPT_PolicyGeneral.WageCash_RoundOnesIntoTens" type="number" class="input-group form-control" style="display: inline-block; max-width: 25%; " ng-model="tbl_WPT_PolicyGeneral.WageCash_RoundOnesIntoTens" ng-disabled="ng_readOnly" step="1" max="28" min="0" required />
+                        </div>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyGeneral.CalendarYear_StartMonth" required="true" minlength="0" maxlength="9"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Min WD To Generate Wage FOR 1st Month</span>                        
+                        <div class="input-group">
+                            <input id="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" name="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" type="range" step="1" max="28" min="0" class="form-control form-range" style="display: inline-block; max-width:75%;" ng-model="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" ng-disabled="ng_readOnly" required />
+                            <input id="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" name="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" type="number" class="input-group form-control" style="display: inline-block; max-width: 25%; " ng-model="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" ng-disabled="ng_readOnly" step="1" max="28" min="0" required />
+                        </div>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PolicyGeneral.MinWDToGenerateWageForFirstMonth" required="true" minlength="0" maxlength="28"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="Save Update" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyGeneral.CreatedBy}}" ng-model="tbl_WPT_PolicyGeneral.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyGeneral.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PolicyGeneral.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyGeneral.ModifiedBy}}" ng-model="tbl_WPT_PolicyGeneral.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PolicyGeneral.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PolicyGeneral.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+

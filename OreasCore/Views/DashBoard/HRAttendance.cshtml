@@ -1,0 +1,110 @@
+﻿<div class="btn-group" role="group" aria-label="HR">
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow(null,null,'HRAttendanceCtlr','HRCtlr', this);">HR Main</button>
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRSalaryCtlr',MasterObject,'HRAttendanceCtlr','HRSalaryCtlr', this);">Salary</button>
+    <button type="button" class="btn btn-outline-primary">Attendance</button>
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRTeamCtlr',MasterObject,'HRAttendanceCtlr','HRTeamCtlr', this);">Team</button>
+</div>
+<div>
+    <MyFieldSet legendtext="Attendance Information">
+
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                <table style="width:100%">
+                    <tr>
+                        <td colspan="7" style="border: 2px solid gray; font-weight: bolder; font-size: medium; text-align: center; color: steelblue;">
+                            <button type="button" id="MonthSelector" name="MonthSelector" class="btn btn-primary" ng-click="OpenMonthSearchModalGeneral('All', 0, 'MonthSelector', MonthSearch_CtrlFunction_Ref_InvokeOnSelection); myform.MonthSelector.$dirty=true;" style="width:100%">{{MonthName}}</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="border: 2px solid gray; text-align: center; background-color: steelblue; color:white; font-weight: bolder; font-size:medium;" width="14%">
+                            Sun
+                        </th>
+                        <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: medium; " width="14%">
+                            Mon
+                        </th>
+                        <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: medium; " width="14%">
+                            Tue
+                        </th>
+                        <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: medium; " width="14%">
+                            Wed
+                        </th>
+                        <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: medium; " width="14%">
+                            Thr
+                        </th>
+                        <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: medium; " width="14%">
+                            Fri
+                        </th>
+                        <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: medium;" width="14%">
+                            Sat
+                        </th>
+                    </tr>
+                    <tr ng-repeat="item in weeks;">
+                        <td style="border: 2px solid gray; text-align: center;" ng-repeat="itm in item">
+                            <div ng-hide="itm.ID===''">
+                                <div class="btn-group-sm" style="width:100%">
+                                    <button type="button" class="btn" style="width:100%; background-color:{{itm.AT.P ? 'lightGreen' : itm.AT.A || itm.AT.AHD || itm.AT.AP ? 'lightpink' : itm.AT.HD ? 'steelblue' : 'gainsboro' }}">{{itm.Day}}</button>
+                                </div>
+                                <table style="width: 100%; border-radius:1px;">
+                                    <tr>
+                                        <td style="width: 33%; border: 1px solid darkgrey; font-size: x-small; text-align: center; background-color:{{itm.AT.LI ? 'lightpink':'none'}}">LI</td>
+                                        <td style="width: 33%; border: 1px solid darkgrey; font-size: x-small; text-align: center; background-color:{{itm.AT.EO ? 'lightpink':'none'}}">EO</td>
+                                        <td style="width: 33%; border: 1px solid darkgrey; font-size: x-small; text-align: center; background-color:{{itm.AT.HS ? 'lightpink':'none'}}">HS</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 5%; font-size: x-small; text-align: center; border: 1px solid darkgrey; ">IN</td>
+                                        <td style="width: 95%; font-size: 8px; text-align: center; border: 1px solid darkgrey; " colspan="2">{{itm.AT.CheckIn}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 5%; font-size: x-small; text-align: center; border: 1px solid darkgrey; ">OUT</td>
+                                        <td style="width: 95%; font-size: 8px; text-align: center; border: 1px solid darkgrey; " colspan="2">{{itm.AT.CheckOut}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Half-shift</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">{{AT.TotalHS}}</p>
+                    </div>
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Late-In</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">{{AT.TotalLI}}</p>
+                    </div>
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Early-Out</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">{{AT.TotalEO}}</p>
+                    </div>
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Overtime</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">{{AT.TotalOT}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </MyFieldSet>
+
+
+</div>

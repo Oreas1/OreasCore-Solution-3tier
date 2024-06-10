@@ -1,0 +1,162 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'CompositionDetailRawMasterCtlr','CompositionMasterCtlr', this);">Composition</a>
+    <MyViewName child="true"> BMR Detail</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Composition
+                    </th>
+                    <th>
+                        Dimension
+                    </th>
+                    <th>
+                        Shelf Life
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.CompositionName}}
+                    </td>
+                    <td>
+                        {{MasterObject.DimensionValue}} {{MasterObject.FK_tbl_Inv_MeasurementUnit_ID_DimensionName}}
+                    </td>
+                    <td>
+                        {{MasterObject.ShelfLifeInMonths}} Month(s)
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Pro_CompositionDetail_RawMaster.ID", "{{tbl_Pro_CompositionDetail_RawMaster.ID}}")
+            @Html.Hidden("tbl_Pro_CompositionDetail_RawMaster.FK_tbl_Pro_CompositionMaster_ID", "{{tbl_Pro_CompositionDetail_RawMaster.FK_tbl_Pro_CompositionMaster_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Formulation Type</span>
+                        <select id="tbl_Pro_CompositionDetail_RawMaster.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" name="tbl_Pro_CompositionDetail_RawMaster.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.FilterName for x in CompositionFilterList" data-ng-model="tbl_Pro_CompositionDetail_RawMaster.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" ng-disabled="ng_readOnly || tbl_Pro_CompositionDetail_RawMaster.TotalDetail>0" required>
+                            <option value="">Select Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionDetail_RawMaster.FK_tbl_Pro_CompositionFilterPolicyDetail_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup5">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input type="text" id="tbl_Pro_CompositionDetail_RawMaster.Remarks" name="tbl_Pro_CompositionDetail_RawMaster.Remarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="..." value="tbl_Pro_CompositionDetail_RawMaster.Remarks" ng-model="tbl_Pro_CompositionDetail_RawMaster.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionDetail_RawMaster.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawMaster.CreatedBy}}" ng-model="tbl_Pro_CompositionDetail_RawMaster.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionDetail_RawMaster.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawMaster.ModifiedBy}}" ng-model="tbl_Pro_CompositionDetail_RawMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionDetail_RawMaster.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Formulation Type
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th>
+                    Total Items
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Pro_CompositionFilterPolicyDetail_IDName}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    {{itm.TotalItems}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('CompositionDetailRawDetailCtlr',itm,'CompositionDetailRawMasterCtlr','CompositionDetailRawDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Raw Ingredients Items">Raw Items <span class="fa fa-leaf"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CompositionDetailRawMasterCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+
+</div>

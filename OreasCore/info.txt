@@ -1,0 +1,53 @@
+﻿************************************Anitforgery Token creator by partial view***************************
+1. 
+    Partial _AntiforgeryToken.cshtml
+2. 
+    @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+    @functions{
+        public string GetAntiForgeryToken()
+        {
+            return Xsrf.GetAndStoreTokens(Context).RequestToken;
+        }
+    }
+    <input id="antiForgeryToken" data-ng-model="antiForgeryToken" type="hidden" data-ng-init="antiForgeryToken='@GetAntiForgeryToken()'" />
+3.
+Add Html helper tag of partial view in desire view
+@await Html.PartialAsync("_AntiforgeryToken")
+
+************************************ -------------UDF function calling in linq select--------------- ***************************
+db.Set<MyFunctionResult>().FromSqlRaw("SELECT [dbo].[Inv_ProductSplitIntoFactor] ("+ o.FK_tbl_Inv_ProductRegistrationDetail_ID + ",9,1) as value").FirstOrDefault().Value
+    
+[NotMapped]
+public class MyFunctionResult
+    {
+        public double Value { get; set; } = 0;
+    }
+
+protected override void OnModelCreating(ModelBuilder builder)
+        {            
+            builder.Entity<MyFunctionResult>().HasNoKey().ToTable("MyFunctionResult", t => t.ExcludeFromMigrations());
+            base.OnModelCreating(builder);
+        }
+
+************************************ -------------------------------- ***************************
+SELECT 
+ [FK_tbl_Inv_ProductRegistrationDetail_ID]
+,[FK_tbl_Inv_WareHouseMaster_ID]
+,SUM([QuantityIn])-SUM([QuantityOut])
+FROM [dbo].[tbl_Inv_Ledger]
+where [PostingDate]<='2023-01-01'
+group by [FK_tbl_Inv_ProductRegistrationDetail_ID],[FK_tbl_Inv_WareHouseMaster_ID]
+having (SUM([QuantityIn])-SUM([QuantityOut]))>0
+************************************ -------------------------------- ***************************
+---paging in sql
+SELECT *
+FROM dbo.tbl_WPT_Department
+ORDER BY ID
+OFFSET (5) ROWS FETCH NEXT (5) ROWS ONLY
+----OFFSET MEANS SKIP	--- NEXT MEANS TAKE
+************************************ -----------sql query to save video to table---------------- ***************************
+
+SELECT BulkColumn, 'my description here'
+    FROM OPENROWSET(BULK 'D:\Windows Server 2012 R2\creating_server_2012_r2_bootable_usb_in_hindi.mp4', SINGLE_BLOB) as x
+
+************************************ -------------------------------- ***************************

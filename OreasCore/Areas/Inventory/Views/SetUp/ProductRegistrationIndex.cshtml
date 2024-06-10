@@ -1,0 +1,208 @@
+﻿@{
+    ViewBag.Title = "Product Registration";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/SetUp/productregistrationindex.0.1.js"></script>
+}
+<div ng-controller="ProductRegistrationMasterCtlr" class="container">
+
+    <div id="ProductRegistrationMasterCtlr">
+        <MyViewName>Product Registration</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_ProductRegistrationMaster.ID", "{{tbl_Inv_ProductRegistrationMaster.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Classification</span>
+                            <select id="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" name="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ClassName + ' [' + x.ID + ']' for x in ProductClassificationList" data-ng-model="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" ng-disabled="ng_readOnly" required>
+                                <option value="">Select Product Classification</option>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Name</span>
+                            <input type="text" id="tbl_Inv_ProductRegistrationMaster.ProductName" name="tbl_Inv_ProductRegistrationMaster.ProductName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Name" value="tbl_Inv_ProductRegistrationMaster.ProductName" ng-model="tbl_Inv_ProductRegistrationMaster.ProductName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.ProductName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Description</span>
+                            <input type="text" id="tbl_Inv_ProductRegistrationMaster.Description" name="tbl_Inv_ProductRegistrationMaster.Description" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Description" value="tbl_Inv_ProductRegistrationMaster.Description" ng-model="tbl_Inv_ProductRegistrationMaster.Description" ng-disabled="ng_readOnly" minlength="1" maxlength="50" />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.Description" minlength="1" maxlength="50"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.CreatedBy}}" ng-model="tbl_Inv_ProductRegistrationMaster.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationMaster.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.ModifiedBy}}" ng-model="tbl_Inv_ProductRegistrationMaster.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationMaster.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Classification
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        # Units
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.ProductName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_ProductClassification_IDName}}
+                    </td>
+                    <td style="font-size:xx-small;">
+                        {{itm.Description}}
+                    </td>
+                    <td>
+                        {{itm.NoOfUnits}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('ProductRegistrationDetailCtlr',itm,'ProductRegistrationMasterCtlr','ProductRegistrationDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Units">Units <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ProductRegistrationMasterCtlr")
+        @await Html.PartialAsync("_ReportPanelGeneral")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Product Hierchy Cannot be exceeded from Level III</p>
+            <p>2. More then one root of Unit is not allowed</p>
+            <p>3. Change of Split / Head Ac is not allowed when referred in Composition/BMR/Order/Sales Note</p>
+        </div>
+        @*-----------------------------------Excell-----------------------------*@
+        <hr />
+        <div>
+            <table class="table">
+                <tr>
+                    <td>
+                        <input type="file" id="UploadExcelFile" name="UploadExcelFile" ng-disabled="!Privilege.CanAdd" onchange="angular.element(this).scope().LoadFileData(this.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="btn btn-block" />
+                    </td>
+                    <td style="font-size:xx-small">
+                        <table border="1">
+                            <tr style="border:1px solid black;">
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*ProductName&nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;*ClassificationID &nbsp;</th>
+
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*CategoryID &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*UnitID &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*Split &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*Reorder &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightgray;">&nbsp;&nbsp;Code &nbsp;&nbsp;</th>
+
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*CategoryID2 &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*UnitID2 &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*Split2 &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightpink;">&nbsp;&nbsp;*Reorder2 &nbsp;&nbsp;</th>
+                                <th style="border: 1px solid black; background-color: lightgray;">&nbsp;&nbsp;Code2 &nbsp;&nbsp;</th>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; text-align: left;">Abc Tablet</td>
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+                                <td style="border: 1px solid black; text-align: center;">0</td>
+                                <td style="border: 1px solid black; text-align: center;">FM-5321</td>
+
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+                                <td style="border: 1px solid black; text-align: center;">1</td>
+                                <td style="border: 1px solid black; text-align: center;">0</td>
+                                <td style="border: 1px solid black; text-align: center;">FM-5322</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; text-align: center; font-weight:bold" colspan="2">Product Master</td>
+                                <td style="border: 1px solid black; text-align: center; font-weight:bold" colspan="5">Root Unit</td>
+                                <td style="border: 1px solid black; text-align: center; font-weight:bold" colspan="5">Child of Root Unit</td>
+                            </tr>
+                            <tr>
+                                <td colspan="12" style="text-align: center;">
+                                    <a href="~/SampleExcel/ProductRegistration.xlsx" class="btn btn-sm btn-primary">Download Sample in excel format</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div ng-controller="ProductRegistrationDetailCtlr">
+        <div id="ProductRegistrationDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("ProductRegistrationDetail")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_ProductSearchModalGeneral")
+    
+</div>
+
+
+
+

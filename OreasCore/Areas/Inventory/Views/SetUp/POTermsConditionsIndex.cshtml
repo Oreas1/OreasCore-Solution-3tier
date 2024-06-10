@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "PO Terms & Condition";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Inventory/SetUp/potermsconditionsindex.0.1.js"></script>
+}
+<div ng-controller="POTermsConditionsIndexCtlr" class="container">
+    <div id="POTermsConditionsIndexCtlr">
+        <MyViewName>Purchase Order Terms & Conditions</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_PurchaseOrderTermsConditions.ID", "{{tbl_Inv_PurchaseOrderTermsConditions.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Term Name</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrderTermsConditions.TCName" name="tbl_Inv_PurchaseOrderTermsConditions.TCName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="ProductClassification" value="tbl_Inv_PurchaseOrderTermsConditions.TCName" ng-model="tbl_Inv_PurchaseOrderTermsConditions.TCName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderTermsConditions.TCName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Conditions</span>
+                        <textarea class="form-control" id="tbl_Inv_PurchaseOrderTermsConditions.TermsCondition" name="tbl_Inv_PurchaseOrderTermsConditions.TermsCondition" placeholder="Conditions" ng-model="tbl_Inv_PurchaseOrderTermsConditions.TermsCondition" ng-disabled="ng_readOnly" minlength="1" maxlength="2000" required rows="6"></textarea>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderTermsConditions.TermsCondition" required="true" minlength="1" maxlength="2000"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Note</span>
+                        <textarea class="form-control" id="tbl_Inv_PurchaseOrderTermsConditions.Note" name="tbl_Inv_PurchaseOrderTermsConditions.Note" placeholder="Note" ng-model="tbl_Inv_PurchaseOrderTermsConditions.Note" ng-disabled="ng_readOnly" maxlength="500" rows="3"></textarea>                        
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderTermsConditions.Note" required="true" maxlength="500"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderTermsConditions.CreatedBy}}" ng-model="tbl_Inv_PurchaseOrderTermsConditions.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderTermsConditions.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrderTermsConditions.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderTermsConditions.ModifiedBy}}" ng-model="tbl_Inv_PurchaseOrderTermsConditions.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderTermsConditions.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrderTermsConditions.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Terms Name
+                    </th>
+                    <th>
+                        Conditions / Note
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.TCName}}
+                    </td>
+                    <td style="font-size:xx-small;">
+                        {{itm.TermsCondition}}
+                        <hr />
+                        {{itm.Note}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "POTermsConditionsIndexCtlr")
+    </div>
+</div>
+
+
+
+

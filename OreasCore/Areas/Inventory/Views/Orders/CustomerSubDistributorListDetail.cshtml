@@ -1,0 +1,172 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'CustomerSubDistributorListDetailCtlr','CustomerSubDistributorListCtlr', this);">Customer Sub Distributor</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Account Name
+                    </th>
+                    <th>
+                        Account Code
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.AccountName}}
+                    </td>
+                    <td>
+                        {{MasterObject.AccountCode}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Ac_CustomerSubDistributorList.ID", "{{tbl_Ac_CustomerSubDistributorList.ID}}")
+            @Html.Hidden("tbl_Ac_CustomerSubDistributorList.FK_tbl_Ac_ChartOfAccounts_ID", "{{tbl_Ac_CustomerSubDistributorList.FK_tbl_Ac_ChartOfAccounts_ID}}")
+            
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sub Distributor Name</span>
+                        <input id="tbl_Ac_CustomerSubDistributorList.Name" name="tbl_Ac_CustomerSubDistributorList.Name" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_CustomerSubDistributorList.Name" ng-model="tbl_Ac_CustomerSubDistributorList.Name" ng-disabled="ng_readOnly" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerSubDistributorList.Name" maxlength="50" required></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup8">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Address</span>
+                        <input id="tbl_Ac_CustomerSubDistributorList.Address" name="tbl_Ac_CustomerSubDistributorList.Address" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="karachi, Pakistan..." value="tbl_Ac_CustomerSubDistributorList.Address" ng-model="tbl_Ac_CustomerSubDistributorList.Address" ng-disabled="ng_readOnly" maxlength="150" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerSubDistributorList.Address" maxlength="150"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">ContactNo</span>
+                        <input id="tbl_Ac_CustomerSubDistributorList.ContactNo" name="tbl_Ac_CustomerSubDistributorList.ContactNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="+92345...." value="tbl_Ac_CustomerSubDistributorList.ContactNo" ng-model="tbl_Ac_CustomerSubDistributorList.ContactNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerSubDistributorList.ContactNo" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">ContactPerson</span>
+                        <input id="tbl_Ac_CustomerSubDistributorList.ContactPerson" name="tbl_Ac_CustomerSubDistributorList.ContactPerson" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Mr...." value="tbl_Ac_CustomerSubDistributorList.ContactPerson" ng-model="tbl_Ac_CustomerSubDistributorList.ContactPerson" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerSubDistributorList.ContactPerson" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email</span>
+                        <input id="tbl_Ac_CustomerSubDistributorList.Email" name="tbl_Ac_CustomerSubDistributorList.Email" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="user@@oreas.com" value="tbl_Ac_CustomerSubDistributorList.Email" ng-model="tbl_Ac_CustomerSubDistributorList.Email" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerSubDistributorList.Email" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_Ac_CustomerSubDistributorList.Remarks" name="tbl_Ac_CustomerSubDistributorList.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_CustomerSubDistributorList.Remarks" ng-model="tbl_Ac_CustomerSubDistributorList.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerSubDistributorList.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerSubDistributorList.CreatedBy}}" ng-model="tbl_Ac_CustomerSubDistributorList.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerSubDistributorList.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CustomerSubDistributorList.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerSubDistributorList.ModifiedBy}}" ng-model="tbl_Ac_CustomerSubDistributorList.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerSubDistributorList.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CustomerSubDistributorList.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    ContactNo
+                </th>
+                <th>
+                    Contact Person
+                </th>
+                <th>
+                    Email
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.Name}}
+                </td>
+                <td>
+                    {{itm.Address}}
+                </td>
+                <td>
+                    {{itm.ContactNo}}
+                </td>
+                <td>
+                    {{itm.ContactPerson}}
+                </td>
+                <td>
+                    {{itm.Email}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CustomerSubDistributorListDetailCtlr")
+</div>

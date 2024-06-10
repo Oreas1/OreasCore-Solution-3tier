@@ -1,0 +1,214 @@
+﻿@{
+    ViewBag.Title = "BMRAdditional";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Production/BMR/bmradditionalindex.310524.js"></script>
+}
+<div ng-controller="BMRAdditionalMasterCtlr" class="container">
+
+    <div id="BMRAdditionalMasterCtlr">
+        <MyViewName>BMR Additional</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Pro_BMRAdditionalMaster.ID", "{{tbl_Pro_BMRAdditionalMaster.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                            <input id="tbl_Pro_BMRAdditionalMaster.DocNo" name="tbl_Pro_BMRAdditionalMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Pro_BMRAdditionalMaster.DocNo" ng-model="tbl_Pro_BMRAdditionalMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
+                            <input id="tbl_Pro_BMRAdditionalMaster.DocDate" name="tbl_Pro_BMRAdditionalMaster.DocDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_BMRAdditionalMaster.DocDate}}" ng-model="tbl_Pro_BMRAdditionalMaster.DocDate" ng-disabled="ng_readOnly" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_BMRAdditionalMaster.DocDate" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Batch No</span>
+                            <MyButtonModal fieldname="tbl_Pro_BMRAdditionalMaster.FK_tbl_Pro_BatchMaterialRequisitionMaster_IDName" ng-click="OpenBatchNoSearchModal(); myform['tbl_Pro_BMRAdditionMaster.FK_tbl_Pro_BatchMaterialRequisitionMaster_IDName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Pro_BMRAdditionalMaster.TotalDetail > 0" required></MyButtonModal>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_BMRAdditionalMaster.FK_tbl_Pro_BatchMaterialRequisitionMaster_IDName" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse</span>
+                            <MyButtonModal fieldname="tbl_Pro_BMRAdditionalMaster.FK_tbl_Inv_WareHouseMaster_IDName" ng-click="OpenWHMSearchModalGeneral('General', 0, 'tbl_Pro_BMRAdditionalMaster.FK_tbl_Inv_WareHouseMaster_IDName', WHMSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Pro_BMRAdditionalMaster.FK_tbl_Inv_WareHouseMaster_IDName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Pro_BMRAdditionalMaster.TotalDetail > 0" required></MyButtonModal>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_BMRAdditionalMaster.FK_tbl_Inv_WareHouseMaster_IDName" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup1">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Detail(s)</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BMRAdditionalMaster.TotalDetail}}" ng-model="tbl_Pro_BMRAdditionalMaster.TotalDetail" disabled />
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BMRAdditionalMaster.CreatedBy}}" ng-model="tbl_Pro_BMRAdditionalMaster.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BMRAdditionalMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_BMRAdditionalMaster.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BMRAdditionalMaster.ModifiedBy}}" ng-model="tbl_Pro_BMRAdditionalMaster.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BMRAdditionalMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_BMRAdditionalMaster.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Batch No
+                    </th>
+                    <th>
+                        WareHouse
+                    </th>
+                    <th>
+                        Total Items
+                    </th>
+                    <th>
+                        Dispensed
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Pro_BatchMaterialRequisitionMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.TotalItems}}
+                    </td>
+                    <td>
+                        {{itm.IsDispensedAll ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('BMRAdditionalDetailCtlr',itm,'BMRAdditionalMasterCtlr','BMRAdditionalDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "BMRAdditionalMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Change of Warehouse / BatchNo is not Allowed when detail has items</p>
+            <p>2. Change in Qty/Product is not Allowed when material dispensed</p>
+        </div>
+    </div>
+
+
+    <div ng-controller="BMRAdditionalDetailCtlr">
+        <div id="BMRAdditionalDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("BMRAdditionalDetail")
+        </div>
+    </div>
+
+
+    @*-----------------------------------Batch Search Modal-----------------------------*@
+    <!-- Modal -->
+    <div class="modal fade" id="BatchNoSearchModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Search then Select Batch Type </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form novalidate>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by</span>
+                                <select id="BatchNoFilterBy" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                        ng-options="o.v as o.n for o in [
+                                    { n: 'Batch No', v: 'BatchNo' }
+                                    ]"
+                                        ng-model="BatchNoFilterBy" ng-disabled="ng_readOnly">
+                                </select>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter Value</span>
+                                <input id="BatchNoFilterValue" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Type to search" ng-model="BatchNoFilterValue" />
+                            </div>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                                <input type="submit" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="BatchNoSearch();" />
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <div ng-repeat="item in BatchNoSearchResult" style="overflow:auto">
+                        <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="BatchNoSelectedAc(item);" data-bs-dismiss="modal">{{item.BatchNo}} [BSize:{{item.BatchSize}} , MfgDate: {{item.BatchMfgDate}}]</MyButton>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_ProductSearchModalGeneral")
+    @await Html.PartialAsync("_WHMSearchModalGeneral")
+</div>
+
+
+
+

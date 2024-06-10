@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Purchase Request";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Orders/purchaserequestbidsindex.0.2.js"></script>
+}
+<div ng-controller="PurchaseRequestBidsMasterCtlr" class="container">
+
+    <div id="PurchaseRequestBidsMasterCtlr">
+        <MyViewName>Purchase Request</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.CancelOfAdd"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_PurchaseRequestDetail.ID", "{{tbl_Inv_PurchaseRequestDetail.ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_Inv_PurchaseRequestDetail.DocNo" name="tbl_Inv_PurchaseRequestDetail.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Inv_PurchaseRequestDetail.DocNo" ng-model="tbl_Inv_PurchaseRequestDetail.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
+                        <input id="tbl_Inv_PurchaseRequestDetail.DocDate" name="tbl_Inv_PurchaseRequestDetail.DocDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PurchaseRequestDetail.DocDate}}" ng-model="tbl_Inv_PurchaseRequestDetail.DocDate" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Product</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName}}" ng-model="tbl_Inv_PurchaseRequestDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName" disabled />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Quantity In {{tbl_Inv_PurchaseRequestDetail.MeasurementUnit}}</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.Quantity}}" ng-model="tbl_Inv_PurchaseRequestDetail.Quantity" disabled />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Priority</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.FK_AspNetOreasPriority_IDName}}" ng-model="tbl_Inv_PurchaseRequestDetail.FK_AspNetOreasPriority_IDName" disabled />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.Remarks}}" ng-model="tbl_Inv_PurchaseRequestDetail.Remarks" disabled />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.CreatedBy}}" ng-model="tbl_Inv_PurchaseRequestDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseRequestDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.ModifiedBy}}" ng-model="tbl_Inv_PurchaseRequestDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseRequestDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseRequestDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        PO# / #Bids
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td style="background-color:{{itm.PONo === null ? '#F9B8A1' : 'none'}};">
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td>
+                        {{itm.Quantity}}-{{itm.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{itm.FK_AspNetOreasPriority_IDName}}
+                    </td>
+                    <td>
+                        {{itm.PONo}} / {{itm.NoOfBids}}
+                    </td>
+                    <td>
+                        <i class="fa fa-thumbs-up" style="color:green;" ng-hide="!itm.IsApproved"></i>
+                        <i class="fa fa-thumbs-down" style="color:indianred;" ng-hide="!itm.IsRejected"></i>
+                        <i class="fa fa-clock" style="color:steelblue;" ng-hide="!itm.IsPending"></i>
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('PurchaseRequestBidsDetailCtlr',itm,'PurchaseRequestBidsMasterCtlr','PurchaseRequestBidsDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Category">Bids <span class="fa fa-reorder"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PurchaseRequestBidsMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Change of Bids are not allowed when PO generated>
+        </div>
+    </div>
+
+
+    <div ng-controller="PurchaseRequestBidsDetailCtlr">
+        <div id="PurchaseRequestBidsDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("PurchaseRequestBidsDetail")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_COASearchModalGeneral")
+
+</div>
+
+
+
+

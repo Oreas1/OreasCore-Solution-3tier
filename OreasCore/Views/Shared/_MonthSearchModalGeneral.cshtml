@@ -1,0 +1,54 @@
+﻿
+@*-----------------------------------Employee Search Modal-----------------------------*@
+<div class="modal fade" id="MonthSearchModalGeneral" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Search then Select Month</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by Month</span>
+                            <select id="SearchMonth" ng-model="SearchMonth" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" autofocus>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by Year</span>
+                            <input id="SearchYear" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="2000" ng-model="SearchYear" />
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="button" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="General_MonthSearch();" />
+                        </div>
+
+                    </div>
+                </form>
+
+                <div ng-repeat="item in MonthSearchResult" style="overflow:auto">
+                    <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_MonthSelectedAc(item);" data-bs-dismiss="modal">{{item.MonthStart}} To {{item.MonthEnd}} [Status: {{item.IsClosed?'Closed':'Open'}}] [Code: {{item.ID}}] </MyButton> <b>[{{item.CalendarYear}}]</b> 
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

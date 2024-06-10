@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "InventoryLedger";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Proceedings/invledgerindex.0.1.js"></script>
+}
+<div ng-controller="InvLedgerIndexCtlr" class="container">
+
+    <div id="InvLedgerIndexCtlr">
+        <MyViewName>Inventory Ledger</MyViewName>
+        @*-----------------------------------this Load Data-----------------------------*@
+        <div>
+            <form name="myform1" role="form" ng-submit="pageNavigation('first'); myform1.$setPristine();" novalidate>
+                <MyFieldSet legendtext="Filter Parameters" style="background-color:lavender;">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date From</span>
+                            <input id="ParaDateFrom" name="ParaDateFrom" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{ParaDateFrom}}" ng-change="pageNavigationParameterChanged();" ng-model="ParaDateFrom" required />
+                            <MyValidationSpan formname="myform1" fieldname="ParaDateFrom" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date Till</span>
+                            <input id="ParaDateTill" name="ParaDateTill" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{ParaDateTill}}" ng-change="pageNavigationParameterChanged();" ng-model="ParaDateTill" required />
+                            <MyValidationSpan formname="myform1" fieldname="ParaDateTill" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product</span>
+                            <MyButtonModal fieldname="ParaProdName" ng-click="OpenProductSearchModalGeneral('General', 0, 'ParaProdName', ProductSearch_CtrlFunction_Ref_InvokeOnSelection, null, 0); myform1['ParaProdName'].$dirty=true;pageNavigationParameterChanged();" required></MyButtonModal>
+                            <MyValidationSpan formname="myform1" fieldname="ParaProdName" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse</span>
+                            <MyButtonModal fieldname="ParaWareHouseName" ng-click="OpenWHMSearchModalGeneral('ByUser', 0, 'ParaWareHouseName', WHMSearch_CtrlFunction_Ref_InvokeOnSelection);myform['ParaWareHouseName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                            <MyValidationSpan formname="myform" fieldname="ParaWareHouseName" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div class="col">
+                            <div class="text-end">
+                                <input type="submit" value="Fetch Result" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform1.$invalid || ng_DisabledBtnAll" />
+                            </div>
+                            <div class="text-start">
+                                <button type="button" class="btn btn-primary" ng-disabled="!ParaProdID>0" ng-click="OpenReport('Ledger');">Report Ledger</button>
+                                <button type="button" class="btn btn-primary" ng-disabled="!ParaWareHouseID>0" ng-click="OpenReport('Stock');">Report Stock</button>
+                            </div>
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </form>
+        </div>
+        <hr />
+        <div mycssclass="@MyCSSClassName.RowInForm" style="text-align: center; color: steelblue; font-weight: bolder;">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <span class="fa fa-folder-open" style="font-size:large;"></span> <span>Opening: <b>{{pageddata.otherdata.Opening === undefined ? 0 : pageddata.otherdata.Opening}} {{ParaProdUnit}}</b></span>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <span class="fa fa-folder-closed" style="font-size:large;"></span> <span>Closing: <b>{{pageddata.otherdata.Closing === undefined ? 0 : pageddata.otherdata.Closing}} {{ParaProdUnit}}</b></span>
+            </div>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        WareHouse
+                    </th>
+                    <th>
+                        Reference#
+                    </th>
+                    <th>
+                        Posting Date
+                    </th>
+                    <th>
+                        Quantity-In
+                    </th>
+                    <th>
+                        Quantity-Out
+                    </th>
+                    <th>
+                        Narration
+                    </th>
+                    <th>
+                        Ref
+                    </th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.ReferenceNo}}
+                    </td>
+                    <td>
+                        {{itm.PostingDate}}
+                    </td>
+                    <td>
+                        {{itm.QuantityIn}}-{{ParaProdUnit}}
+                    </td>
+                    <td>
+                        {{itm.QuantityOut}}-{{ParaProdUnit}}
+                    </td>
+                    <td>
+                        {{itm.Narration}}
+                    </td>
+                    <td>
+                        {{itm.Ref}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_ReportPanelGeneral")
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_ProductSearchModalGeneral")
+    @await Html.PartialAsync("_WHMSearchModalGeneral")
+</div>
+
+
+
+
+
+

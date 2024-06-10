@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "BMR Costing";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Accounts/Costing/bmrcostingindex.0.1.js"></script>
+}
+<div ng-controller="BMRCostingMasterCtlr" class="container">
+
+    <div id="BMRCostingMasterCtlr">
+        <MyViewName>BMR Costing</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+    <MyAntiforgeryToken></MyAntiforgeryToken>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        BatchNo
+                    </th>
+                    <th>
+                        Mfg
+                    </th>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Raw Batch Size
+                    </th>
+                    <th>
+                        Package BatchSize
+                    </th>
+                    <th>
+                        Total Prod
+                    </th>
+                    <th>
+                        Finished
+                    </th>
+                    <th>
+                        Cost
+                    </th>
+                    <th>
+                        [R / P] Dispensed
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.BatchNo}}
+                    </td>
+                    <td>
+                        {{itm.BatchMfgDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td style="background-color:lightsteelblue;">
+                        {{itm.BatchSize}}-{{itm.BatchSizeUnit}}
+                    </td>
+                    <td style="background-color:lightsteelblue;">
+                        {{itm.TotalPackageBatchSize}}-{{itm.BatchSizeUnit}}
+                    </td>
+                    <td>
+                        {{itm.TotalProd}}-{{itm.BatchSizeUnit}}
+                    </td>
+                    <td>
+                        {{itm.FinishedDate}}
+                    </td>
+                    <td>
+                        {{itm.Cost}}
+                    </td>
+                    <td>
+                        [{{itm.IsDispensedR ? 'Yes' : 'No'}} / {{itm.IsDispensedP ? 'Yes' : 'No'}}]
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('BMRCostingDetailPackagingMasterCtlr',itm,'BMRCostingMasterCtlr','BMRCostingDetailPackagingMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Coupling Detail">Packaging <span class="fa fa-object-group"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="12">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "BMRCostingMasterCtlr")
+    </div>
+
+
+
+    <div ng-controller="BMRCostingDetailPackagingMasterCtlr">
+        <div id="BMRCostingDetailPackagingMasterCtlr" style="display: none;">
+            @await Html.PartialAsync("BMRCostingDetailPackagingMaster")
+        </div>        
+    </div>
+
+
+</div>
+
+
+
+

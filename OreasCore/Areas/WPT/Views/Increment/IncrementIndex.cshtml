@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Increment";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Increment/Incrementindex.0.1.js"></script>
+}
+<div ng-controller="IncrementIndexCtlr" class="container">
+
+    <div id="IncrementIndexCtlr">
+        <MyViewName>Increment Calendar</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Calendar Year
+                    </th>
+                    <th>
+                        No Of Increment Doc
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td style="font-size:xx-large; font-weight:bold;">
+                        {{itm.CalendarStartYear}} <span style="font-size:small">{{itm.CalendarStartMonthSName}}</span> - {{itm.CalendarEndYear}} <span style="font-size:small">{{itm.CalendarEndMonthName}}</span>
+                    </td>
+                    <td>
+                        {{itm.NoOfIncrementDoc}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('IncrementMasterCtlr',itm,'IncrementIndexCtlr','IncrementMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Increment Detail of the year">Increment <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "IncrementIndexCtlr")
+    </div>
+
+    <div ng-controller="IncrementMasterCtlr">
+        <div id="IncrementMasterCtlr" style="display: none;">
+            @await Html.PartialAsync("IncrementMaster")
+        </div>
+        <div ng-controller="IncrementDetailEmployeeCtlr">
+            <div id="IncrementDetailEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("IncrementDetailEmployee")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+    @await Html.PartialAsync("_MonthSearchModalGeneral")
+
+</div>
+
+
+
+

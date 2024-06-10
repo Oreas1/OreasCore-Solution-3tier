@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Qc";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Qc/qcdashboard.0.1.js"></script>
+    <script src="~/lib/Chart.js/chart.umd.js"></script>
+}
+<div ng-controller="QcDashBoardCtlr" class="container">
+    <h1>Welcome to Qc Module</h1>
+
+    <MyFieldSet legendtext="Purchase Note Actions">
+        <div mycssclass="@MyCSSClassName.RowInForm">
+
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-repeat" style="color:violet;"></i> Sample Pendings</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>No of Pendings</span>
+                                <h5 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.PN_PendingSamples}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-gears" style="color:violet;"></i> Decision Pendings</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>No of Pendings</span>
+                                <h5 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.PN_PendingActionAfterSample}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </MyFieldSet>
+
+    <MyFieldSet legendtext="Batch Processing Actions">
+        <div mycssclass="@MyCSSClassName.RowInForm">
+
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-repeat" style="color:violet;"></i> BMR Pending Samples</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>No of Pendings</span>
+                                <h5 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.BMR_PendingAction}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-gears" style="color:violet;"></i> BPR Pending Samples</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>No of Pendings</span>
+                                <h5 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.BPR_PendingAction}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </MyFieldSet>
+
+</div>

@@ -1,0 +1,217 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'RewardDetailEmployeeCtlr','RewardIndexCtlr', this);">Reward</a>
+    <MyViewName child="true"> Employee</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Month
+                    </th>
+                    <th>
+                        Reward Type
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_WPT_CalendarYear_Months_IDName}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_WPT_RewardType_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.Remarks}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div class="form-check form-switch d-inline-block" ng-hide="!Privilege.CanAdd">
+        <input class="form-check-input m-1" type="checkbox" role="switch" style="font-size:larger;" id="bulkAdd" ng-model="AddBulk" ng-disabled="ng_entryPanelBtnText!='Add New'">
+        <label class="form-check-label" for="bulkAdd">Bulk Add</label>
+    </div>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_RewardDetail.ID", "{{tbl_WPT_RewardDetail.ID}}")
+            @Html.Hidden("tbl_WPT_RewardDetail.FK_tbl_WPT_RewardMaster_ID", "{{tbl_WPT_RewardDetail.FK_tbl_WPT_RewardMaster_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                        <MyButtonModal fieldname="tbl_WPT_RewardDetail.FK_tbl_WPT_Employee_IDName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'tbl_WPT_RewardDetail.FK_tbl_WPT_Employee_IDName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_WPT_RewardDetail.FK_tbl_WPT_Employee_IDName'].$dirty=true;" ng-disabled="ng_readOnly || AddBulk" ng-required="!AddBulk"></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardDetail.FK_tbl_WPT_Employee_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Reward Amount</span>
+                        <input id="tbl_WPT_RewardDetail.RewardAmount" name="tbl_WPT_RewardDetail.RewardAmount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_RewardDetail.RewardAmount" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardDetail.RewardAmount" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">With Salary</span>
+                        <select id="tbl_WPT_RewardDetail.WithSalary" name="tbl_WPT_RewardDetail.WithSalary" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_RewardDetail.WithSalary" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardDetail.WithSalary" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_WPT_RewardDetail.Remarks" name="tbl_WPT_RewardDetail.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_RewardDetail.Remarks" ng-model="tbl_WPT_RewardDetail.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardDetail.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm" ng-hide="!AddBulk">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Designation</span>
+                        <select id="FK_tbl_WPT_Designation_ID" name="FK_tbl_WPT_Designation_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Designation for x in DesignationList" data-ng-model="FK_tbl_WPT_Designation_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Designation</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="FK_tbl_WPT_Designation_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Department</span>
+                        <select id="FK_tbl_WPT_Department_ID" name="FK_tbl_WPT_Department_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.DepartmentName for x in DepartmentList" data-ng-model="FK_tbl_WPT_Department_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Department</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="FK_tbl_WPT_Department_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Joining Date Till</span>
+                        <input id="JoiningDateTill" name="JoiningDateTill" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{JoiningDateTill}}" ng-model="JoiningDateTill" ng-change="JoiningDateTillChange();" ng-disabled="ng_readOnly" ng-required="AddBulk" />
+                        <MyValidationSpan formname="myform" fieldname="JoiningDateTill" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardDetail.CreatedBy}}" ng-model="tbl_WPT_RewardDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_RewardDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardDetail.ModifiedBy}}" ng-model="tbl_WPT_RewardDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_RewardDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Employee Name
+                </th>
+                <th>
+                    Reward Amount
+                </th>
+                <th>
+                    With Salary
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_Employee_IDName}}
+                </td>
+                <td>
+                    <b>{{itm.RewardAmount}}</b>
+                </td>
+                <td>
+                    <b>{{itm.WithSalary?'Yes':'No'}}</b>
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "RewardDetailEmployeeCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+
+    @*-----------------------------------Excel Upload-----------------------------*@
+    <div>
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="file" id="UploadExcelFile" name="UploadExcelFile" onchange="angular.element(this).scope().LoadFileData(this.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="btn btn-block" />
+                </td>
+                <td>
+                    Excel Format
+                </td>
+                <td>
+
+                    <table border="1">
+                        <tr style="border:1px solid black;">
+                            <th style="border:1px solid black;">&nbsp;&nbsp; ATNo &nbsp;&nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp; Amount &nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp;&nbsp; WithSalary &nbsp;&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;">WF101</td>
+                            <td style="border:1px solid black;">2000</td>
+                            <td style="border:1px solid black;">No / Yes</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+
+    </div>
+
+
+</div>

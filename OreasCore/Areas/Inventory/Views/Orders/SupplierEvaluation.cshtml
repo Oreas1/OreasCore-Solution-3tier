@@ -1,0 +1,84 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'SupplierEvaluationCtlr','SupplierIndexCtlr', this);">Suppliers</a>
+    <MyViewName child="true"> Evaluation</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Supplier
+                    </th>
+                    <th>
+                        Address
+                    </th>
+                    <th>
+                        NTN / STR
+                    </th>
+                    <th>
+                        Contact Person & No
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.AccountName}}</b>
+                        <br />
+                        {{MasterObject.CompanyName}}
+                    </td>
+                    <td>
+                        {{MasterObject.Address}}
+                    </td>
+                    <td>
+                        {{MasterObject.NTN}} <br /> {{MasterObject.STR}}
+                    </td>
+                    <td>
+                        {{MasterObject.ContactPersonName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <div ng-disabled="!Privilege.CanAdd">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Approved</span>
+                        <select id="MasterObject.Supplier_Approved" name="MasterObject.Supplier_Approved" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="MasterObject.Supplier_Approved" ng-disabled="ng_readOnly" required>
+                            <option value="">Select</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="MasterObject.Supplier_Approved" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Evaluation Score</span>
+                        <input id="MasterObject.Supplier_EvaluationScore" name="MasterObject.Supplier_EvaluationScore" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="MasterObject.Supplier_EvaluationScore" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="MasterObject.Supplier_EvaluationScore" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Evaluated On</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{MasterObject.Supplier_EvaluatedOn}}" ng-model="MasterObject.Supplier_EvaluatedOn" disabled />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+                
+            </MyFieldSet>
+        </form>
+    </div>
+    
+        
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

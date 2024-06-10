@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "Fiscal year";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Accounts/SetUp/fiscalyearindex.0.1.js"></script>
+}
+<div ng-controller="FiscalYearIndexCtlr" class="container">
+    <div id="FiscalYearIndexCtlr">
+        <MyViewName>Fiscal year</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Ac_FiscalYear.ID", "{{tbl_Ac_FiscalYear.ID}}")
+
+                <MyFieldSet legendtext="Entry Form">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Period Start</span>
+                            <input id="tbl_Ac_FiscalYear.PeriodStart" name="tbl_Ac_FiscalYear.PeriodStart" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_FiscalYear.PeriodStart}}" ng-model="tbl_Ac_FiscalYear.PeriodStart" ng-disabled="ng_readOnly" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear.PeriodStart" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Period End</span>
+                            <input id="tbl_Ac_FiscalYear.PeriodEnd" name="tbl_Ac_FiscalYear.PeriodEnd" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_FiscalYear.PeriodEnd}}" ng-model="tbl_Ac_FiscalYear.PeriodEnd" ng-disabled="ng_readOnly" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear.PeriodEnd" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Status</span>
+                            <select id="tbl_Ac_FiscalYear.IsClosed" name="tbl_Ac_FiscalYear.IsClosed" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Open', v: false }, { n: 'Closed', v: true }]" data-ng-model="tbl_Ac_FiscalYear.IsClosed" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear.IsClosed" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear.CreatedBy}}" ng-model="tbl_Ac_FiscalYear.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_FiscalYear.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear.ModifiedBy}}" ng-model="tbl_Ac_FiscalYear.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_FiscalYear.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Period Start
+                    </th>
+                    <th>
+                        Period End
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.PeriodStart}}
+                    </td>
+                    <td>
+                        {{itm.PeriodEnd}}
+                    </td>
+                    <td>
+                        {{itm.IsClosed ? 'Closed' : 'Open'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button class="btn btn-danger btn-sm" ng-hide="!itm.IsClosed || !Privilege.CanEdit" ng-click="$parent.ClosingAction = 'Open'; GetRow(itm.ID,'Edit');">Open</button>
+                            <button class="btn btn-success btn-sm" ng-hide="itm.IsClosed || !Privilege.CanAdd" ng-click="$parent.ClosingAction = 'Close'; GetRow(itm.ID,'Add');">Close</button>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('FiscalYearCostingMasterCtlr',itm,'FiscalYearIndexCtlr','FiscalYearCostingMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Entries <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "FiscalYearIndexCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Closing Entries should in sequence as shown in name</p>
+            <p>2. Closing Entries could not be changed if it has detail record</p>
+            <p>3. Closing Entries duplication is not allowed</p>
+        </div>
+    </div>
+
+    <div ng-controller="FiscalYearCostingMasterCtlr">
+        <div id="FiscalYearCostingMasterCtlr" style="display: none;">
+            @await Html.PartialAsync("FiscalYearCostingMaster")
+        </div>
+        <div ng-controller="FiscalYearCostingDetailCtlr">
+            <div id="FiscalYearCostingDetailCtlr" style="display: none;">
+                @await Html.PartialAsync("FiscalYearCostingDetail")
+            </div>
+        </div>
+    </div>
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_COASearchModalGeneral")
+</div>
+
+
+
+

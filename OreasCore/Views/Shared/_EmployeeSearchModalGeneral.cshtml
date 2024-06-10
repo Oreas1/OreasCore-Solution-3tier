@@ -1,0 +1,49 @@
+﻿
+@*-----------------------------------Employee Search Modal-----------------------------*@
+<div class="modal fade" id="EmployeeSearchModalGeneral" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Search then Select Employee</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by</span>
+                            <select id="EmployeeFilterBy" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                    ng-options="o.v as o.n for o in [
+                                    { n: 'Name', v: 'EmployeeName' }, { n: 'ATNo', v: 'EmployeeATNo' },
+                                    { n: 'CNIC', v: 'EmployeeCNIC' }, { n: 'Cell Phone No', v: 'EmployeeCellPhoneNo' },
+                                    { n: 'Employment No', v: 'EmployeeNo' }
+                                    ]"
+                                    ng-model="EmployeeFilterBy" ng-disabled="ng_readOnly">
+                            </select>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter Value</span>
+                            <input id="EmployeeFilterValue" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Type to search" ng-model="EmployeeFilterValue" />
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div class="justify-content-between">
+                            <span class="btn btn-danger" ng-click="General_EmployeeSelectedAc({'ID': 0});" data-bs-dismiss="modal"><span class="fa fa-cancel"></span> De-Select</span>
+                            <input type="submit" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="General_EmployeeSearch();" />
+                        </div>
+                    </div>
+                </form>
+
+                <div ng-repeat="item in EmployeeSearchResult" style="overflow:auto">
+                    <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_EmployeeSelectedAc(item);" data-bs-dismiss="modal">{{item.EmployeeName}}</MyButton>
+                    <span style="font-size:x-small">[AT Enroll #:{{item.ATEnrollmentNo_Default}}] [EMP #:{{item.EmployeeNo}}] [{{item.Department}}] [{{item.Designation}}] [{{item.LevelName}}] [{{item.OtherInfo}}]</span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

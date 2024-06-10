@@ -1,0 +1,189 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunExemptCtlr','PayRunIndexCtlr', this);">PayRun</a>
+    <MyViewName child="true"> Exemption</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Month From
+                    </th>
+                    <th>
+                        Month To
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.CalendarMonthStartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.CalendarMonthEndDate}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_PayRunExemption.ID", "{{tbl_WPT_PayRunExemption.ID}}")
+            @Html.Hidden("tbl_WPT_PayRunExemption.FK_tbl_WPT_CalendarYear_Months_ID", "{{tbl_WPT_PayRunExemption.FK_tbl_WPT_CalendarYear_Months_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Apply To All</span>
+                        <select id="tbl_WPT_PayRunExemption.ApplyToAll" name="tbl_WPT_PayRunExemption.ApplyToAll" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_PayRunExemption.ApplyToAll" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunExemption.ApplyToAll" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Exemption %</span>
+                        <input id="tbl_WPT_PayRunExemption.ExemptionPercentage" name="tbl_WPT_PayRunExemption.ExemptionPercentage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunExemption.ExemptionPercentage" ng-disabled="ng_readOnly" min="1" max="100" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunExemption.ExemptionPercentage" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Deductible Type</span>
+                        <select id="tbl_WPT_PayRunExemption.FK_tbl_WPT_DeductibleType_ID" name="tbl_WPT_PayRunExemption.FK_tbl_WPT_DeductibleType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.DeductibleName for x in DeductibleTypeList" data-ng-model="tbl_WPT_PayRunExemption.FK_tbl_WPT_DeductibleType_ID" ng-disabled="ng_readOnly" ng-required="!tbl_WPT_PayRunExemption.FK_tbl_WPT_LoanType_ID>0">
+                            <option value="">Select Deductible Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunExemption.FK_tbl_WPT_DeductibleType_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Loan Type</span>
+                        <select id="tbl_WPT_PayRunExemption.FK_tbl_WPT_LoanType_ID" name="tbl_WPT_PayRunExemption.FK_tbl_WPT_LoanType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.LoanType for x in LoanTypeList" data-ng-model="tbl_WPT_PayRunExemption.FK_tbl_WPT_LoanType_ID" ng-disabled="ng_readOnly" ng-required="!tbl_WPT_PayRunExemption.FK_tbl_WPT_DeductibleType_ID>0">
+                            <option value="">Select Loan Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunExemption.FK_tbl_WPT_LoanType_ID" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_WPT_PayRunExemption.Remarks" name="tbl_WPT_PayRunExemption.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_PayRunExemption.Remarks" ng-model="tbl_WPT_PayRunExemption.Remarks" ng-disabled="ng_readOnly" minlength="3" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunExemption.Remarks" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunExemption.CreatedBy}}" ng-model="tbl_WPT_PayRunExemption.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunExemption.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PayRunExemption.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunExemption.ModifiedBy}}" ng-model="tbl_WPT_PayRunExemption.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunExemption.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PayRunExemption.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Apply TO All
+                </th>
+                <th>
+                    Exemption %
+                </th>
+                <th>
+                    Deductible Type
+                </th>
+                <th>
+                    Loan Type
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th>
+                    No Of Emp
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.ApplyToAll?'Yes':'No'}}
+                </td>
+                <td>
+                    {{itm.ExemptionPercentage}}%
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_DeductibleType_IDName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_LoanType_IDName}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    {{itm.NoOfEmp}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('PayRunExemptEmployeeCtlr',itm,'PayRunExemptCtlr','PayRunExemptEmployeeCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Employee">Employee <span class="fa fa-user"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "PayRunExemptCtlr")
+
+</div>

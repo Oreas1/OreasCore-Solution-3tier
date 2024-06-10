@@ -1,0 +1,221 @@
+﻿@{
+    ViewBag.Title = "Incentive Policy";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Incentive/incentivepolicyindex.0.1.js"></script>
+}
+<div ng-controller="IncentivePolicyIndexCtlr" class="container">
+
+    <div id="IncentivePolicyIndexCtlr">
+        <MyViewName>Incentive Policy</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_WPT_IncentivePolicy.ID", "{{tbl_WPT_IncentivePolicy.ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_WPT_IncentivePolicy.DocNo" name="tbl_WPT_IncentivePolicy.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_WPT_IncentivePolicy.DocNo" ng-model="tbl_WPT_IncentivePolicy.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
+                        <input id="tbl_WPT_IncentivePolicy.DocDate" name="tbl_WPT_IncentivePolicy.DocDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_IncentivePolicy.DocDate}}" ng-model="tbl_WPT_IncentivePolicy.DocDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.DocDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Incentive Name</span>
+                        <input id="tbl_WPT_IncentivePolicy.IncentiveName" name="tbl_WPT_IncentivePolicy.IncentiveName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. Night Voucher" value="tbl_WPT_IncentivePolicy.IncentiveName" ng-model="tbl_WPT_IncentivePolicy.IncentiveName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.IncentiveName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Type</span>
+                        <select id="tbl_WPT_IncentivePolicy.FK_tbl_WPT_IncentiveType_ID" name="tbl_WPT_IncentivePolicy.FK_tbl_WPT_IncentiveType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.IncentiveType for x in IncentiveTypeList" data-ng-model="tbl_WPT_IncentivePolicy.FK_tbl_WPT_IncentiveType_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Please Select Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.FK_tbl_WPT_IncentiveType_ID" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Amount</span>
+                        <input id="tbl_WPT_IncentivePolicy.Amount" name="tbl_WPT_IncentivePolicy.Amount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncentivePolicy.Amount" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.Amount" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Calculation Method</span>
+                        <select id="tbl_WPT_IncentivePolicy.FK_tbl_WPT_CalculationMethod_ID" name="tbl_WPT_IncentivePolicy.FK_tbl_WPT_CalculationMethod_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.MethodName for x in CalculationMethodList" data-ng-model="tbl_WPT_IncentivePolicy.FK_tbl_WPT_CalculationMethod_ID" ng-disabled="ng_readOnly">
+                            <option value="">Fixed Amount</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.FK_tbl_WPT_CalculationMethod_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Factor</span>
+                        <input id="tbl_WPT_IncentivePolicy.Factor" name="tbl_WPT_IncentivePolicy.Factor" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncentivePolicy.Factor" ng-disabled="ng_readOnly" min="1" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.Factor" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm" ng-hide="tbl_WPT_IncentivePolicy.FK_tbl_WPT_IncentiveType_ID != 1">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">OT From</span>
+                        <input id="tbl_WPT_IncentivePolicy.OT_MinutesFrom_PerDay" name="tbl_WPT_IncentivePolicy.OT_MinutesFrom_PerDay" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncentivePolicy.OT_MinutesFrom_PerDay" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.OT_MinutesFrom_PerDay" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">OT Till</span>
+                        <input id="tbl_WPT_IncentivePolicy.OT_MinutesTill_PerDay" name="tbl_WPT_IncentivePolicy.OT_MinutesTill_PerDay" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncentivePolicy.OT_MinutesTill_PerDay" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.OT_MinutesTill_PerDay" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">OT ASM From</span>
+                        <input id="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesFrom_PerDay" name="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesFrom_PerDay" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesFrom_PerDay" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesFrom_PerDay" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">OT ASM Till</span>
+                        <input id="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesTill_PerDay" name="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesTill_PerDay" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesTill_PerDay" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncentivePolicy.OT_AfterShiftMinutesTill_PerDay" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncentivePolicy.CreatedBy}}" ng-model="tbl_WPT_IncentivePolicy.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncentivePolicy.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_IncentivePolicy.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncentivePolicy.ModifiedBy}}" ng-model="tbl_WPT_IncentivePolicy.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncentivePolicy.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_IncentivePolicy.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Incentive Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Amount
+                    </th>
+                    <th>
+                        Method * Factor
+                    </th>
+                    <th>
+                        # Designation
+                    </th>
+                    <th>
+                        # Employees
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.IncentiveName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_WPT_IncentiveType_IDName}}
+                    </td>
+                    <td>
+                        {{itm.Amount}}
+                    </td>
+                    <td>
+                        <span ng-hide="!itm.FK_tbl_WPT_CalculationMethod_ID>0">{{itm.FK_tbl_WPT_CalculationMethod_IDName}} - [{{itm.Factor}}]</span>
+                    </td>
+                    <td>
+                        {{itm.NoOfDesignations}}
+                    </td>
+                    <td>
+                        {{itm.NoOfEmployees}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('IncentivePolicyDesignationCtlr',itm,'IncentivePolicyIndexCtlr','IncentivePolicyDesignationCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Designation<span class="fa fa-id-badge"></span></button>|
+                            <button ng-click="DivHideShow('IncentivePolicyEmployeeCtlr',itm,'IncentivePolicyIndexCtlr','IncentivePolicyEmployeeCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Employee">Employee<span class="fa fa-user"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "IncentivePolicyIndexCtlr")
+    </div>
+
+    <div ng-controller="IncentivePolicyDesignationCtlr">
+        <div id="IncentivePolicyDesignationCtlr" style="display: none;">
+            @await Html.PartialAsync("IncentivePolicyDesignation")
+        </div>
+    </div>
+    <div ng-controller="IncentivePolicyEmployeeCtlr">
+        <div id="IncentivePolicyEmployeeCtlr" style="display: none;">
+            @await Html.PartialAsync("IncentivePolicyEmployee")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

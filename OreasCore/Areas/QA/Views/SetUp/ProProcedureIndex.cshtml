@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "QA ProProcedure";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-QA/SetUp/proprocedureqaindex.0.1.js"></script>
+}
+
+<div ng-controller="ProProcedureIndexCtlr" class="container">
+    <div id="ProProcedureIndexCtlr">
+        <MyViewName>Production Procedure For {{caller}}</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Pro_Procedure.ID", "{{tbl_Pro_Procedure.ID}}")
+
+                <MyFieldSet legendtext="Entry Form">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Procedure Name</span>
+                            <input type="text" id="tbl_Pro_Procedure.ProcedureName" name="tbl_Pro_Procedure.ProcedureName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Pro_Procedure.ProcedureName" ng-model="tbl_Pro_Procedure.ProcedureName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_Procedure.ProcedureName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Sample Product For QC</span>
+                            <MyButtonModal fieldname="tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName" ng-click="OpenProductSearchModalGeneral('ProProcess', 0, 'tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName', ProductSearch_CtrlFunction_Ref_InvokeOnSelection, null, 0); myform['tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName'].$dirty=true;" ng-disabled="ng_readOnly"></MyButtonModal>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_Procedure.CreatedBy}}" ng-model="tbl_Pro_Procedure.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_Procedure.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_Procedure.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_Procedure.ModifiedBy}}" ng-model="tbl_Pro_Procedure.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_Procedure.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_Procedure.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        ProcedureName
+                    </th>
+                    <th>
+                        For Composition
+                    </th>
+                    <th>
+                        QC Sample Product For Testing
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.ProcedureName}}
+                    </td>
+                    <td>
+                        {{itm.ForRaw1_Packaging0 ? 'BMR' : 'BPR'}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ProProcedureIndexCtlr")
+    </div>
+    @await Html.PartialAsync("_ProductSearchModalGeneral")
+</div>
+
+
+
+

@@ -1,0 +1,213 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeATCtlr','PayRunIndexCtlr', this.$parent);">PayRun</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeATCtlr','PayRunMasterCtlr', this);">Period</a>
+    <MyViewName child="true">
+        <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeATCtlr','PayRunMasterDetailEmployeeCtlr', this);"> Employees</a>
+        <MyViewName child="true"> Attendance</MyViewName>
+    </MyViewName>
+    
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        PayRun From
+                    </th>
+                    <th>
+                        PayRun To
+                    </th>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        Working Days
+                    </th>
+                    <th>
+                        OverTime
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.StartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.EndDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_WPT_Employee_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.WD}}
+                    </td>
+                    <td>
+                        {{MasterObject.OT}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Day
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    CheckIn
+                </th>
+                <th>
+                    CheckOut
+                </th>
+                <th>
+                    P
+                </th>
+                <th>
+                    A
+                </th>
+                <th>
+                    AHD
+                </th>
+                <th>
+                    AP
+                </th>
+                <th>
+                    HD
+                </th>
+                <th>
+                    LI
+                </th>
+                <th>
+                    EO
+                </th>
+                <th>
+                    HS
+                </th>
+                <th>
+                    HSP
+                </th>
+                <th>
+                    OT
+                </th>
+                <th>
+                    Leave
+                </th>
+                <th>
+                    SM
+                </th>
+                <th>
+                    BSM
+                </th>
+                <th>
+                    ASM
+                </th>
+                <th>
+                    Shift
+                </th>
+                <th>
+                    Shift WM
+                </th>
+                <td>
+                    WD/LV
+                </td>
+                <th>
+                    Remarks
+                </th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.DayName}}
+                </td>
+                <td>
+                    {{itm.InstanceDate}}
+                </td>
+                <td>
+                    {{itm.CheckIn}}
+                </td>
+                <td>
+                    {{itm.CheckOut}}
+                </td>
+                <td style="color:green;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.Present"></span>
+                </td>
+                <td style="color:red;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.Absent"></span>
+                </td>
+                <td style="color:red;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.AbsentInHoliday"></span>
+                </td>
+                <td style="color:red;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.AbsentPenalty"></span>
+                </td>
+                <td style="color:blue;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.Holiday"></span>
+                </td>
+                <td style="color:hotpink;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.LateIn"></span>
+                </td>
+                <td style="color:hotpink;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.EarlyOut"></span>
+                </td>
+                <td style="color:hotpink;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.HalfShit"></span>
+                </td>
+                <td style="color:hotpink;">
+                    <span class="fa fa-check-square" style="font-size:large;" ng-hide="!itm.HalfShitPenalty"></span>
+                </td>
+                <td>
+                    {{itm.OT}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_LeaveRequisition_IDName}}
+                </td>
+                <td>
+                    {{itm.ShiftMinutes}}
+                </td>
+                <td>
+                    {{itm.BeforeShiftMinutes}}
+                </td>
+                <td>
+                    {{itm.AfterShiftMinutes}}
+                </td>
+                <td>
+                    {{itm.ShiftPrefix}}
+                </td>
+                <td>
+                    {{itm.ShiftWorkingMinutes}}
+                </td>
+                <td>
+                    {{itm.WDValue}}/{{itm.LeaveValue}}
+                </td>
+                <td style="font-size:xx-small;">
+                    {{itm.Remarks}}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="22">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+
+
+</div>

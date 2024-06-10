@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Customer Sub Distributor";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Orders/customersubdistributorlistindex.060524.js"></script>
+}
+<div ng-controller="CustomerSubDistributorListCtlr" class="container">
+
+    <div id="CustomerSubDistributorListCtlr">
+        <MyViewName>Customer Sub Distributor</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Account Name
+                    </th>
+                    <th>
+                        Account Code
+                    </th>
+                    <td>
+                        Total Sub Distributors
+                    </td>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.AccountName}}
+                    </td>
+                    <td>
+                        {{itm.AccountCode}}
+                    </td>
+                    <td>
+                        {{itm.TotalSubDistributors}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('CustomerSubDistributorListDetailCtlr',itm,'CustomerSubDistributorListCtlr','CustomerSubDistributorListDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "CustomerSubDistributorListCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Here you will only find those accounts which have account type customer in COA</p>
+        </div>
+    </div>
+
+
+    <div ng-controller="CustomerSubDistributorListDetailCtlr">
+        <div id="CustomerSubDistributorListDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("CustomerSubDistributorListDetail")
+        </div>
+    </div>
+
+</div>
+
+
+
+

@@ -1,0 +1,166 @@
+﻿<MyViewName>    
+    <a href="" ng-click="DivHideShow(null,null,'CompositionCostingDetailRawCtlr','CompositionCostingMasterCtlr', this);">Composition Costing</a>
+    <MyViewName child="true">Raw Items</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Semi Finished
+                    </th>
+                    <th>
+                        Batch Size
+                    </th>
+                    <th>
+                        Primary Finished
+                    </th>
+                    <th>
+                        Secondar Finished
+                    </th>
+                    <th>
+                        Packaging Name
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.SemiProduct}} {{MasterObject.SemiProductUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.BatchSize}} {{MasterObject.SemiProductUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.PrimaryProduct}}
+                    </td>
+                    <td>
+                        {{MasterObject.SecondaryProduct}}
+                    </td>
+                    <td>
+                        {{MasterObject.PackagingName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.CancelOfAdd"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Pro_CompositionDetail_RawDetail_Items.ID", "{{tbl_Pro_CompositionDetail_RawDetail_Items.ID}}")
+            @Html.Hidden("tbl_Pro_CompositionDetail_RawDetail_Items.FK_tbl_Pro_CompositionDetail_RawMaster_ID", "{{tbl_Pro_CompositionDetail_RawDetail_Items.FK_tbl_Pro_CompositionDetail_RawMaster_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup5">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Raw Ingredient Product</span>
+                        <input id="tbl_Pro_CompositionDetail_RawDetail_Items.FK_tbl_Inv_ProductRegistrationDetail_IDName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.FK_tbl_Inv_ProductRegistrationDetail_IDName" disabled />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Quantity In {{tbl_Pro_CompositionDetail_RawDetail_Items.MeasurementUnit}}</span>
+                        <input id="tbl_Pro_CompositionDetail_RawDetail_Items.Quantity" name="tbl_Pro_CompositionDetail_RawDetail_Items.Quantity" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.Quantity" disabled />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Custom Rate</span>
+                        <input id="tbl_Pro_CompositionDetail_RawDetail_Items.CustomeRate" name="tbl_Pro_CompositionDetail_RawDetail_Items.CustomeRate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.CustomeRate" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionDetail_RawDetail_Items.CustomeRate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">% On Rate {{tbl_Pro_CompositionDetail_RawDetail_Items.MeasurementUnit}}</span>
+                        <input id="tbl_Pro_CompositionDetail_RawDetail_Items.PercentageOnRate" name="tbl_Pro_CompositionDetail_RawDetail_Items.PercentageOnRate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.PercentageOnRate" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionDetail_RawDetail_Items.PercentageOnRate" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawDetail_Items.CreatedBy}}" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawDetail_Items.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawDetail_Items.ModifiedBy}}" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_RawDetail_Items.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionDetail_RawDetail_Items.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Ingreditent
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Custom Rate
+                </th>
+                <th>
+                    % On Rate
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{itm.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.CustomeRate}}
+                </td>
+                <td>
+                    {{itm.PercentageOnRate}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CompositionCostingDetailRawCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

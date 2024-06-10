@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "BMR BPR Process";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-QA/bmrbprprocessqaindex.0.1.js"></script>
+}
+<div ng-controller="BMRBPRMasterCtlr" class="container">
+
+    <div id="BMRBPRMasterCtlr">
+        <MyViewName>Batch Record Process</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        BatchNo
+                    </th>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Batch Size [Raw/Packaging]
+                    </th>
+                    <th>
+                        Total Prod
+                    </th>
+                    <th>
+                        Clearance Pending BMR
+                    </th>
+                    <th>
+                        Clearance Pending BPR
+                    </th>
+                    <th>
+                        [R / P] Dispensed
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.BatchNo}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td>
+                        {{itm.BatchSize}} / {{itm.TotalPackageBatchSize}}
+                        <br />
+                        {{itm.BatchSizeUnit}}
+                    </td>
+                    <td>
+                        {{itm.TotalProd}}
+                        <br />
+                        {{itm.BatchSizeUnit}}
+                    </td>
+                    <td style="text-align:center;">
+                        <span style="padding:5px;" ng-style="{'background-color': itm.IsQAClearanceBMRPending ? 'lightpink' : 'lightgreen'}">
+                            {{itm.IsQAClearanceBMRPending ? 'Yes' : 'No'}}
+                        </span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span style="padding:5px;" ng-style="{'background-color': itm.IsQAClearanceBPRPending ? 'lightpink' : 'lightgreen'}">
+                            {{itm.IsQAClearanceBPRPending ? 'Yes' : 'No'}}
+                        </span>
+                    </td>
+                    <td>
+                        [{{itm.IsDispensedR ? 'Yes' : 'No'}} / {{itm.IsDispensedP ? 'Yes' : 'No'}}]
+                    </td>
+                    <td ng-style="{'background-color': itm.IsCompleted == null ? 'lightyellow' : itm.IsCompleted ? 'lightgreen' : 'lightpink'}">
+                        {{ itm.IsCompleted == null ? 'Partial Finished' : itm.IsCompleted ? 'Finished' : 'In-Process' }}
+                        <br />
+                        {{itm.FinishedDate}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="
+                                    DivHideShow('BMRBPRProcessCtlr',itm,'BMRBPRMasterCtlr','BMRBPRProcessCtlr', null);
+                                    DivHideShow('BMRProcessCtlr',itm,null,'BMRProcessCtlr', null);
+                                    DivHideShow('BPRProcessCtlr',itm,null,'BPRProcessCtlr', null);
+                                    "
+                                    mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Process(s)">
+                                Process(s) <span class="fa fa-gears"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "BMRBPRMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Cannot Change Clearance when Procedure is closed</p>
+        </div>
+    </div>
+
+    <div ng-controller="BMRBPRProcessCtlr">
+        <div id="BMRBPRProcessCtlr" style="display: none;">
+            @await Html.PartialAsync("BMRBPRProcess")
+        </div>
+    </div>
+
+</div>
+
+
+
+

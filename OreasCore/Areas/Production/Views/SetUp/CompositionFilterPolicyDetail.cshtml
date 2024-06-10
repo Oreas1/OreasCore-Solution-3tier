@@ -1,0 +1,145 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'CompositionFilterPolicyDetailCtlr','CompositionFilterPolicyMasterCtlr', this);">Composition Filter Policy</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Product Type For Coupling
+                    </th>
+                    <th>
+                        WareHouse Requested By
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductType_ID_For_CouplingName}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_WareHouseMaster_ID_ByName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Pro_CompositionFilterPolicyDetail.ID", "{{tbl_Pro_CompositionFilterPolicyDetail.ID}}")
+            @Html.Hidden("tbl_Pro_CompositionFilterPolicyDetail.FK_tbl_Pro_CompositionFilterPolicyMaster_ID", "{{tbl_Pro_CompositionFilterPolicyDetail.FK_tbl_Pro_CompositionFilterPolicyMaster_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter Name</span>
+                        <input type="text" id="tbl_Pro_CompositionFilterPolicyDetail.FilterName" name="tbl_Pro_CompositionFilterPolicyDetail.FilterName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="..." value="tbl_Pro_CompositionFilterPolicyDetail.FilterName" ng-model="tbl_Pro_CompositionFilterPolicyDetail.FilterName" ng-disabled="ng_readOnly" maxlength="50" style="text-transform:uppercase;" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionFilterPolicyDetail.FilterName" maxlength="50" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">For Composition</span>
+                        <select id="tbl_Pro_CompositionFilterPolicyDetail.ForRaw1_Packaging0" name="tbl_Pro_CompositionFilterPolicyDetail.ForRaw1_Packaging0" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'BMR', v: true }, { n: 'BPR', v: false }]" data-ng-model="tbl_Pro_CompositionFilterPolicyDetail.ForRaw1_Packaging0" ng-disabled="ng_readOnly" required>
+                            <option value="">Select For Composition</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionFilterPolicyDetail.ForRaw1_Packaging0" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse</span>
+                        <MyButtonModal fieldname="tbl_Pro_CompositionFilterPolicyDetail.FK_tbl_Inv_WareHouseMaster_IDName" ng-click="OpenWHMSearchModalGeneral('General', 0, 'tbl_Pro_CompositionFilterPolicyDetail.FK_tbl_Inv_WareHouseMaster_IDName', WHMSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Pro_CompositionFilterPolicyDetail.FK_tbl_Inv_WareHouseMaster_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionFilterPolicyDetail.FK_tbl_Inv_WareHouseMaster_IDName" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionFilterPolicyDetail.CreatedBy}}" ng-model="tbl_Pro_CompositionFilterPolicyDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionFilterPolicyDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionFilterPolicyDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionFilterPolicyDetail.ModifiedBy}}" ng-model="tbl_Pro_CompositionFilterPolicyDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionFilterPolicyDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionFilterPolicyDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Filter Name
+                </th>
+                <th>
+                    For Composition
+                </th>
+                <th>
+                    WareHouse
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FilterName}}
+                </td>
+                <td>
+                    {{itm.ForRaw1_Packaging0 ? 'Raw' : 'Packaging'}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CompositionFilterPolicyDetailCtlr")
+
+</div>

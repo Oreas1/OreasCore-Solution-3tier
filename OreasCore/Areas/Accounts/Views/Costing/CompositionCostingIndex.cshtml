@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Composition Costing";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Accounts/Costing/compositioncostingindex.0.1.js"></script>
+}
+<div ng-controller="CompositionCostingMasterCtlr" class="container">
+
+    <div id="CompositionCostingMasterCtlr">
+        <MyViewName>Composition Costing</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Semi Finished
+                    </th>
+                    <th>
+                        Batch Size
+                    </th>
+                    <th>
+                        Primary Finished
+                    </th>
+                    <th>
+                        Secondar Finished
+                    </th>
+                    <th>
+                        Packaging Name
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.SemiProduct}} {{itm.SemiProductUnit}}
+                    </td>
+                    <td>
+                        {{itm.BatchSize}} {{itm.SemiProductUnit}}
+                    </td>
+                    <td>
+                        {{itm.PrimaryProduct}}
+                    </td>
+                    <td>
+                        {{itm.SecondaryProduct}}
+                    </td>
+                    <td>
+                        {{itm.PackagingName}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('CompositionCostingDetailRawCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingDetailRawCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Raw Detail">Raw <span class="fa fa-leaf"></span></button>|
+                            <button ng-click="DivHideShow('CompositionCostingDetailPackagingCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingDetailPackagingCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Packaging Detail"> Packaging <span class="fa fa-cubes"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "CompositionCostingMasterCtlr")
+    </div>
+
+    <div ng-controller="CompositionCostingDetailRawCtlr">
+        <div id="CompositionCostingDetailRawCtlr" style="display: none;">
+            @await Html.PartialAsync("CompositionCostingDetailRaw")
+        </div>
+    </div>
+    <div ng-controller="CompositionCostingDetailPackagingCtlr">
+        <div id="CompositionCostingDetailPackagingCtlr" style="display: none;">
+            @await Html.PartialAsync("CompositionCostingDetailPackaging")
+        </div>        
+    </div>
+
+</div>
+
+
+
+

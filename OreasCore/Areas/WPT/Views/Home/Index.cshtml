@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "HR & Payroll";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-WPT/wptdashboard.0.1.js"></script>
+    <script src="~/lib/Chart.js/chart.umd.js"></script>
+
+}
+<div ng-controller="WPTDashBoardCtlr" class="container">
+    <h1>Welcome to HR & Payroll Module</h1>
+
+    <div mycssclass="@MyCSSClassName.RowInForm">
+
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+            <MyFieldSet legendtext="Employees">
+                <canvas id="Employees" style="width: 100%;"></canvas>
+            </MyFieldSet>
+        </div>
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+            <MyFieldSet legendtext="Wage">
+                <canvas id="Wage" style="width: 100%;"></canvas>
+            </MyFieldSet>
+        </div>
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+            <MyFieldSet legendtext="Attendance">
+                <canvas id="Attendance" style="width: 100%;"></canvas>
+            </MyFieldSet>
+        </div>
+    </div>
+
+    <MyFieldSet>
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                <MyFieldSet legendtext="OT">
+                    <canvas id="OT" style="width: 100%;"></canvas>
+                </MyFieldSet>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                <MyFieldSet legendtext="Paid Days">
+                    <canvas id="WD" style="width: 100%;"></canvas>
+                </MyFieldSet>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-repeat" style="color:violet;"></i> Loan</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Balance</span>
+                                <h6 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.Single.LoanBalance}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-house" style="color:violet;"></i> Leave Approvals</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Pending</span>
+                                <h6 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.Single.PendingLeaves}}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </MyFieldSet>
+
+    
+
+
+
+
+
+
+
+
+</div>

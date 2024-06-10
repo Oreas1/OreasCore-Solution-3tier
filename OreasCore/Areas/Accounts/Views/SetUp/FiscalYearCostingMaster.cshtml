@@ -1,0 +1,151 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'FiscalYearCostingMasterCtlr','FiscalYearIndexCtlr', this);">Fiscal Year</a>
+    <MyViewName child="true"> Closing Master</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Period Start
+                    </th>
+                    <th>
+                        Period End
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.PeriodStart}}
+                    </td>
+                    <td>
+                        {{MasterObject.PeriodEnd}}
+                    </td>
+                    <td style="background-color:lightsteelblue;">
+                        <b>{{MasterObject.IsClosed ? 'Closed' : 'Open'}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Ac_FiscalYear_ClosingMaster.ID", "{{tbl_Ac_FiscalYear_ClosingMaster.ID}}")
+            @Html.Hidden("tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ID", "{{tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Closing Entry Type</span>
+                        <select id="tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID" name="tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.EntryName for x in ClosingTypeList" data-ng-model="tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID" ng-disabled="ng_readOnly || ng_entryPanelSubmitBtnText === 'Save Update'" required>
+                            <option value="">Select Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Permanent</span>
+                        <MyButtonModal fieldname="tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_ChartOfAccounts_IDName" ng-click="OpenCOASearchModalGeneral('ClosingMaster', tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID, 'tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_ChartOfAccounts_IDName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_ChartOfAccounts_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear_ClosingMaster.FK_tbl_Ac_ChartOfAccounts_IDName" required="true"></MyValidationSpan>
+                    </div>
+                </div>               
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear_ClosingMaster.CreatedBy}}" ng-model="tbl_Ac_FiscalYear_ClosingMaster.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear_ClosingMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_FiscalYear_ClosingMaster.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear_ClosingMaster.ModifiedBy}}" ng-model="tbl_Ac_FiscalYear_ClosingMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_FiscalYear_ClosingMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_FiscalYear_ClosingMaster.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Closing Entry Type
+                </th>
+                <th>
+                    Permanent Account
+                </th>
+                <th>
+                    Total Debit
+                </th>
+                <th>
+                    Total Credit
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Ac_FiscalYear_ClosingEntryType_IDName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Ac_ChartOfAccounts_IDName}}
+                </td>
+                <td>
+                    {{itm.TotalDebit}}
+                </td>
+                <td>
+                    {{itm.TotalCredit}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('FiscalYearCostingDetailCtlr',itm,'FiscalYearCostingMasterCtlr','FiscalYearCostingDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Temporary Closed Accounts">Entries <span class="fa fa-info-circle"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "FiscalYearCostingMasterCtlr")
+</div>

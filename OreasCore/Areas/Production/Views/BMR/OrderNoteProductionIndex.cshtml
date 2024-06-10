@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Order Note Production";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Production/BMR/ordernoteproductionindex.0.1.js"></script>
+}
+<div ng-controller="OrderNoteProductionCtlr" class="container">
+
+    <div id="OrderNoteProductionCtlr">
+        <MyViewName>Order Note Production</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Order #
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Primary Product
+                    </th>
+                    <th>
+                        Order Qty
+                    </th>
+                    <th>
+                        Prod Qty
+                    </th>
+                    <th>
+                        Customer Name
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        Order Date: {{itm.DocDate}}
+                        <br />
+                        Target Date: {{itm.TargetDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_AspNetOreasPriority_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                        <br />
+                        {{itm.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_IDName}}
+                    </td>
+                    <td>
+                        <table width="100%">
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small;">Order Qty</td>
+                                <td width="65%" style="font-size: xx-small; text-align: right;">{{itm.MfgQtyLimit}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small;">Sold Qty</td>
+                                <td width="65%" style="font-size: xx-small; text-align:right;">{{itm.SoldQty}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table width="100%">
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small;">Req Qty</td>
+                                <td width="65%" style="font-size: xx-small; text-align: right;">{{itm.RequestedQtyByProduction}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small;">Mfg Qty</td>
+                                <td width="65%" style="font-size: xx-small; text-align: right;">{{itm.ManufacturingQty}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        {{itm.CustomerName}}
+                        <br />
+                        MRP: {{itm.CustomMRP}}
+                    </td>
+                    <td>
+                        {{itm.ClosedTrue_OpenFalse? 'Closed' : 'Open'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('OrderNoteProductionOrderCtlr',itm,'OrderNoteProductionCtlr','OrderNoteProductionOrderCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Production Order For QA">Production Order <span class="fa fa-box-open"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "OrderNoteProductionCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Cannot generate BMR when Order Closed</p>
+        </div>
+    </div>
+
+    <div ng-controller="OrderNoteProductionOrderCtlr">
+        <div id="OrderNoteProductionOrderCtlr" style="display: none;">
+            @await Html.PartialAsync("OrderNoteProductionOrder")
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,180 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'CustomerRateListDetailCtlr','CustomerRateListCtlr', this);">Customer Approved Rate List</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Account Name
+                    </th>
+                    <th>
+                        Account Code
+                    </th>
+                    <th>
+                        Parent Name
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.AccountName}}
+                    </td>
+                    <td>
+                        {{MasterObject.AccountCode}}
+                    </td>
+                    <td>
+                        {{MasterObject.ParentAccountName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Ac_CustomerApprovedRateList.ID", "{{tbl_Ac_CustomerApprovedRateList.ID}}")
+            @Html.Hidden("tbl_Ac_CustomerApprovedRateList.FK_tbl_Ac_ChartOfAccounts_ID", "{{tbl_Ac_CustomerApprovedRateList.FK_tbl_Ac_ChartOfAccounts_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product In {{tbl_Ac_CustomerApprovedRateList.MeasurementUnit}}</span>
+                        <MyButtonModal fieldname="tbl_Ac_CustomerApprovedRateList.FK_tbl_Inv_ProductRegistrationDetail_IDName" ng-click="OpenProductSearchModalGeneral('CustomerRateList', tbl_Ac_CustomerApprovedRateList.FK_tbl_Inv_PurchaseNoteMaster_ID, 'tbl_Ac_CustomerApprovedRateList.FK_tbl_Inv_ProductRegistrationDetail_IDName', ProductSearch_CtrlFunction_Ref_InvokeOnSelection, null, tbl_Ac_CustomerApprovedRateList.ID); myform['tbl_Ac_CustomerApprovedRateList.FK_tbl_Inv_ProductRegistrationDetail_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerApprovedRateList.FK_tbl_Inv_ProductRegistrationDetail_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Rate</span>
+                        <input id="tbl_Ac_CustomerApprovedRateList.Rate" name="tbl_Ac_CustomerApprovedRateList.Rate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_CustomerApprovedRateList.Rate" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerApprovedRateList.Rate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Applied Date</span>
+                        <input id="tbl_Ac_CustomerApprovedRateList.AppliedDate" name="tbl_Ac_CustomerApprovedRateList.AppliedDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_CustomerApprovedRateList.AppliedDate}}" ng-model="tbl_Ac_CustomerApprovedRateList.AppliedDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerApprovedRateList.AppliedDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_Ac_CustomerApprovedRateList.Remarks" name="tbl_Ac_CustomerApprovedRateList.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_CustomerApprovedRateList.Remarks" ng-model="tbl_Ac_CustomerApprovedRateList.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_CustomerApprovedRateList.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Previous Rate</span>
+                        <input id="tbl_Ac_CustomerApprovedRateList.PreviousRate" name="tbl_Ac_CustomerApprovedRateList.PreviousRate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_CustomerApprovedRateList.PreviousRate" disabled />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Previous Applied Date</span>
+                        <input id="tbl_Ac_CustomerApprovedRateList.PreviousAppliedDate" name="tbl_Ac_CustomerApprovedRateList.PreviousAppliedDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_CustomerApprovedRateList.PreviousAppliedDate}}" ng-model="tbl_Ac_CustomerApprovedRateList.PreviousAppliedDate" disabled />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerApprovedRateList.CreatedBy}}" ng-model="tbl_Ac_CustomerApprovedRateList.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerApprovedRateList.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CustomerApprovedRateList.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerApprovedRateList.ModifiedBy}}" ng-model="tbl_Ac_CustomerApprovedRateList.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CustomerApprovedRateList.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CustomerApprovedRateList.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Applied Date
+                </th>
+                <th>
+                    Previous Rate
+                </th>
+                <th>
+                    Previous Applied Date
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}} [{{itm.MeasurementUnit}}]
+                </td>
+                <td>
+                    {{itm.Rate}}
+                </td>
+                <td>
+                    {{itm.AppliedDate}}
+                </td>
+                <td>
+                    {{itm.PreviousRate}}
+                </td>
+                <td>
+                    {{itm.PreviousAppliedDate}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CustomerRateListDetailCtlr")
+</div>

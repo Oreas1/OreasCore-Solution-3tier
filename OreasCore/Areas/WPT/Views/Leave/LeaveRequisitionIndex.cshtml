@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Leave Requisition";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Leave/leaverequisitionindex.0.1.js"></script>
+}
+<div ng-controller="LeaveRequisitionMasterCtlr" class="container">
+    <div id="LeaveRequisitionMasterCtlr">
+        <MyViewName>Leave Requisition Months</MyViewName>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Calendar Year
+                    </th>
+                    <th>
+                        Month Start
+                    </th>
+                    <th>
+                        Month End
+                    </th>
+                    <th>
+                        Open / Closed
+                    </th>
+                    <th>
+                        No of Requests
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b>{{itm.MonthStartMonth}}<span style="font-size:x-small"> {{itm.MonthStartYear}}</span></b>
+                    </td>
+                    <td>
+                        {{itm.CalendarMonthStartDate}}
+                    </td>
+                    <td>
+                        {{itm.CalendarMonthStartDate}}
+                    </td>
+                    <td>
+                        {{itm.IsMonthClosed ? 'Closed' : 'Open'}}
+                    </td>
+                    <td>
+                        {{itm.NoOfRequests}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('LeaveRequisitionDetailCtlr',itm,'LeaveRequisitionMasterCtlr','LeaveRequisitionDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Leave Request">Requests <span class="fa fa-home"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "LeaveRequisitionMasterCtlr")
+    </div>
+
+
+    <div ng-controller="LeaveRequisitionDetailCtlr">
+        <div id="LeaveRequisitionDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("LeaveRequisitionDetail")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+</div>
+
+
+
+

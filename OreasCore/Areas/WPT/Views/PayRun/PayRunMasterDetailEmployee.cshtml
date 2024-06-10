@@ -1,0 +1,275 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeCtlr','PayRunIndexCtlr', this.$parent);">PayRun</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailEmployeeCtlr','PayRunMasterCtlr', this);">Period</a>
+    <MyViewName child="true"> Employees</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Month From
+                    </th>
+                    <th>
+                        Month To
+                    </th>
+                    <th>
+                        PayRun From
+                    </th>
+                    <th>
+                        PayRun To
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.CalendarMonthStartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.CalendarMonthEndDate}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.StartDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.EndDate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_PayRunDetail_Emp.ID", "{{tbl_WPT_PayRunDetail_Emp.ID}}")
+            @Html.Hidden("tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunMaster_ID", "{{tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunMaster_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                        <MyButtonModal fieldname="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName" ng-click="OpenEmployeeSearchModalGeneral('General', MasterObject.ID, 'tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_WPT_PayRunDetail_Emp.Wage>0" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">WD AT</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.WD_AT" name="tbl_WPT_PayRunDetail_Emp.WD_AT" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.WD_AT" ng-disabled="ng_readOnly" readonly required />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WD Manual</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.WD_Manual" name="tbl_WPT_PayRunDetail_Emp.WD_Manual" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.WD_Manual" ng-disabled="ng_readOnly || tbl_WPT_PayRunDetail_Emp.Wage>0" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.WD_Manual" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">WD</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.WD" name="tbl_WPT_PayRunDetail_Emp.WD" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.WD" ng-disabled="ng_readOnly" readonly min="0" required />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">OT AT</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.OT_AT" name="tbl_WPT_PayRunDetail_Emp.OT_AT" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.OT_AT" ng-disabled="ng_readOnly" readonly required />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">OT Manual</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.OT_Manual" name="tbl_WPT_PayRunDetail_Emp.OT_Manual" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.OT_Manual" ng-disabled="ng_readOnly || tbl_WPT_PayRunDetail_Emp.Wage>0" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.OT_Manual" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">OT</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.OT" name="tbl_WPT_PayRunDetail_Emp.OT" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.OT" ng-disabled="ng_readOnly" readonly min="0" required />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Wage</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.Wage" name="tbl_WPT_PayRunDetail_Emp.Wage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.Wage" ng-disabled="ng_readOnly" readonly required />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Wage Primary</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.WagePrimary" name="tbl_WPT_PayRunDetail_Emp.WagePrimary" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.WagePrimary" ng-change="BalanceWage('primary');" ng-disabled="ng_readOnly || tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_Primary > 0" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.WagePrimary" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Primary Transaction Mode</span>
+                        <select id="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Primary" name="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Primary" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.TransactionMode for x in TransactionModeList" data-ng-model="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Primary" ng-disabled="ng_readOnly" ng-required="tbl_WPT_PayRunDetail_Emp.WagePrimary > 0">
+                            <option value="">Select Primary Transaction Mode</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Primary" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Wage Secondary</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.WageSecondary" name="tbl_WPT_PayRunDetail_Emp.WageSecondary" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.WageSecondary" ng-change="BalanceWage('secondary');" ng-disabled="ng_readOnly || tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_Primary > 0" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.WageSecondary" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Secondary Transaction Mode</span>
+                        <select id="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Secondary" name="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Secondary" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.TransactionMode for x in TransactionModeList" data-ng-model="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Secondary" ng-disabled="ng_readOnly || tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_Secondary > 0" ng-required="tbl_WPT_PayRunDetail_Emp.WageSecondary > 0">
+                            <option value="">Select Secondary Transaction Mode</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_TransactionMode_ID_Secondary" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Primary Pay</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_PrimaryName" name="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_PrimaryName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_PrimaryName" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Secondary Pay</span>
+                        <input id="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_SecondaryName" name="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_SecondaryName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_PayRunDetail_Payment_ID_SecondaryName" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunDetail_Emp.CreatedBy}}" ng-model="tbl_WPT_PayRunDetail_Emp.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunDetail_Emp.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PayRunDetail_Emp.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunDetail_Emp.ModifiedBy}}" ng-model="tbl_WPT_PayRunDetail_Emp.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_PayRunDetail_Emp.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_PayRunDetail_Emp.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th style="background-color:lightblue">
+                    Employee Name
+                </th>
+                <th style="background-color:steelblue">
+                    WD
+                </th>
+                <th style="background-color:steelblue">
+                    OT
+                </th>
+                <th>
+                    WD AT
+                </th>
+                <th>
+                    OT AT
+                </th>
+                <th>
+                    WD Manual
+                </th>
+                <th>
+                    OT Manual
+                </th>
+                <th style="background-color:lightblue">
+                    Wage
+                </th>
+                <th>
+                    Primary / Mode
+                </th>
+                <th>
+                    Secondary / Mode
+                </th>
+                <th>
+                    Pay (Primary / Secondary)
+                </th>
+                <th>
+                    Bank A/C #
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_Employee_IDName}}
+                </td>
+                <td>
+                    <b>{{itm.WD}}</b>
+                </td>
+                <td>
+                    <b>{{itm.OT}}</b>
+                </td>
+                <td>
+                    {{itm.WD_AT}}
+                </td>
+                <td>
+                    {{itm.OT_AT}}
+                </td>
+                <td>
+                    {{itm.WD_Manual}}
+                </td>
+                <td>
+                    {{itm.OT_Manual}}
+                </td>
+                <td>
+                    {{itm.Wage}}
+                </td>
+                <td>
+                    {{itm.WagePrimary}}/{{itm.FK_tbl_WPT_TransactionMode_ID_PrimaryName}}
+                </td>
+                <td>
+                    {{itm.WageSecondary}}/{{itm.FK_tbl_WPT_TransactionMode_ID_SecondaryName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_PayRunDetail_Payment_ID_PrimaryName}}/{{itm.FK_tbl_WPT_PayRunDetail_Payment_ID_SecondaryName}}
+                </td>
+                <td style="font-size:xx-small;">
+                    {{itm.FK_tbl_WPT_EmployeeBankDetail_IDName}}
+                </td>
+                <td>
+                   
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <input type="button" value="PS" ng-click="GetPaySlip(itm.ID)" class="btn-link" style="color:gray" ng-disabled="DisabledBtnAll || itm.IsWagedGenerated===false" />|
+                        <button ng-click="EmailPaySlip(itm.ID,itm.FK_tbl_WPT_Employee_IDName,itm.Email)" mycssclass="@MyCSSClassName.Table_OperationBtn" ng-disabled="DisabledBtnAll || itm.Wage<=0 || !itm.Email.length>0" title="Email PaySlip"><span class="fa fa-envelope"></span></button>|
+                        <button mycssclass="@MyCSSClassName.Table_OperationBtn" ng-click="PayRunIndividual(itm.ID, !itm.IsWagedGenerated)" title="PayRun"><span class="{{itm.IsWagedGenerated?'fa fa-toggle-on':'fa fa-toggle-off'}}" style="font-size: larger; color:steelblue;"></span></button>|
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('PayRunMasterDetailEmployeeATCtlr',itm,'PayRunMasterDetailEmployeeCtlr','PayRunMasterDetailEmployeeATCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Attendance"><span class="fa fa-address-card"></span></button>|
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('PayRunMasterDetailEmployeeWageCtlr',itm,'PayRunMasterDetailEmployeeCtlr','PayRunMasterDetailEmployeeWageCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Wage"><span class="fa fa-money-bill"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="13">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "PayRunMasterDetailEmployeeCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

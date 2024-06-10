@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Department";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Organization/departmentindex.0.1.js"></script>
+}
+<div ng-controller="DepartmentIndexCtlr" class="container">
+
+    <div id="DepartmentIndexCtlr">
+        <MyViewName>Department</MyViewName>
+        @*-----------------------------------this is tree view-----------------------------*@
+        <div>
+            <ul>
+                <li style="list-style:none" ng-repeat="node in nodedata" id="">
+                    <text ng-repeat="a in range(node.spacing.length) track by $index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                    <span class="btn" ng-click="getchild(node.ID)"><text ng-hide="node.ChildCount<=0">[{{node.sign}}]</text></span>
+                    <span ng-style="{ color: node.ChildCount>0 ? 'red' : 'black' }">{{node.DepartmentName}}</span>
+
+                    <span class="btn" ng-click="SelectFromTree(node.ID)"><i class="fa fa-edit"></i></span>
+                </li>
+            </ul>
+        </div>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_Department.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Head Department</span>
+                            <select id="tbl_WPT_Department.FK_tbl_WPT_Department_ID_Head" name="tbl_WPT_Department.FK_tbl_WPT_Department_ID_Head" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.DepartmentName for x in DepartmentList" data-ng-model="tbl_WPT_Department.FK_tbl_WPT_Department_ID_Head" ng-disabled="ng_readOnly || tbl_WPT_Department.ChildCount" required>
+                                <option value="">Please Select Head Department</option>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Department.FK_tbl_WPT_Department_ID_Head" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Department Name</span>
+                            <input id="tbl_WPT_Department.DepartmentName" name="tbl_WPT_Department.DepartmentName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="DepartmentName" value="tbl_WPT_Department.DepartmentName" ng-model="tbl_WPT_Department.DepartmentName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Department.DepartmentName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Department.CreatedBy}}" ng-model="tbl_WPT_Department.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Department.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_Department.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Department.ModifiedBy}}" ng-model="tbl_WPT_Department.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Department.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_Department.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Department Name
+                    </th>
+                    <th>
+                        Head Department
+                    </th>
+                    <th>
+                        No of HOS(s)
+                    </th>
+                    <th>
+                        No of Designations
+                    </th>
+                    <th>
+                        No Of Req Employees
+                    </th>
+                    <th>
+                        No Of Sections
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DepartmentName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_WPT_Department_ID_HeadName}}
+                    </td>
+                    <td>
+                        {{itm.NoOfHOSs}}
+                    </td>
+                    <td>
+                        {{itm.NoOfDesignations}}
+                    </td>
+                    <td>
+                        {{itm.NoOfReqEmployees}}
+                    </td>
+                    <td>
+                        {{itm.NoOfSections}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('DepartmentDesignationCtlr',itm,'DepartmentIndexCtlr','DepartmentDesignationCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Designation<span class="fa fa-id-badge"></span></button>|
+                            <button ng-click="DivHideShow('DepartmentSectionsDetailCtlr',itm,'DepartmentIndexCtlr','DepartmentSectionsDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Section">Section<span class="fa fa-map-signs"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "DepartmentIndexCtlr")
+    </div>
+
+
+
+    <div ng-controller="DepartmentDesignationCtlr">
+        <div id="DepartmentDesignationCtlr" style="display: none;">
+            @await Html.PartialAsync("DepartmentDesignation")
+        </div>
+    </div>
+
+    <div ng-controller="DepartmentSectionsDetailCtlr">
+        <div id="DepartmentSectionsDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("DepartmentSectionsDetail")
+        </div>
+
+        <div ng-controller="DepartmentSectionDetailHOSCtlr">
+            <div id="DepartmentSectionDetailHOSCtlr" style="display: none;">
+                @await Html.PartialAsync("DepartmentSectionDetailHOS")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

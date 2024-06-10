@@ -1,0 +1,261 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'IncrementDetailEmployeeCtlr','IncrementIndexCtlr', this);">Increment Calendar</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'IncrementDetailEmployeeCtlr','IncrementMasterCtlr', this);">Increments in a Year</a>
+    <MyViewName child="true">Increment Employees</MyViewName>
+
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Calendar Year
+                    </th>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.CalendarStartYear}} <span style="font-size:small">{{MasterObject.MasterObject.CalendarStartMonthSName}}</span> - {{MasterObject.MasterObject.CalendarEndYear}} <span style="font-size:small">{{MasterObject.MasterObject.CalendarEndMonthName}}</span></b>
+                    </td>
+                    <td>
+                        {{MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.EffectiveDate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div class="form-check form-switch d-inline-block" ng-hide="!Privilege.CanAdd">
+        <input class="form-check-input m-1" type="checkbox" role="switch" style="font-size:larger;" id="bulkAdd" ng-model="AddBulk" ng-disabled="ng_entryPanelBtnText!='Add New'">
+        <label class="form-check-label" for="bulkAdd">Bulk Add</label>
+    </div>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_IncrementDetail.ID", "{{tbl_WPT_IncrementDetail.ID}}")
+            @Html.Hidden("tbl_WPT_IncrementDetail.FK_tbl_WPT_IncrementMaster_ID", "{{tbl_WPT_IncrementDetail.FK_tbl_WPT_IncrementMaster_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                        <MyButtonModal fieldname="tbl_WPT_IncrementDetail.FK_tbl_WPT_Employee_IDName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'tbl_WPT_IncrementDetail.FK_tbl_WPT_Employee_IDName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_WPT_IncrementDetail.FK_tbl_WPT_Employee_IDName'].$dirty=true;" ng-disabled="ng_readOnly || AddBulk" ng-required="!AddBulk" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.FK_tbl_WPT_Employee_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Effective Date</span>
+                        <input id="tbl_WPT_IncrementDetail.EffectiveDate" name="tbl_WPT_IncrementDetail.EffectiveDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_IncrementDetail.EffectiveDate}}" ng-model="tbl_WPT_IncrementDetail.EffectiveDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.EffectiveDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Increment Value</span>
+                        <input id="tbl_WPT_IncrementDetail.IncrementValue" name="tbl_WPT_IncrementDetail.IncrementValue" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncrementDetail.IncrementValue" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.IncrementValue" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Increment By</span>
+                        <select id="tbl_WPT_IncrementDetail.FK_tbl_WPT_IncrementBy_ID" name="tbl_WPT_IncrementDetail.FK_tbl_WPT_IncrementBy_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as (x.IncrementBy + ' [Code: ' + x.ID + ']') for x in IncrementByList" data-ng-model="tbl_WPT_IncrementDetail.FK_tbl_WPT_IncrementBy_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Increment By</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.FK_tbl_WPT_IncrementBy_ID" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Arrear</span>
+                        <input id="tbl_WPT_IncrementDetail.Arrear" name="tbl_WPT_IncrementDetail.Arrear" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_IncrementDetail.Arrear" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.Arrear" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Arrear Apply Month</span>
+                        <MyButtonModal fieldname="tbl_WPT_IncrementDetail.FK_tbl_WPT_CalendarYear_Months_ID_ApplyArrearName" ng-click="OpenMonthSearchModalGeneral('Open', 0, 'tbl_WPT_IncrementDetail.FK_tbl_WPT_CalendarYear_Months_ID_ApplyArrearName', MonthSearch_CtrlFunction_Ref_InvokeOnSelection); myform.tbl_WPT_IncrementDetail.FK_tbl_WPT_CalendarYear_Months_ID_ApplyArrearName.$dirty=true;" ng-disabled="ng_readOnly"></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.FK_tbl_WPT_CalendarYear_Months_ID_ApplyArrearName"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_WPT_IncrementDetail.Remarks" name="tbl_WPT_IncrementDetail.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_IncrementDetail.Remarks" ng-model="tbl_WPT_IncrementDetail.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_IncrementDetail.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm" ng-hide="!AddBulk">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Designation</span>
+                        <select id="FK_tbl_WPT_Designation_ID" name="FK_tbl_WPT_Designation_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Designation for x in DesignationList" data-ng-model="FK_tbl_WPT_Designation_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Designation</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="FK_tbl_WPT_Designation_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Department</span>
+                        <select id="FK_tbl_WPT_Department_ID" name="FK_tbl_WPT_Department_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.DepartmentName for x in DepartmentList" data-ng-model="FK_tbl_WPT_Department_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Department</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="FK_tbl_WPT_Department_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Joining Date Till</span>
+                        <input id="JoiningDateTill" name="JoiningDateTill" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{JoiningDateTill}}" ng-model="JoiningDateTill" ng-disabled="ng_readOnly" ng-required="AddBulk" />
+                        <MyValidationSpan formname="myform" fieldname="JoiningDateTill" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncrementDetail.CreatedBy}}" ng-model="tbl_WPT_IncrementDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncrementDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_IncrementDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncrementDetail.ModifiedBy}}" ng-model="tbl_WPT_IncrementDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_IncrementDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_IncrementDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Employee
+                </th>
+                <th>
+                    Effective
+                </th>
+                <th>
+                    Increment Value
+                </th>
+                <th>
+                    By
+                </th>
+                <th>
+                    Arrear
+                </th>
+                <th>
+                    Arrear Apply Month
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_Employee_IDName}}
+                </td>
+                <td>
+                    {{itm.EffectiveDate}}
+                </td>
+                <td>
+                    {{itm.IncrementValue}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_IncrementBy_IDName}}
+                </td>
+                <td>
+                    {{itm.Arrear}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_CalendarYear_Months_ID_ApplyArrearName}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "IncrementDetailEmployeeCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+    @*-----------------------------------Excel Upload-----------------------------*@
+    <div>
+        <table class="table">
+            <tr>
+                <td>
+                    <input type="file" id="UploadExcelFile" name="UploadExcelFile" onchange="angular.element(this).scope().LoadFileData(this.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="btn btn-block" />
+                </td>
+                <td>
+                    Excel Format
+                </td>
+                <td>
+
+                    <table border="1">
+                        <tr style="border:1px solid black;">
+                            <th style="border:1px solid black;">&nbsp;&nbsp; ATNo &nbsp;&nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp; Eff. Date (DD-MM-YY) &nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp;&nbsp; Incr. Value &nbsp;&nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp;&nbsp; Incr. By Code % &nbsp;&nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp;&nbsp; Arrear &nbsp;&nbsp;</th>
+                            <th style="border:1px solid black;">&nbsp;&nbsp; Arrear Month Code &nbsp;&nbsp;</th>
+                        </tr>
+                        <tr>
+                            <td style="border:1px solid black;">WF101</td>
+                            <td style="border:1px solid black;">01-Jan-2000</td>
+                            <td style="border:1px solid black;">3000</td>
+                            <td style="border:1px solid black;">1</td>
+                            <td style="border:1px solid black;">6000</td>
+                            <td style="border:1px solid black;">501</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+
+
+    </div>
+</div>

@@ -1,0 +1,114 @@
+﻿@model OreasModel.tbl_WPT_Machine
+@{
+    ViewBag.Title = "Machine Operations";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Machine/machineoperations.0.1.js"></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+}
+<h2>Machine Name: @Model.Name</h2>
+<div ng-controller="MachineOperationsCtlr">
+    <div class="container">
+        <h2 style="text-align:center;align-content:center;"><button class="btn btn-light" ng-click="RequestToConnectOrDisconnect();">Server Status: <span style="font-weight:bold;color:{{ServerConnectionStatus==='Connected'? 'Green': 'Red'}};">{{ServerConnectionStatus}}</span></button></h2>
+  
+
+        <div>
+            <MyFieldSet legendtext="General Operations">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <button class="btn btn-primary mt-1" style="width:100%; height:40px;" ng-click="OpenProgressModal('Download Attendance');"><i class="fa fa-download"></i> | Download Log</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <button class="btn btn-secondary mt-1" style="width:100%; height:40px;" ng-click="OpenProgressModal('Get DateTime From Machine');"><i class="fa fa-clock"></i> | Get Time</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <button class="btn btn-secondary mt-1" style="width: 100%; height: 40px;" ng-click="OpenProgressModal('Sync Time From Server');"><i class="fa fa-clock"></i> | Sync Time</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <button class="btn btn-secondary mt-1" style="width: 100%; height: 40px;" ng-click="OpenProgressModal('Restart Machine');"><i class="fa fa-running"></i> | Restart</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <button class="btn btn-secondary mt-1" style="width: 100%; height: 40px;" ng-click="OpenProgressModal('ShutDown Machine');"><i class="fa fa-stop"></i> | Shutdown</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <button class="btn btn-danger mt-1" style="width: 100%; height: 40px;" ng-click="OpenProgressModal('Clear Log');"><i class="fa fa-trash"></i> | Clear Log</button>
+                    </div>
+                </div>
+            </MyFieldSet>
+        </div>
+
+        <div>
+            <form name="myform2" role="form">
+                <MyFieldSet legendtext="User Operation">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <div class="btn-group-vertical" style="width:100%;">
+                                <button type="button" class=" btn btn-primary mt-1" style="width: 100%; height: 35px; text-align:left;" ng-disabled="!SelectedEmp.ID>0" ng-click="OpenProgressModal('Synchronize User Full Template');"><i class="fa fa-sync"></i> | Sync Full Templete</button>
+                                <button type="button" class="btn btn-secondary mt-1" style="width: 100%; height: 35px; text-align: left;" ng-disabled="!SelectedEmp.ID>0" ng-click="OpenProgressModal('Synchronize User Face Template Only');"><i class="fa fa-sync"></i> | Sync Face Templete</button>
+                                <button type="button" class="btn btn-secondary mt-1" style="width: 100%; height: 35px; text-align: left;" ng-disabled="!SelectedEmp.ID>0" ng-click="OpenProgressModal('Synchronize User Card Only');"><i class="fa fa-sync"></i> | Sync Card Templete</button>
+                                <button type="button" class="btn btn-danger mt-1" style="width: 100%; height: 35px; text-align: left;"  ng-disabled="!SelectedEmp.ID>0" ng-click="OpenProgressModal('Remove User From Machine');"><i class="fa fa-trash"></i> | Remove User Templete</button>
+                            </div>
+
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                            <MyButtonModal fieldname="SelectedEmp.EmployeeName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'SelectedEmp.EmployeeName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['SelectedEmp.EmployeeName'].$dirty=true;" ng-disabled="InProcess" ng-required="true"></MyButtonModal>
+                            <input id="SelectedEmp.CardNumber" name="SelectedEmp.CardNumber" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="Card#: {{SelectedEmp.CardNumber}}" disabled />
+                            <input id="SelectedEmp.Password" name="SelectedEmp.Password" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="Pin#: {{SelectedEmp.Password}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <img data-ng-src="data:image/jpeg;base64,{{SelectedEmp.Photo160X210}}" width="50" height="58" />
+                            <span style="font-size:x-large" class="fa fa-face-smile"></span>:{{SelectedEmp.FaceTemplate ? 'Yes' : 'No'}}
+                            <span style="font-size:x-large" class="fa fa-hand"></span>:{{SelectedEmp.FingerCount}}
+                            <input id="SelectedEmp.Privilege" name="SelectedEmp.Privilege" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="Privilege: {{SelectedEmp.Privilege === 0 ? 'Common' : SelectedEmp.Privilege === 1 ? 'Registrar' : SelectedEmp.Privilege === 2 ? 'Administrator': SelectedEmp.Privilege === 3 ? 'Super Administrator' : 'None'}}" disabled />
+                            <input id="SelectedEmp.Enabled" name="SelectedEmp.Enabled" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="Enabled: {{SelectedEmp.Enabled ? 'Yes' : 'No'}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3" style="border-left:solid 1px gray; border-radius: 5px;">
+                            <div class="w-100 form-control btn" style="">
+                                <input type="button" class="btn btn-outline-warning" value="Get Current Operator" ng-click="GetOperatorDetail();" />
+                            </div>
+
+                            <div class="w-100 form-control m-1" style="background-color:lightgray;">
+                                <b>Process:</b> {{OperatorDetail.ForProcess}}
+                            </div>
+                            <div class="w-100 form-control m-1" style="background-color: lightgray;">
+                                <b>User:</b> {{OperatorDetail.UserName}}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </MyFieldSet>
+
+            </form>
+        </div>
+
+        <p><b>Response: </b>{{ServerAcknowledgment}}</p>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+    <!-- Modal -->
+    <div class="modal fade" id="ProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ProgressModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ProgressModalLabel">Progress of {{OperationName}}</h5>
+                </div>
+                <div class="modal-body">
+                    <p><b>Response: </b>{{ServerAcknowledgment}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn {{BtnOptText === 'Close' ? 'btn-primary' : 'btn-danger' }}" ng-click="CloseProgressModal()">{{BtnOptText}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

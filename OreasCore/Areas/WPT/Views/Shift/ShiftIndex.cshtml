@@ -1,0 +1,321 @@
+﻿@{
+    ViewBag.Title = "Shift";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/shift/shiftindex.0.1.js"></script>
+}
+<div ng-controller="ShiftIndexCtlr" class="container">
+
+    <div id="ShiftIndexCtlr">
+        <MyViewName>Shift</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_Shift.ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift Name</span>
+                        <input id="tbl_WPT_Shift.ShiftName" name="tbl_WPT_Shift.ShiftName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="ShiftName" value="tbl_WPT_Shift.ShiftName" ng-model="tbl_WPT_Shift.ShiftName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.ShiftName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req" class="w-50">Prefix</span>
+                        <input id="tbl_WPT_Shift.Prefix" name="tbl_WPT_Shift.Prefix" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" class="w-50" placeholder="Prefix" value="tbl_WPT_Shift.Prefix" ng-model="tbl_WPT_Shift.Prefix" ng-disabled="ng_readOnly" minlength="3" maxlength="8" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.Prefix" required="true" minlength="3" maxlength="8"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift Start Time</span>
+                        <input id="StartTime" name="StartTime" type="time" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{StartTime}}" ng-model="StartTime" step="1" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="StartTime" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift CheckIn Start Time</span>
+                        <input id="CheckInStartTime" name="CheckInStartTime" type="time" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{CheckInStartTime}}" ng-model="CheckInStartTime" step="1" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="CheckInStartTime" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift LateIn Time</span>
+                        <input id="LateInTime" name="LateInTime" type="time" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{LateInTime}}" ng-model="LateInTime" step="1" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="LateInTime" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift End Time</span>
+                        <input id="EndTime" name="EndTime" type="time" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{EndTime}}" ng-model="EndTime" step="1" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="EndTime" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift CheckOut End Time</span>
+                        <input id="CheckOutEndTime" name="CheckOutEndTime" type="time" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{CheckOutEndTime}}" ng-model="CheckOutEndTime" step="1" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="CheckOutEndTime" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift EarlyOut Time</span>
+                        <input id="EarlyOutTime" name="EarlyOutTime" type="time" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{EarlyOutTime}}" ng-model="EarlyOutTime" step="1" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="EarlyOutTime" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HalfShift Limit In Minutes</span>
+                        <input id="tbl_WPT_Shift.HalfShiftLimit_Minutes" name="tbl_WPT_Shift.HalfShiftLimit_Minutes" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_Shift.HalfShiftLimit_Minutes" ng-disabled="ng_readOnly" min="0" max="1440" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.HalfShiftLimit_Minutes" required="true" minlength="0" maxlength="1440"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift Limit In Minutes</span>
+                        <input id="tbl_WPT_Shift.ShiftLimit_Minutes" name="tbl_WPT_Shift.ShiftLimit_Minutes" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_Shift.ShiftLimit_Minutes" ng-disabled="ng_readOnly" min="0" max="1440" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.ShiftLimit_Minutes" required="true" minlength="0" maxlength="1440"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">OT Margin In Minutes</span>
+                        <input id="tbl_WPT_Shift.OTMargin_Minutes" name="tbl_WPT_Shift.OTMargin_Minutes" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_Shift.OTMargin_Minutes" ng-disabled="ng_readOnly" min="0" max="1440" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.OTMargin_Minutes" required="true" minlength="0" maxlength="1440"></MyValidationSpan>
+                    </div>
+                </div>
+                               
+                <MyFieldSet legendtext="General Conditions" child="true">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Late-In</span>
+                            <select id="tbl_WPT_Shift.LI" name="tbl_WPT_Shift.LI" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.LI" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.LI" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Early-Out</span>
+                            <select id="tbl_WPT_Shift.EO" name="tbl_WPT_Shift.EO" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.EO" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.EO" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Half Shift</span>
+                            <select id="tbl_WPT_Shift.HS" name="tbl_WPT_Shift.HS" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.HS" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.HS" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Shift Limit</span>
+                            <select id="tbl_WPT_Shift.ShiftLimit" name="tbl_WPT_Shift.ShiftLimit" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.ShiftLimit" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.ShiftLimit" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Holiday</span>
+                            <select id="tbl_WPT_Shift.HD" name="tbl_WPT_Shift.HD" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.HD" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.HD" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                   
+                </MyFieldSet>
+
+                <MyFieldSet legendtext="OverTime" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Apply OT on Holiday</span>
+                            <select id="tbl_WPT_Shift.OT_HD" name="tbl_WPT_Shift.OT_HD" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.OT_HD" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.OT_HD" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Apply OT before Shift on WD</span>
+                            <select id="tbl_WPT_Shift.OT_BeforeShift_NON_HD" name="tbl_WPT_Shift.OT_BeforeShift_NON_HD" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.OT_BeforeShift_NON_HD" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.OT_BeforeShift_NON_HD" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Apply OT after Shift on WD</span>
+                            <select id="tbl_WPT_Shift.OT_AfterShift_NON_HD" name="tbl_WPT_Shift.OT_AfterShift_NON_HD" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Shift.OT_AfterShift_NON_HD" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_Shift.OT_AfterShift_NON_HD" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Shift.CreatedBy}}" ng-model="tbl_WPT_Shift.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Shift.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_Shift.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Shift.ModifiedBy}}" ng-model="tbl_WPT_Shift.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_Shift.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_Shift.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Shift Name / Prefix
+                    </th>
+                    <th>
+                        Shift Start / End
+                    </th>
+                    <th>
+                        LateIn / EarlyOut
+                    </th>
+                    <th>
+                        CheckIn / CheckOut
+                    </th>
+                    <th>
+                        HalfShift
+                    </th>
+                    <th>
+                        Min Shift
+                    </th>
+                    <th>
+                        OT Margin
+                    </th>
+                    <th>
+                        LI
+                    </th>
+                    <th>
+                        EO
+                    </th>
+                    <th>
+                        OT HD
+                    </th>
+                    <th>
+                        OT WD Before Shift
+                    </th>
+                    <th>
+                        OT WD After Shift
+                    </th>
+                    <th>
+                        HS
+                    </th>
+                    <th>
+                        HD
+                    </th>
+                    <th>
+                        SL
+                    </th>
+                    <th>
+                        Emp#
+                    </th>
+                    <th> </th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b><u>{{itm.ShiftName}}</u></b> [{{itm.Prefix}}]
+                    </td>
+                    <td>
+                        {{itm.StartTime}} / {{itm.EndTime}}
+                    </td>
+                    <td>
+                        {{itm.LateInTime}} / {{itm.EarlyOutTime}}
+                    </td>
+                    <td>
+                        {{itm.CheckInStartTime}} / {{itm.CheckOutEndTime}}
+                    </td>
+                    <td>
+                        {{itm.HalfShiftLimit_Minutes}} Minutes
+                    </td>
+                    <td>
+                        {{itm.ShiftLimit_Minutes}} Minutes
+                    </td>
+                    <td>
+                        {{itm.OTMargin_Minutes}} Minutes
+                    </td>
+                    <td>
+                        {{itm.LI?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.EO?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.OT_HD?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.OT_BeforeShift_NON_HD?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.OT_AfterShift_NON_HD?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.HS?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.HD?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.ShiftLimit?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.TotalAllocated}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('DefaultEmployeeShiftCtlr',itm,'ShiftIndexCtlr','DefaultEmployeeShiftCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Employees <span class="fa fa-user"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="17">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ShiftIndexCtlr")
+    </div>
+
+
+    <div ng-controller="DefaultEmployeeShiftCtlr">
+        <div id="DefaultEmployeeShiftCtlr" style="display: none;">
+            @await Html.PartialAsync("DefaultEmployeeShift")
+        </div>
+    </div>
+</div>
+
+
+
+

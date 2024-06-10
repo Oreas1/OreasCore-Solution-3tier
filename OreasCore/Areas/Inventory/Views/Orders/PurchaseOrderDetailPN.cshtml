@@ -1,0 +1,126 @@
+﻿
+<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PurchaseOrderDetailPNCtlr','PurchaseOrderMasterCtlr', this.$parent);">Purchase Order</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PurchaseOrderDetailPNCtlr','PurchaseOrderDetailCtlr', this);">Purchase Order Detail</a>
+    <MyViewName child="true"> Purchase</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Supplier A/c
+                    </th>
+                    <th>
+                        PO Date
+                    </th>
+                    <th>
+                        Target Date
+                    </th>
+                    <th>
+                        Performance (Time/Quantity/Quality)
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_AspNetOreasPriority_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.Quantity}} {{MasterObject.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.FK_tbl_Ac_ChartOfAccounts_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.PODate}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.TargetDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.Performance_Time? 'Yes' : 'No'}}/{{MasterObject.Performance_Quantity? 'Yes' : 'No'}}/{{MasterObject.Performance_Quality? 'Yes' : 'No'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Purchase Note #
+                </th>
+                <td>
+                    Receiving Date
+                </td>
+                <th>
+                    Quantity Received
+                </th>
+                <th>
+                    Reference#
+                </th>
+                <th>
+                    QC Action
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.DocNo}}
+                </td>
+                <td>
+                    {{itm.DocDate}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{MasterObject.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.ReferenceNo}}
+                </td>
+                <td>
+                    {{itm.Action}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                      <a href="~/Inventory/Challan/PurchaseNoteIndex?byDocNo={{itm.DocNo}}" target="_blank" class="btn btn-primary">Goto PN</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+
+
+</div>

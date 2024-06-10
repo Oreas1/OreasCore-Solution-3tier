@@ -1,0 +1,55 @@
+﻿<fieldset class="border p-4 mt-1" style="background-color: lightgrey; border-radius: 10px; box-shadow: 5px 5px darkgray;" ng-hide="!Privilege.CanView">
+    <legend class="w-auto"><span style="background-color:darkgray;border-radius:2px;">&nbsp;Filter&nbsp;</span></legend>
+    <div class="row col-lg-12">
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByTextList.length>0)">
+            <select style="font-weight:bold" ng-model="FilterByText" ng-options="o.v as o.n for o in FilterByTextList" ng-change="!(FilterByText.length>0)?FilterValueByText='':true"
+                    class="form-select input-sm" required>
+                <option value="">Select Field</option>
+            </select>
+        </div>
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByTextList.length>0)">
+            <input id="@(Model+"filterbytext")" type="text" ng-change="!(FilterByText.length>0)?FilterValueByText='':true" ng-model="FilterValueByText" ng-keydown="($event.keyCode === 13 && ReloadbyFilter('@(Model+"filterbytext")'))" placeholder="Type to Filter" maxlength="50" class="form-control input-sm" ng-disabled="ng_DisabledBtnAll" />
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByLoadList.length>0)">
+            <select style="font-weight:bold" ng-model="FilterByLoad" ng-options="o.v as o.n for o in FilterByLoadList"
+                    class="form-select input-sm" required>
+                <option value="">Select Load By</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByNumberRangeList.length>0)">
+            <select style="font-weight:bold" ng-model="FilterByNumberRange" ng-options="o.v as o.n for o in FilterByNumberRangeList"
+                    class="form-select input-sm" required>
+                <option value="">Select Number Range</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByNumberRangeList.length>0)">
+            <input id="@(Model+"FilterValueByNumberRangeFrom")" type="number" ng-model="FilterValueByNumberRangeFrom" style="width:40%;" ng-keydown="($event.keyCode === 13 && ReloadbyFilter('@(Model+"FilterValueByNumberRangeFrom")'))" class="form-control input-sm" ng-disabled="ng_DisabledBtnAll" />
+            TO
+            <input id="@(Model+"FilterValueByNumberRangeTill")" type="number" ng-model="FilterValueByNumberRangeTill" style="width:40%;" ng-keydown="($event.keyCode === 13 && ReloadbyFilter('@(Model+"FilterValueByNumberRangeTill")'))" class="form-control input-sm" ng-disabled="ng_DisabledBtnAll" />
+        </div>
+
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByDateRangeList.length>0)">
+            <select style="font-weight:bold" ng-model="FilterByDateRange" ng-options="o.v as o.n for o in FilterByDateRangeList"
+                    class="form-select input-sm" required>
+                <option value="">Select Date Range</option>
+            </select>
+        </div>
+
+        <div class="col-lg-3" style="padding-top:5px;" ng-hide="!(FilterByDateRangeList.length>0)">
+            <input id="@(Model+"FilterValueByDateRangeFrom")" type="datetime-local" ng-model="FilterValueByDateRangeFrom" ng-keydown="($event.keyCode === 13 && ReloadbyFilter('@(Model+"FilterValueByDateRangeFrom")'))" class="form-control input-sm" ng-disabled="ng_DisabledBtnAll" />
+            TO
+            <input id="@(Model+"FilterValueByDateRangeTill")" type="datetime-local" ng-model="FilterValueByDateRangeTill" ng-keydown="($event.keyCode === 13 && ReloadbyFilter('@(Model+"FilterValueByDateRangeTill")'))" class="form-control input-sm" ng-disabled="ng_DisabledBtnAll" />
+        </div>
+
+
+        <div class="col-lg-3" style="padding-top:5px;">
+            <button id="@(Model+"FilterButton")" ng-click="ReloadbyFilter('@(Model+"FilterButton")');" type="button" class="btn btn-dark" ng-disabled="ng_DisabledBtnAll"><i class="fa fa-refresh" style="color:white;"></i> Reload</button>
+        </div>
+
+    </div>
+
+</fieldset>

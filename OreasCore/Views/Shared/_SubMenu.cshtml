@@ -1,0 +1,449 @@
+﻿@if (@Model.ToString() == "Identity")
+{
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;Users
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li class="nav-item">
+                <a href="/Identity/Account/UserIndex" class="dropdown-item">Users</a>
+            </li>
+            <li class="nav-item">
+                <a href="/Identity/Account/AuthorizationSchemeIndex" class="dropdown-item">Scheme</a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/Identity/Account/GeneralSettingsIndex">
+            <i class="fa fa-gear" style="color: white;"></i>&nbsp;&nbsp;Settings
+        </a>
+    </li>
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/Identity/Account/CompanyProfileIndex">
+            <i class="fa fa-address-book" style="color: white;"></i>&nbsp;&nbsp;Company-Profile
+        </a>
+    </li>
+}
+else if (@Model.ToString() == "WPT")
+{
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;HR
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW1000?HideW1000=false:HideW1000=true">Master Files</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Designation', 'Url': '/WPT/Organization/DesignationIndex' },
+                { 'Name': 'Employee Level', 'Url': '/WPT/Organization/EmployeeLevelIndex' },
+                { 'Name': 'Education Level Type', 'Url': '/WPT/Organization/EducationalLevelTypeIndex' },
+                { 'Name': 'Holiday Name', 'Url': '/WPT/Organization/HolidayIndex' },
+                { 'Name': 'Department', 'Url': '/WPT/Organization/DepartmentIndex' },
+                { 'Name': 'Employee InActive Type', 'Url': '/WPT/Organization/InActiveTypeIndex' },
+                { 'Name': 'Allowance Type', 'Url': '/WPT/Organization/AllowanceTypeIndex' },
+                { 'Name': 'Deductible Type', 'Url': '/WPT/Organization/DeductibleTypeIndex' },
+                { 'Name': 'Loan Type', 'Url': '/WPT/Organization/LoanTypeIndex' },
+                { 'Name': 'Employment Type', 'Url': '/WPT/Organization/EmploymentTypeIndex' },
+                { 'Name': 'Hiring Type', 'Url': '/WPT/Organization/HiringTypeIndex' },
+                { 'Name': 'Reward Type', 'Url': '/WPT/Organization/RewardTypeIndex' }
+                ]" ng-hide="HideW1000">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW1001?HideW1001=false:HideW1001=true">Employee</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Employee', 'Url': '/WPT/Employee/EmployeeIndex' },
+                { 'Name': 'Bank', 'Url': '/WPT/Organization/BankIndex' }
+                ]" ng-hide="HideW1001">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW1002?HideW1002=false:HideW1002=true">Policy</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'OT Policy', 'Url': '/WPT/Organization/OTPolicyIndex' },
+                { 'Name': 'General Policy', 'Url': '/WPT/Organization/PolicyGeneralIndex' },
+                { 'Name': 'Penalty Policy', 'Url': '/WPT/Organization/PolicyPenaltyIndex' }
+                ]" ng-hide="HideW1002">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;Shift
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><a asp-area="WPT" asp-controller="Shift" asp-action="ShiftIndex" class="dropdown-item">Shift</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;Attendance
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><a asp-area="WPT" asp-controller="Machine" asp-action="MachineIndex" class="dropdown-item">Machine</a></li>
+            <li><a asp-area="WPT" asp-controller="Attendance" asp-action="ATTimeGraceIndex" class="dropdown-item">AT Grace / Ignore</a></li>
+            <li><a asp-area="WPT" asp-controller="Attendance" asp-action="AttendanceIndex" class="dropdown-item">Attendance</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;HideW1003=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;Leave
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW1003?HideW1003=false:HideW1003=true">Leave Policy</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Paid', 'Url': '/WPT/Leave/LeavePolicyIndex' },
+                { 'Name': 'Non Paid', 'Url': '/WPT/Leave/LeavePolicyNonPaidIndex' }
+                ]" ng-hide="HideW1003">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="WPT" asp-controller="Calendar" asp-action="CalendarIndex" class="dropdown-item">Calendar</a></li>
+            <li><a asp-area="WPT" asp-controller="Leave" asp-action="LeaveRequisitionIndex" class="dropdown-item">Leave Requisition</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;HideW1003=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;PayRun
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><a asp-area="WPT" asp-controller="PayRun" asp-action="PayRunIndex" class="dropdown-item">PayRun</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="WPT" asp-controller="Loan" asp-action="LoanIndex" class="dropdown-item">Loan</a></li>
+            <li><a asp-area="WPT" asp-controller="Loan" asp-action="LoanIndividualIndex" class="dropdown-item">Loan Individual</a></li>
+            <li><a asp-area="WPT" asp-controller="Incentive" asp-action="IncentivePolicyIndex" class="dropdown-item">Incentive</a></li>
+            <li><a asp-area="WPT" asp-controller="Reward" asp-action="RewardIndex" class="dropdown-item">Reward</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="WPT" asp-controller="Increment" asp-action="IncrementIndex" class="dropdown-item">Incremenet</a></li>
+        </ul>
+    </li>
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/WPT/General/EmailIndex">
+            <i class="fa fa-envelope" style="color: white;"></i>&nbsp;&nbsp;Email
+        </a>
+    </li>
+
+
+
+}
+else if (@Model.ToString() == "Accounts")
+{
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW2000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-tools" style="color: white;"></i>&nbsp;&nbsp;Setup
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW2000?HideW2000=false:HideW2000=true">Master Files</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Currency', 'Url': '/Accounts/SetUp/CurrencyAndCountryIndex' },
+                { 'Name': 'ChartOfAccounts Type', 'Url': '/Accounts/SetUp/ChartOfAccountsTypeIndex' },
+                { 'Name': 'Policy Inventory', 'Url': '/Accounts/SetUp/AcPolicyInventoryIndex' },
+                { 'Name': 'Policy WHTax Purchase', 'Url': '/Accounts/SetUp/AcPolicyWHTaxOnPurchaseIndex' },
+                { 'Name': 'Policy WHTax Sales', 'Url': '/Accounts/SetUp/AcPolicyWHTaxOnSalesIndex' },
+                { 'Name': 'Fiscal Year', 'Url': '/Accounts/SetUp/FiscalYearIndex' },
+                { 'Name': 'Policy Payment Term', 'Url': '/Accounts/SetUp/AcPolicyPaymentTermIndex' }
+                ]" ng-hide="HideW2000">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="ChartOfAccounts" asp-action="ChartOfAccountsIndex" class="dropdown-item">Chart Of Accounts</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-wallet" style="color: white;"></i>&nbsp;&nbsp;Accounts
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Voucher" asp-action="BankPaymentDocumentIndex" class="dropdown-item">Bank Payment</a></li>
+            <li><a asp-area="Accounts" asp-controller="Voucher" asp-action="BankReceiveDocumentIndex" class="dropdown-item">Bank Receive</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Voucher" asp-action="CashPaymentDocumentIndex" class="dropdown-item">Cash Payment</a></li>
+            <li><a asp-area="Accounts" asp-controller="Voucher" asp-action="CashReceiveDocumentIndex" class="dropdown-item">Cash Receive</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Voucher" asp-action="JournalDocumentIndex" class="dropdown-item">Journal Document</a></li>
+            <li><a asp-area="Accounts" asp-controller="Voucher" asp-action="JournalDocument2Index" class="dropdown-item">Journal Document2</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-file-invoice" style="color: white;"></i>&nbsp;&nbsp;Invoice
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Invoice" asp-action="PurchaseNoteIndex" class="dropdown-item">Purchase Note</a></li>
+            <li><a asp-area="Accounts" asp-controller="Invoice" asp-action="PurchaseReturnNoteIndex" class="dropdown-item">Purchase Return Note</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Invoice" asp-action="SalesNoteIndex" class="dropdown-item">Sales Note</a></li>
+            <li><a asp-area="Accounts" asp-controller="Invoice" asp-action="SalesReturnNoteIndex" class="dropdown-item">Sales Return Note</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-circle-info" style="color: white;"></i>&nbsp;&nbsp;Proceedings
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Proceedings" asp-action="AcLedgerIndex" class="dropdown-item">Ledger</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="ChartOfAccounts" asp-action="CustomerRateListIndex" class="dropdown-item">Customer Rate List</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-weight-scale" style="color: white;"></i>&nbsp;&nbsp;Costing
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Costing" asp-action="CompositionCostingIndex" class="dropdown-item">Composition</a></li>
+            <li><a asp-area="Accounts" asp-controller="Costing" asp-action="BMRCostingIndex" class="dropdown-item">Batch</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="SetUp" asp-action="CompositionCostingFactorsIndex" class="dropdown-item">Costing Factors</a></li>
+        </ul>
+    </li>
+}
+else if (@Model.ToString() == "Inventory")
+{
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-tools" style="color: white;"></i>&nbsp;&nbsp;Setup
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW3000?HideW3000=false:HideW3000=true">Master Files</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Measurement Unit', 'Url': '/Inventory/SetUp/MeasurementUnitIndex' },
+                { 'Name': 'Product Classification', 'Url': '/Inventory/SetUp/ProductClassificationIndex' },
+                { 'Name': 'Product Type', 'Url': '/Inventory/SetUp/ProductTypeIndex' },
+                { 'Name': 'WareHouse', 'Url': '/Inventory/SetUp/WareHouseIndex' },
+                { 'Name': 'PO Supplier', 'Url': '/Inventory/SetUp/POSupplierIndex' },
+                { 'Name': 'PO Manufacturer', 'Url': '/Inventory/SetUp/POManufacturerIndex' },
+                { 'Name': 'PO Indenter', 'Url': '/Inventory/SetUp/POIndenterIndex' },
+                { 'Name': 'PO Conditions', 'Url': '/Inventory/SetUp/POTermsConditionsIndex' },
+                { 'Name': 'PO Import Terms', 'Url': '/Inventory/SetUp/POImportTermIndex' },
+                { 'Name': 'Transport Type', 'Url': '/Inventory/SetUp/TransportTypeIndex' },
+                { 'Name': 'Int Commercial Term', 'Url': '/Inventory/SetUp/InternationalCommercialTermIndex' }
+                ]" ng-hide="HideW3000">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="SetUp" asp-action="ProductRegistrationIndex" class="dropdown-item">Product Registration</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-truck-fast" style="color: white;"></i>&nbsp;&nbsp;Logistics
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="OrderNoteIndex" class="dropdown-item">Order Note</a></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="PurchaseOrderIndex" class="dropdown-item">PO Local</a></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="PurchaseOrderImportIndex" class="dropdown-item">PO Import</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="PurchaseRequestIndex" class="dropdown-item">Purchase Request</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="PurchaseRequestBidsIndex" class="dropdown-item">Purchase Request Bids</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="SupplierIndex" class="dropdown-item">Suppliers</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Orders" asp-action="CustomerSubDistributorListIndex" class="dropdown-item">Sub Distributor</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-file-invoice" style="color: white;"></i>&nbsp;&nbsp;Challan
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Challan" asp-action="PurchaseNoteIndex" class="dropdown-item">Purchase Note</a></li>
+            <li><a asp-area="Inventory" asp-controller="Challan" asp-action="PurchaseReturnNoteIndex" class="dropdown-item">Purchase Return Note</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Challan" asp-action="SalesNoteIndex" class="dropdown-item">Sales Note</a></li>
+            <li><a asp-area="Inventory" asp-controller="Challan" asp-action="SalesReturnNoteIndex" class="dropdown-item">Sales Return Note</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-hand-holding-droplet" style="color: white;"></i>&nbsp;&nbsp;Dispensing
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Dispensing" asp-action="OrdinaryRequisitionDispensingIndex" class="dropdown-item">Ordinary Requisition</a></li>
+            <li><a asp-area="Inventory" asp-controller="Dispensing" asp-action="BMRAdditionalDispensingIndex" class="dropdown-item">BMR Additional</a></li>
+            <li><a asp-area="Inventory" asp-controller="Dispensing" asp-action="BMRDispensingIndex" class="dropdown-item">Batch</a></li>
+            <li><a asp-area="Inventory" asp-controller="Dispensing" asp-action="PDRequestDispensingIndex" class="dropdown-item">PD Request</a></li>
+            <li><a asp-area="Inventory" asp-controller="Dispensing" asp-action="ProductionTransferIndex" class="dropdown-item">Prod Transfer Recv</a></li>
+            <li><a asp-area="Inventory" asp-controller="Dispensing" asp-action="StockTransferReceivingIndex" class="dropdown-item">Stock Transfer Recv</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-circle-info" style="color: white;"></i>&nbsp;&nbsp;Proceedings
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Proceedings" asp-action="InvLedgerIndex" class="dropdown-item">Ledger</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-hand-paper" style="color: white;"></i>&nbsp;&nbsp;Req
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Requisition" asp-action="OrdinaryRequisitionIndex" class="dropdown-item">Ordinary Req</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Inventory" asp-controller="Requisition" asp-action="StockTransferIndex" class="dropdown-item">Stock Tran Req</a></li>
+        </ul>
+    </li>
+
+}
+else if (@Model.ToString() == "QC")
+{
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/QC/Action/PurchaseNoteActionIndex">
+            <i class="fa fa-bag-shopping" style="color: white;"></i>&nbsp;&nbsp;Purchase Note Action
+        </a>
+    </li>
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/QC/Action/BMRBPRIndex">
+            <i class="fa fa-capsules" style="color: white;"></i>&nbsp;&nbsp;Batch Process Action
+        </a>
+    </li>
+}
+else if (@Model.ToString() == "Production")
+{
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-people-group" style="color: white;"></i>&nbsp;&nbsp;Setup
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><button class="dropdown-item dropdown-toggle" style="background-color:lightsteelblue; color:white;" ng-click="HideW3000?HideW3000=false:HideW3000=true">Master Files</button></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Composition Filter Policy', 'Url': '/Production/SetUp/CompositionFilterPolicyIndex' }
+                ]" ng-hide="HideW3000">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+            <li ng-hide="HideW3000"><hr class="dropdown-divider"></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Procedure BMR', 'Url': '/Production/SetUp/ProProcedureIndex?by=BMR' },
+                { 'Name': 'Procedure BPR', 'Url': '/Production/SetUp/ProProcedureIndex?by=BPR' }
+                ]" ng-hide="HideW3000">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+            <li ng-hide="HideW3000"><hr class="dropdown-divider"></li>
+            <li ng-repeat="itm in [
+                { 'Name': 'Process BMR', 'Url': '/Production/SetUp/ProProcessIndex?by=BMR' },
+                { 'Name': 'Process BPR', 'Url': '/Production/SetUp/ProProcessIndex?by=BPR' }
+                ]" ng-hide="HideW3000">
+                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/Production/BMR/OrderNoteProductionIndex">
+            <i class="fa fa-box-open" style="color: white;"></i>&nbsp;&nbsp;Production Order
+        </a>
+    </li>
+
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-capsules" style="color: white;"></i>&nbsp;&nbsp;Manufacturing
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Production" asp-controller="Composition" asp-action="CompositionIndex" class="dropdown-item">Composition</a></li>
+            <li><a asp-area="Production" asp-controller="BMR" asp-action="BMRIndex" class="dropdown-item">Batch</a></li>
+            <li><a asp-area="Production" asp-controller="BMR" asp-action="BMRAdditionalIndex" class="dropdown-item">Batch Additional</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/Production/BMR/ProductionTransferIndex">
+            <i class="fa fa-boxes" style="color: white;"></i>&nbsp;&nbsp;Batch Transfer
+        </a>
+    </li>
+
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/Production/Process/BMRBPRIndex">
+            <i class="fa fa-gears" style="color: white;"></i>&nbsp;&nbsp;Batch Process
+        </a>
+    </li>
+}
+else if (@Model.ToString() == "QA")
+{
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/QA/ProductionOrder/ProductionOrderIndex">
+            <i class="fa fa-box-open" style="color: white;"></i>&nbsp;&nbsp;Production Order
+        </a>
+    </li>
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW3000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-capsules" style="color: white;"></i>&nbsp;&nbsp;Manufacturing
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="QA" asp-controller="Composition" asp-action="CompositionIndex" class="dropdown-item">Composition</a></li>
+            <li><a asp-area="QA" asp-controller="BMR" asp-action="BMRIndex" class="dropdown-item">Batch</a></li>
+            <li><a asp-area="QA" asp-controller="BMR" asp-action="BMRAdditionalIndex" class="dropdown-item">Batch Additional</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcedureIndex" asp-route-by="BMR" class="dropdown-item">Procedure BMR</a></li>
+            <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcedureIndex" asp-route-by="BPR" class="dropdown-item">Procedure BPR</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcessIndex" asp-route-by="BMR" class="dropdown-item">Process BMR</a></li>
+            <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcessIndex" asp-route-by="BPR" class="dropdown-item">Process BPR</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="QA" asp-controller="SetUp" asp-action="CompositionFilterPolicyIndex" class="dropdown-item">Composition Filter Policy</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/QA/Process/BMRBPRIndex">
+            <i class="fa fa-gear" style="color: white;"></i>&nbsp;&nbsp;Batch Processes
+        </a>
+    </li>
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/QA/BMR/ProductionTransferIndex">
+            <i class="fa fa-boxes" style="color: white;"></i>&nbsp;&nbsp;Mfg Transfer
+        </a>
+    </li>
+}
+else if (@Model.ToString() == "PD")
+{
+    <li class="nav-item" style="padding-left: 1px;">
+        <a class="nav-link myNavBarDropDown" href="/PD/Request/RequestIndex">
+            <i class="fa fa-recycle" style="color: white;"></i>&nbsp;&nbsp;Trial Request
+        </a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Model.ToString()</a>
+    </li>
+}
+

@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Reward";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Reward/rewardindex.0.1.js"></script>
+}
+<div ng-controller="RewardIndexCtlr" class="container">
+
+    <div id="RewardIndexCtlr">
+        <MyViewName>Reward</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_WPT_RewardMaster.ID", "{{tbl_WPT_RewardMaster.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Month</span>
+                            <MyButtonModal fieldname="tbl_WPT_RewardMaster.FK_tbl_WPT_CalendarYear_Months_IDName" ng-click="OpenMonthSearchModalGeneral('Open', 0, 'tbl_WPT_RewardMaster.FK_tbl_WPT_CalendarYear_Months_IDName', MonthSearch_CtrlFunction_Ref_InvokeOnSelection); myform.tbl_WPT_RewardMaster.FK_tbl_WPT_CalendarYear_Months_IDName.$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardMaster.FK_tbl_WPT_CalendarYear_Months_IDName" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Reward Type</span>
+                            <select id="tbl_WPT_RewardMaster.FK_tbl_WPT_RewardType_ID" name="tbl_WPT_RewardMaster.FK_tbl_WPT_RewardType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.RewardName for x in RewardTypeList" data-ng-model="tbl_WPT_RewardMaster.FK_tbl_WPT_RewardType_ID" ng-disabled="ng_readOnly" required>
+                                <option value="">Please Select Reward Type</option>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardMaster.FK_tbl_WPT_RewardType_ID" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                            <input id="tbl_WPT_RewardMaster.Remarks" name="tbl_WPT_RewardMaster.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_RewardMaster.Remarks" ng-model="tbl_WPT_RewardMaster.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                            <MyValidationSpan formname="myform" fieldname="tbl_WPT_RewardMaster.Remarks" maxlength="50"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardMaster.CreatedBy}}" ng-model="tbl_WPT_RewardMaster.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_RewardMaster.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardMaster.ModifiedBy}}" ng-model="tbl_WPT_RewardMaster.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_RewardMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_RewardMaster.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Month
+                    </th>
+                    <th>
+                        Reward Type
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        # Employees
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.FK_tbl_WPT_CalendarYear_Months_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_WPT_RewardType_IDName}}
+                    </td>
+                    <td>
+                        {{itm.Remarks}}
+                    </td>
+                    <td>
+                        {{itm.NoOfEmployees}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('RewardDetailEmployeeCtlr',itm,'RewardIndexCtlr','RewardDetailEmployeeCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Employee">Employee<span class="fa fa-user"></span></button>|
+                            <button ng-click="DivHideShow('RewardDetailPaymentCtlr',itm,'RewardIndexCtlr','RewardDetailPaymentCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Payment">Payment<span class="fa fa-bank"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "RewardIndexCtlr")
+    </div>
+
+
+    <div ng-controller="RewardDetailEmployeeCtlr">
+        <div id="RewardDetailEmployeeCtlr" style="display: none;">
+            @await Html.PartialAsync("RewardDetailEmployee")
+        </div>
+    </div>
+
+    <div ng-controller="RewardDetailPaymentCtlr">
+        <div id="RewardDetailPaymentCtlr" style="display: none;">
+            @await Html.PartialAsync("RewardDetailPayment")
+        </div>
+        <div ng-controller="RewardDetailPaymentEmployeeCtlr">
+            <div id="RewardDetailPaymentEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("RewardDetailPaymentEmployee")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_MonthSearchModalGeneral")
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

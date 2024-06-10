@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/StyleSheet.css",
+    "inputFile": "wwwroot/css/StyleSheet.scss"
+  },
+  {
+    "outputFile": "wwwroot/bootstrap/scss/mysass.css",
+    "inputFile": "wwwroot/bootstrap/scss/mysass.scss"
+  }
+]

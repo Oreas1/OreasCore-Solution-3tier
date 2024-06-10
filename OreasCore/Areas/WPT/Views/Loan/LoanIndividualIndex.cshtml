@@ -1,0 +1,125 @@
+﻿@{
+    ViewBag.Title = "Loan-Individual";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Loan/loanindividualindex.0.1.js"></script>
+}
+    <div ng-controller="LoanIndividualIndexCtlr" class="container">
+
+        <div id="LoanIndividualIndexCtlr">
+            <MyViewName>Loan Individual</MyViewName>
+            @*-----------------------------------this Load Data-----------------------------*@
+            <div>
+                <form name="myform1" role="form" ng-submit="pageNavigation('first'); myform1.$setPristine();" novalidate>
+                    <MyFieldSet legendtext="Filter Parameters" style="background-color:lavender;">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Date Till</span>
+                                <input id="ParaDateTill" name="ParaDateTill" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{ParaDateTill}}" ng-change="pageNavigationParameterChanged();" ng-model="ParaDateTill" required />
+                                <MyValidationSpan formname="myform1" fieldname="ParaDateTill" required="true"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Loan Type</span>
+                                <select id="ParaLoanTypeID" name="ParaLoanTypeID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.LoanType for x in LoanTypeList" data-ng-model="ParaLoanTypeID" ng-change="pageNavigationParameterChanged();">
+                                    <option value="">Any Loan Type</option>
+                                </select>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                                <MyButtonModal fieldname="ParaEmpName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'ParaEmpName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform1['ParaEmpName'].$dirty=true;pageNavigationParameterChanged();" required></MyButtonModal>
+                                <MyValidationSpan formname="myform1" fieldname="ParaEmpName" required="true"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span class="input-group-text LabelTextNotRequired bg-transparent border-0">&nbsp;</span>
+                                <input type="submit" value="Fetch Result" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" style="width:100%" ng-disabled="myform1.$invalid || ng_DisabledBtnAll" />
+                            </div>
+                        </div>
+
+                    </MyFieldSet>
+                </form>
+            </div>
+            <hr />
+
+            @*-----------------------------------this is data list view-----------------------------*@
+            <div mycssclass="@MyCSSClassName.Table_Div">
+                <table mycssclass="@MyCSSClassName.Table_Table">
+                    <tr>
+                        <th>
+                            DocNo
+                        </th>
+                        <th>
+                            Loan Type
+                        </th>
+                        <th>
+                            Amount/Balance
+                        </th>
+                        <th>
+                            Rate
+                        </th>
+                        <th>
+                            Effective Date
+                        </th>
+                        <th>
+                            Receiving Date
+                        </th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="itm in pageddata.Data">
+                        <td>
+                            {{itm.DocNo}}
+                        </td>
+                        <td>
+                            {{itm.LoanType}}
+                        </td>
+                        <td>
+                            {{itm.Amount}}/{{itm.Balance}}
+                        </td>
+                        <td>
+                            {{itm.InstallmentRate}}
+                        </td>
+                        <td>
+                            {{itm.EffectiveFrom}}
+                        </td>
+                        <td>
+                            {{itm.ReceivingDate}}
+                        </td>
+                        <td>
+                            <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                                <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                                <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                                <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                                <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                                <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                                <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                                <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                                <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div ng-hide="!ParaEmpID>0">
+                @await Html.PartialAsync("_ReportPanelGeneral")
+            </div>
+
+        </div>
+
+        @*-----------------------------------this is Modal view-----------------------------*@
+        <!-- Modal -->
+        @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+
+    </div>
+
+
+
+
+
+

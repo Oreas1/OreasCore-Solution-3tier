@@ -1,0 +1,48 @@
+﻿<div class="btn-group" role="group" aria-label="HR">
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow(null,null,'HRTeamCtlr','HRCtlr', this);">HR Main</button>
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRSalaryCtlr',MasterObject,'HRTeamCtlr','HRSalaryCtlr', this);">Salary</button>
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRAttendanceCtlr',MasterObject,'HRTeamCtlr','HRAttendanceCtlr', this);">Attendance</button>
+    <button type="button" class="btn btn-outline-primary">Team</button>
+</div>
+<div>
+    <MyFieldSet legendtext="Team">
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Instance</span>
+                <input id="ATDate" name="ATDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input"  ng-model="ATDate" ng-change="ATDateChange();"/>
+            </div>
+        </div>
+      
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3" ng-repeat="itm in TeamAT">
+
+                <div class="card text-white mb-3" style="background-color:steelblue; color:white;">
+                    <div class="card-header">
+                        <div class="d-flex">
+                            <div class="d-inline-block" style="width:70%;"><b>{{itm.DepartmentName}}</b></div>
+                            <div class="d-inline-block" style="width:30%;"><h5><i class="fa fa-user-group"></i> {{itm.TotalEmp}}</h5></div>
+                        </div>                        
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex" style="text-align:center;">
+                            <div class="d-inline-block" style="width:33%;"> <i class="fa fa-fingerprint"></i> P: {{itm.TotalP}} </div>
+                            <div class="d-inline-block" style="width:33%;"> <i class="fa fa-home"></i> A: {{itm.TotalA}} </div>
+                            <div class="d-inline-block" style="width:33%;"> <i class="fa fa-running"></i> LI: {{itm.TotalLI}} </div>
+                        </div>
+                        <canvas id="{{itm.DepartmentName}}" style="width:100%;max-height:100px;"></canvas>
+                    </div>
+                    <div class="card-footer" style="background-color:lightsteelblue;">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: {{itm.PerP}}%;" aria-valuenow="{{itm.PerP}}" aria-valuemin="0" aria-valuemax="100">{{itm.PerP}}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </MyFieldSet>
+
+
+
+
+
+</div>

@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "QAProductionTransfer";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-QA/BMR/productiontransferqaindex.0.1.js"></script>
+}
+<div ng-controller="ProductionTransferMasterCtlr" class="container">
+
+    <div id="ProductionTransferMasterCtlr">
+        <MyViewName>QA Production Transfer</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        WareHouse
+                    </th>
+                    <th>
+                        Total Items
+                    </th>
+                    <th>
+                        QA Cleared All
+                    </th>
+                    <th>
+                        Received All
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.TotalItems}}
+                    </td>
+                    <td>
+                        {{itm.QAClearedAll === true ? 'Cleared' : 'Pending'}}
+                    </td>
+                    <td>
+                        {{itm.ReceivedAll === true ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('ProductionTransferDetailCtlr',itm,'ProductionTransferMasterCtlr','ProductionTransferDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ProductionTransferMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. No changes allowed when stock received</p>
+        </div>
+    </div>
+
+
+    <div ng-controller="ProductionTransferDetailCtlr">
+        <div id="ProductionTransferDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("ProductionTransferDetail")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+
+</div>
+
+
+
+

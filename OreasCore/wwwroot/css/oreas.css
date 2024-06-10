@@ -1,0 +1,125 @@
+﻿
+html {
+    font-size: 12px;
+    overflow: visible;
+}
+:root {
+    --myblue: #399cd8;
+}
+/* ------------------------Main page table having operations add edit delete------------------------------ */
+.pagedData_table tr:first-child {
+    background-color: steelblue;
+    color: white;
+}
+
+.pagedData_table tr:last-child td {
+    background-color: lightgrey;
+    text-align: center;
+    vertical-align: middle; 
+}
+.pagedData_table td:nth-child(1) {
+    background-color: #bcbadd30;
+}
+.pagedData_table td:last-child {
+    background-color: #bcbadd30;
+    width: 10%;
+}
+/* ------------------------Sub page table having master data------------------------------ */
+.masterData_table tr:first-child {
+    background-color: darkslategray;
+    color: white;
+}
+
+.masterData_table tr:last-child td {
+    background-color: darkslategray;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.masterData_table td:nth-child(1) {
+    background-color: #bcbadd30;
+}
+/*--------------------------nh-hide animation controlled from css--------------------------------*/
+.ngHideCustomAnimation.ng-hide-add {
+    transition: none !important;
+}
+
+.ngHideCustomAnimation.ng-hide-remove {
+    transition: all linear 1s !important;
+}
+/*--------------------------------------------------------------------*/
+select,
+select option {
+    color: #000000;
+    font-weight: bold;
+}
+
+    select:invalid,
+    select option[value=""] {
+        color: #999999;
+        font-weight: bold;
+    }
+/* ------------------------button------------------------------ */
+.focusBtn:focus {
+    font-weight:bold;
+    border-color : steelblue;
+}
+/* ------------------------ngHide animation------------------------------ */
+.ngHideDiv {
+    padding-top: 10px;
+}
+
+    .ngHideDiv.ng-hide-add {
+        -webkit-transition: all linear 0.3s;
+        -moz-transition: all linear 0.3s;
+        -ms-transition: all linear 0.3s;
+        -o-transition: all linear 0.3s;
+        opacity: 1;
+    }
+
+    .ngHideDiv.ng-hide-add-active {
+        opacity: 0;
+    }
+
+    .ngHideDiv.ng-hide-remove {
+        -webkit-transition: all linear 0.3s;
+        -moz-transition: all linear 0.3s;
+        -ms-transition: all linear 0.3s;
+        -o-transition: all linear 0.3s;
+        opacity: 0;
+    }
+
+    .ngHideDiv.ng-hide-remove-active {
+        opacity: 1;
+    }
+/* ------------------------ngHide Remove animation for cancell button of edit or delete------------------------------ */
+.no-animate {
+    -webkit-transition: none !important;
+    transition: none !important;
+}
+/* ------------------------Form Controls------------------------------ */
+
+
+.LabelTextRequired {
+    background-color: lightsteelblue;    
+}
+.LabelTextNotRequired {
+    
+}
+.FieldSetParent {
+    border-radius: 8px;
+    box-shadow: darkgray -2px 2px 2px 2px;
+}
+.FieldSetChild {
+
+}
+.dropdown-menu {   
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 150px);
+}
+.myNavBarDropDown {
+    background-color: lightsteelblue;
+    color: darkslategray;
+    font-weight: bold;
+}

@@ -1,0 +1,137 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'EmployeeFFCPTemplateCtlr','EmployeeIndexCtlr', this);">Employee</a>
+    <MyViewName child="true"> Face Finger Card Pin Template</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        CNIC
+                    </th>
+                    <th>
+                        Department / Designation
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.EmployeeName}}</b> [{{MasterObject.ATEnrollmentNo_Default}}]
+                    </td>
+                    <td>
+                        {{MasterObject.CNIC}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_WPT_DepartmentDetail_Section_IDName}} / {{MasterObject.FK_tbl_WPT_Designation_IDName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img style="border:ridge;" data-ng-src="data:image/jpeg;base64,{{tbl_WPT_Employee_PFF.Photo160X210.length>0?tbl_WPT_Employee_PFF.Photo160X210:''}}" width="80" height="105" />
+                <input type="file" id="UserPhoto" name="UserPhoto" onchange="angular.element(this).scope().LoadFileData(this.files)" accept="image/*" class="btn btn-block" />
+            </div>
+            <div class="col">
+                <i class="fa fa-face-grin-beam-sweat" style="font-size:xx-large;"></i>: {{tbl_WPT_Employee_PFF.HasFaceTemplate?'Yes':'No'}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <i class="fa fa-hand" style="font-size:xx-large;"></i>: {{tbl_WPT_Employee_PFF.FingerCount}}
+            </div>
+            <div class="col">
+                <div class="">
+                    <img src="~/images/RightHandFingerIndex.png" />
+                </div>
+                <div class="">
+                    <input value="F0" type="button" class="btn {{tbl_WPT_Employee_PFF.f0 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F1" type="button" class="btn {{tbl_WPT_Employee_PFF.f1 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F2" type="button" class="btn {{tbl_WPT_Employee_PFF.f2 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F3" type="button" class="btn {{tbl_WPT_Employee_PFF.f3 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F4" type="button" class="btn {{tbl_WPT_Employee_PFF.f4 ? 'btn-success': ''}} btn-sm" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="">
+                    <img src="~/images/LeftHandFingerIndex.png" />
+                </div>
+                <div class="">
+                    <input value="F5" type="button" class="btn {{tbl_WPT_Employee_PFF.f5 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F6" type="button" class="btn {{tbl_WPT_Employee_PFF.f6 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F7" type="button" class="btn {{tbl_WPT_Employee_PFF.f7 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F8" type="button" class="btn {{tbl_WPT_Employee_PFF.f8 ? 'btn-success': ''}} btn-sm" />
+                    <input value="F9" type="button" class="btn {{tbl_WPT_Employee_PFF.f9 ? 'btn-success': ''}} btn-sm" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+
+        <form name="myform" role="form" ng-submit="PostRow();">
+
+            <div class="form-horizontal">
+
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Card #:</label>
+                        <input name="CardNumber" type="text" placeholder="Card Number" class="form-control col-lg-4 col-md-6" ng-model="tbl_WPT_Employee_PFF.CardNumber" />
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Password:</label>
+                        <input name="Password" type="text" placeholder="Password/Pin" class="form-control col-lg-4 col-md-6" ng-model="tbl_WPT_Employee_PFF.Password" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Privilege:</label>
+                        <select name="Privilege" ng-options="o.v as o.n for o in [{ n: 'Common', v: 0 }, { n: 'Registrar', v: 1 }, { n: 'Administrator', v: 2 }, { n: 'Super Administrator', v: 3 }]" data-ng-model="tbl_WPT_Employee_PFF.Privilege" class="form-select col-lg-4 col-md-6"></select>
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Enabled:</label>
+                        <select name="Enabled" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_WPT_Employee_PFF.Enabled" class="form-select col-lg-4 col-md-6"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Remove Face:</label>
+                        <select style="background-color:lightpink;" name="Enabled" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="RemoveFace" class="form-select col-lg-4 col-md-6"></select>
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Remove Finger:</label>
+                        <select style="background-color:lightpink;" name="Enabled" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="RemoveFinger" class="form-select col-lg-4 col-md-6"></select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                        <label class="control-label col-lg-4 col-md-4">Remove Photo:</label>
+                        <select style="background-color:lightpink;" name="Enabled" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="RemovePhoto" class="form-select col-lg-4 col-md-6"></select>
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save Update" class="btn btn-primary" ng-disabled="myform.$invalid" />
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

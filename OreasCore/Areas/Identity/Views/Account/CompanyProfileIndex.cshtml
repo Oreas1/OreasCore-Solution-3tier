@@ -1,0 +1,199 @@
+﻿@{
+    ViewBag.Title = "Company Profile";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Identity/companyprofileindex.0.1.js"></script>
+}
+<div ng-controller="CompanyProfileIndexCtlr" class="container">
+    <div id="CompanyProfileIndexCtlr">
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <div>
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("AspNetOreasCompanyProfile.ID", "{{AspNetOreasCompanyProfile.ID}}")
+
+            <MyFieldSet legendtext="Company Profile">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <div class="btn-group">
+                            <img style="border:ridge;" data-ng-src="data:image/jpeg;base64,{{AspNetOreasCompanyProfile.LicenseByLogo.length>0?AspNetOreasCompanyProfile.LicenseByLogo:''}}" width="60" height="60" />
+                            <input type="file" id="LicenseByLogo" name="LicenseByLogo" onchange="angular.element(this).scope().LoadFileData(this.files,'LicenseByLogo')" accept="image/*" class="btn btn-block" />
+                        </div>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License By</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseBy" name="AspNetOreasCompanyProfile.LicenseBy" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseBy" ng-model="AspNetOreasCompanyProfile.LicenseBy" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseBy" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License By Contact</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseByCellNo" name="AspNetOreasCompanyProfile.LicenseByCellNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseByCellNo" ng-model="AspNetOreasCompanyProfile.LicenseByCellNo" minlength="10" maxlength="20" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseByCellNo" required="true" minlength="3" maxlength="20"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License By Address</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseByAddress" name="AspNetOreasCompanyProfile.LicenseByAddress" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseByAddress" ng-model="AspNetOreasCompanyProfile.LicenseByAddress" minlength="10" maxlength="100" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseByAddress" required="true" minlength="10" maxlength="100"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div class="btn-group">
+                        <img style="border:ridge;" data-ng-src="data:image/jpeg;base64,{{AspNetOreasCompanyProfile.LicenseToLogo.length>0?AspNetOreasCompanyProfile.LicenseToLogo:''}}" width="60" height="60" />
+                        <input type="file" id="LicenseToLogo" name="LicenseToLogo" onchange="angular.element(this).scope().LoadFileData(this.files,'LicenseToLogo')" accept="image/*" class="btn btn-block" />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License ID</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToID" name="AspNetOreasCompanyProfile.LicenseToID" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToID" ng-model="AspNetOreasCompanyProfile.LicenseToID" minlength="5" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToID" required="true" minlength="5" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Name</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseTo" name="AspNetOreasCompanyProfile.LicenseTo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseTo" ng-model="AspNetOreasCompanyProfile.LicenseTo" minlength="3" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseTo" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Address</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToAddress" name="AspNetOreasCompanyProfile.LicenseToAddress" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToAddress" ng-model="AspNetOreasCompanyProfile.LicenseToAddress" minlength="10" maxlength="100" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToAddress" required="true" minlength="10" maxlength="100"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Contact</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToContactNo" name="AspNetOreasCompanyProfile.LicenseToContactNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToContactNo" ng-model="AspNetOreasCompanyProfile.LicenseToContactNo" minlength="10" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToContactNo" required="true" minlength="10" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup9">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Email Footer</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmailFooter" name="AspNetOreasCompanyProfile.LicenseToEmailFooter" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmailFooter" ng-model="AspNetOreasCompanyProfile.LicenseToEmailFooter" maxlength="1000" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmailFooter" maxlength="1000"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Email</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmail" name="AspNetOreasCompanyProfile.LicenseToEmail" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmail" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" placeholder="etc.. noreply@oreas.com" ng-model="AspNetOreasCompanyProfile.LicenseToEmail" maxlength="50" required/>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmail" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To HostName</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmailHostName" name="AspNetOreasCompanyProfile.LicenseToEmailHostName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmailHostName" ng-model="AspNetOreasCompanyProfile.LicenseToEmailHostName" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmailHostName" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Port#</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmailPortNo" name="AspNetOreasCompanyProfile.LicenseToEmailPortNo" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmailPortNo" ng-model="AspNetOreasCompanyProfile.LicenseToEmailPortNo" min="0" max="999" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmailPortNo" required="true" minlength="1" maxlength="3"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Password</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmailPswd" name="AspNetOreasCompanyProfile.LicenseToEmailPswd" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmailPswd" ng-model="AspNetOreasCompanyProfile.LicenseToEmailPswd" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmailPswd" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To NTN</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToNTN" name="AspNetOreasCompanyProfile.LicenseToNTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToNTN" ng-model="AspNetOreasCompanyProfile.LicenseToNTN" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToNTN" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To STN</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToSTN" name="AspNetOreasCompanyProfile.LicenseToSTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToSTN" ng-model="AspNetOreasCompanyProfile.LicenseToSTN" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToSTN" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="Save Update" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+            </MyFieldSet>
+            </form>
+        </div>
+
+    </div>
+    <hr />
+    <div>
+        <h1>Software License Agreement</h1>
+        <p>
+            This Software License Agreement is entered into between Oreas and the {{AspNetOreasCompanyProfile.LicenseTo}}.
+            By installing, downloading, or using the software,
+            the Licensee agrees to be bound by the terms and conditions outlined in this Agreement.
+        </p>
+
+        <h3>Permitted Use</h3>
+        <p>
+            The Licensee is authorized to use the software for commercial purposes,
+            subject to the terms and conditions outlined herein.
+            Any use beyond the scope of this Agreement is strictly prohibited
+        </p>
+
+        <h3>Restrictions</h3>
+        <p>
+            The Licensee may not:
+        </p>
+        <ul>
+            <li>Modify, adapt, translate, or create derivative works based on the software.</li>
+            <li>Reverse engineer, decompile, or disassemble the software.</li>
+            <li>Transfer, sublicense, or distribute the software to any third party.</li>
+        </ul>
+
+        <h3>Intellectual Property</h3>
+        <p>
+            Oreas Solutions retains all rights, title, and interest in and to the software, including any improvements, modifications, or updates.
+        </p>
+
+        <h3>Warranty and Support</h3>
+        <p>
+            This Agreement is effective until terminated.
+            Oreas reserves the right to terminate the license at any time if the Licensee breaches any of the terms outlined herein.
+        </p>
+
+        <h3>Governing Law</h3>
+        <p>
+            This Agreement shall be governed by and construed in accordance with the laws of Pakistan.
+            By installing, downloading, or using the software,
+            the Licensee acknowledges that they have read and understood this Agreement and agree to be bound by its terms.
+        </p>
+
+        <h3>Information Sharing</h3>
+        <p>
+            We may share your information with Legal authorities if required by law along with informing you.
+        </p>
+        <ul>
+            <li>Providing and improving our services</li>
+            <li>Personalizing your experience</li>
+            <li>Analyzing usage patterns and trends</li>
+        </ul>
+
+        <h3>Updates to this Privacy Policy</h3>
+        <p>
+            We may update this Privacy Policy periodically.
+            The date of the latest revision will be indicated at the top of the page
+        </p>
+        <h3>Contact Us</h3>
+        <p>
+            If you have any questions or concerns about this Privacy Policy, please contact us at connect2mobilephone@gmail.com
+        </p>
+    </div>
+</div>
+
+
+
+

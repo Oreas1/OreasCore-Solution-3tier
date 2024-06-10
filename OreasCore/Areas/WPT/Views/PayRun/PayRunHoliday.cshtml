@@ -1,0 +1,136 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunHolidayCtlr','PayRunIndexCtlr', this);">PayRun</a>
+    <MyViewName child="true"> General Holidays of the Month</MyViewName>
+</MyViewName>
+
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Month From
+                    </th>
+                    <th>
+                        Month To
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.CalendarMonthStartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.CalendarMonthEndDate}}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <td colspan="7" style="border: 2px solid gray; font-weight: bolder; font-size: large; text-align: center; color: steelblue;">{{MonthName}}</td>
+        </tr>
+        <tr>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightcoral; color:white; font-weight: bolder; font-size:large;" width="14%">
+                Sunday
+            </th>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: large; " width="14%">
+                Monday
+            </th>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: large; " width="14%">
+                Tuesday
+            </th>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: large; " width="14%">
+                Wednesday
+            </th>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: large; " width="14%">
+                Thrusday
+            </th>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: large; " width="14%">
+                Friday
+            </th>
+            <th style="border: 2px solid gray; text-align: center; background-color: lightsteelblue; color: white; font-weight: bolder; font-size: large;" width="14%">
+                Saturday
+            </th>
+        </tr>
+        <tr ng-repeat="item in weeks;">
+            <td style="border: 2px solid gray; text-align: right;" ng-repeat="itm in item">
+                <div ng-hide="itm.ID===''" style="background-color:{{itm.Remarks.length>0 ? 'lightpink' : 'transparent'}}">
+                    <div class="btn-group-sm" style="width:100%">
+                        <button class="btn" style="width:25%" ng-hide="itm.Remarks.length>0" ng-click="DateClickEvent('Save New',itm.ID);" title="Add Holiday"><span class="fa fa-plus" style="background-color:transparent; color:green;"></span></button>
+                        <button class="btn" style="width:25%" ng-hide="!itm.Remarks.length>0" ng-click="DateClickEvent('Save Update',itm.ID);" title="Edit Holiday"><span class="fa fa-pencil" style="background-color:transparent; color:steelblue;"></span></button>
+                        <button class="btn" style="width:25%" ng-hide="!itm.Remarks.length>0" ng-click="DateClickEvent('Save Delete',itm.ID);" title="Delete Holiday"><span class="fa fa-close" style="background-color:transparent; color:darkred;">></span></button>
+
+                        <label style="width:40%; background-color:darkslategrey;text-align:center; color:white; font-weight:bold; border-radius:2px;">{{itm.Day}}</label>
+                    </div>
+                    <textarea rows="1" id="{{itm.ID}}" class="form-control w-100" style="font-size:xx-small; background-color:transparent; border: 1px solid black;" readonly>{{itm.Remarks}}</textarea>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+
+    @*-----------------------------------Employee Search Modal-----------------------------*@
+    <div class="modal fade" id="PayRunHolidayModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Entry Form For {{MonthName}}</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Holiday Type</span>
+                                <select id="tbl_WPT_CalendarYear_Months_Holidays.FK_tbl_WPT_Holiday_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                        ng-options="x.ID as x.HolidayName for x in HolidayList" ng-model="tbl_WPT_CalendarYear_Months_Holidays.FK_tbl_WPT_Holiday_ID" ng-disabled="ng_readOnly" required>
+                                    <option value="">Select Holiday Type</option>
+                                </select>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Holiday Date</span>
+                                <input id="tbl_WPT_CalendarYear_Months_Holidays.HolidayDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_CalendarYear_Months_Holidays.HolidayDate" readonly required />
+                            </div>
+                        </div>
+
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                                <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                            </div>
+                        </div>
+
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_Months_Holidays.CreatedBy}}" ng-model="tbl_WPT_CalendarYear_Months_Holidays.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_Months_Holidays.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_CalendarYear_Months_Holidays.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_Months_Holidays.ModifiedBy}}" ng-model="tbl_WPT_CalendarYear_Months_Holidays.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_CalendarYear_Months_Holidays.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_CalendarYear_Months_Holidays.ModifiedDate" disabled />
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

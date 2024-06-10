@@ -1,0 +1,259 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'OrderNoteDetailCtlr','OrderNoteMasterCtlr', this);">Order Note</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Customer A/c
+                    </th>
+                    <th>
+                        Target Date
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        <b>{{MasterObject.FK_tbl_Ac_ChartOfAccounts_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.TargetDate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Inv_OrderNoteDetail.ID", "{{tbl_Inv_OrderNoteDetail.ID}}")
+            @Html.Hidden("tbl_Inv_OrderNoteDetail.FK_tbl_Inv_OrderNoteMaster_ID", "{{tbl_Inv_OrderNoteDetail.FK_tbl_Inv_OrderNoteMaster_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product</span>
+                        <MyButtonModal fieldname="tbl_Inv_OrderNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName" ng-click="OpenProductSearchModalGeneral('OrderNote', tbl_Inv_OrderNoteDetail.FK_tbl_Inv_OrderNoteMaster_ID, 'tbl_Inv_OrderNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName', ProductSearch_CtrlFunction_Ref_InvokeOnSelection, null, tbl_Inv_OrderNoteDetail.ID); myform['tbl_Inv_OrderNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Inv_OrderNoteDetail.UsedInSN_BMR > 0" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Quantity In {{tbl_Inv_OrderNoteDetail.MeasurementUnit}}</span>
+                        <input id="tbl_Inv_OrderNoteDetail.Quantity" name="tbl_Inv_OrderNoteDetail.Quantity" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.Quantity" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.Quantity" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Mfg Qty Limit In {{tbl_Inv_OrderNoteDetail.MeasurementUnit}}</span>
+                        <input id="tbl_Inv_OrderNoteDetail.MfgQtyLimit" name="tbl_Inv_OrderNoteDetail.MfgQtyLimit" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.MfgQtyLimit" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.MfgQtyLimit" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Rate</span>
+                        <input id="tbl_Inv_OrderNoteDetail.Rate" name="tbl_Inv_OrderNoteDetail.Rate" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.Rate" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.Rate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Custom MRP</span>
+                        <input id="tbl_Inv_OrderNoteDetail.CustomMRP" name="tbl_Inv_OrderNoteDetail.CustomMRP" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.CustomMRP" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.CustomMRP" required="true"></MyValidationSpan>
+                    </div>
+
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Priority</span>
+                        <select id="tbl_Inv_OrderNoteDetail.FK_AspNetOreasPriority_ID" name="tbl_Inv_OrderNoteDetail.FK_AspNetOreasPriority_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Priority for x in AspNetOreasPriorityList" data-ng-model="tbl_Inv_OrderNoteDetail.FK_AspNetOreasPriority_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Priority</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.FK_AspNetOreasPriority_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Status</span>
+                        <select id="tbl_Inv_OrderNoteDetail.ClosedTrue_OpenFalse" name="tbl_Inv_OrderNoteDetail.ClosedTrue_OpenFalse" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Closed', v: true }, { n: 'Open', v: false }]" data-ng-model="tbl_Inv_OrderNoteDetail.ClosedTrue_OpenFalse" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Status</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.ClosedTrue_OpenFalse" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input type="text" id="tbl_Inv_OrderNoteDetail.Remarks" name="tbl_Inv_OrderNoteDetail.Remarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Remarks" value="tbl_Inv_OrderNoteDetail.Remarks" ng-model="tbl_Inv_OrderNoteDetail.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Packaging Name</span>
+                        <input type="text" id="tbl_Inv_OrderNoteDetail.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_IDName" name="tbl_Inv_OrderNoteDetail.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_IDName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="BMR Packaging Name ..." value="tbl_Inv_OrderNoteDetail.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_IDName" ng-model="tbl_Inv_OrderNoteDetail.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_IDName" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Manufacturing Qty {{tbl_Inv_OrderNoteDetail.MeasurementUnit}}</span>
+                        <input id="tbl_Inv_OrderNoteDetail.ManufacturingQty" name="tbl_Inv_OrderNoteDetail.ManufacturingQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.ManufacturingQty" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" readonly required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.ManufacturingQty" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Sold Qty {{tbl_Inv_OrderNoteDetail.MeasurementUnit}}</span>
+                        <input id="tbl_Inv_OrderNoteDetail.SoldQty" name="tbl_Inv_OrderNoteDetail.SoldQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.SoldQty" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" readonly required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.SoldQty" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail.CreatedBy}}" ng-model="tbl_Inv_OrderNoteDetail.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_OrderNoteDetail.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail.ModifiedBy}}" ng-model="tbl_Inv_OrderNoteDetail.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_OrderNoteDetail.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Primary Product
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Mfg Qty Limit
+                </th>
+                <th>
+                    Packaging Name
+                </th>
+                <th>
+                    Rate
+                </th>
+                <th>
+                    Custom MRP
+                </th>
+                <th>
+                    Priority
+                </th>
+                <th>
+                    Manufacturing Qty
+                </th>
+                <th>
+                    Sold Qty
+                </th>
+                <th>
+                    Status
+                </th>
+                <td>
+                    SubDistributors
+                </td>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{itm.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.MfgQtyLimit}} {{itm.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_IDName}}
+                </td>
+                <td>
+                    {{itm.Rate}}
+                </td>
+                <td>
+                    {{itm.CustomMRP}}
+                </td>
+                <td>
+                    {{itm.FK_AspNetOreasPriority_IDName}}
+                </td>
+                <td>
+                    {{itm.ManufacturingQty}}
+                </td>
+                <td>
+                    {{itm.SoldQty}}
+                </td>
+                <td>
+                    {{itm.ClosedTrue_OpenFalse? 'Closed' : 'Open'}}
+                </td>
+                <td>
+                    {{itm.SubDistributors}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('OrderNoteDetailSubDistributorCtlr',itm,'OrderNoteDetailCtlr','OrderNoteDetailSubDistributorCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Sub Distributor">Sub Distributor <span class="fa fa-people-group"></span></button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('OrderNoteDetailBMRDetailCtlr',itm,'OrderNoteDetailCtlr','OrderNoteDetailBMRDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto BMR Detail">BMR <span class="fa fa-box-archive"></span></button>|
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('OrderNoteDetailSalesNoteDetailCtlr',itm,'OrderNoteDetailCtlr','OrderNoteDetailSalesNoteDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Sales Note Detail">Sales <span class="fa fa-box"></span></button>|
+                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('OrderNoteDetailSalesReturnNoteDetailCtlr',itm,'OrderNoteDetailCtlr','OrderNoteDetailSalesReturnNoteDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Sales Return Note Detail">Return <span class="fa fa-box-archive"></span></button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "OrderNoteDetailCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+</div>

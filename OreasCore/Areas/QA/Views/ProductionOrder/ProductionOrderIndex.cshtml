@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "QA Production Order";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-QA/productionorderqaindex.300424.js"></script>
+}
+<div ng-controller="ProductionOrderCtlr" class="container">
+
+    <div id="ProductionOrderCtlr">
+        <MyViewName>Production Order</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Customer
+                    </th>
+                    <th>
+                        Order No
+                    </th>
+                    <th>
+                        Order Date
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Order Qty
+                    </th>
+                    <th>
+                        Requested
+                    </th>
+                    <th>
+                        Processed
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.AccountName}}
+                    </td>
+                    <td>
+                        {{itm.OrderNo}}
+                    </td>
+                    <td>
+                        {{itm.OrderDate}}
+                    </td>
+                    <td>
+                        {{itm.Priority}}
+                    </td>
+                    <td>
+                        {{itm.ProductName}}
+                    </td>
+                    <td>
+                        <table width="100%">
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small;">Req Qty</td>
+                                <td width="65%" style="font-size: xx-small; text-align: right;">{{itm.MfgQtyLimit}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small;">Mfg</td>
+                                <td width="65%" style="font-size: xx-small; text-align: right;">{{itm.ManufacturingQty}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td width="20%" style="font-size: xx-small; text-align: left;">Sold</td>
+                                <td width="65%" style="font-size: xx-small; text-align:right;">{{itm.SoldQty}}</td>
+                                <td width="15%" style="font-size: xx-small;">{{itm.MeasurementUnit}}</td>
+                            </tr>
+                        </table>
+
+                    </td>
+                    <td>
+                        <table width="100%">
+                            <tr width="100%">
+                                <td width="15%" style="font-size: xx-small;">B-Size</td>
+                                <td width="85%" style="font-size: xx-small; text-align: right;">{{itm.RequestedBatchSize}} {{itm.MeasurementUnit}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td width="15%" style="font-size: xx-small;">Batch#</td>
+                                <td width="85%" style="font-size: xx-small; text-align: right;">{{itm.RequestedBatchNo}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td style="font-size: xx-small; text-align: left; width: 15%; ">Date</td>
+                                <td style="font-size: xx-small; text-align: right; width: 85%;">{{itm.RequestedMfgDate}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table width="100%">
+                            <tr width="100%">
+                                <td width="15%" style="font-size: xx-small;">Batch#</td>
+                                <td width="85%" style="font-size: xx-small; text-align: right;">{{itm.ProcessedBatchNo}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td width="15%" style="font-size: xx-small;">By</td>
+                                <td width="85%" style="font-size: xx-small; text-align: right;">{{itm.ProcessedBy}}</td>
+                            </tr>
+                            <tr width="100%">
+                                <td style="font-size: xx-small; text-align: left; width:15%;">Date</td>
+                                <td style="font-size: xx-small; text-align: right; width: 85%;">{{itm.ProcessedDate}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-hide="itm.ProcessedBatchNo.length > 0" ng-click="DivHideShow('ProductionOrderBatchCtlr',itm,'ProductionOrderCtlr','ProductionOrderBatchCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Batch Against request">Batch <span class="fa fa-box-open"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ProductionOrderCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. </p>
+        </div>
+    </div>
+
+    <div ng-controller="ProductionOrderBatchCtlr">
+        <div id="ProductionOrderBatchCtlr" style="display: none;">
+            @await Html.PartialAsync("ProductionOrderBatch")
+        </div>
+    </div>
+
+</div>
+
+
+
+

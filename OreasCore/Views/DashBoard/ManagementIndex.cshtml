@@ -1,0 +1,292 @@
+﻿@{
+    ViewBag.Title = "Management DashBoard";
+}
+@section Scripts {
+
+    <script src="~/angular.js/dashboardmanagement.030524.js"></script>
+    <script src="~/lib/Chart.js/chart.umd.js"></script>
+
+}
+<div ng-controller="ManagementDashBoardCtlr" class="container">
+    <h2>Management DashBoard</h2>
+    <MyAntiforgeryToken></MyAntiforgeryToken>
+    <div class="row gy-2">
+        <div class="col-sm-3 col-md-2 col-lg-2  text-white">
+            <div style="background-color:mediumseagreen; text-align:center; border-left: 5px solid seagreen; padding:3px; width:100%;">
+                <h2><i class="fa fa-arrow-trend-up"></i></h2>
+                <h5>{{data.INV.Sales_L6M}}</h5>
+                <h6>Sales</h6>
+                <p class="text-muted">(6 months)</p>
+            </div>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-2  text-white">
+            <div style="background-color:mediumseagreen; text-align:center; border-left: 5px solid seagreen; padding:3px; width:100%;">
+                <h2><i class="fa fa-arrow-trend-down"></i></h2>
+                <h5>{{data.INV.SalesReturn_L6M}}</h5>
+                <h6>Sale-Returns</h6>
+                <p class="text-muted">(6 months)</p>
+            </div>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-2  text-white">
+            <div style="background-color: pink; text-align: center; border-left: 5px solid hotpink; padding: 3px; width: 100%; ">
+                <h2><i class="fa fa-cart-arrow-down"></i></h2>
+                <h5>{{data.INV.Purchase_L6M}}</h5>
+                <h6>Purchases</h6>
+                <p class="text-muted">(6 months)</p>
+            </div>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-2  text-white">
+            <div style="background-color: pink; text-align: center; border-left: 5px solid hotpink; padding: 3px; width: 100%;">
+                <h2><i class="fa fa-shopping-cart"></i></h2>
+                <h5>{{data.INV.PurchaseReturn_L6M}}</h5>
+                <h6>Purchase-Returns</h6>
+                <p class="text-muted">(6 months)</p>
+            </div>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-2  text-white">
+            <a href="/DashBoard/GetChartOfAccountsReport?rn=Payables OutStanding" target="_blank" class="nav-link">
+                <div style="background-color: lightslategrey; text-align: center; border-left: 5px solid grey; padding: 3px; width: 100%;">
+                    <h2><i class="fa fa-down-long"></i></h2>
+                    <h5>{{data.INV.Payables_Supplier}}</h5>
+                    <h6>Payables</h6>
+                    <p class="text-muted">(Suppliers)</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-md-2 col-lg-2  text-white">
+            <a href="/DashBoard/GetChartOfAccountsReport?rn=Receivables OutStanding" target="_blank" class="nav-link">
+                <div style="background-color: lightsteelblue; text-align: center; border-left: 5px solid steelblue; padding: 3px; width: 100%;">
+                    <h2><i class="fa fa-up-long"></i></h2>
+                    <h5>{{data.INV.Receivables_Customer}}</h5>
+                    <h6>Receivables</h6>
+                    <p class="text-muted">(Customers)</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="row gy-2 mt-2">
+        <div class="col-sm-3 col-md-3 col-lg-2">
+            <div class="list-group" style="width:100%">
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="/Inventory/Orders/PurchaseRequestBidsIndex" target="_self" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-shopping-cart"></i> Purchase Bits</div>
+                        Approvals for PO
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.PendingBits}}</span>
+                </a>
+
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Payment','ManagementBankDocCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-bank"></i> Bank Payment</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.BPVPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Received','ManagementBankDocCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-bank"></i> Bank Received</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.BRVPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Payment','ManagementCashDocCtlr');" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-dollar"></i> Cash Payment</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.CPVPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Received','ManagementCashDocCtlr');" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-dollar"></i> Cash Received</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.CRVPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('','ManagementJournalDocCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-dollar"></i> Journal</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.JVPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('','ManagementJournalDoc2Ctlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-dollar"></i> Journal2</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.JV2PendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Supervised','ManagementPNCtlr');" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-cart-shopping"></i> Purchase</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.PNPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Processed','ManagementPNCtlr');" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-cart-shopping"></i> Purchase</div>
+                        Processed
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.PNPendingProcessed}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Supervised','ManagementPRNCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-cart-arrow-down"></i> Purchase Return</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.PRNPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Processed','ManagementPRNCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-cart-arrow-down"></i> Purchase Return</div>
+                        Processed
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.PRNPendingProcessed}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Supervised','ManagementSNCtlr');" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-boxes"></i> Sales</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.SNPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Processed','ManagementSNCtlr');" style="background-color:lightgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-boxes"></i> Sales</div>
+                        Processed
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.SNPendingProcessed}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Supervised','ManagementSRNCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-box-open"></i> Sales Return</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.SRNPendingSupervised}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Processed','ManagementSRNCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-box-open"></i> Sales Return</div>
+                        Processed
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.SRNPendingProcessed}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-9 col-md-9 col-lg-10">
+            <div id="Supervised" class="row">
+                <div ng-controller="ManagementBankDocCtlr">
+                    <div id="ManagementBankDocCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementBankDoc")
+                    </div>
+                </div>
+                <div ng-controller="ManagementCashDocCtlr">
+                    <div id="ManagementCashDocCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementCashDoc")
+                    </div>
+                </div>
+                <div ng-controller="ManagementJournalDocCtlr">
+                    <div id="ManagementJournalDocCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementJournalDoc")
+                    </div>
+                </div>
+                <div ng-controller="ManagementJournalDoc2Ctlr">
+                    <div id="ManagementJournalDoc2Ctlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementJournalDoc2")
+                    </div>
+                </div>
+                <div ng-controller="ManagementPNCtlr">
+                    <div id="ManagementPNCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementPN")
+                    </div>
+                </div>
+                <div ng-controller="ManagementPRNCtlr">
+                    <div id="ManagementPRNCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementPRN")
+                    </div>
+                </div>
+                <div ng-controller="ManagementSNCtlr">
+                    <div id="ManagementSNCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementSN")
+                    </div>
+                </div>
+                <div ng-controller="ManagementSRNCtlr">
+                    <div id="ManagementSRNCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementSRN")
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                    <MyFieldSet legendtext="Order Notes">
+                        <canvas id="OrderNote" style="width:100%;max-height:218px;"></canvas>
+                    </MyFieldSet>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                    <MyFieldSet legendtext="Payables Receivables">
+                        <canvas id="PayableReceivable" style="width:100%;max-height:218px;"></canvas>
+                    </MyFieldSet>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                    <div style="background-color: lightgray; text-align: center; border-left: 5px solid gray; padding: 3px; width: 100%;">
+                        <h6>Bank</h6>
+                        <h5>{{data.Bottom.Bank}}</h5>
+                        <p class="text-muted">(Till Now)</p>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                    <div style="background-color: lightgray; text-align: center; border-left: 5px solid gray; padding: 3px; width: 100%;">
+                        <h6>Cash</h6>
+                        <h5>{{data.Bottom.Cash}}</h5>
+                        <p class="text-muted">(Till Now)</p>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                    <div style="background-color: lightgray; text-align: center; border-left: 5px solid gray; padding: 3px; width: 100%;">
+                        <h6>Inventory</h6>
+                        <h5>{{data.Bottom.Inventory}}</h5>
+                        <p class="text-muted">(Till Now)</p>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                    <div style="background-color: lightgray; text-align: center; border-left: 5px solid gray; padding: 3px; width: 100%;">
+                        <h6>Expenses</h6>
+                        <h5>{{data.Bottom.Expense}}</h5>
+                        <p class="text-muted">(Current Month)</p>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                    <div style="background-color: lightgray; text-align: center; border-left: 5px solid gray; padding: 3px; width: 100%;">
+                        <h6>Production</h6>
+                        <h5>{{data.Bottom.Production_Month}}</h5>
+                        <p class="text-muted">(Current Month)</p>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                    <div style="background-color: lightgray; text-align: center; border-left: 5px solid gray; padding: 3px; width: 100%;">
+                        <h6>Production</h6>
+                        <h5>{{data.Bottom.Production_Yesterday}}</h5>
+                        <p class="text-muted">(Yesterday)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+
+

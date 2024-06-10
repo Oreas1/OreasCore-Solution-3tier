@@ -1,0 +1,95 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PayRunOperationHubCtlr','PayRunIndexCtlr', this);">PayRun</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunOperationHubCtlr','PayRunMasterCtlr', this);">Period</a>
+    <MyViewName child="true"> Bulk Operation</MyViewName>
+</MyViewName>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Month From
+                    </th>
+                    <th>
+                        Month To
+                    </th>
+                    <th>
+                        PayRun From
+                    </th>
+                    <th>
+                        PayRun To
+                    </th>
+                    <th>
+                        Wage
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.CalendarMonthStartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.CalendarMonthEndDate}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.StartDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.EndDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.TotalWage}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <h2 style="text-align:center;align-content:center;"><button class="btn btn-light" ng-click="RequestToConnectOrDisconnect();">Server Status: <span style="font-weight:bold;color:{{ServerConnectionStatus==='Connected'? 'Green': 'Red'}};">{{ServerConnectionStatus}}</span></button></h2>
+        <div>
+            <form name="myform" role="form">
+                <MyFieldSet legendtext="Machine Operation">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Operations</span>
+                            <select name="MachineOpt"
+                                    ng-options="o.v as o.n for o in Operations"
+                                    data-ng-model="MachineOpt" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                    ng-disabled="InProcess" ng-change="myform.$setPristine();" required>
+                                <option value="">Select Operation</option>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="MachineOpt" required="true"></MyValidationSpan>
+                        </div>
+                        <div class="form-group col-lg-6 col-md-8 col-sm-12">
+                            <input type="button" value="{{BtnOptText}}" class="btn {{BtnOptText==='Start Operation'? 'btn-primary' : 'btn-danger'}}" ng-click="OperationCalling();" ng-disabled="!MachineOpt.length > 0" />
+                            <p>Server Acknowledgment: {{ServerAcknowledgment}}</p>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3" style="border-left:solid 1px gray; border-radius: 5px;">
+                            <div class="w-100 form-control btn" style="">
+                                <input type="button" class="btn btn-outline-warning" value="Get Current Operator" ng-click="GetOperatorDetail();" />
+                            </div>
+
+                            <div class="w-100 form-control m-1" style="background-color:lightgray;">
+                                <b>In Process:</b> {{OperatorDetail.ForProcess}}
+                            </div>
+                            <div class="w-100 form-control m-1" style="background-color: lightgray;">
+                                <b>In User:</b> {{OperatorDetail.UserName}}
+                            </div>
+                        </div>
+                    </div>
+
+                </MyFieldSet>
+            </form>
+        </div>
+
+
+
+
+    </div>
+</div>

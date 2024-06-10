@@ -1,0 +1,133 @@
+﻿@{
+    ViewBag.Title = "CurrencyCountry";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Accounts/SetUp/currencyandcountryindex.160524.js"></script>
+}
+<div ng-controller="CurrencyAndCountryIndexCtlr" class="container">
+    <div id="CurrencyAndCountryIndexCtlr">
+        <MyViewName>Currency And Country</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Ac_CurrencyAndCountry.ID", "{{tbl_Ac_CurrencyAndCountry.ID}}")
+
+                <MyFieldSet legendtext="Entry Form">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Country Name</span>
+                            <input type="text" id="tbl_Ac_CurrencyAndCountry.CountryName" name="tbl_Ac_CurrencyAndCountry.CountryName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Pakistan..." value="tbl_Ac_CurrencyAndCountry.CountryName" ng-model="tbl_Ac_CurrencyAndCountry.CountryName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CurrencyAndCountry.CountryName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Currency Code</span>
+                            <input type="text" id="tbl_Ac_CurrencyAndCountry.CurrencyCode" name="tbl_Ac_CurrencyAndCountry.CurrencyCode" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="PKR.." value="tbl_Ac_CurrencyAndCountry.CurrencyCode" ng-model="tbl_Ac_CurrencyAndCountry.CurrencyCode" ng-disabled="ng_readOnly" minlength="1" maxlength="3" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CurrencyAndCountry.CurrencyCode" required="true" minlength="1" maxlength="3"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Currency Symbol</span>
+                            <input type="text" id="tbl_Ac_CurrencyAndCountry.CurrencySymbol" name="tbl_Ac_CurrencyAndCountry.CurrencySymbol" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="RS.." value="tbl_Ac_CurrencyAndCountry.CurrencySymbol" ng-model="tbl_Ac_CurrencyAndCountry.CurrencySymbol" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CurrencyAndCountry.CurrencySymbol" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Default</span>
+                            <select id="tbl_Ac_CurrencyAndCountry.IsDefault" name="tbl_Ac_CurrencyAndCountry.IsDefault" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'No', v: false }, { n: 'Yes', v: true }]" data-ng-model="tbl_Ac_CurrencyAndCountry.IsDefault" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CurrencyAndCountry.IsDefault" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CurrencyAndCountry.CreatedBy}}" ng-model="tbl_Ac_CurrencyAndCountry.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CurrencyAndCountry.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CurrencyAndCountry.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CurrencyAndCountry.ModifiedBy}}" ng-model="tbl_Ac_CurrencyAndCountry.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CurrencyAndCountry.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CurrencyAndCountry.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Country Name
+                    </th>
+                    <th>
+                        Currency Code
+                    </th>
+                    <th>
+                        Currency Symbol
+                    </th>
+                    <th>
+                        Default
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.CountryName}}
+                    </td>
+                    <td>
+                        {{itm.CurrencyCode}}
+                    </td>
+                    <td>
+                        {{itm.CurrencySymbol}}
+                    </td>
+                    <td>
+                        {{itm.IsDefault ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "CurrencyAndCountryIndexCtlr")
+    </div>
+</div>
+
+
+
+

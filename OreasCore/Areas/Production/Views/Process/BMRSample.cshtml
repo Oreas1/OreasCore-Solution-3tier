@@ -1,0 +1,143 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'BMRSampleCtlr','BMRProcessCtlr', this);">BMR Procedure(s)</a>
+    <MyViewName child="true"> Sample</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Procedure Name
+                    </th>
+                    <th>
+                        QC Sample Product
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.FK_tbl_Pro_Procedure_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName}} [{{MasterObject.MeasurementUnit}}]
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Qc_SampleProcessBMR.ID", "{{tbl_Qc_SampleProcessBMR.ID}}")
+            @Html.Hidden("tbl_Qc_SampleProcessBMR.FK_tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_ID", "{{tbl_Qc_SampleProcessBMR.FK_tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sample Date</span>
+                        <input id="tbl_Qc_SampleProcessBMR.SampleDate" name="tbl_Qc_SampleProcessBMR.SampleDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Qc_SampleProcessBMR.SampleDate}}" ng-model="tbl_Qc_SampleProcessBMR.SampleDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBMR.SampleDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sample Qty In {{MasterObject.MeasurementUnit}}</span>
+                        <input id="tbl_Qc_SampleProcessBMR.SampleQty" name="tbl_Qc_SampleProcessBMR.SampleQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Qc_SampleProcessBMR.SampleQty" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBMR.SampleQty" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBMR.CreatedBy}}" ng-model="tbl_Qc_SampleProcessBMR.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBMR.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Qc_SampleProcessBMR.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBMR.ModifiedBy}}" ng-model="tbl_Qc_SampleProcessBMR.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBMR.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Qc_SampleProcessBMR.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Sample Date
+                </th>
+                <th>
+                    Sample Qty
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.SampleDate}}
+                </td>
+                <td>
+                    {{itm.SampleQty}} [{{MasterObject.MeasurementUnit}}]
+                </td>
+                <td>
+                    <div ng-style="{'background-color': itm.FK_tbl_Qc_ActionType_ID == 1 ? 'yellow' : itm.FK_tbl_Qc_ActionType_ID == 2 ? 'lightgreen' : 'lightpink'}">
+                        Action: {{itm.FK_tbl_Qc_ActionType_IDName}}
+                    </div>
+                    <div>
+                        By: {{itm.ActionBy}}
+                    </div>
+                    <div>
+                        At: {{itm.ActionDate}}
+                    </div>
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "BMRSampleCtlr")
+
+</div>

@@ -1,0 +1,42 @@
+﻿@*-----------------------------------Reference Search Modal-----------------------------*@
+<div class="modal fade" id="ReferenceSearchModalGeneral" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Search then Select Reference</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by</span>
+                            <select id="ReferenceFilterBy" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                    ng-options="o.v as o.n for o in [{ n: 'Reference No', v: 'ReferenceNo' }]"
+                                    ng-model="ReferenceFilterBy" ng-disabled="ng_readOnly">
+                            </select>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter Value</span>
+                            <input id="ReferenceFilterValue" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Type to search" ng-model="ReferenceFilterValue" />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <input type="submit" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="General_ReferenceSearch();" />
+                        </div>
+                    </div>
+                </form>
+
+                <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_ReferenceSelectedAc({'ID': 0});" data-bs-dismiss="modal">Click to de select</MyButton>
+                <div ng-repeat="item in ReferenceSearchResult" style="overflow:auto">
+                    <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_ReferenceSelectedAc(item);" data-bs-dismiss="modal">{{item.ReferenceNo}} [Balance: {{item.Balance}}]</MyButton>
+                    <span style="font-size:xx-small; color:darkgrey;">[{{item.OtherDetail}}]</span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

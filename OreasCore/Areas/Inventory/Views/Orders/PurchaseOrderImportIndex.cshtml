@@ -1,0 +1,300 @@
+﻿@{
+    ViewBag.Title = "Purchase Order Import";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Orders/purchaseorderimportindex.210524.js"></script>
+}
+<div ng-controller="PurchaseOrderImportMasterCtlr" class="container">
+
+    <div id="PurchaseOrderImportMasterCtlr">
+        <MyViewName>Purchase Order Import</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_PurchaseOrderMaster.ID", "{{tbl_Inv_PurchaseOrderMaster.ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">PO No</span>
+                        <input id="tbl_Inv_PurchaseOrderMaster.PONo" name="tbl_Inv_PurchaseOrderMaster.PONo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Inv_PurchaseOrderMaster.PONo" ng-model="tbl_Inv_PurchaseOrderMaster.PONo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">PO Date</span>
+                        <input id="tbl_Inv_PurchaseOrderMaster.PODate" name="tbl_Inv_PurchaseOrderMaster.PODate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PurchaseOrderMaster.PODate}}" ng-model="tbl_Inv_PurchaseOrderMaster.PODate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.PODate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Target Date</span>
+                        <input id="tbl_Inv_PurchaseOrderMaster.TargetDate" name="tbl_Inv_PurchaseOrderMaster.TargetDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PurchaseOrderMaster.TargetDate}}" ng-model="tbl_Inv_PurchaseOrderMaster.TargetDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.TargetDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Local Receiving A/c</span>
+                        <MyButtonModal fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_ChartOfAccounts_IDName" ng-click="OpenCOASearchModalGeneral('PurchaseOrder', 0, 'tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_ChartOfAccounts_IDName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_ChartOfAccounts_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_ChartOfAccounts_IDName" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Import Term</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_ImportTerms_ID" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_ImportTerms_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.TermName for x in ImportTermList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_ImportTerms_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Term</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_ImportTerms_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Supplier</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Supplier_ID" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Supplier_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.SupplierName for x in SupplierList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Supplier_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Supplier</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Supplier_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Manufacturer</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Manufacturer_ID" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Manufacturer_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ManufacturerName for x in ManufacturerList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Manufacturer_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Manufacturer</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Manufacturer_ID" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Indenter</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Indenter_ID" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Indenter_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.IndenterName for x in IndenterList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Indenter_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Indenter</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_PurchaseOrder_Indenter_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Indent Date</span>
+                        <input id="tbl_Inv_PurchaseOrderMaster.IndentDate" name="tbl_Inv_PurchaseOrderMaster.IndentDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PurchaseOrderMaster.IndentDate}}" ng-model="tbl_Inv_PurchaseOrderMaster.IndentDate" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.IndentDate"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Indent No</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrderMaster.IndentNo" name="tbl_Inv_PurchaseOrderMaster.IndentNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="IndentNo" value="tbl_Inv_PurchaseOrderMaster.IndentNo" ng-model="tbl_Inv_PurchaseOrderMaster.IndentNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.IndentNo" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Currency</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_Currency" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_Currency" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.CurrencyCode for x in CurrencyCodeList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_Currency" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Currency</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_Currency" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Origin</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOrigin" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOrigin" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.CountryName for x in CountryList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOrigin" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Country</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOrigin" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Transport Type</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_TransportType_ID" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_TransportType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.TypeName for x in TransportList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_TransportType_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Transport</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_TransportType_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Incoterm</span>
+                        <select id="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_InternationalCommercialTerm_ID" name="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_InternationalCommercialTerm_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.IncotermName for x in InternationalCommercialTermList" data-ng-model="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_InternationalCommercialTerm_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select IncotermName</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.FK_tbl_Inv_InternationalCommercialTerm_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Shipment Date</span>
+                        <input id="tbl_Inv_PurchaseOrderMaster.ShipmentDate" name="tbl_Inv_PurchaseOrderMaster.ShipmentDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PurchaseOrderMaster.ShipmentDate}}" ng-model="tbl_Inv_PurchaseOrderMaster.ShipmentDate" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.ShipmentDate"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Negotiation Date</span>
+                        <input id="tbl_Inv_PurchaseOrderMaster.NegotiationDate" name="tbl_Inv_PurchaseOrderMaster.NegotiationDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_PurchaseOrderMaster.NegotiationDate}}" ng-model="tbl_Inv_PurchaseOrderMaster.NegotiationDate" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.NegotiationDate"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup8">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input type="text" id="tbl_Inv_PurchaseOrderMaster.Remarks" name="tbl_Inv_PurchaseOrderMaster.Remarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Remarks" value="tbl_Inv_PurchaseOrderMaster.Remarks" ng-model="tbl_Inv_PurchaseOrderMaster.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderMaster.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderMaster.CreatedBy}}" ng-model="tbl_Inv_PurchaseOrderMaster.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrderMaster.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderMaster.ModifiedBy}}" ng-model="tbl_Inv_PurchaseOrderMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_PurchaseOrderMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_PurchaseOrderMaster.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                        <br />
+                        Doc Date
+                    </th>   
+                    <th>
+                        Import Terms
+                        <br />
+                        Local Receiving A/c
+                    </th>
+                    <th>
+                        Manufacturer
+                        <br />
+                        Supplier
+                    </th>
+                    <th>
+                        Indenter
+                    </th>
+                    <th>
+                        Currency
+                        <br />
+                        Origin Country
+                    </th>
+                    <th>
+                        Transport
+                        <br />
+                        Incoterm
+                    </th>
+                    <th>
+                        Shipment Date
+                        <br />
+                        Negotiation Date
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b>{{itm.PONo}}</b>
+                        <br />
+                        {{itm.PODate}}
+                    </td>
+                    <td>
+                        <b>{{itm.FK_tbl_Inv_PurchaseOrder_ImportTerms_IDName}}</b>
+                        <br />
+                        {{itm.FK_tbl_Ac_ChartOfAccounts_IDName}}
+                    </td>
+                    <td>
+                        <b>{{itm.FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName}}</b>
+                        <br />
+                        {{itm.FK_tbl_Inv_PurchaseOrder_Supplier_IDName}}
+                    </td>
+                    <td>
+                        <b>{{itm.FK_tbl_Inv_PurchaseOrder_Indenter_IDName}}</b>
+                        <br />
+                        Date: {{itm.IndentDate}} #: {{itm.IndentNo}}
+                    </td>
+                    <td>
+                        <b>{{itm.FK_tbl_Ac_CurrencyAndCountry_ID_CurrencyName}}</b>
+                        <br />
+                        {{itm.FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOriginName}}
+                    </td>
+                    <td>
+                        <b>{{itm.FK_tbl_Inv_TransportType_IDName}}</b>
+                        <br />
+                        {{itm.FK_tbl_Inv_InternationalCommercialTerm_IDName}}
+                    </td>
+                    <td>
+                        {{itm.ShipmentDate}}
+                        <br />
+                        {{itm.NegotiationDate}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('PurchaseOrderImportDetailCtlr',itm,'PurchaseOrderImportMasterCtlr','PurchaseOrderImportDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Category">Detail <span class="fa fa-info-circle"></span></button> |
+                            <button ng-click="EmailPO(itm.ID,itm.ContactPersonName,itm.Email, itm.FK_tbl_Ac_ChartOfAccounts_IDName, itm.TargetDate, itm.PONo)" mycssclass="@MyCSSClassName.Table_OperationBtn" ng-disabled="DisabledBtnAll || !itm.Email.length>0" title="Email PO"><span class="fa fa-envelope"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PurchaseOrderImportMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Change of Supplier Ac / Product Ac is not allowed when Purchase Order referred in Purchase Note Challan</p>
+            <p>2. Change of Quantity shouldnot be less then Received Quantity</p>
+        </div>
+    </div>
+
+
+    <div ng-controller="PurchaseOrderImportDetailCtlr">
+        <div id="PurchaseOrderImportDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("PurchaseOrderImportDetail")
+        </div>
+        <div ng-controller="PurchaseOrderDetailPNCtlr">
+            <div id="PurchaseOrderDetailPNCtlr" style="display: none;">
+                @await Html.PartialAsync("PurchaseOrderDetailPN")
+            </div>
+        </div>
+        <div ng-controller="PurchaseOrderDetailPRNCtlr">
+            <div id="PurchaseOrderDetailPRNCtlr" style="display: none;">
+                @await Html.PartialAsync("PurchaseOrderDetailPRN")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_COASearchModalGeneral")
+    @await Html.PartialAsync("_ProductSearchModalGeneral")
+
+</div>
+
+
+
+

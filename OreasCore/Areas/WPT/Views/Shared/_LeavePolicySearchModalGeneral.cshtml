@@ -1,0 +1,26 @@
+﻿@*-----------------------------------Leave Policy Search Modal-----------------------------*@
+<div class="modal fade" id="LeavePolicySearchModalGeneral" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Leave Policy of {{LeavePolicySearchModalEmployeeName}}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate>
+                    <p>Note: Before Policy Selection, Employee should be selected</p>
+                </form>
+
+                <div ng-repeat="item in PolicySearchResult" style="overflow:auto">
+                    <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_PolicySelectedAc(item);" data-bs-dismiss="modal">[{{item.PolicyPrefix}}]  {{item.PolicyName}}</MyButton>
+                    <span style="color:coral; font-weight:bold;">{{item.LeaveType==='NP'?'&#8734':' [Monthly Limit: '+item.MonthBalance+'] [Annual: '+item.AnnualBalance+']'}} </span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

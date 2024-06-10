@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "OrdinaryRequisitionDispensing";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Inventory/Dispensing/ordinaryrequisitiondispensingindex.0.2.js"></script>
+}
+<div ng-controller="OrdinaryRequisitionDispensingMasterCtlr" class="container">
+
+    <div id="OrdinaryRequisitionDispensingMasterCtlr">
+        <MyViewName>Ordinary Requisition Dispensing</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.CancelOfAdd"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Inv_OrdinaryRequisitionMaster.ID", "{{tbl_Inv_OrdinaryRequisitionMaster.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                            <input id="tbl_Inv_OrdinaryRequisitionMaster.DocNo" name="tbl_Inv_OrdinaryRequisitionMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Inv_OrdinaryRequisitionMaster.DocNo" ng-model="tbl_Inv_OrdinaryRequisitionMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
+                            <input id="tbl_Inv_OrdinaryRequisitionMaster.DocDate" name="tbl_Inv_OrdinaryRequisitionMaster.DocDate" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Inv_OrdinaryRequisitionMaster.DocDate}}" ng-model="tbl_Inv_OrdinaryRequisitionMaster.DocDate" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse</span>
+                            <input type="text" id="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_Inv_WareHouseMaster_IDName" name="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_Inv_WareHouseMaster_IDName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="FK_tbl_Inv_WareHouseMaster_IDName" value="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_Inv_WareHouseMaster_IDName" ng-model="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_Inv_WareHouseMaster_IDName" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WareHouse</span>
+                            <input type="text" id="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_WPT_DepartmentDetail_Section_IDName" name="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_WPT_DepartmentDetail_Section_IDName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="FK_tbl_WPT_DepartmentDetail_Section_IDName" value="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_WPT_DepartmentDetail_Section_IDName" ng-model="tbl_Inv_OrdinaryRequisitionMaster.FK_tbl_WPT_DepartmentDetail_Section_IDName" ng-disabled="ng_readOnly" readonly />
+                        </div>
+                    </div>
+
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+
+                    <MyFieldSet legendtext="User" child="true">
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrdinaryRequisitionMaster.CreatedBy}}" ng-model="tbl_Inv_OrdinaryRequisitionMaster.CreatedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrdinaryRequisitionMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_OrdinaryRequisitionMaster.CreatedDate" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrdinaryRequisitionMaster.ModifiedBy}}" ng-model="tbl_Inv_OrdinaryRequisitionMaster.ModifiedBy" disabled />
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrdinaryRequisitionMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_OrdinaryRequisitionMaster.ModifiedDate" disabled />
+                            </div>
+                        </div>
+                    </MyFieldSet>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        WareHouse
+                    </th>
+                    <th>
+                        Section
+                    </th>
+                    <th>
+                        Total Items
+                    </th>
+                    <th>
+                        Dispensed
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.DocNo}}
+                    </td>
+                    <td>
+                        {{itm.DocDate}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Inv_WareHouseMaster_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_WPT_DepartmentDetail_Section_IDName}}
+                    </td>
+                    <td>
+                        {{itm.TotalItems}}
+                    </td>
+                    <td>
+                        {{itm.IsDispensedAll ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('OrdinaryRequisitionDispensingDetailCtlr',itm,'OrdinaryRequisitionDispensingMasterCtlr','OrdinaryRequisitionDispensingDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "OrdinaryRequisitionDispensingMasterCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Dispensing Qty Can never be exeeded from requested Qty</p>
+            <p>2. Dispensing Date will always be current</p>
+        </div>
+    </div>
+
+
+    <div ng-controller="OrdinaryRequisitionDispensingDetailCtlr">
+        <div id="OrdinaryRequisitionDispensingDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("OrdinaryRequisitionDispensingDetail")
+        </div>
+        <div ng-controller="OrdinaryRequisitionDispensingDetailDispensingCtlr">
+            <div id="OrdinaryRequisitionDispensingDetailDispensingCtlr" style="display: none;">
+                @await Html.PartialAsync("OrdinaryRequisitionDispensingDetailDispensing")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_ReferenceSearchModalGeneral")
+</div>
+
+
+
+

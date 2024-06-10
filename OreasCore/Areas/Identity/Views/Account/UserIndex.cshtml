@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "User";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Identity/userindex.0.1.js"></script>
+}
+<div ng-controller="UserIndexCtlr" class="container">
+    <div id="UserIndexCtlr">
+        <MyViewName>Application User</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("Id", "{{UserViewModel.Id}}")
+                @Html.Hidden("MyID", "{{UserViewModel.MyID}}")
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">User Name</span>
+                        <input id="UserViewModel.UserName" name="UserViewModel.UserName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Muhammad ..." value="UserViewModel.UserName" ng-model="UserViewModel.UserName" ng-disabled="ng_readOnly" minlength="5" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.UserName" required="true" minlength="6" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Email Address</span>
+                        <input id="UserViewModel.Email" name="UserViewModel.Email" type="email" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="user@oreas.com.pk ..." value="UserViewModel.Email" ng-model="UserViewModel.Email" ng-pattern="/^[a-z]+[a-z0-9._]+@@[a-z]+\.[a-z.]{2,5}$/" ng-disabled="ng_readOnly" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.Email" required="true" maxlength="50" pattern="wrong email format"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Email Confirmed</span>
+                        <select id="UserViewModel.EmailConfirmed" name="UserViewModel.EmailConfirmed" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Confirmed', v: true }, { n: 'Not Confirmed', v: false }]" data-ng-model="UserViewModel.EmailConfirmed" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.EmailConfirmed" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Phone Number</span>
+                        <input id="UserViewModel.PhoneNumber" name="UserViewModel.PhoneNumber" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="009234529....." value="UserViewModel.PhoneNumber" ng-model="UserViewModel.PhoneNumber" ng-disabled="ng_readOnly" maxlength="15" />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.PhoneNumber" maxlength="15"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Phone # Confirmed</span>
+                        <select id="UserViewModel.PhoneNumberConfirmed" name="UserViewModel.PhoneNumberConfirmed" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Confirmed', v: true }, { n: 'Not Confirmed', v: false }]" data-ng-model="UserViewModel.PhoneNumberConfirmed" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.PhoneNumberConfirmed" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Two Factor Enabled</span>
+                        <select id="UserViewModel.TwoFactorEnabled" name="UserViewModel.TwoFactorEnabled" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Enabled', v: true }, { n: 'Disabled', v: false }]" data-ng-model="UserViewModel.TwoFactorEnabled" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.TwoFactorEnabled" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Lockout End Date</span>
+                        <input id="UserViewModel.LockoutEnd" name="UserViewModel.LockoutEnd" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{UserViewModel.LockoutEnd}}" ng-model="UserViewModel.LockoutEnd" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.LockoutEnd"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Lockout Enabled</span>
+                        <select id="UserViewModel.LockoutEnabled" name="UserViewModel.LockoutEnabled" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Enabled', v: true }, { n: 'Disabled', v: false }]" data-ng-model="UserViewModel.LockoutEnabled" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.LockoutEnabled" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Access Failed Count[0->10]</span>
+                        <input id="UserViewModel.AccessFailedCount" name="UserViewModel.AccessFailedCount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" min="0" max="10" ng-model="UserViewModel.AccessFailedCount" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.AccessFailedCount" required="true" minlength="0" maxlength="10"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Password</span>
+                        <input id="UserViewModel.Password" name="UserViewModel.Password" type="password" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Password" value="UserViewModel.Password" ng-model="UserViewModel.Password" ng-disabled="ng_readOnly" minlength="6" maxlength="50" ng-required="ng_entryPanelSubmitBtnText==='Save New'" />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.Password" minlength="6" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Authorization Scheme</span>
+                        <MyButtonModal fieldname="UserViewModel.FK_AspNetOreasAuthorizationScheme_IDName" ng-click="OpenSchemeSearchModal();" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.FK_AspNetOreasAuthorizationScheme_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">WPT Employee Profile</span>
+                        <MyButtonModal fieldname="UserViewModel.FK_tbl_WPT_Employee_IDName" ng-click="OpenEmployeeSearchModalGeneral('General', 0, 'UserViewModel.FK_tbl_WPT_Employee_IDName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['UserViewModel.FK_tbl_WPT_Employee_IDName'].$dirty=true;" ng-disabled="ng_readOnly"></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.FK_tbl_WPT_Employee_IDName"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup8">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email Signature</span>
+                        <input id="UserViewModel.EmailSignature" name="UserViewModel.EmailSignature" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="UserViewModel.EmailSignature" ng-model="UserViewModel.EmailSignature" maxlength="500" />
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.EmailSignature" maxlength="500"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">PR Approver</span>
+                        <select id="UserViewModel.PurchaseRequestApprover" name="UserViewModel.PurchaseRequestApprover" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="UserViewModel.PurchaseRequestApprover" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.PurchaseRequestApprover" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Voucher Approver</span>
+                        <select id="UserViewModel.AcVoucherApprover" name="UserViewModel.AcVoucherApprover" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="UserViewModel.AcVoucherApprover" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="UserViewModel.AcVoucherApprover" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th width="20%">
+                        User Name
+                    </th>
+                    <th>
+                        Email / WPT ID
+                    </th>
+                    <th style="font-size:xx-small;">
+                        Lockout End
+                    </th>
+                    <th style="font-size:xx-small;">
+                        Lockout Enabled
+                    </th>
+                    <th style="font-size:xx-small;">
+                        Access Failed Count
+                    </th>
+                    <th style="font-size:x-small;">
+                        Authorization Scheme
+                    </th>
+                    <th>
+                        PR Approver
+                    </th>
+                    <th>
+                        Ac Voucher Approver
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b>{{itm.UserName}}</b>                        
+                    </td>
+                    <td style="font-size:x-small;">
+                        {{itm.Email}}
+                        <span ng-hide="!itm.FK_tbl_WPT_Employee_IDName.length>0"><br />WPT ID: {{itm.FK_tbl_WPT_Employee_IDName}} </span>
+                    </td>
+                    <td>
+                        {{itm.LockoutEnd}}
+                    </td>
+                    <td>
+                        {{itm.LockoutEnabled?'Yes':'No'}}
+                    </td>
+                    <td>
+                        {{itm.AccessFailedCount}}
+                    </td>
+                    <td>
+                        {{itm.FK_AspNetOreasAuthorizationScheme_IDName}}
+                    </td>
+                    <td>
+                        {{itm.PurchaseRequestApprover ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        {{itm.AcVoucherApprover ? 'Yes' : 'No'}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.Id,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.Id,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.Id,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "UserIndexCtlr")
+
+        @*-----------------------------------Scheme Search Modal-----------------------------*@
+        <!-- Modal -->
+        <div class="modal fade" id="SchemeSearchModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title">Scheme Search</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form novalidate>
+                            <div mycssclass="@MyCSSClassName.RowInForm">
+                                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Area</span>
+                                    <select id="LoadValueByTextSchemeSearchModal" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                            ng-options="o.v as o.n for o in [
+                                            { n: 'Scheme Name', v: 'byName' }
+                                            ]"
+                                            ng-model="LoadValueByTextSchemeSearchModal" ng-disabled="ng_readOnly">
+                                    </select>
+                                </div>
+                                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Scheme Name</span>
+                                    <input id="FilterValueByTextSchemeSearchModal" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Type to search" ng-model="FilterValueByTextSchemeSearchModal" />
+                                </div>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm">
+                                <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                                    <input type="submit" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="SearchForm();" />
+                                </div>
+                            </div>
+                        </form>
+                        <div ng-repeat="item in SchemeResult" style="overflow:auto">
+                            <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="SelectedScheme(item);" data-bs-dismiss="modal">{{item.Name}}</MyButton>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+</div>
+
+
+
+

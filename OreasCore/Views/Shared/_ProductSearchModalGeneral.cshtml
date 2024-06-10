@@ -1,0 +1,43 @@
+﻿@*-----------------------------------Product Search Modal-----------------------------*@
+<div class="modal fade" id="ProductSearchModalGeneral" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Search then Select Product</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form novalidate>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter by</span>
+                            <select id="ProductFilterBy" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select"
+                                    ng-options="o.v as o.n for o in [{ n: 'Product Name', v: 'ProductName' }, { n: 'Unit', v: 'Unit' }, { n: 'Code', v: 'Code' }, { n: 'Unit Description', v: 'UnitDescription' }]"
+                                    ng-model="ProductFilterBy" ng-disabled="ng_readOnly">
+                            </select>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Filter Value</span>
+                            <input id="ProductFilterValue" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Type to search" ng-model="ProductFilterValue" />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <input type="submit" value="Search" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn_Modal" ng-click="General_ProductSearch();" />
+                        </div>
+                    </div>
+                </form>
+
+                <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_ProductSelectedAc({'ID': 0});" data-bs-dismiss="modal">Click to de select</MyButton>
+                <div ng-repeat="item in ProductSearchResult" style="overflow:auto">
+                    <MyButton operation="@MyButtonOperation.ModalItemSelection" ng-click="General_ProductSelectedAc(item);" data-bs-dismiss="modal"><span style="color:steelblue;">{{item.ProductName}} [{{item.MeasurementUnit}}]</span></MyButton>
+                    <br />
+                    <span style="font-size:x-small">[Description: {{item.Description}}, Category: {{item.CategoryName}}, PackSize: {{item.Split_Into}}, Other Info: {{item.OtherDetail}}] </span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>

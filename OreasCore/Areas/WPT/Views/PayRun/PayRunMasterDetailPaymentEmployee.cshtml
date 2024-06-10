@@ -1,0 +1,153 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailPaymentEmployeeCtlr','PayRunIndexCtlr', this.$parent);">PayRun</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailPaymentEmployeeCtlr','PayRunMasterCtlr', this);">Period</a>
+    <MyViewName child="true">
+        <a href="" ng-click="DivHideShow(null,null,'PayRunMasterDetailPaymentEmployeeCtlr','PayRunMasterDetailPaymentCtlr', this);"> Payment</a>
+        <MyViewName child="true"> Payment Employees</MyViewName>
+    </MyViewName>
+
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        PayRun From
+                    </th>
+                    <th>
+                        PayRun To
+                    </th>
+                    <th>
+                        Bank A/c
+                    </th>
+                    <th>
+                        Transaction Mode
+                    </th>
+                    <th>
+                        Instrument No
+                    </th>
+                    <th>
+                        Transaction Date
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.MasterObject.StartDate}}</b>
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.EndDate}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_WPT_CompanyBankDetail_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_WPT_TransactionMode_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.InstrumentNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.TransactionDate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div class="form-check form-switch d-inline-block" ng-hide="!Privilege.CanAdd">
+        <input class="form-check-input m-1" type="checkbox" role="switch" style="font-size:larger;" id="bulkAdd" ng-model="AddBulk" ng-disabled="ng_entryPanelBtnText!='Add New'">
+        <label class="form-check-label" for="bulkAdd">Bulk Add</label>
+    </div>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_PayRunDetail_Emp.ID", "{{tbl_WPT_PayRunDetail_Emp.ID}}")
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Employee</span>
+                        <MyButtonModal fieldname="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName" ng-click="OpenEmployeeSearchModalGeneral('PayRunPayment', MasterObject.ID, 'tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName', EmployeeSearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName'].$dirty=true;" ng-disabled="ng_readOnly || AddBulk" ng-required="!AddBulk"></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_PayRunDetail_Emp.FK_tbl_WPT_Employee_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4" ng-hide="!AddBulk">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Designation</span>
+                        <select id="FK_tbl_WPT_Designation_ID" name="FK_tbl_WPT_Designation_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Designation for x in DesignationList" data-ng-model="FK_tbl_WPT_Designation_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Designation</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="FK_tbl_WPT_Designation_ID"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4" ng-hide="!AddBulk">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Department</span>
+                        <select id="FK_tbl_WPT_Department_ID" name="FK_tbl_WPT_Department_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.DepartmentName for x in DepartmentList" data-ng-model="FK_tbl_WPT_Department_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Department</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="FK_tbl_WPT_Department_ID"></MyValidationSpan>
+                    </div>
+                </div>
+                
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>                
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th style="background-color:lightblue">
+                    Employee Name
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th ng-hide="TransactonModeID!=2">
+                    Transfer Bank A/C #
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_Employee_IDName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_WPT_PayRunDetail_Payment_ID_Primary == MasterObject.ID && itm.FK_tbl_WPT_PayRunDetail_Payment_ID_Secondary == MasterObject.ID ? itm.WagePrimary+itm.WageSecondary : itm.FK_tbl_WPT_PayRunDetail_Payment_ID_Primary == MasterObject.ID ? itm.WagePrimary : itm.FK_tbl_WPT_PayRunDetail_Payment_ID_Secondary == MasterObject.ID ? itm.WageSecondary : 0}}
+                </td>
+                <td ng-hide="TransactonModeID!=2" style="font-size:xx-small;">
+                    {{itm.FK_tbl_WPT_EmployeeBankDetail_IDName}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "PayRunMasterDetailPaymentEmployeeCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
+    
+</div>

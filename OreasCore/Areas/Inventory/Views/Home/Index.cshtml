@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "Inventory";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Inventory/inventorydashboard.0.1.js"></script>
+    <script src="~/lib/Chart.js/chart.umd.js"></script>
+
+}
+<div ng-controller="InventoryDashBoardCtlr" class="container">
+    <h1>Welcome to Inventory Module</h1>
+
+    <div mycssclass="@MyCSSClassName.RowInForm">
+
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+            <MyFieldSet legendtext="Order Notes">
+                <canvas id="OrderNote" style="width:100%;max-height:250px;"></canvas>
+            </MyFieldSet>
+        </div>
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+            <MyFieldSet legendtext="Purchase Orders">
+                <canvas id="PurchaseOrder" style="width:100%;max-height:250px;"></canvas>
+            </MyFieldSet>
+        </div>
+        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+            <MyFieldSet>
+                <div class="row text-center">
+                    <div class="col">
+                        <div class="card">
+                            <h6 class="card-header">Purchase Bits</h6>
+                            <div class="card-body">
+                                <div class="form-control">
+                                    <span>Approvals Req</span>
+                                    <h5 class="card-title"><i class="fa fa-exclamation-triangle" style="color: orange;"> </i> {{data.PurchaseRequestBit.PR_PendingApprovalBits}}</h5>
+                                </div>
+                                <div class="form-control">
+                                    <span>Bits Req</span>
+                                    <h5 class="card-title"><i class="fa fa-exclamation-triangle" style="color: pink;"> </i> {{data.PurchaseRequestBit.PR_PendingReqForBits}}</h5>
+                                </div>
+                              
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <h6 class="card-header">Re-Order</h6>
+                            <div class="card-body">
+                                <div class="form-control">
+                                    <span>Alerts</span>
+                                    <h5 class="card-title"><i class="fa fa-exclamation-circle" style="color: orange;"> </i> {{data.Other.ReorderAlerts}}</h5>
+                                </div>                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </MyFieldSet>
+        </div>
+    </div>
+
+    <MyFieldSet legendtext="Dispensing">
+        <div mycssclass="@MyCSSClassName.RowInForm">
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                <div class="card text-center">
+                    <h4 class="card-header"><i class="fa fa-leaf" style="color:green;"></i> BMR Raw</h4>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Items Pending</span>
+                                <h4 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.Dispensing.BMR_R_DispPending}}</h4>
+                            </div>
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Items Reserved</span>
+                                <h4 class="card-title"><i class="fa fa-briefcase-clock" style="color: pink;"> </i> {{data.Dispensing.BMR_R_DispReserved}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                <div class="card text-center">
+                    <h4 class="card-header"><i class="fa fa-boxes" style="color:brown;"></i> BMR Packaging</h4>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Items Pending</span>
+                                <h4 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.Dispensing.BMR_P_DispPending}}</h4>
+                            </div>
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Items Reserved</span>
+                                <h4 class="card-title"><i class="fa fa-briefcase-clock" style="color: pink;"> </i> {{data.Dispensing.BMR_P_DispReserved}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-repeat" style="color:violet;"></i> Additional</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Items Pending</span>
+                                <h5 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.Dispensing.BMRA_DispPending}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                <div class="card text-center">
+                    <h5 class="card-header"><i class="fa fa-house-user" style="color:violet;"></i> Ordinary</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col form-control" style="background-color: #f7f7f7;">
+                                <span>Items Pending</span>
+                                <h5 class="card-title"><i class="fa fa-clock" style="color: darkred;"> </i> {{data.Dispensing.O_DisPending}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        
+    </MyFieldSet>
+
+
+    
+
+
+</div>

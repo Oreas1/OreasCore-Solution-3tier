@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "PayRun";
+}
+<script src="~/angular.js/Angular-WPT/PayRun/payrunindex.0.1.js"></script>
+
+<div ng-controller="PayRunIndexCtlr" class="container">
+
+    <MyAntiforgeryToken></MyAntiforgeryToken>
+
+    <div id="PayRunIndexCtlr">
+        <MyViewName>PayRun</MyViewName>
+        <div class="row">
+            <div class="col-2 border" style="min-width:60px;border-start-start-radius:10px;">
+                <div class="row h-100 d-flex align-items-md-center text-center">
+                    <div>
+                        <span class="fa fa-calendar-days h1"></span>
+                        <h1>{{pageddata.otherdata.Year}}</h1>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-10 border">
+                <div class="row h-100 d-flex align-items-md-center text-center">
+
+                    <div ng-repeat="item in pageddata.Data" class="col-lg-3 col-sm-6 p-1" style="background-color: gainsboro; color: darkslategrey; border: 2px solid white; ">
+                        <button class="btn btn-primary w-100" ng-click="DivHideShow('PayRunMasterCtlr',item,'PayRunIndexCtlr','PayRunMasterCtlr', null);"><h3>{{item.MonthStartMonth}}</h3></button>{{item.MonthStartDay}}-{{item.MonthEndDay}}
+                        <button mycssclass="@MyCSSClassName.Table_OperationBtn" ng-click="MonthOpenClose(item.ID,!item.IsClosed)" title="Open OR Close Month">Open/Close <span class="{{item.IsClosed?'fa fa-toggle-on':'fa fa-toggle-off'}}" style="font-size: large; color:steelblue;"></span></button>
+                        <div class="btn-group w-100" role="group" aria-label="Basic example">
+                            <button class="btn btn-outline-secondary w-50" style="font-size: xx-small; background-color:{{item.ToDoCount>0 ? 'lightpink': 'none'}}" ng-click="DivHideShow('PayRunToDoCtlr',item,'PayRunIndexCtlr','PayRunToDoCtlr', null);">Reminder: <b>{{item.ToDoCount}}</b></button>
+                            <button class="btn btn-outline-secondary w-50" style="font-size: xx-small;" ng-click="DivHideShow('PayRunExemptCtlr',item,'PayRunIndexCtlr','PayRunExemptCtlr', null);">Exempt: <b>{{item.ExemptionCount}}</b></button>
+                        </div>
+                        <div class="btn-group w-100" role="group" aria-label="Basic example">
+                            <button class="btn btn-outline-primary" style="font-size: xx-small;" ng-click="DivHideShow('PayRunLeaveRequisitionCtlr',item,'PayRunIndexCtlr','PayRunLeaveRequisitionCtlr', null);"> Leaves:<br /><b>{{item.PendingLeaves}} / {{item.TotalLeaves}}</b></button>
+                            <button class="btn btn-outline-primary" style="font-size: xx-small;" ng-click="DivHideShow('PayRunHolidayCtlr',item,'PayRunIndexCtlr','PayRunHolidayCtlr', null);">Holiday<br /><b>{{item.Holidays}}</b></button>
+                            <button class="btn btn-outline-primary" style="font-size: xx-small;" ng-click="DivHideShow('PayRunRosterMasterCtlr',item,'PayRunIndexCtlr','PayRunRosterMasterCtlr', null);">Roster<br /><b>{{item.Rosters}}</b></button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-center border" style="padding:5px; background-color:lightgray;">
+                <div class="btn-group">
+                    <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                    <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                    <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                    <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                    <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                </div>
+            </div>
+
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PayRunIndexCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Delete is not allowed when Any Payrun exists</p>
+        </div>
+    </div>
+
+    <div ng-controller="PayRunToDoCtlr">
+        <div id="PayRunToDoCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunToDo")
+        </div>
+    </div>
+
+    <div ng-controller="PayRunExemptCtlr">
+        <div id="PayRunExemptCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunExempt")
+        </div>
+        <div ng-controller="PayRunExemptEmployeeCtlr">
+            <div id="PayRunExemptEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("PayRunExemptEmployee")
+            </div>
+        </div>
+    </div>
+
+    <div ng-controller="PayRunHolidayCtlr">
+        <div id="PayRunHolidayCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunHoliday")
+        </div>
+    </div>
+
+    <div ng-controller="PayRunLeaveRequisitionCtlr">
+        <div id="PayRunLeaveRequisitionCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunLeaveRequisition")
+        </div>
+    </div>
+
+    <div ng-controller="PayRunMasterCtlr">
+        <div id="PayRunMasterCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunMaster")
+        </div>
+        <div ng-controller="PayRunMasterDetailEmployeeCtlr">
+            <div id="PayRunMasterDetailEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("PayRunMasterDetailEmployee")
+            </div>
+            <div ng-controller="PayRunMasterDetailEmployeeATCtlr">
+                <div id="PayRunMasterDetailEmployeeATCtlr" style="display: none;">
+                    @await Html.PartialAsync("PayRunMasterDetailEmployeeAT")
+                </div>
+            </div>
+            <div ng-controller="PayRunMasterDetailEmployeeWageCtlr">
+                <div id="PayRunMasterDetailEmployeeWageCtlr" style="display: none;">
+                    @await Html.PartialAsync("PayRunMasterDetailEmployeeWage")
+                </div>
+            </div>
+        </div>
+        <div ng-controller="PayRunOperationHubCtlr">
+            <div id="PayRunOperationHubCtlr" style="display: none;">
+                @await Html.PartialAsync("PayRunOperationHub")
+            </div>
+        </div>
+    </div>
+
+    <div ng-controller="PayRunMasterDetailPaymentCtlr">
+        <div id="PayRunMasterDetailPaymentCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunMasterDetailPayment")
+        </div>
+        <div ng-controller="PayRunMasterDetailPaymentEmployeeCtlr">
+            <div id="PayRunMasterDetailPaymentEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("PayRunMasterDetailPaymentEmployee")
+            </div>
+        </div>
+    </div>
+
+    <div ng-controller="PayRunRosterMasterCtlr">
+        <div id="PayRunRosterMasterCtlr" style="display: none;">
+            @await Html.PartialAsync("PayRunRosterMaster")
+        </div>
+        <div ng-controller="PayRunRosterDetailShiftCtlr">
+            <div id="PayRunRosterDetailShiftCtlr" style="display: none;">
+                @await Html.PartialAsync("PayRunRosterDetailShift")
+            </div>
+        </div>
+        <div ng-controller="PayRunRosterDetailEmployeeCtlr">
+            <div id="PayRunRosterDetailEmployeeCtlr" style="display: none;">
+                @await Html.PartialAsync("PayRunRosterDetailEmployee")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

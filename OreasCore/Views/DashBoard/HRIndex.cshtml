@@ -1,0 +1,144 @@
+﻿@{
+    ViewBag.Title = "HR DashBoard";
+}
+@section Scripts {
+    <script src="~/angular.js/dashboardhr.0.1.js"></script>
+    <script src="~/lib/Chart.js/chart.umd.js"></script>
+}
+
+<div ng-controller="HRCtlr" class="container">
+    <MyAntiforgeryToken></MyAntiforgeryToken>
+
+    <div id="HRCtlr">
+        <div class="btn-group" role="group" aria-label="HR">
+            <button type="button" class="btn btn-outline-primary">HR Main</button>
+            <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRSalaryCtlr',UserInfo,'HRCtlr','HRSalaryCtlr', null);">Salary</button>
+            <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRAttendanceCtlr',UserInfo,'HRCtlr','HRAttendanceCtlr', null);">Attendance</button>
+            <button type="button" class="btn btn-primary" ng-click="DivHideShow('HRTeamCtlr',UserInfo,'HRCtlr','HRTeamCtlr', null);">Team</button>
+        </div>
+        <MyFieldSet legendtext="Your Information">
+
+
+            <div mycssclass="@MyCSSClassName.RowInForm" style="text-align:center; vertical-align:central;">
+                <div class="col">
+                    <img style="border:ridge;" data-ng-src="data:image/jpeg;base64,{{UserInfo.Photo160X210.length>0?UserInfo.Photo160X210:''}}" width="135" height="150" />
+                </div>
+                <div class="col">
+                    <div class="">
+                        <img src="~/images/faceRecognition.png" />
+                    </div>
+                    <div class="">
+                        <input value="{{UserInfo.HasFaceTemplate?'Yes':'No'}}" type="button" class="btn btn-sm" disabled />
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="">
+                        <img src="~/images/RightHandFingerIndex.png" />
+                    </div>
+                    <div class="">
+                        <input value="F0" type="button" class="btn {{UserInfo.f0 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F1" type="button" class="btn {{UserInfo.f1 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F2" type="button" class="btn {{UserInfo.f2 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F3" type="button" class="btn {{UserInfo.f3 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F4" type="button" class="btn {{UserInfo.f4 ? 'btn-success': ''}} btn-sm" />
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="">
+                        <img src="~/images/LeftHandFingerIndex.png" />
+                    </div>
+                    <div class="">
+                        <input value="F5" type="button" class="btn {{UserInfo.f5 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F6" type="button" class="btn {{UserInfo.f6 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F7" type="button" class="btn {{UserInfo.f7 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F8" type="button" class="btn {{UserInfo.f8 ? 'btn-success': ''}} btn-sm" />
+                        <input value="F9" type="button" class="btn {{UserInfo.f9 ? 'btn-success': ''}} btn-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Machine Enrollment #</span>
+                    <input id="UserInfo.ATEnrollmentNo_Default" name="UserInfo.ATEnrollmentNo_Default" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.ATEnrollmentNo_Default" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Employee Name</span>
+                    <input id="UserInfo.EmployeeName" name="UserInfo.EmployeeName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.EmployeeName" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Father / Husband Name</span>
+                    <input id="UserInfo.FatherORHusbandName" name="UserInfo.FatherORHusbandName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.FatherORHusbandName" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">CNIC</span>
+                    <input id="UserInfo.CNIC" name="UserInfo.CNIC" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.CNIC" readonly />
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Joining Date</span>
+                    <input id="UserInfo.JoiningDate" name="UserInfo.JoiningDate" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.JoiningDate" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Section</span>
+                    <input id="UserInfo.SectionName" name="UserInfo.SectionName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.SectionName" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Designation</span>
+                    <input id="UserInfo.Designation" name="UserInfo.Designation" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.Designation" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Cell Phone No</span>
+                    <input id="UserInfo.CellPhoneNo" name="UserInfo.CellPhoneNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.CellPhoneNo" readonly />
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Home Address</span>
+                    <input id="UserInfo.HomeAddress" name="UserInfo.HomeAddress" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.HomeAddress" readonly />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email</span>
+                    <input id="UserInfo.Email" name="UserInfo.Email" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="UserInfo.Email" readonly />
+                </div>
+            </div>
+
+
+
+
+
+        </MyFieldSet>
+    </div>
+
+    <div ng-controller="HRSalaryCtlr">
+        <div id="HRSalaryCtlr" style="display: none;">
+            @await Html.PartialAsync("HRSalary")
+        </div>
+    </div>
+    <div ng-controller="HRAttendanceCtlr">
+        <div id="HRAttendanceCtlr" style="display: none;">
+            @await Html.PartialAsync("HRAttendance")
+        </div>
+    </div>
+    <div ng-controller="HRTeamCtlr">
+        <div id="HRTeamCtlr" style="display: none;">
+            @await Html.PartialAsync("HRTeam")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_MonthSearchModalGeneral")
+</div>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,99 @@
+﻿<div class="btn-group" role="group" aria-label="Dashboard">
+    <button type="button" class="btn btn-primary" ng-click="DivHideShow(null,null,'AttendanceTogetherCtlr','AttendanceIndexCtlr', null);">Individual</button>
+    <button type="button" class="btn btn-outline-primary">Group</button>
+</div>
+<div>
+
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Employee Name
+                </th>
+                <th ng-repeat="itm in dateArray" style="background-color:{{itm.DayName === 'Sun' ? 'lightsteelblue' : 'steelblue'}};">
+                    {{itm.DayNo}}
+                    <br />
+                    {{itm.DayName}}
+                </th>
+                <th style="background-color:lightslategray">
+                    Summary
+                </th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.Name}}
+                </td>
+                <td ng-repeat="AT in itm.AT">
+                    <table border="1" style="min-width: 50px; max-width: 50px; width:50px; font-size:xx-small;">
+                        <tr style="width:100%;">
+                            <td colspan="5" style="width:100%; text-align:left; border:1px solid gray; color:black; background-color:{{AT.ColorScheme}};">&nbsp;</td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width: 5%; text-align: left; border: 1px solid gray; background-color: lightgray; color: black;">I</td>
+                            <td colspan="4" style="width:95%; text-align:left; border:1px solid gray; background-color:lightgray; color:black;">{{AT.CheckIn}}</td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width:5%; text-align:left; border:1px solid gray; background-color:lightgray; color:black;">O</td>
+                            <td colspan="4" style="width:95%; text-align:left; border:1px solid gray; background-color:lightgray; color:black;">{{AT.CheckOut}}</td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width:20%; text-align:center; border:1px solid gray; color:black; background-color:{{AT.LI ? 'Pink' : 'white'}};">LI</td>
+                            <td style="width:20%; text-align:center; border:1px solid gray; color:black; background-color:{{AT.EO ? 'Pink' : 'white'}};">EO</td>
+                            <td style="width:20%; text-align:center; border:1px solid gray; color:black; background-color:{{AT.HS ? 'Pink' : 'white'}};">HS</td>
+                            <td style="width:20%; text-align:center; border:1px solid gray; color:black; background-color:{{AT.HSP ? 'Pink' : 'white'}};">HSP</td>
+                            <td style="width:20%; text-align:center; border:1px solid gray; color:black; background-color:{{AT.AP ? 'Pink' : 'white'}};">AP</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table border="1" style="min-width: 50px; max-width: 50px; width:50px; font-size:xx-small;">
+                        <tr style="width:100%;">
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;">WD</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;">{{itm.TotalFinalP}}</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;"></td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;">OT</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;">{{itm.TotalOT}}</td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: pink;">LI</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: pink;">EO</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: pink;">HS</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: pink;">HSP</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: pink;">AP</td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: white;">{{itm.TotalLI}}</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: white;">{{itm.TotalEO}}</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: white;">{{itm.TotalHS}}</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: white;">{{itm.TotalHSP}}</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: white;">{{itm.TotalAP}}</td>
+                        </tr>
+                        <tr style="width:100%;">
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;">PL</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;">{{itm.TotalLeaveValue}}</td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;"></td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;"></td>
+                            <td style="width: 20%; text-align: center; border: 1px solid gray; color: black; background-color: lightslategray;"></td>
+                        </tr>
+                    </table>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "AttendanceTogetherCtlr")
+</div>

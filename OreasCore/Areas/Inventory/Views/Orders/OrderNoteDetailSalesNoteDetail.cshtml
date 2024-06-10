@@ -1,0 +1,138 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'OrderNoteDetailSalesNoteDetailCtlr','OrderNoteMasterCtlr', this.$parent);">Order Note</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'OrderNoteDetailSalesNoteDetailCtlr','OrderNoteDetailCtlr', this);">Order Note Detail</a>
+    <MyViewName child="true"> Sales</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Customer A/c
+                    </th>
+                    <th>
+                        Target Date
+                    </th>
+                    <th>
+                        Primary Product
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Priority
+                    </th>
+                    <th>
+                        Manufacturing Qty
+                    </th>
+                    <th>
+                        Sold Qty
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.FK_tbl_Ac_ChartOfAccounts_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.TargetDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.Quantity}} {{MasterObject.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_AspNetOreasPriority_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.ManufacturingQty}}
+                    </td>
+                    <td>
+                        {{MasterObject.SoldQty}}
+                    </td>
+                    <td>
+                        {{MasterObject.ClosedTrue_OpenFalse? 'Closed' : 'Open'}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Doc No
+                </th>
+                <th>
+                    Doc Date
+                </th>
+                <th>
+                    Product
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.DocNo}}
+                </td>
+                <td>
+                    {{itm.DocDate}}
+                </td>
+                <td>
+                    {{itm.ProductName}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{itm.MeasurementUnit}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <a href="~/Inventory/Challan/SalesNoteIndex?byDocNo={{itm.DocNo}}" target="_blank" class="btn btn-primary">Goto SN</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "OrderNoteDetailSalesNoteDetailCtlr")
+
+</div>

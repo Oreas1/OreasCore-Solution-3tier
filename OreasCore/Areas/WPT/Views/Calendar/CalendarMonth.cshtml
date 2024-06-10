@@ -1,0 +1,143 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'CalendarMonthCtlr','CalendarIndexCtlr', this);">Calendar</a>
+    <MyViewName child="true"> Month</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Calendar Year
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <b>{{MasterObject.CalendarStartYear}} <span style="font-size:small">{{MasterObject.CalendarStartMonthSName}}</span> - {{MasterObject.CalendarEndYear}} <span style="font-size:small">{{MasterObject.CalendarEndMonthName}}</span></b>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.CancelOfAdd"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("VM_CalendarYear_Months_Adjustment.ID_M1", "{{VM_CalendarYear_Months_Adjustment.ID_M1}}")
+            @Html.Hidden("VM_CalendarYear_Months_Adjustment.ID_M2", "{{VM_CalendarYear_Months_Adjustment.ID_M2}}")
+            @Html.Hidden("VM_CalendarYear_Months_Adjustment.FK_VM_CalendarYear_Months_Adjustment_ID_M1", "{{VM_CalendarYear_Months_Adjustment.FK_VM_CalendarYear_Months_Adjustment_ID_M1}}")
+            @Html.Hidden("VM_CalendarYear_Months_Adjustment.FK_VM_CalendarYear_Months_Adjustment_ID_M2", "{{VM_CalendarYear_Months_Adjustment.FK_VM_CalendarYear_Months_Adjustment_ID_M2}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Month One From</span>
+                        <input id="VM_CalendarYear_Months_Adjustment.MonthStart_M1" name="VM_CalendarYear_Months_Adjustment.MonthStart_M1" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{VM_CalendarYear_Months_Adjustment.MonthStart_M1}}" ng-model="VM_CalendarYear_Months_Adjustment.MonthStart_M1" ng-disabled="ng_readOnly" readonly="readonly" required />
+                        <MyValidationSpan formname="myform" fieldname="VM_CalendarYear_Months_Adjustment.MonthStart_M1" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Month One Till</span>
+                        <input id="VM_CalendarYear_Months_Adjustment.MonthEnd_M1" name="VM_CalendarYear_Months_Adjustment.MonthEnd_M1" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{VM_CalendarYear_Months_Adjustment.MonthEnd_M1}}" ng-model="VM_CalendarYear_Months_Adjustment.MonthEnd_M1" min="{{MinRange|date:'yyyy-MM-dd'}}" max="{{MaxRange|date:'yyyy-MM-dd'}}" ng-click="OnChangeOfDateTillMonth(1);" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="VM_CalendarYear_Months_Adjustment.MonthEnd_M1" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Month Two From</span>
+                        <input id="VM_CalendarYear_Months_Adjustment.MonthStart_M2" name="VM_CalendarYear_Months_Adjustment.MonthStart_M2" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{VM_CalendarYear_Months_Adjustment.MonthStart_M2}}" ng-model="VM_CalendarYear_Months_Adjustment.MonthStart_M2" min="{{MinRange|date:'yyyy-MM-dd'}}" max="{{MaxRange|date:'yyyy-MM-dd'}}" ng-click="OnChangeOfDateTillMonth(2);" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="VM_CalendarYear_Months_Adjustment.MonthStart_M2" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Month Two Till</span>
+                        <input id="VM_CalendarYear_Months_Adjustment.MonthEnd_M2" name="VM_CalendarYear_Months_Adjustment.MonthEnd_M2" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{VM_CalendarYear_Months_Adjustment.MonthEnd_M2}}" ng-model="VM_CalendarYear_Months_Adjustment.MonthEnd_M2" ng-disabled="ng_readOnly" readonly="readonly" required />
+                        <MyValidationSpan formname="myform" fieldname="VM_CalendarYear_Months_Adjustment.MonthEnd_M2" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{VM_CalendarYear_Months_Adjustment.CreatedBy}}" ng-model="VM_CalendarYear_Months_Adjustment.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{VM_CalendarYear_Months_Adjustment.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="VM_CalendarYear_Months_Adjustment.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{VM_CalendarYear_Months_Adjustment.ModifiedBy}}" ng-model="VM_CalendarYear_Months_Adjustment.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{VM_CalendarYear_Months_Adjustment.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="VM_CalendarYear_Months_Adjustment.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Calendar Year
+                </th>
+                <th>
+                    Month Start
+                </th>
+                <th>
+                    Month End
+                </th>
+                <th>
+                    Status
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    <b>{{itm.MonthStartMonth}}-{{itm.MonthEndMonth}}<span style="font-size:x-small"> {{itm.MonthStartYear}}</span></b>
+                </td>
+                <td>
+                    {{itm.MonthStart}}
+                </td>
+                <td>
+                    {{itm.MonthEnd}}
+                </td>
+                <td>
+                    {{itm.IsMonthClosed===true? 'Closed': 'Open'}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <input type="button" value="Shrink Month" ng-click="GetRow(itm.ID,'Edit')" class="btn" style="color:coral" ng-disabled="DisabledBtnAll" ng-hide="itm.IsMonthClosed===true" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "CalendarMonthCtlr")
+
+</div>

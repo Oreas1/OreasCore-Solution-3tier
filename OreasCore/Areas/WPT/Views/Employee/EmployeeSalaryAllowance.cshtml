@@ -1,0 +1,176 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'EmployeeSalaryAllowanceCtlr','EmployeeIndexCtlr', this);">Employee</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'EmployeeSalaryAllowanceCtlr','EmployeeSalaryCtlr', this);">Salary</a>
+    <MyViewName child="true"> Allowance</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        Effective Date
+                    </th>
+                    <th>
+                        Basic Wage
+                    </th>
+                    <th>
+                        OT Policy
+                    </th>
+                    <th>
+                        Transaction Mode
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.MasterObject.EmployeeName}} [{{MasterObject.MasterObject.ATEnrollmentNo_Default}}]
+                    </td>
+                    <td>
+                        {{MasterObject.EffectiveDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.Amount}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_WPT_AllowanceType_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_WPT_TransactionMode_IDName}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_WPT_EmployeeSalaryStructureAllowance.ID", "{{tbl_WPT_EmployeeSalaryStructureAllowance.ID}}")
+            @Html.Hidden("tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_EmployeeSalaryStructure_ID", "{{tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_EmployeeSalaryStructure_ID}}")
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Allowance Type</span>
+                        <select id="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_AllowanceType_ID" name="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_AllowanceType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.AllowanceName for x in AllowanceTypeList" data-ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_AllowanceType_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Allowance Type</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_AllowanceType_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Amount</span>
+                        <input id="tbl_WPT_EmployeeSalaryStructureAllowance.Amount" name="tbl_WPT_EmployeeSalaryStructureAllowance.Amount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.Amount" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeSalaryStructureAllowance.Amount" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Calculation Method</span>
+                        <select id="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_WageCalculationType_ID" name="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_WageCalculationType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.CalculationName for x in WageCalculationTypeList" data-ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_WageCalculationType_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Calculation Method</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeSalaryStructureAllowance.FK_tbl_WPT_WageCalculationType_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Min Working Day In %</span>
+                        <input id="tbl_WPT_EmployeeSalaryStructureAllowance.Min_WD_Per" name="tbl_WPT_EmployeeSalaryStructureAllowance.Min_WD_Per" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.Min_WD_Per" ng-disabled="ng_readOnly" min="1" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeSalaryStructureAllowance.Min_WD_Per" required="true" minlength="1"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_WPT_EmployeeSalaryStructureAllowance.Remarks" name="tbl_WPT_EmployeeSalaryStructureAllowance.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_EmployeeSalaryStructureAllowance.Remarks" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.Remarks" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_EmployeeSalaryStructureAllowance.Remarks" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+                
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeSalaryStructureAllowance.CreatedBy}}" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeSalaryStructureAllowance.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeSalaryStructureAllowance.ModifiedBy}}" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_EmployeeSalaryStructureAllowance.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_EmployeeSalaryStructureAllowance.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Allowance Type
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Min WD%
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_WPT_AllowanceType_IDName}}
+                </td>
+                <td>
+                    {{itm.Amount}} {{itm.FK_tbl_WPT_WageCalculationType_IDName}}
+                </td>
+                <td>
+                    {{itm.Min_WD_Per}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>

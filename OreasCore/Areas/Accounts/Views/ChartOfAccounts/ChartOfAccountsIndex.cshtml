@@ -1,0 +1,343 @@
+﻿@{
+    ViewBag.Title = "Chart Of Accounts";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Accounts/ChartOfAccounts/chartofaccountsindex.0.2.js"></script>
+}
+<div ng-controller="ChartOfAccountsIndexCtlr" class="container">
+    <div id="ChartOfAccountsIndexCtlr">
+        <MyViewName>Chart Of Accounts</MyViewName>
+        @*-----------------------------------this is tree view-----------------------------*@
+        <div>
+            <ul>
+                <li style="list-style:none" ng-repeat="node in nodedata" id="">
+                    <text ng-repeat="a in range(node.spacing.length) track by $index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                    <span class="btn" ng-click="getchild(node.ID);"><text ng-hide="node.ChildCount<=0">[{{node.sign}}]</text></span>
+                    <span ng-style="{ color: node.IsParent ? 'red' : 'black' }">{{node.AccountName}}</span>
+                    <span ng-hide="node.ParentID===0" class="btn" ng-click="SelectFromTree(node.ID);"><i class="fa fa-edit"></i></span>
+                </li>
+            </ul>
+        </div>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Ac_ChartOfAccounts.ID", "{{tbl_Ac_ChartOfAccounts.ID}}")
+                @Html.Hidden("tbl_Ac_ChartOfAccounts.ParentID", "{{tbl_Ac_ChartOfAccounts.ParentID}}")
+            <MyFieldSet legendtext="Entry Form">
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#Main">Main Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#Other">Other Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="tab" href="#Excel">Excel</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="Main" class="container tab-pane active">
+                        <br />
+
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Main Parent</span>
+                                <MyButtonModal fieldname="tbl_Ac_ChartOfAccounts.ParentName" ng-click="OpenCOASearchModalGeneral('COA', 0, 'tbl_Ac_ChartOfAccounts.ParentName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_ChartOfAccounts.ParentName'].$dirty=true;" ng-disabled="ng_readOnly || tbl_Ac_ChartOfAccounts.ChildCount > 0" placeholder="Parent Account Name ..." required></MyButtonModal>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.ParentName" required="true"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Account Name</span>
+                                <input type="text" id="tbl_Ac_ChartOfAccounts.AccountName" name="tbl_Ac_ChartOfAccounts.AccountName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" style="text-transform:uppercase;" placeholder="Account Name ..." value="tbl_Ac_ChartOfAccounts.AccountName" ng-model="tbl_Ac_ChartOfAccounts.AccountName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.AccountName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Transactional</span>
+                                <select id="tbl_Ac_ChartOfAccounts.IsTransactional" name="tbl_Ac_ChartOfAccounts.IsTransactional" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Parent (Non-Transactional)', v: false }, { n: 'Child (Transactional)', v: true }]" data-ng-model="tbl_Ac_ChartOfAccounts.IsTransactional" ng-disabled="ng_readOnly || tbl_Ac_ChartOfAccounts.ChildCount > 0" required>
+                                    <option value="">Select Parent/Child</option>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.IsTransactional" required="true"></MyValidationSpan>
+                            </div>                            
+                        </div>
+
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Account Type</span>
+                                <select id="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_ChartOfAccounts_Type_ID" name="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_ChartOfAccounts_Type_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.AccountType+' [ID:'+x.ID+']' for x in COATypeList" data-ng-model="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_ChartOfAccounts_Type_ID" ng-disabled="ng_readOnly" required>
+                                    <option value="">Select Account Type</option>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_ChartOfAccounts_Type_ID" required="true"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Status</span>
+                                <select id="tbl_Ac_ChartOfAccounts.IsDiscontinue" name="tbl_Ac_ChartOfAccounts.IsDiscontinue" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Active', v: false }, { n: 'In-Active', v: true }]" data-ng-model="tbl_Ac_ChartOfAccounts.IsDiscontinue" ng-disabled="ng_readOnly" required>
+                                    <option value="">Select Status</option>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.IsDiscontinue" required="true"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Account Code</span>
+                                <input id="tbl_Ac_ChartOfAccounts.AccountCode" name="tbl_Ac_ChartOfAccounts.AccountCode" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="1-2-3.." value="tbl_Ac_ChartOfAccounts.AccountCode" ng-model="tbl_Ac_ChartOfAccounts.AccountCode" ng-disabled="ng_readOnly" readonly />
+                            </div>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">WHT Purchase Policy</span>
+                                <select id="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnPurchase_ID" name="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnPurchase_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.WHTaxName+' [ID:'+x.ID+']' for x in PolicyWHTaxOnPurchaseList" data-ng-model="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnPurchase_ID" ng-disabled="ng_readOnly">
+                                    <option value="">Select WHT Purchase Policy</option>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnPurchase_ID"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">WHT Sales Policy</span>
+                                <select id="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnSales_ID" name="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnSales_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.WHTaxName+' [ID:'+x.ID+']' for x in PolicyWHTaxOnSalesList" data-ng-model="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnSales_ID" ng-disabled="ng_readOnly">
+                                    <option value="">Select WHT Purchase Policy</option>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyWHTaxOnSales_ID"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Payment Term Policy</span>
+                                <select id="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyPaymentTerm_ID" name="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyPaymentTerm_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Name+' [ID:'+x.ID+']' for x in PolicyPaymentTermList" data-ng-model="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyPaymentTerm_ID" ng-disabled="ng_readOnly">
+                                    <option value="">Select Payment Term</option>
+                                </select>
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.FK_tbl_Ac_PolicyPaymentTerm_ID"></MyValidationSpan>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="Other" class="container tab-pane fade">
+                        <br />
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Company Name</span>
+                                <input id="tbl_Ac_ChartOfAccounts.CompanyName" name="tbl_Ac_ChartOfAccounts.CompanyName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.CompanyName" ng-model="tbl_Ac_ChartOfAccounts.CompanyName" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.CompanyName" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Address</span>
+                                <input id="tbl_Ac_ChartOfAccounts.Address" name="tbl_Ac_ChartOfAccounts.Address" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.Address" ng-model="tbl_Ac_ChartOfAccounts.Address" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.Address" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">NTN</span>
+                                <input id="tbl_Ac_ChartOfAccounts.NTN" name="tbl_Ac_ChartOfAccounts.NTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.NTN" ng-model="tbl_Ac_ChartOfAccounts.NTN" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.NTN" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">STR</span>
+                                <input id="tbl_Ac_ChartOfAccounts.STR" name="tbl_Ac_ChartOfAccounts.STR" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.STR" ng-model="tbl_Ac_ChartOfAccounts.STR" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.STR" maxlength="50"></MyValidationSpan>
+                            </div>
+                        </div>
+
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Telephone</span>
+                                <input id="tbl_Ac_ChartOfAccounts.Telephone" name="tbl_Ac_ChartOfAccounts.Telephone" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.Telephone" ng-model="tbl_Ac_ChartOfAccounts.Telephone" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.Telephone" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Mobile</span>
+                                <input id="tbl_Ac_ChartOfAccounts.Mobile" name="tbl_Ac_ChartOfAccounts.Mobile" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.Mobile" ng-model="tbl_Ac_ChartOfAccounts.Mobile" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.Mobile" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Fax</span>
+                                <input id="tbl_Ac_ChartOfAccounts.Fax" name="tbl_Ac_ChartOfAccounts.Fax" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.Fax" ng-model="tbl_Ac_ChartOfAccounts.Fax" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.Fax" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email</span>
+                                <input id="tbl_Ac_ChartOfAccounts.Email" name="tbl_Ac_ChartOfAccounts.Email" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. name@oreas.com" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" value="tbl_Ac_ChartOfAccounts.Email" ng-model="tbl_Ac_ChartOfAccounts.Email" ng-disabled="ng_readOnly" minlength="5" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.Email" minlength="5" maxlength="50" pattern="wrong Email Format"></MyValidationSpan>
+                            </div>
+                        </div>
+
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Contact Person Name</span>
+                                <input id="tbl_Ac_ChartOfAccounts.ContactPersonName" name="tbl_Ac_ChartOfAccounts.ContactPersonName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.ContactPersonName" ng-model="tbl_Ac_ChartOfAccounts.ContactPersonName" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.ContactPersonName" maxlength="50"></MyValidationSpan>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Contact Person No</span>
+                                <input id="tbl_Ac_ChartOfAccounts.ContactPersonNumber" name="tbl_Ac_ChartOfAccounts.ContactPersonNumber" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_ChartOfAccounts.ContactPersonNumber" ng-model="tbl_Ac_ChartOfAccounts.ContactPersonNumber" ng-disabled="ng_readOnly" maxlength="50" />
+                                <MyValidationSpan formname="myform" fieldname="tbl_Ac_ChartOfAccounts.ContactPersonNumber" maxlength="50"></MyValidationSpan>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="Excel" class="container tab-pane fade">
+                        <br />
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <button type="button" class="btn btn-primary" ng-click="rpt(tbl_Ac_ChartOfAccounts.ID);" ng-disabled="!Privilege.CanViewReport"><i class="fa fa-file-excel"></i> Export Child</button>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <input type="file" id="UploadExcelFile" name="UploadExcelFile" ng-disabled="!Privilege.CanAdd || tbl_Ac_ChartOfAccounts.IsTransactional===true" onchange="angular.element(this).scope().LoadFileData(this.files)" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="btn btn-block" />
+                            </div>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm">
+                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                                <div mycssclass="@MyCSSClassName.Table_Div">
+                                    <table border="1">
+                                        <tr style="border:1px solid black;">
+                                            <th style="border: 1px solid black; background-color:lightpink;">&nbsp;&nbsp; *Ac Name &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black; background-color: lightpink;">&nbsp; *Ac Type ID &nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; WHT Purchase Policy ID &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; WHT Sales Policy ID &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Pay Term ID &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Company Name &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Address &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; NTN &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; STR &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Telephone &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Mobile &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Email &nbsp;&nbsp;</th>
+                                            <th style="border: 1px solid black;">&nbsp;&nbsp; Contact Person Name &nbsp;&nbsp;</th>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; text-align: right;">Supplier</td>
+                                            <td style="border: 1px solid black; text-align: right;">1</td>
+                                            <td style="border: 1px solid black; text-align: right;">1</td>
+                                            <td style="border: 1px solid black; text-align: center;">1</td>
+                                            <td style="border: 1px solid black; text-align: center;">1</td>
+                                            <td style="border:1px solid black; text-align:center;">Abc Pvt Ltd</td>
+                                            <td style="border:1px solid black; text-align:center;">Khi Pakistan</td>
+                                            <td style="border:1px solid black; text-align:center;">1234</td>
+                                            <td style="border:1px solid black; text-align:center;">0000</td>
+                                            <td style="border:1px solid black; text-align:center;">+92</td>
+                                            <td style="border:1px solid black; text-align:center;">+92</td>
+                                            <td style="border:1px solid black; text-align:center;">user@@oreas1.com</td>
+                                            <td style="border:1px solid black; text-align:center;">Mr. </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_ChartOfAccounts.CreatedBy}}" ng-model="tbl_Ac_ChartOfAccounts.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_ChartOfAccounts.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_ChartOfAccounts.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_ChartOfAccounts.ModifiedBy}}" ng-model="tbl_Ac_ChartOfAccounts.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_ChartOfAccounts.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_ChartOfAccounts.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Account / Parent Name
+                    </th>
+                    <th>
+                        Transactional
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th>
+                        Policy WHTax On Purchase
+                    </th>
+                    <th>
+                        Policy WHTax On Sales
+                    </th>
+                    <th>
+                        Policy Payment Term
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b>&diams;)<text ng-bind="itm.AccountName"></text></b>
+                        <br />
+                        {{itm.ParentName}}
+                    </td>
+                    <td>
+                        {{itm.IsTransactional ? 'Child' : 'Parent'}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Ac_ChartOfAccounts_Type_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Ac_PolicyWHTaxOnPurchase_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Ac_PolicyWHTaxOnSales_IDName}}
+                    </td>
+                    <td>
+                        {{itm.FK_tbl_Ac_PolicyPaymentTerm_IDName}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ChartOfAccountsIndexCtlr")
+        @await Html.PartialAsync("_ReportPanelGeneral")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Change of Parent is not allowed when it has childs</p>
+        </div>
+    </div>
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_COASearchModalGeneral")
+    
+</div>
+
+
+
+

@@ -1,0 +1,158 @@
+﻿<MyViewName>
+    <MyViewName><a href="" ng-click="DivHideShow(null,null,'OrderNoteDetailSubDistributorCtlr','OrderNoteMasterCtlr', this.$parent);">Order Note</a></MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'OrderNoteDetailSubDistributorCtlr','OrderNoteDetailCtlr', this);">Order Note Detail</a>
+    <MyViewName child="true"> Sub Distributor</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        Doc Date
+                    </th>
+                    <th>
+                        Customer A/c
+                    </th>
+                    <th>
+                        Primary Product
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        <b>{{MasterObject.MasterObject.FK_tbl_Ac_ChartOfAccounts_IDName}}</b>
+                    </td>
+                    <td>
+                        {{MasterObject.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    </td>
+                    <td>
+                        {{MasterObject.Quantity}} {{MasterObject.MeasurementUnit}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is entry panel-----------------------------*@
+
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Inv_OrderNoteDetail_SubDistributor.ID", "{{tbl_Inv_OrderNoteDetail_SubDistributor.ID}}")
+            @Html.Hidden("tbl_Inv_OrderNoteDetail_SubDistributor.FK_tbl_Inv_OrderNoteDetail_ID", "{{tbl_Inv_OrderNoteDetail_SubDistributor.FK_tbl_Inv_OrderNoteDetail_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sub Distributor</span>
+                        <MyButtonModal fieldname="tbl_Inv_OrderNoteDetail_SubDistributor.FK_tbl_Ac_CustomerSubDistributorList_IDName" ng-click="OpenSDSearchModalGeneral('OrderNote', MasterObject.MasterObject.FK_tbl_Ac_ChartOfAccounts_ID, 'tbl_Inv_OrderNoteDetail_SubDistributor.FK_tbl_Ac_CustomerSubDistributorList_IDName', SDSearch_CtrlFunction_Ref_InvokeOnSelection); myform['tbl_Inv_OrderNoteDetail_SubDistributor.FK_tbl_Ac_CustomerSubDistributorList_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail_SubDistributor.FK_tbl_Ac_CustomerSubDistributorList_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Quantity In {{MasterObject.MeasurementUnit}}</span>
+                        <input id="tbl_Inv_OrderNoteDetail_SubDistributor.Quantity" name="tbl_Inv_OrderNoteDetail_SubDistributor.Quantity" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail_SubDistributor.Quantity" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail_SubDistributor.Quantity" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Address</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail_SubDistributor.Address}}" ng-model="tbl_Inv_OrderNoteDetail_SubDistributor.Address" disabled />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail_SubDistributor.CreatedBy}}" ng-model="tbl_Inv_OrderNoteDetail_SubDistributor.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail_SubDistributor.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_OrderNoteDetail_SubDistributor.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail_SubDistributor.ModifiedBy}}" ng-model="tbl_Inv_OrderNoteDetail_SubDistributor.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_OrderNoteDetail_SubDistributor.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_OrderNoteDetail_SubDistributor.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Sub Distributor Name
+                </th>
+                <td>
+                    Address
+                </td>
+                <th>
+                    Quantity
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Ac_CustomerSubDistributorList_IDName}}
+                </td>
+                <td>
+                    {{itm.Address}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{MasterObject.MeasurementUnit}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "OrderNoteDetailSubDistributorCtlr")
+
+</div>

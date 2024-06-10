@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Authorization Scheme";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-Identity/authorizationschemeindex.0.2.js"></script>
+}
+<div ng-controller="AuthorizationSchemeCtlr" class="container">
+    <div id="AuthorizationSchemeCtlr">
+        <MyViewName>Authorization Scheme</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{AspNetOreasAuthorizationScheme.ID}}")
+                <MyFieldSet legendtext="Entry Form">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Scheme Name</span>
+                            <input id="AspNetOreasAuthorizationScheme.Name" name="AspNetOreasAuthorizationScheme.Name" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Scheme Name" value="AspNetOreasAuthorizationScheme.Name" ng-model="AspNetOreasAuthorizationScheme.Name" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme.Name" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Credentials DashBoard</span>
+                            <select id="AspNetOreasAuthorizationScheme.IsCredentialsDashBoard" name="AspNetOreasAuthorizationScheme.IsCredentialsDashBoard" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Enabled', v: true }, { n: 'Disabled', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme.IsCredentialsDashBoard" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme.IsCredentialsDashBoard" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">HR DashBoard</span>
+                            <select id="AspNetOreasAuthorizationScheme.IsWPTDashBoard" name="AspNetOreasAuthorizationScheme.IsWPTDashBoard" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Enabled', v: true }, { n: 'Disabled', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme.IsWPTDashBoard" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme.IsWPTDashBoard" required="true"></MyValidationSpan>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Management DashBoard</span>
+                            <select id="AspNetOreasAuthorizationScheme.IsManagementDashBoard" name="AspNetOreasAuthorizationScheme.IsManagementDashBoard" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Enabled', v: true }, { n: 'Disabled', v: false }]" data-ng-model="AspNetOreasAuthorizationScheme.IsManagementDashBoard" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="AspNetOreasAuthorizationScheme.IsManagementDashBoard" required="true"></MyValidationSpan>
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Authorization Scheme Name
+                    </th>
+                    <th>
+                        Credentials DashBoard
+                    </th>
+                    <th>
+                        HR DashBoard
+                    </th>
+                    <th>
+                        Management DashBoard
+                    </th>
+                    <th>
+                        Total Areas
+                    </th>
+                    <td>
+                        Total WareHouses
+                    </td>
+                    <td>
+                        Total Sections
+                    </td>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.Name}}
+                    </td>
+                    <td>
+                        {{itm.IsCredentialsDashBoard ? 'Enabled' : 'Disabled'}}
+                    </td>
+                    <td>
+                        {{itm.IsWPTDashBoard ? 'Enabled' : 'Disabled'}}
+                    </td>
+                    <td>
+                        {{itm.IsManagementDashBoard ? 'Enabled' : 'Disabled'}}
+                    </td>
+                    <td>
+                        {{itm.TotalAreas}}
+                    </td>
+                    <td>
+                        {{itm.TotalWareHouse}}
+                    </td>
+                    <td>
+                        {{itm.TotalSection}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">                           
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Copy" ng-click="GetRow(itm.ID, 'Add')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('AuthorizationSchemeAreaCtlr',itm,'AuthorizationSchemeCtlr','AuthorizationSchemeAreaCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" style="color:orange" title="Goto Full Area Section">Area <span class="fa fa-pie-chart"></span></button>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('AuthorizationSchemeWHMCtlr',itm,'AuthorizationSchemeCtlr','AuthorizationSchemeWHMCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" style="color:green" title="Goto WareHouse allocation">WareHouse <span class="fa fa-box"></span></button>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('AuthorizationSchemeSectionCtlr',itm,'AuthorizationSchemeCtlr','AuthorizationSchemeSectionCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" style="color:steelblue" title="Goto WareHouse allocation">Sections <span class="fa fa-box"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="8">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "AuthorizationSchemeCtlr")
+    </div>
+
+    <div ng-controller="AuthorizationSchemeSectionCtlr">
+        <div id="AuthorizationSchemeSectionCtlr" style="display: none;">
+            @await Html.PartialAsync("AuthorizationSchemeSection")
+        </div>
+    </div>
+
+    <div ng-controller="AuthorizationSchemeWHMCtlr">
+        <div id="AuthorizationSchemeWHMCtlr" style="display: none;">
+            @await Html.PartialAsync("AuthorizationSchemeWHM")
+        </div>
+    </div>
+
+    <div ng-controller="AuthorizationSchemeAreaCtlr">
+        <div id="AuthorizationSchemeAreaCtlr" style="display: none;">
+            @await Html.PartialAsync("AuthorizationSchemeArea")
+        </div>
+        <div ng-controller="AuthorizationSchemeAreaFormCtlr">
+            <div id="AuthorizationSchemeAreaFormCtlr" style="display: none;">
+                @await Html.PartialAsync("AuthorizationSchemeAreaForm")
+            </div>
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_WHMSearchModalGeneral")
+</div>
+
+
+
+

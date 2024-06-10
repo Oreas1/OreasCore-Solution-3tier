@@ -1,0 +1,85 @@
+﻿
+************************************Stored Procedure Entity Framework core***************************
+Put in DBContext
+				public virtual DbSet<test> tests { get; set; }
+then Use in Repository
+					var abc=db.tests.FromSqlRaw("SELECT [ID] FROM [dbo].[tbl_WPT_ActionList]").ToList();
+
+
+
+************************************Data Reader Entity Framework core***************************
+            //--------------------Data Reader-------------------------//
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "SELECT [ID] FROM [dbo].[tbl_WPT_ActionList] where ID=@ID";
+                command.CommandType = CommandType.Text;
+
+                var IDparameter = command.CreateParameter();
+                IDparameter.ParameterName = "@ID";
+                IDparameter.Value = 1;
+                IDparameter.DbType = DbType.Int32;
+
+                command.Parameters.Add(IDparameter);
+
+                if (cmd.Connection.State != ConnectionState.Open)
+{
+    cmd.Connection.Open();
+}
+
+                using (var result = command.ExecuteReader())
+                {
+                    while (result.Read())
+                    {
+                        var a = result[0].ToString();
+                    }
+
+                }
+            }
+
+************************************DataSet Entity Framework core***************************
+            var dataSet = new DataSet();
+            using (var sqlCmd = db.Database.GetDbConnection().CreateCommand())
+            {
+                sqlCmd.CommandType = CommandType.Text;
+                sqlCmd.CommandText = "SELECT [ID] FROM [dbo].[tbl_WPT_ActionList]";
+                // sqlCmd.Parameters.Add( new SqlParameter( "@Parameter", value ) );
+                // sqlCmd.Parameters.Add( new SqlParameter( "@Error", null ) { Direction = ParameterDirection.Output, Size = -1 } );
+
+                // Define the data adapter and fill the dataset 
+                using (System.Data.Common.DbDataAdapter da = new Microsoft.Data.SqlClient.SqlDataAdapter())
+                {
+                    da.SelectCommand = sqlCmd;
+                    da.Fill(dataSet);
+                    var a = dataSet.Tables[0].Rows[0].ItemArray[0].ToString();
+                }
+                // resultDetail.Error = sqlCmd.Parameters["@Error"].Value.ToString();
+            }
+
+
+
+************************************DataSet Entity Framework core***************************
+                BEGIN TRAN Tr1
+				 if(1=1)
+				 begin
+				 raiserror('ss',16,1);
+				  IF @@TRANCOUNT > 0 ROLLBACK TRAN Tr1;
+			     end
+				 else
+				 commit
+
+********************************* linq with join in load function*******************************
+            var t = await (from m in db.tbl_Inv_PurchaseNoteMasters
+                           join t1 in db.AspNetOreasAuthorizationScheme_WareHouses on m.FK_tbl_Inv_WareHouseMaster_ID equals t1.FK_tbl_Inv_WareHouseMaster_ID
+                           join t2 in db.AspNetOreasAuthorizationSchemes on t1.FK_AspNetOreasAuthorizationScheme_ID equals t2.ID
+                           where t2.ApplicationUsers.Count(c => c.UserName == "ovais") > 0
+                           && ( string.IsNullOrEmpty(FilterValueByText) || FilterByText == "byAccountName" && m.tbl_Ac_ChartOfAccounts.AccountName.ToLower().Contains(FilterValueByText.ToLower()) )
+                           && ( string.IsNullOrEmpty(FilterByLoad) || FilterByLoad == "byPendingAction" && m.tbl_Inv_PurchaseNoteDetails.Any(a => a.tbl_QcQa_PurchaseNote1x1.FK_tbl_QcQa_ActionType_ID == 1) )
+                           select m).CountAsync();
+
+            var t = await (from m in db.tbl_Inv_PurchaseNoteMasters
+                    join t1 in db.AspNetOreasAuthorizationScheme_WareHouses on m.FK_tbl_Inv_WareHouseMaster_ID equals t1.FK_tbl_Inv_WareHouseMaster_ID
+                    join t2 in db.AspNetOreasAuthorizationSchemes on t1.FK_AspNetOreasAuthorizationScheme_ID equals t2.ID
+                    where t2.ApplicationUsers.Count(c=> c.UserName == "ovais")>0
+                    && (string.IsNullOrEmpty(FilterValueByText) || FilterByText == "byAccountName" && m.tbl_Ac_ChartOfAccounts.AccountName.ToLower().Contains(FilterValueByText.ToLower()))
+                    && (string.IsNullOrEmpty(FilterByLoad) || FilterByLoad == "byPendingAction" && m.tbl_Inv_PurchaseNoteDetails.Any(a => a.tbl_QcQa_PurchaseNote1x1.FK_tbl_QcQa_ActionType_ID == 1))
+                           select new { m.ID }).OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync();

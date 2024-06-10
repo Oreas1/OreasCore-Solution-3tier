@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "Email";
+}
+@section Scripts {
+
+    <script src="~/lib/froala-editor/js/froala_editor.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/align.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/code_beautifier.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/code_view.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/draggable.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/link.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/lists.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/paragraph_format.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/paragraph_style.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/table.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/url.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/entities.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/font_size.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/font_family.min.js"></script>
+    <script src="~/lib/froala-editor/js/plugins/colors.min.js"></script>
+    <script src="~/angular.js/Angular-WPT/General/emailindex.0.1.js"></script>
+
+}
+@section Styles
+{
+
+    <link href="~/lib/froala-editor/css/froala_editor.min.css" rel="stylesheet" />
+    <link href="~/lib/froala-editor/css/froala_style.min.css" rel="stylesheet" />
+    <link href="~/lib/froala-editor/css/plugins/code_view.min.css" rel="stylesheet" />
+    <link href="~/lib/froala-editor/css/plugins/table.min.css" rel="stylesheet" />
+    <link href="~/lib/froala-editor/css/plugins/colors.min.css" rel="stylesheet" />
+}
+<div ng-controller="EmailIndexCtlr" class="container">
+    <div id="EmailIndexCtlr">
+        <MyViewName>Email</MyViewName>
+
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        <MyFieldSet legendtext="To">
+
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup1">
+                    <select id="EmailTo.EmailType" name="EmailTo.EmailType" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'To', v: 'To' }, { n: 'Cc', v: 'Cc' }, { n: 'Bcc', v: 'Bcc' }]" data-ng-model="EmailTo.EmailType" required>
+                        <option value="">Send Type</option>
+                    </select>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <input id="EmailTo.EmailAddress" name="EmailTo.EmailAddress" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. abc@@gmail.com" ng-model="EmailTo.EmailAddress" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" minlength="6" maxlength="100" required />
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup1">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="PostRow();" ng-disabled="!EmailTo.EmailAddress.length>0">Add Single</button>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <select id="FK_tbl_WPT_Designation_ID" name="FK_tbl_WPT_Designation_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.Designation for x in DesignationList" data-ng-model="FK_tbl_WPT_Designation_ID">
+                        <option value="">Select Designation</option>
+                    </select>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <select id="FK_tbl_WPT_DepartmentDetail_Section_ID" name="FK_tbl_WPT_DepartmentDetail_Section_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.SectionName for x in SectionList" data-ng-model="FK_tbl_WPT_DepartmentDetail_Section_ID">
+                        <option value="">Select Section</option>
+                    </select>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup1">
+                    <button type="button" class="btn btn-sm btn-secondary" ng-click="AddGroup();">Add Group</button>
+                </div>
+            </div>
+
+            <div mycssclass="@MyCSSClassName.RowInForm" style="height: 200px; overflow:scroll;">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                    <table mycssclass="@MyCSSClassName.Table_Table">
+                        <tr>
+                            <th width="10%">
+                                Email To
+                            </th>
+                            <th width="80%">
+                                Send Type
+                            </th>
+                            <th width="10%" style="text-align:center;">
+                                <button ng-click="ClearList();" class="btn btn-sm"><span class="fa fa-trash" style="color:white;"></span></button>
+                            </th>
+                        </tr>
+                        <tr ng-repeat="itm in EmailTos">
+                            <td>
+                                {{itm.EmailAddress}}
+                            </td>
+                            <td>
+                                {{itm.EmailType}}
+                            </td>
+                            <td>
+                                <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                                    <MyButton operation="@MyButtonOperation.Delete" ng-click="DeleteRow(itm.Index,'Delete')">11</MyButton>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">---x---</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </MyFieldSet>
+        <MyFieldSet legendtext="Message">
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Subject</span>
+                    <input id="Subject" name="Subject" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. Subject" ng-model="Subject" minlength="1" maxlength="250" required />
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div id="editor" mycssclass="@MyCSSClassName.RowInForm_FormGroup12">                    
+                    <form>
+                        <textarea id='edit' style="margin-top: 30px;" placeholder="Email Content ....."></textarea>
+                        <input type="submit" class="btn btn-outline-primary" value="Send Mail">
+                    </form>
+                </div>
+            </div>
+            <div mycssclass="@MyCSSClassName.RowInForm">
+                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req" ng-click="WithFooterClick();">
+                        Footer  &nbsp;
+                        <i ng-hide="!WithFooter"> <span class="fa fa-toggle-on" style="font-size:large;"></span>  </i>
+                        <i ng-hide="WithFooter">  <span class="fa fa-toggle-off" style="font-size:large;"></span> </i>
+                    </span>
+                    <div ng-hide="!WithFooter">
+                        @Html.Raw(Rpt_Shared.LicenseToEmailFooter)
+                    </div>
+                </div>
+            </div>
+
+        </MyFieldSet>
+
+
+
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
