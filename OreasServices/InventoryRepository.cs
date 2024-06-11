@@ -9227,6 +9227,8 @@ namespace OreasServices
                 await command.Connection.OpenAsync();
                 string WareHouse = "", Category = "";
 
+                decimal Opening = 0, TotalIn = 0, TotalOut = 0, Closing = 0;
+
                 using (DbDataReader sqlReader = command.ExecuteReader())
                 {
 
@@ -9252,11 +9254,16 @@ namespace OreasServices
                             }
                         }
 
+                        Opening = Convert.ToDecimal(sqlReader["Opening"]);
+                        TotalIn = Convert.ToDecimal(sqlReader["TotalIn"]);
+                        TotalOut = Convert.ToDecimal(sqlReader["TotalOut"]);
+                        Closing = Convert.ToDecimal(sqlReader["Closing"]);
+
                         pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Opening"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["TotalIn"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["TotalOut"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Closing"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Opening.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(TotalIn.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(TotalOut.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Closing.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                     }
 
