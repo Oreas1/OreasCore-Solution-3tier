@@ -102,6 +102,12 @@
         </div>
         @*-----------------------------------this is search view-----------------------------*@
         @await Html.PartialAsync("_Filter", "CompositionCostingFactorsIndexCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. C stands for Cost per unit</p>
+            <p>2. Only Numbers (e.g 5000) stands for value amount which is added as factor in cost</p>
+        </div>
     </div>
 </div>
 

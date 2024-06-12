@@ -9268,13 +9268,15 @@ namespace OreasServices
 
 
                 double MaterialPerUnit = Math.Round(((RawAmountTotal + PackagingAmountTotal) / BatchSize * SplitInto), 3);
-                
+                double ValueFactor = (1 / BatchSize) * SplitInto;
 
                 pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                 pdftableMaster.AddCell(new Cell(1, 3).Add(new Paragraph().Add("Material value Per Unit")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                 pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Rs: " + MaterialPerUnit.ToString() + "/-")).SetBold().SetBackgroundColor(new DeviceRgb(131, 207, 103)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                 TotalPerUnit = MaterialPerUnit;
+                double FormulaFactorValue = 0;
+
                 using (DbDataReader sqlReader = command.ExecuteReader())
                 {
                     while (sqlReader.Read())
@@ -9283,9 +9285,17 @@ namespace OreasServices
 
                         if (string.IsNullOrEmpty(FormulaExpresion)==false)
                         {
-                            FormulaExpresion = FormulaExpresion.Replace("c", TotalPerUnit.ToString(), StringComparison.OrdinalIgnoreCase);
-                            FormulaValue = Math.Round(AmountIntoWords.ExecuteMathExpression(FormulaExpresion),3);
+                            FormulaFactorValue = 0;
 
+                            if (double.TryParse(FormulaExpresion, out FormulaFactorValue))
+                            {
+                                FormulaValue = Math.Round((FormulaFactorValue * ValueFactor) + TotalPerUnit, 3);
+                            }
+                            else
+                            {
+                                FormulaExpresion = FormulaExpresion.Replace("c", TotalPerUnit.ToString(), StringComparison.OrdinalIgnoreCase);
+                                FormulaValue = Math.Round(AmountIntoWords.ExecuteMathExpression(FormulaExpresion), 3);
+                            }  
                             pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                             pdftableMaster.AddCell(new Cell(1, 3).Add(new Paragraph().Add(sqlReader["FormulaName"].ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                             pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Rs: " + FormulaValue.ToString() + "/-")).SetBold().SetBackgroundColor(new DeviceRgb(237, 226, 123)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
