@@ -1,5 +1,17 @@
 ﻿MainModule
     .controller("ManagementDashBoardCtlr", function ($scope, $http, $interval) {
+        $scope.DivHideShow = function (v, itm, div_hide, div_show, scope) {
+            if (typeof v !== 'undefined' && v !== '' && v !== null) {
+                $scope.$broadcast(v, itm);
+            }
+            if (typeof scope !== 'undefined' && scope !== '' && scope !== null && typeof scope.$parent.pageNavigation === 'function') {
+                scope.$parent.pageNavigation('Load');
+            }
+
+            $("#" + div_hide).hide('slow');
+            $("#" + div_show).show('slow');
+        };
+
         $scope.IsFor = '';
         $scope.ActivatedSidePanel = null;
         $scope.SidePenalLoad = function (IsFor, ActivateSidePanel) {
@@ -41,6 +53,9 @@
             }
             if (data.find(o => o.Controller === 'ManagementPNCtlr') != undefined) {
                 $scope.$broadcast('init_ManagementPNCtlr', data.find(o => o.Controller === 'ManagementPNCtlr'));
+            }
+            if (data.find(o => o.Controller === 'ManagementPNDetailCtlr') != undefined) {
+                $scope.$broadcast('init_ManagementPNDetailCtlr', data.find(o => o.Controller === 'ManagementPNDetailCtlr'));
             }
             if (data.find(o => o.Controller === 'ManagementPRNCtlr') != undefined) {
                 $scope.$broadcast('init_ManagementPRNCtlr', data.find(o => o.Controller === 'ManagementPRNCtlr'));
@@ -336,7 +351,6 @@
             init_Filter($scope, itm.WildCard, null, null, null);
         });
 
-
         init_Operations($scope, $http,
             '/DashBoard/PurchaseNoteLoad', //--v_Load
             '', // getrow
@@ -370,6 +384,40 @@
                 method: "POST", url: '/DashBoard/PurchaseNoteSupervised', async: true, params: { ID: id }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
             }).then(successcallback, errorcallback);
         };
+
+    })
+    .controller("ManagementPNDetailCtlr", function ($scope, $http) {
+
+        $scope.$on('ManagementPNDetailCtlr', function (e, itm) {   
+            $scope.MasterObject = itm;
+            $scope.FilterByText = null;
+            $scope.FilterValueByText = '';
+            $scope.pageNavigation('first');
+        });
+
+        $scope.$on('init_ManagementPNDetailCtlr', function (e, itm) {
+            init_Filter($scope, itm.WildCard, null, null, null);
+            
+        });
+
+        init_Operations($scope, $http,
+            '/DashBoard/PurchaseNoteDetailLoad', //--v_Load
+            '', // getrow
+            '' // PostRow
+        );
+
+        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
+
+        $scope.GetpageNavigationResponse = function (data) {
+            $scope.pageddata = data.pageddata;
+            
+        };
+        
+        $scope.OpenPODetailModal = function (itm) {
+            $('#PODetailModal').modal('show');   
+            $scope.PODetailModalitems = itm;
+        };
+      
 
     })
     .controller("ManagementPRNCtlr", function ($scope, $http) {

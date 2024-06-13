@@ -201,6 +201,15 @@ namespace OreasCore.Controllers
                     },
                     new Init_ViewSetupStructure()
                     {
+                        Controller = "ManagementPNDetailCtlr",
+                        WildCard = db2.GetWCLPurchaseNoteDetail(),
+                        WildCardDateRange = null,
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
                         Controller = "ManagementPRNCtlr",
                         WildCard = db2.GetWCLPurchaseReturnNote(),
                         WildCardDateRange = null,
@@ -395,6 +404,27 @@ namespace OreasCore.Controllers
             return await db.SupervisedPurchaseNote(ID, User.Identity.Name);
         }
 
+        #endregion
+
+        #region PurchaseNoteDetail  
+
+        [AjaxOnly]
+        [MyAuthorization]
+        public async Task<IActionResult> PurchaseNoteDetailLoad([FromServices] IManagementDashBoard db,
+        int CurrentPage = 1, int MasterID = 0,
+        string FilterByText = null, string FilterValueByText = null,
+        string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+        string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+        string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadPurchaseNoteDetail(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
         #endregion
 
         #region PurchaseReturnNote  

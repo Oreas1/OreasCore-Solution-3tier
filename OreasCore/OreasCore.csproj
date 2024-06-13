@@ -84,6 +84,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Views\DashBoard\ManagementPNDetail.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="wwwroot\angular.js\Angular-Production\BMR\productiontransferindex.0.1.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

@@ -1,0 +1,224 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'ManagementPNDetailCtlr','ManagementPNCtlr', this);">Purchase Note For {{IsFor}}</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Invoice #
+                    </th>
+                    <th>
+                        Invoice Date
+                    </th>
+                    <th>
+                        Supplier Name
+                    </th>
+                    <th>
+                        Sup Challan#
+                    </th>
+                    <th>
+                        Sup Invoice#
+                    </th>
+                    <th>
+                        Net Amount
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.AccountName}}
+                    </td>
+                    <td>
+                        {{MasterObject.SupplierChallanNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.SupplierInvoiceNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.TotalNetAmount}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Product Name
+                    <br />
+                    Ref #
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Rate
+                    <br />
+                    Gross
+                </th>
+                <th>
+                    GST%
+                    <br />
+                    GST Amount
+                </th>
+                <th>
+                    Freight In
+                    <br />
+                    Discount
+                </th>
+                <th>
+                    WHT%
+                    <br />
+                    WHT Amount
+                </th>
+                <th>
+                    Net Amount
+                </th>
+                <th>
+                    QC
+                </th>
+                <th>
+                    Purchase Order Detail
+                </th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    <br />
+                    {{itm.ReferenceNo}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{itm.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.Rate}}
+                    <br />
+                    {{itm.GrossAmount}}
+                </td>
+                <td>
+                    {{itm.GSTPercentage}}%
+                    <br />
+                    {{itm.GSTAmount}}
+                </td>
+                <td>
+                    {{itm.FreightIn}}
+                    <br />
+                    {{itm.DiscountAmount}}
+                </td>
+                <td>
+                    {{itm.WHTPercentage}}%
+                    <br />
+                    {{itm.WHTAmount}}
+                </td>
+                <td>
+                    {{itm.NetAmount}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Qc_ActionType_IDName}}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" ng-hide="itm.PODetail === null" ng-click="OpenPODetailModal(itm.PODetail);">
+                        PO#: {{itm.PODetail.PONo}}
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="9">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "ManagementPNDetailCtlr")
+
+    @*-----------------------------------Scheme Search Modal-----------------------------*@
+    <!-- Modal -->
+    <div class="modal fade" id="PODetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Purchase Order Detail</h6>
+                    <button id="btnClose" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table mycssclass="@MyCSSClassName.Table_Table">
+                        <tr>
+                            <th>
+                                PO No
+                            </th>
+                            <th>
+                                PO Date
+                            </th>
+                            <th>
+                                PO Qty
+                            </th>
+                            <th>
+                                Rate
+                            </th>
+                            <th>
+                                GST
+                            </th>
+                            <th>
+                                Received Qty
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{PODetailModalitems.PONo}}
+                            </td>
+                            <td>
+                                {{PODetailModalitems.PODate}}
+                            </td>
+                            <td>
+                                <b>{{PODetailModalitems.Quantity}}</b> 
+                            </td>
+                            <td>
+                                <b>{{PODetailModalitems.Rate}}</b>
+                            </td>
+                            <td>
+                                <b>{{PODetailModalitems.GSTPercentage}}%</b>
+                            </td>
+                            <td>
+                                {{PODetailModalitems.ReceivedQty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

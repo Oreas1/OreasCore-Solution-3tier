@@ -161,7 +161,16 @@ namespace OreasServices
         object GetWCLPurchaseNote();
         Task<PagedData<object>> LoadPurchaseNote(int CurrentPage = 1, string IsFor = "", string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<string> SupervisedPurchaseNote(int ID, string userName = "");
+
+        #region PurchaseNoteDetail
+        object GetWCLPurchaseNoteDetail();
+        Task<PagedData<object>> LoadPurchaseNoteDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+
         #endregion
+
+        #endregion
+
+
 
         #region PurchaseReturnNote
         object GetWCLPurchaseReturnNote();

@@ -2364,6 +2364,8 @@ namespace OreasServices
                          coa.AccountName,
                          o.IsQCAll,
                          o.IsQCSampleAll,
+                         o.SupplierChallanNo,
+                         o.SupplierInvoiceNo,
                          o.TotalNetAmount
                      };
 
@@ -2428,7 +2430,95 @@ namespace OreasServices
 
         }
 
+        #region PurchaseNoteDetail
+        public object GetWCLPurchaseNoteDetail()
+        {
+            return new[]
+            {
+                new { n = "by Product Name", v = "byProductName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadPurchaseNoteDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Inv_PurchaseNoteDetails
+                                               .Where(w => w.FK_tbl_Inv_PurchaseNoteMaster_ID == MasterID)
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Inv_PurchaseNoteDetails
+                                  .Where(w => w.FK_tbl_Inv_PurchaseNoteMaster_ID == MasterID)
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Inv_PurchaseNoteMaster_ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          FK_tbl_Inv_ProductRegistrationDetail_IDName = o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName,
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.Quantity,
+                          o.Rate,
+                          o.GrossAmount,
+                          o.GSTPercentage,
+                          o.GSTAmount,
+                          o.FreightIn,
+                          o.DiscountAmount,
+                          o.CostAmount,
+                          o.WHTPercentage,
+                          o.WHTAmount,
+                          o.NetAmount,
+                          o.MfgBatchNo,
+                          o.ExpiryDate,
+                          o.Remarks,
+                          o.ReferenceNo,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.FK_tbl_Qc_ActionType_ID,
+                          FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
+                          o.QuantitySample,
+                          PODetail = (
+                                        from a in db.tbl_Inv_PurchaseOrderDetails.Where(w => w.ID == (o.FK_tbl_Inv_PurchaseOrderDetail_ID ?? 0)).ToList()
+                                        select new { 
+                                            a.tbl_Inv_PurchaseOrderMaster.PONo, 
+                                            PODate=a.tbl_Inv_PurchaseOrderMaster.PODate.ToString("dd-MMM-yy"),
+                                            a.Quantity,
+                                            a.ReceivedQty,
+                                            a.Rate,
+                                            a.GSTPercentage
+                       
+                                        }
+                                      ).FirstOrDefault()
+
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+
+        #endregion        
+
         #endregion
+
+
 
         #region PurchaseReturnNote
         public object GetWCLPurchaseReturnNote()

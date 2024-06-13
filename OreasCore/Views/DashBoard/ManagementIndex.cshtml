@@ -203,6 +203,11 @@
                     <div id="ManagementPNCtlr" style="display: none;">
                         @await Html.PartialAsync("ManagementPN")
                     </div>
+                    <div ng-controller="ManagementPNDetailCtlr">
+                        <div id="ManagementPNDetailCtlr" style="display: none;">
+                            @await Html.PartialAsync("ManagementPNDetail")
+                        </div>
+                    </div>
                 </div>
                 <div ng-controller="ManagementPRNCtlr">
                     <div id="ManagementPRNCtlr" style="display: none;">

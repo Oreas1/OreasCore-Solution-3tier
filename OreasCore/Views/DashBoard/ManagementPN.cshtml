@@ -7,15 +7,19 @@
             <tr>
                 <th>
                     Invoice #
-                </th>
-                <th>
+                    <br />
                     Invoice Date
                 </th>
                 <th>
                     Supplier Name
                 </th>
                 <th>
-                    QC Actions Completed
+                    Sup Challan#
+                    <br />
+                    Sup Invoice#
+                </th>
+                <th>
+                    QC Taken Actions
                 </th>
                 <th>
                     Net Amount
@@ -24,14 +28,18 @@
             </tr>
             <tr ng-repeat="itm in pageddata.Data">
                 <td>
-                    {{itm.DocNo}}
-                </td>
-                <td>
+                    <b>#{{itm.DocNo}}</b>
+                    <br />
                     {{itm.DocDate}}
                 </td>
                 <td>
-                    {{itm.AccountName}}
+                    <b>{{itm.AccountName}}</b>
                 </td>
+                <td>
+                    Cha#{{itm.SupplierChallanNo}}
+                    <br />
+                    Inv#:{{itm.SupplierInvoiceNo}}
+                </td>    
                 <td>
                     {{itm.IsQCAll ? 'Completed' : 'Pending'}}
                 </td>
@@ -39,8 +47,11 @@
                     {{itm.TotalNetAmount}}
                 </td>
                 <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="DivHideShow('ManagementPNDetailCtlr',itm,'ManagementPNCtlr','ManagementPNDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                    </div>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv" ng-hide="IsFor=='Processed'">
-                        <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button> 
+                        <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button>
                     </div>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                         <a href="/DashBoard/GetPurchaseNoteReport?rn=Current Purchase Note&id={{itm.ID}}" target="_blank" class="btn btn-primary">Report</a>
