@@ -195,9 +195,11 @@ else if (@Model.ToString() == "Accounts")
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
             <li><hr class="dropdown-divider"></li>
-            <li><a asp-area="Accounts" asp-controller="Proceedings" asp-action="AcLedgerIndex" class="dropdown-item">Ledger</a></li>
+            <li><a asp-area="Accounts" asp-controller="Proceedings" asp-action="AcLedgerIndex" class="dropdown-item">A/c Ledger</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a asp-area="Accounts" asp-controller="ChartOfAccounts" asp-action="CustomerRateListIndex" class="dropdown-item">Customer Rate List</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Proceedings" asp-action="InvLedgerAcIndex" class="dropdown-item">Inv Ledger</a></li>
             <li><hr class="dropdown-divider"></li>
         </ul>
     </li>

@@ -539,6 +539,8 @@ namespace OreasModel
         [MaxLength(15)]
         public string TrackingNo { get; set; }
 
+        public int? FK_tbl_Ac_Ledger_ID { get; set; }
+
         //------------------------challan---------------------------//
 
         [ForeignKey(nameof(tbl_Inv_PurchaseNoteDetail))]
