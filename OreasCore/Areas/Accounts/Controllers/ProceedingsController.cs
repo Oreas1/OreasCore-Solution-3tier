@@ -80,7 +80,7 @@ namespace OreasCore.Areas.Accounts.Controllers
                     {
                         Controller = "InvLedgerAcIndexCtlr",
                         WildCard = null,
-                        Reports = db2.GetRLInvLedger(),
+                        Reports = db2.GetRLInvLedgerAc(),
                         Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Ledger"),
                         Otherdata = null
                     }

@@ -276,6 +276,7 @@ namespace OreasServices
     {
         Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
         List<ReportCallingModel> GetRLInvLedger();
+        List<ReportCallingModel> GetRLInvLedgerAc();
         Task<PagedData<object>> LoadInvLedger(int CurrentPage = 1, int MasterID = 0, int WareHouseID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
     }
     public interface IStockTransfer

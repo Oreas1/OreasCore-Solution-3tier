@@ -9025,7 +9025,6 @@ namespace OreasServices
         #endregion
 
         #region Report     
-
         public List<ReportCallingModel> GetRLInvLedger()
         {
             return new List<ReportCallingModel>() {
@@ -9047,7 +9046,19 @@ namespace OreasServices
                 }
             };
         }
-
+        public List<ReportCallingModel> GetRLInvLedgerAc()
+        {
+            return new List<ReportCallingModel>() {
+                new ReportCallingModel()
+                {
+                    ReportType= EnumReportType.OnlyID,
+                    ReportName ="LedgerAc",
+                    GroupBy = null,
+                    OrderBy = new List<string>(){ "WareHouse", "Reference No" },
+                    SeekBy = null
+                }
+            };
+        }
         public async Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName ="")
         {
             if (rn == "Ledger")
@@ -9061,6 +9072,14 @@ namespace OreasServices
             else if (rn == "Reorder Level Alert")
             {
                 return await Task.Run(() => ReorderLevelAlert(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
+            }
+            else if (rn == "LedgerAc")
+            {
+                return await Task.Run(() => LedgerAcAsync(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
+            }
+            else if (rn == "StockAc")
+            {
+                return await Task.Run(() => StockAcAsync(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID));
             }
             return Encoding.ASCII.GetBytes("Wrong Parameters");
         }
@@ -9389,8 +9408,244 @@ namespace OreasServices
 
             return page.FinishToGetBytes();
         }
+        private async Task<byte[]> LedgerAcAsync(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 15f, 35f, "----- " + "Financial Inventory Ledger Period Date From: " + datefrom.Value.ToString("dd-MMM-yyyy") + " To " + datetill.Value.ToString("dd-MMM-yyyy") + "-----", true);
+
+            //--------------------------------7 column table ------------------------------//
+            Table pdftableMain = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth()*0.15),//PostingDate
+                        (float)(PageSize.A4.GetWidth()*0.18),//WareHouseName
+                        (float)(PageSize.A4.GetWidth()*0.27),//Narration
+                        (float)(PageSize.A4.GetWidth()*0.10),//QuantityIn
+                        (float)(PageSize.A4.GetWidth()*0.10),//QuantityOut
+                        (float)(PageSize.A4.GetWidth()*0.10),//ReferenceNo
+                        (float)(PageSize.A4.GetWidth()*0.10) //Balance
+                }
+            ).SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXECUTE [dbo].[Report_Inv_General] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn + "1";
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                await command.Connection.OpenAsync();
+
+                decimal Balance = 0; decimal BalanceValue = 0;
+
+                using (DbDataReader sqlReader = command.ExecuteReader(CommandBehavior.SingleRow))
+                {
+                    while (sqlReader.Read())
+                    {
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Product Name:")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add(sqlReader["ProductName"].ToString() + " [" + sqlReader["MeasurementUnit"].ToString() + "]")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Opening" + "\n" + "Opening Value")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(
+                            string.Format("{0:n0}", sqlReader["Opening"]) + "\n" + string.Format("{0:n0}", sqlReader["OpeningValue"])
+                            )).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                        Balance += Convert.ToDecimal(sqlReader["Opening"]);
+                        BalanceValue += Convert.ToDecimal(sqlReader["OpeningValue"]);
+                    }
+                }
+
+                ReportName.Value = rn + "2";
+
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Posting Date")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("WareHouse")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Narration")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Qty In" + "\n" + "Debit")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Qty Out" + "\n" + "Credit")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Reference #")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Balance")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                    while (sqlReader.Read())
+                    {
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["PostingDate"]).ToString("dd-MM-yy hh:mm tt"))).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["WareHouseName"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Narration"].ToString()).SetFontSize(5)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["QuantityIn"].ToString() + "\n" + sqlReader["Debit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["QuantityOut"].ToString() + "\n" + sqlReader["Credit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                        Balance += Convert.ToDecimal(sqlReader["QuantityIn"]) - Convert.ToDecimal(sqlReader["QuantityOut"]);
+                        BalanceValue += Convert.ToDecimal(sqlReader["Debit"]) - Convert.ToDecimal(sqlReader["Credit"]);
+
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Balance.ToString() + "\n" + BalanceValue.ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                    }
+
+                }
+
+                pdftableMain.AddCell(new Cell(1, 5).Add(new Paragraph().Add(" ")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true)).SetFontSize(7);
+                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Closing" + "\n" + "Closing Value")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Balance.ToString() + "\n" + BalanceValue.ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+            }
+
+            page.InsertContent(pdftableMain);
+
+            return page.FinishToGetBytes();
+        }
+        private async Task<byte[]> StockAcAsync(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
+
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 15f, 35f, "----- " + "Financial Stock Position Period Date From: " + datefrom.Value.ToString("dd-MMM-yyyy") + " To " + datetill.Value.ToString("dd-MMM-yyyy") + "-----", true);
+
+            //--------------------------------6 column table ------------------------------//
+            Table pdftableMain = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth()*0.40),//ProductName
+                        (float)(PageSize.A4.GetWidth()*0.12),//Opening
+                        (float)(PageSize.A4.GetWidth()*0.12),//In
+                        (float)(PageSize.A4.GetWidth()*0.12),//Out
+                        (float)(PageSize.A4.GetWidth()*0.12),//Closing
+                        (float)(PageSize.A4.GetWidth()*0.12)//ClosingValue
+                }
+            ).SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXECUTE [dbo].[Report_Inv_General] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn;
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                await command.Connection.OpenAsync();
+                string WareHouse = "", Category = "";
+
+                decimal Opening = 0, TotalIn = 0, TotalOut = 0, Closing = 0, ClosingValue = 0, TotalClosingValue = 0;
+
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+
+                    while (sqlReader.Read())
+                    {
+                        if (WareHouse != sqlReader["WareHouseName"].ToString())
+                        {
+                            WareHouse = sqlReader["WareHouseName"].ToString();
+                            pdftableMain.AddCell(new Cell(1, 6).Add(new Paragraph().Add(WareHouse)).SetBackgroundColor(new DeviceRgb(102, 140, 255)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+
+                            if (Category != sqlReader["CategoryName"].ToString())
+                            {
+                                Category = sqlReader["CategoryName"].ToString();
+                                pdftableMain.AddCell(new Cell(1, 6).Add(new Paragraph().Add(Category)).SetBackgroundColor(new DeviceRgb(179, 198, 255)).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Product")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Opening")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Total In")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Total Out")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Closing")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Closing Value")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                            }
+                        }
+
+                        Opening = Convert.ToDecimal(sqlReader["Opening"]);
+                        TotalIn = Convert.ToDecimal(sqlReader["TotalIn"]);
+                        TotalOut = Convert.ToDecimal(sqlReader["TotalOut"]);
+                        Closing = Convert.ToDecimal(sqlReader["Closing"]);
+                        ClosingValue = Convert.ToDecimal(sqlReader["ClosingValue"]);
+                        TotalClosingValue += ClosingValue;
+
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Opening.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(TotalIn.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(TotalOut.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Closing.ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", ClosingValue))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                    }
+
+                    pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add("")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Total Value")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell(1, 2).Add(new Paragraph().Add(string.Format("{0:n0}", TotalClosingValue))).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                }
+
+            }
+
+            page.InsertContent(pdftableMain);
+
+            return page.FinishToGetBytes();
+        }
 
         #endregion
+
     }
     public class StockTransferRepository : IStockTransfer
     {

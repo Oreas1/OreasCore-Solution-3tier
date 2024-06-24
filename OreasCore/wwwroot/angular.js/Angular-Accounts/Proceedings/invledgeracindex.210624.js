@@ -104,9 +104,9 @@
 
         $scope.OpenReport = function (name) {
             if (name === 'Ledger' && $scope.ParaProdID > 0)
-                $window.open('/Accounts/Proceedings/GetInvLedgerReport?rn=Ledger&id=' + $scope.ParaProdID + "&datefrom=" + new Date($scope.ParaDateFrom).toLocaleString('en-US') + "&datetill=" + new Date($scope.ParaDateTill).toLocaleString('en-US'));
+                $window.open('/Accounts/Proceedings/GetInvLedgerReport?rn=LedgerAc&id=' + $scope.ParaProdID + "&datefrom=" + new Date($scope.ParaDateFrom).toLocaleString('en-US') + "&datetill=" + new Date($scope.ParaDateTill).toLocaleString('en-US'));
             else if (name === 'Stock')
-                $window.open('/Accounts/Proceedings/GetInvLedgerReport?rn=Stock&id=' + $scope.ParaWareHouseID + "&datefrom=" + new Date($scope.ParaDateFrom).toLocaleString('en-US') + "&datetill=" + new Date($scope.ParaDateTill).toLocaleString('en-US'));
+                $window.open('/Accounts/Proceedings/GetInvLedgerReport?rn=StockAc&id=' + $scope.ParaWareHouseID + "&datefrom=" + new Date($scope.ParaDateFrom).toLocaleString('en-US') + "&datetill=" + new Date($scope.ParaDateTill).toLocaleString('en-US'));
         };
        
     })
