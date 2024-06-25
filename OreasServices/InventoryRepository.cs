@@ -9495,7 +9495,7 @@ namespace OreasServices
                     pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Narration")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                     pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Qty In" + "\n" + "Debit")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                     pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Qty Out" + "\n" + "Credit")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Reference #")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Reference #" + "\n" + "Tracking #")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                     pdftableMain.AddCell(new Cell().Add(new Paragraph().Add("Balance")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                     while (sqlReader.Read())
@@ -9505,7 +9505,7 @@ namespace OreasServices
                         pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Narration"].ToString()).SetFontSize(5)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["QuantityIn"].ToString() + "\n" + sqlReader["Debit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["QuantityOut"].ToString() + "\n" + sqlReader["Credit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString() + "\n" + sqlReader["TrackingNo"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                         Balance += Convert.ToDecimal(sqlReader["QuantityIn"]) - Convert.ToDecimal(sqlReader["QuantityOut"]);
                         BalanceValue += Convert.ToDecimal(sqlReader["Debit"]) - Convert.ToDecimal(sqlReader["Credit"]);
