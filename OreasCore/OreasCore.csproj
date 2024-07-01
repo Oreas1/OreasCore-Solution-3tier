@@ -57,26 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Accounts\Data\" />
-    <Folder Include="Areas\Accounts\Models\" />
-    <Folder Include="Areas\Accounts\Views\Shared\" />
-    <Folder Include="Areas\Identity\Data\" />
-    <Folder Include="Areas\Identity\Models\" />
-    <Folder Include="Areas\Inventory\Data\" />
-    <Folder Include="Areas\Inventory\Models\" />
-    <Folder Include="Areas\PD\Data\" />
-    <Folder Include="Areas\PD\Models\" />
-    <Folder Include="Areas\Production\Data\" />
-    <Folder Include="Areas\Production\Models\" />
-    <Folder Include="Areas\QA\Data\" />
-    <Folder Include="Areas\QA\Models\" />
-    <Folder Include="Areas\QC\Data\" />
-    <Folder Include="Areas\QC\Models\" />
-    <Folder Include="Areas\WPT\Data\" />
-    <Folder Include="Areas\WPT\Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Areas\WPT\Views\Machine\MachineIndex.cshtml" />
     <None Include="Areas\WPT\Views\Shift\DefaultEmployeeShift.cshtml" />
     <None Include="Areas\WPT\Views\Shift\ShiftIndex.cshtml" />
