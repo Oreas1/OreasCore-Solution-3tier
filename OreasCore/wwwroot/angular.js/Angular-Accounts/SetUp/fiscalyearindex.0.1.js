@@ -197,6 +197,14 @@
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
 
+        $scope.OnlyDebitCredit = function (v) {
+            if (v === 'Credit' && $scope.tbl_Ac_FiscalYear_ClosingDetail.Credit > 0 && $scope.tbl_Ac_FiscalYear_ClosingDetail.Debit > 0)
+                $scope.tbl_Ac_FiscalYear_ClosingDetail.Debit = 0;
+
+            if (v === 'Debit' && $scope.tbl_Ac_FiscalYear_ClosingDetail.Credit > 0 && $scope.tbl_Ac_FiscalYear_ClosingDetail.Debit > 0)
+                $scope.tbl_Ac_FiscalYear_ClosingDetail.Credit = 0;
+        };
+
     })
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push(http_interceptor_loading);

@@ -65,7 +65,20 @@
                         <MyButtonModal fieldname="tbl_Ac_FiscalYear_ClosingDetail.FK_tbl_Ac_ChartOfAccounts_IDName" ng-click="OpenCOASearchModalGeneral('ClosingDetail', MasterObject.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID, 'tbl_Ac_FiscalYear_ClosingDetail.FK_tbl_Ac_ChartOfAccounts_IDName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_FiscalYear_ClosingDetail.FK_tbl_Ac_ChartOfAccounts_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
                         <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear_ClosingDetail.FK_tbl_Ac_ChartOfAccounts_IDName" required="true"></MyValidationSpan>
                     </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Debit</span>
+                        <input id="tbl_Ac_FiscalYear_ClosingDetail.Debit" name="tbl_Ac_FiscalYear_ClosingDetail.Debit" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_FiscalYear_ClosingDetail.Debit" ng-change="OnlyDebitCredit('Debit');" ng-disabled="MasterObject.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID !== 3" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear_ClosingDetail.Debit" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Credit</span>
+                        <input id="tbl_Ac_FiscalYear_ClosingDetail.Credit" name="tbl_Ac_FiscalYear_ClosingDetail.Credit" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_FiscalYear_ClosingDetail.Credit" ng-change="OnlyDebitCredit('Credit');" ng-disabled="MasterObject.FK_tbl_Ac_FiscalYear_ClosingEntryType_ID !== 3" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_FiscalYear_ClosingDetail.Credit" required="true"></MyValidationSpan>
+                    </div>
+
                 </div>
+    
+
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
                         <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
