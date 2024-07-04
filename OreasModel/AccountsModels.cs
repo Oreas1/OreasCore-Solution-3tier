@@ -559,10 +559,12 @@ namespace OreasModel
         public DateTime PostingDate { get; set; }
 
         [Required]
-        public double Debit { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Debit { get; set; }
 
         [Required]
-        public double Credit { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Credit { get; set; }
 
         [Required]
         public bool Posted { get; set; }

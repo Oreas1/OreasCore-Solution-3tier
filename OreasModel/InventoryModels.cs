@@ -515,10 +515,12 @@ namespace OreasModel
         public DateTime PostingDate { get; set; }
 
         [Required]
-        public double QuantityIn { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal QuantityIn { get; set; }
 
         [Required]
-        public double QuantityOut { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal QuantityOut { get; set; }
 
         [MaxLength(100)]
         public string Narration { get; set; }
@@ -534,7 +536,8 @@ namespace OreasModel
         public int? PostingNo { get; set; }
 
         [Required]
-        public double BalanceByWareHouse { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal BalanceByWareHouse { get; set; }
 
         [MaxLength(15)]
         public string TrackingNo { get; set; }
