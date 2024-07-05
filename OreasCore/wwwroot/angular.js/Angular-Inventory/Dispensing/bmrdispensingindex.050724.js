@@ -79,7 +79,6 @@
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
 
         $scope.AutoIssuanceRequest = function (BMR_RawItemID, BMR_PackagingItemID, BMR_AdditionalItemID, OR_ItemID, scope) {
-   
             var successcallback = function (response) {
                 alert(response.data);
                 $scope.callerscope = scope;

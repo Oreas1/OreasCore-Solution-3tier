@@ -6590,7 +6590,7 @@ namespace OreasServices
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal,
-                          DispensedQty = o.tbl_Inv_BMRAdditionalDispensings.Sum(s=> s.Quantity)
+                          DispensedQty = (decimal)o.tbl_Inv_BMRAdditionalDispensings.Sum(s=> s.Quantity)
                       };
 
             pageddata.Data = qry;
@@ -7254,8 +7254,8 @@ namespace OreasServices
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal,
-                          DispensedQty = o.tbl_Inv_BMRDispensingRaws.Where(w => w.DispensingDate.HasValue).Sum(s => s.Quantity),
-                          ReservedQty = o.tbl_Inv_BMRDispensingRaws.Where(w => !w.DispensingDate.HasValue).Sum(s => s.Quantity)
+                          DispensedQty = (decimal)o.tbl_Inv_BMRDispensingRaws.Where(w => w.DispensingDate.HasValue).Sum(s => s.Quantity),
+                          ReservedQty = (decimal)o.tbl_Inv_BMRDispensingRaws.Where(w => !w.DispensingDate.HasValue).Sum(s => s.Quantity)
                       };
 
             pageddata.Data = qry;
@@ -7489,8 +7489,8 @@ namespace OreasServices
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal,
-                          DispensedQty = o.tbl_Inv_BMRDispensingPackagings.Where(w => w.DispensingDate.HasValue).Sum(s => s.Quantity),
-                          ReservedQty = o.tbl_Inv_BMRDispensingPackagings.Where(w => !w.DispensingDate.HasValue).Sum(s => s.Quantity)
+                          DispensedQty = (decimal)o.tbl_Inv_BMRDispensingPackagings.Where(w => w.DispensingDate.HasValue).Sum(s => s.Quantity),
+                          ReservedQty = (decimal)o.tbl_Inv_BMRDispensingPackagings.Where(w => !w.DispensingDate.HasValue).Sum(s => s.Quantity)
                       };
 
             pageddata.Data = qry;
@@ -11915,7 +11915,7 @@ namespace OreasServices
 
 
                         ReqQty = sqlReader.GetDouble("RequiredQty");
-                        InHand = sqlReader.GetDouble("InHand");
+                        InHand = (double)sqlReader.GetDecimal("InHand");
                         POBalance = sqlReader.GetDouble("POBalance");
                         ReqBalance = (decimal)(ReqQty - InHand - POBalance);
 
