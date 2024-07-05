@@ -117,8 +117,8 @@
                 $scope.tbl_Inv_PurchaseRequestDetail.MeasurementUnit = null;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = ''; }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9][^\.]*$"); }
+            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
+            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
             
         };
 

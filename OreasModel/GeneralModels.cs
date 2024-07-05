@@ -161,7 +161,8 @@ namespace OreasModel
     {
         public string ReferenceNo { get; set; }
 
-        public double? Balance { get; set; }
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal? Balance { get; set; }
 
         public int? FK_tbl_Inv_PurchaseNoteDetail_ID_ReferenceNo { get; set; }
 

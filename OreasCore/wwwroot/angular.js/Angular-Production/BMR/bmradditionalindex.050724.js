@@ -14,12 +14,12 @@
         };
         //////////////////////////////entry panel/////////////////////////
         init_Operations($scope, $http,
-            '/QA/BMR/BMRAdditionalMasterLoad', //--v_Load
-            '/QA/BMR/BMRAdditionalMasterGet', // getrow
-            '/QA/BMR/BMRAdditionalMasterPost' // PostRow
+            '/Production/BMR/BMRAdditionalMasterLoad', //--v_Load
+            '/Production/BMR/BMRAdditionalMasterGet', // getrow
+            '/Production/BMR/BMRAdditionalMasterPost' // PostRow
         );
 
-        init_ViewSetup($scope, $http, '/QA/BMR/GetInitializedBMRAdditional');
+        init_ViewSetup($scope, $http, '/Production/BMR/GetInitializedBMRAdditional');
         $scope.init_ViewSetup_Response = function (data) {
             if (data.find(o => o.Controller === 'BMRAdditionalMasterCtlr') != undefined) {                
                 $scope.Privilege = data.find(o => o.Controller === 'BMRAdditionalMasterCtlr').Privilege;    
@@ -88,7 +88,7 @@
             };
             var errorcallback = function (error) {           
             };
-            $http({ method: "GET", url: "/QA/BMR/LoadBatchNoList?FilterBy=" + $scope.BatchNoFilterBy + "&FilterValue=" + $scope.BatchNoFilterValue, headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(successcallback, errorcallback);
+            $http({ method: "GET", url: "/Production/BMR/LoadBatchNoList?FilterBy=" + $scope.BatchNoFilterBy + "&FilterValue=" + $scope.BatchNoFilterValue, headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(successcallback, errorcallback);
 
         };
         $scope.BatchNoSelectedAc = function (item) {
@@ -109,14 +109,15 @@
 
         $scope.$on('init_BMRAdditionalDetailCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
-            init_Report($scope, itm.Reports, '/QA/BMR/GetBMRAdditionalReport'); 
+            init_Report($scope, itm.Reports, '/Production/BMR/GetBMRAdditionalReport'); 
             $scope.BMRAdditionalTypeList = itm.Otherdata === null ? [] : itm.Otherdata.BMRAdditionalTypeList;
+
         });
 
        init_Operations($scope, $http,
-            '/QA/BMR/BMRAdditionalDetailLoad', //--v_Load
-            '/QA/BMR/BMRAdditionalDetailGet', // getrow
-            '/QA/BMR/BMRAdditionalDetailPost' // PostRow
+            '/Production/BMR/BMRAdditionalDetailLoad', //--v_Load
+            '/Production/BMR/BMRAdditionalDetailGet', // getrow
+            '/Production/BMR/BMRAdditionalDetailPost' // PostRow
         );
 
         $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
@@ -130,8 +131,8 @@
                 $scope.tbl_Pro_BMRAdditionalDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName = null;
                 $scope.tbl_Pro_BMRAdditionalDetail.MeasurementUnit = null;
             }
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = ''; }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9][^\.]*$"); }
+            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
+            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
         };
 
         $scope.tbl_Pro_BMRAdditionalDetail = {

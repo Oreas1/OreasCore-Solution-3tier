@@ -149,9 +149,11 @@
 
         $scope.MasterObject = {};
         $scope.$on('BMRAdditionalDispensingDetailDispensingCtlr', function (e, itm) {
-            $scope.MasterObject = itm;
-            if (itm.IsDecimal) { $scope.wholeNumberOrNot = ''; }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9][^\.]*$"); }
+            $scope.MasterObject = itm;      
+
+            if (itm.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
+            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+
             $scope.pageNavigation('first');
             $scope.rptID = itm.ID;
         });

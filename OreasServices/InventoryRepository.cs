@@ -8784,7 +8784,8 @@ namespace OreasServices
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
 
             pageddata.Data = qry;

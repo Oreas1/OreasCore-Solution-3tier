@@ -172,8 +172,8 @@
                 $scope.tbl_Inv_SalesNoteDetail.Quantity = 0;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = ''; }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9][^\.]*$"); }
+            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
+            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
 
             $scope.tbl_Inv_SalesNoteDetail.FK_tbl_Inv_PurchaseNoteDetail_ID_ReferenceNo = null;
             $scope.tbl_Inv_SalesNoteDetail.FK_tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ReferenceNo = null;

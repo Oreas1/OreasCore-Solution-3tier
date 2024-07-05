@@ -85,7 +85,8 @@ namespace OreasServices
                           ModifiedDateQcQa = o.ModifiedDateQcQa.HasValue ? o.ModifiedDateQcQa.Value.ToString("dd-MMM-yyyy") : "",
                           o.IsProcessed,
                           o.IsSupervised,
-                          o.Remarks
+                          o.Remarks,
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
 
             return qry.FirstOrDefault();

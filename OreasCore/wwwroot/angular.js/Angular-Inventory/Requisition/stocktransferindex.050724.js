@@ -124,8 +124,9 @@
                 $scope.tbl_Inv_StockTransferDetail.FK_tbl_Inv_ProductRegistrationDetail_IDName = null;
                 $scope.tbl_Inv_StockTransferDetail.MeasurementUnit = null;
             }
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = ''; }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9][^\.]*$"); }
+
+            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
+            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
 
             $scope.tbl_Inv_StockTransferDetail.FK_tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ReferenceNo = null;
             $scope.tbl_Inv_StockTransferDetail.ReferenceNo = null;

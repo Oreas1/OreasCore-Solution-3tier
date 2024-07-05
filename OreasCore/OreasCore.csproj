@@ -72,7 +72,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\angular.js\Angular-Production\BMR\productiontransferindex.0.1.js">
+    <Content Update="wwwroot\angular.js\Angular-Production\BMR\productiontransferindex.050724.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
