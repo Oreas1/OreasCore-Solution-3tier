@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace OreasModel
@@ -16,7 +17,9 @@ namespace OreasModel
         public double FormulaBatchSize { get; set; }
         public double FormulaPackSize { get; set; }
         public string UnitPrimary { get; set; }
-        public double AvailableQty { get; set; }
+
+        [Column(TypeName = "decimal(18, 4)")]
+        public decimal AvailableQty { get; set; }
         public int ITEMID { get; set; }
         public string UnitItem { get; set; }
         public string FormulaFor { get; set; }
