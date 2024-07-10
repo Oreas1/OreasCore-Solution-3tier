@@ -7,6 +7,7 @@ using OreasCore.Custom_Classes.OreasCore.Custom_Classes;
 using OreasModel;
 using OreasServices;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -283,6 +284,172 @@ namespace OreasCore.Areas.WPT.Controllers
             return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), "application/pdf");
         }
 
+
+        #endregion
+
+        #region ATBulkManual
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedATBulkManualAsync([FromServices] IAuthorizationScheme db, [FromServices] IATBulkManual db2, [FromServices] IWPTList IList)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "ATBulkManualMasterCtlr",
+                        WildCard = db2.GetWCLATBulkManualMaster(),
+                        LoadByCard = null,
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("WPT", User.Identity.Name, "AT Bulk Manual"),
+                        Otherdata = new {
+                            ATInOutModeList= await IList.GetATInOutModeListAsync(null,null)
+                        }
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "ATBulkManualDetailEmployeeCtlr",
+                        WildCard = db2.GetWCLATBulkManualDetail(),
+                        LoadByCard = null,
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
+
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanView")]
+        public IActionResult ATBulkManualIndex()
+        {
+            return View();
+        }
+
+        #region Master
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanView")]
+        public async Task<IActionResult> ATBulkManualMasterLoad([FromServices] IATBulkManual db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadATBulkManualMaster(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad, User.Identity.Name);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanPost")]
+        public async Task<string> ATBulkManualMasterPost([FromServices] IATBulkManual db, [FromBody] tbl_WPT_ATBulkManualMaster tbl_WPT_ATBulkManualMaster, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostATBulkManualMaster(tbl_WPT_ATBulkManualMaster, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanView")]
+        public async Task<IActionResult> ATBulkManualMasterGet([FromServices] IATBulkManual db, int ID)
+        {
+            return Json(await db.GetATBulkManualMaster(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region Detail
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanView")]
+        public async Task<IActionResult> ATBulkManualDetailLoad([FromServices] IATBulkManual db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadATBulkManualDetail(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanPost")]
+        public async Task<string> ATBulkManualDetailPost([FromServices] IATBulkManual db, [FromBody] tbl_WPT_ATBulkManualDetail_Employee tbl_WPT_ATBulkManualDetail_Employee, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostATBulkManualDetail(tbl_WPT_ATBulkManualDetail_Employee, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanView")]
+        public async Task<IActionResult> ATBulkManualDetailGet([FromServices] IATBulkManual db, int ID)
+        {
+            return Json(await db.GetATBulkManualDetail(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "AT Bulk Manual", Operation = "CanPost")]
+        public async Task<string> ATBulkManualDetailUploadExcelFile([FromServices] IATBulkManual db, int MasterID, IFormFile ELExcelFile, string operation = "")
+        {
+            if (ELExcelFile.Length > 0 && Path.GetExtension(ELExcelFile.FileName) == ".xlsx")
+            {
+                using (var ms = new MemoryStream())
+                {
+                    await ELExcelFile.CopyToAsync(ms);
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    ExcelPackage package = new ExcelPackage(ms);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.First();
+
+                    List<string> ATGraceExcelDataList = new List<string>();
+
+                    try
+                    {
+
+                        await Task.Factory.StartNew(() =>
+                        {
+
+                            for (var rowNo = 2; rowNo <= worksheet.Dimension.End.Row; rowNo++)
+                            {
+                                ATGraceExcelDataList.Add(worksheet.Cells[rowNo, 1].Value == null ? "" : worksheet.Cells[rowNo, 1].Value.ToString());
+                            }
+                        });
+
+                        await db.ATBulkManualUploadExcelFile(ATGraceExcelDataList, MasterID, operation, User.Identity.Name);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.InnerException.Message;
+                    }
+                }
+            }
+            else
+            {
+                return "File not Supported";
+            }
+
+            return "OK";
+        }
+
+        #endregion           
 
         #endregion
 

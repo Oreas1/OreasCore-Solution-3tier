@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "ATBulkManual";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-WPT/Attendance/atbulkmanualindex.100724.js"></script>
+}
+<div ng-controller="ATBulkManualMasterCtlr" class="container">
+
+    <div id="ATBulkManualMasterCtlr">
+        <MyViewName>AT Bulk Manual Master</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("ID", "{{tbl_WPT_ATBulkManualMaster.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_WPT_ATBulkManualMaster.DocNo" name="tbl_WPT_ATBulkManualMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_WPT_ATBulkManualMaster.DocNo" ng-model="tbl_WPT_ATBulkManualMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">AT Date Time</span>
+                        <input id="tbl_WPT_ATBulkManualMaster.ATDateTime" name="tbl_WPT_ATBulkManualMaster.ATDateTime" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_ATBulkManualMaster.ATDateTime}}" ng-model="tbl_WPT_ATBulkManualMaster.ATDateTime" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATBulkManualMaster.ATDateTime" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">AT Mode</span>
+                        <select id="tbl_WPT_ATBulkManualMaster.FK_tbl_WPT_ATInOutMode_ID" name="tbl_WPT_ATBulkManualMaster.FK_tbl_WPT_ATInOutMode_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ATInOutModeName for x in ATInOutModeList" data-ng-model="tbl_WPT_ATBulkManualMaster.FK_tbl_WPT_ATInOutMode_ID" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATBulkManualMaster.FK_tbl_WPT_ATInOutMode_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_WPT_ATBulkManualMaster.Remarks" name="tbl_WPT_ATBulkManualMaster.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_ATBulkManualMaster.Remarks" ng-model="tbl_WPT_ATBulkManualMaster.Remarks" ng-disabled="ng_readOnly" minlength="3" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATBulkManualMaster.Remarks" minlength="3" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATBulkManualMaster.CreatedBy}}" ng-model="tbl_WPT_ATBulkManualMaster.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATBulkManualMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_ATBulkManualMaster.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATBulkManualMaster.ModifiedBy}}" ng-model="tbl_WPT_ATBulkManualMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_WPT_ATBulkManualMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_WPT_ATBulkManualMaster.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Doc No
+                    </th>
+                    <th>
+                        AT DateTime
+                    </th>    
+                    <th>
+                        AT Mode
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        Total Employees
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        <b><u>{{itm.DocNo}}</u></b>
+                    </td>
+                    <td>
+                        <b>{{itm.ATDateTime}}</b>
+                    </td>
+                    <td>
+                        <b>{{itm.FK_tbl_WPT_ATInOutMode_IDName}}</b>
+                    </td>
+                    <td>
+                        {{itm.Remarks}}
+                    </td>
+                    <td>
+                        {{itm.TotalEmployees}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('ATBulkManualDetailEmployeeCtlr',itm,'ATBulkManualMasterCtlr','ATBulkManualDetailEmployeeCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Designation">Employees <span class="fa fa-user"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ATBulkManualMasterCtlr")
+    </div>
+
+
+
+    <div ng-controller="ATBulkManualDetailEmployeeCtlr">
+        <div id="ATBulkManualDetailEmployeeCtlr" style="display: none;">
+            @await Html.PartialAsync("ATBulkManualDetailEmployee")
+        </div>
+    </div>
+
+    @*-----------------------------------this is Modal view-----------------------------*@
+    <!-- Modal -->
+    @await Html.PartialAsync("_EmployeeSearchModalGeneral")
+
+</div>
+
+
+
+

@@ -537,6 +537,7 @@ namespace OreasServices
                 return await (from a in db.tbl_WPT_ATInOutModes
                               select new
                               {
+                                  a.ID,
                                   a.ATInOutMode,
                                   a.ATInOutModeName
                               }).ToListAsync();
@@ -547,6 +548,7 @@ namespace OreasServices
                                         FilterByText == "byName" && w.ATInOutModeName.ToLower().Contains(FilterValueByText.ToLower()))
                               select new
                               {
+                                  a.ID,
                                   a.ATInOutMode,
                                   a.ATInOutModeName
                               }).Take(5).ToListAsync();
@@ -6398,8 +6400,6 @@ namespace OreasServices
         {
             this.db = oreasDbContext;
         }
-
-
         public async Task<object> GetLastOpenMonth()
         {   
                var qry = from o in await db.tbl_WPT_CalendarYear_Monthss.OrderBy(o => o.MonthStart).Where(w => w.IsClosed == false).ToListAsync()
@@ -6415,7 +6415,6 @@ namespace OreasServices
 
             return qry.FirstOrDefault();
         }
-
 
         #region  Attendance Individual
 
@@ -7644,6 +7643,293 @@ namespace OreasServices
         }
 
         #endregion
+    }
+    public class ATBulkManualRepository : IATBulkManual
+    {
+        private readonly OreasDbContext db;
+        public ATBulkManualRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+
+        #region Master
+        public async Task<object> GetATBulkManualMaster(int id)
+        {
+            var qry = from o in await db.tbl_WPT_ATBulkManualMasters.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.DocNo,
+                          o.ATDateTime,
+                          o.FK_tbl_WPT_ATInOutMode_ID,
+                          FK_tbl_WPT_ATInOutMode_IDName = o.tbl_WPT_ATInOutMode.ATInOutModeName,
+                          o.Reason,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLATBulkManualMaster()
+        {
+            return new[]
+            {
+                new { n = "by Doc No", v = "byDocNo" }, new { n = "by Employee Name", v = "byEmployeeName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadATBulkManualMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "")
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_WPT_ATBulkManualMasters
+                                    .Where(w =>
+                                            string.IsNullOrEmpty(FilterValueByText)
+                                            ||
+                                            FilterByText == "byDocNo" && w.DocNo.ToString() == FilterValueByText
+                                            ||
+                                            FilterByText == "byEmployeeName" && w.tbl_WPT_ATBulkManualDetail_Employees.Any(a => a.tbl_WPT_Employee.EmployeeName.ToLower().Contains(FilterValueByText.ToLower()))
+                                            )
+                                    .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_WPT_ATBulkManualMasters
+                                      .Where(w =>
+                                            string.IsNullOrEmpty(FilterValueByText)
+                                            ||
+                                            FilterByText == "byDocNo" && w.DocNo.ToString() == FilterValueByText
+                                            ||
+                                            FilterByText == "byEmployeeName" && w.tbl_WPT_ATBulkManualDetail_Employees.Any(a => a.tbl_WPT_Employee.EmployeeName.ToLower().Contains(FilterValueByText.ToLower()))
+                                            )
+                                      .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.DocNo,
+                          o.ATDateTime,
+                          o.FK_tbl_WPT_ATInOutMode_ID,
+                          FK_tbl_WPT_ATInOutMode_IDName = o.tbl_WPT_ATInOutMode.ATInOutModeName,
+                          o.Reason,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalEmployees = o.tbl_WPT_ATBulkManualDetail_Employees.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostATBulkManualMaster(tbl_WPT_ATBulkManualMaster tbl_WPT_ATBulkManualMaster, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            if (operation == "Save New")
+            {
+                tbl_WPT_ATBulkManualMaster.CreatedBy = userName;
+                tbl_WPT_ATBulkManualMaster.CreatedDate = DateTime.Now;
+                CRUD_Type.Value = "Insert";
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_WPT_ATBulkManualMaster.ModifiedBy = userName;
+                tbl_WPT_ATBulkManualMaster.ModifiedDate = DateTime.Now;
+                CRUD_Type.Value = "Update";
+
+            }
+            else if (operation == "Save Delete")
+            {
+                CRUD_Type.Value = "Delete";
+            }
+
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_WPT_ATBulkManualMaster] 
+                 @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@DocNo={4},@ATDateTime={5},@FK_tbl_WPT_ATInOutMode_ID={6},@Reason={7}
+                ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+                CRUD_Type, CRUD_Msg, CRUD_ID,
+                tbl_WPT_ATBulkManualMaster.ID, tbl_WPT_ATBulkManualMaster.DocNo, tbl_WPT_ATBulkManualMaster.ATDateTime,
+                tbl_WPT_ATBulkManualMaster.FK_tbl_WPT_ATInOutMode_ID, tbl_WPT_ATBulkManualMaster.Reason,
+                tbl_WPT_ATBulkManualMaster.CreatedBy, tbl_WPT_ATBulkManualMaster.CreatedDate, tbl_WPT_ATBulkManualMaster.ModifiedBy, tbl_WPT_ATBulkManualMaster.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+        }
+        #endregion
+
+        #region Detail
+        public async Task<object> GetATBulkManualDetail(int id)
+        {
+            var qry = from o in await db.tbl_WPT_ATBulkManualDetail_Employees.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_WPT_ATBulkManualMaster_ID,
+                          o.FK_tbl_WPT_Employee_ID,
+                          FK_tbl_WPT_Employee_IDName = o.tbl_WPT_Employee.EmployeeName + " [" + o.tbl_WPT_Employee.ATEnrollmentNo_Default + "]",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLATBulkManualDetail()
+        {
+            return new[]
+            {
+                new { n = "by Employee Name", v = "byEmployeeName" }, new { n = "by Designation", v = "byDesignation" }, new { n = "by Department", v = "byDepartment" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadATBulkManualDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_WPT_ATBulkManualDetail_Employees
+                                               .Where(w => w.FK_tbl_WPT_ATBulkManualMaster_ID == MasterID)
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byEmployeeName" && w.tbl_WPT_Employee.EmployeeName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byDesignation" && w.tbl_WPT_Employee.tbl_WPT_Designation.Designation.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byDepartment" && w.tbl_WPT_Employee.tbl_WPT_DepartmentDetail_Section.tbl_WPT_Department.DepartmentName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_WPT_ATBulkManualDetail_Employees
+                                  .Where(w => w.FK_tbl_WPT_ATBulkManualMaster_ID == MasterID)
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byEmployeeName" && w.tbl_WPT_Employee.EmployeeName.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byDesignation" && w.tbl_WPT_Employee.tbl_WPT_Designation.Designation.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byDepartment" && w.tbl_WPT_Employee.tbl_WPT_DepartmentDetail_Section.tbl_WPT_Department.DepartmentName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_WPT_ATBulkManualMaster_ID,
+                          o.FK_tbl_WPT_Employee_ID,
+                          FK_tbl_WPT_Employee_IDName = o.tbl_WPT_Employee.EmployeeName + " [" + o.tbl_WPT_Employee.ATEnrollmentNo_Default + "]",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          ATLogDateTime = ""//o?.tbl_WPT_AttendanceLogs?.FirstOrDefault()?.ATDateTime.ToString("dd-MMM-yy hh:mm tt") ?? ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostATBulkManualDetail(tbl_WPT_ATBulkManualDetail_Employee tbl_WPT_ATBulkManualDetail_Employee, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            if (operation == "Save New")
+            {
+                tbl_WPT_ATBulkManualDetail_Employee.CreatedBy = userName;
+                tbl_WPT_ATBulkManualDetail_Employee.CreatedDate = DateTime.Now;
+                CRUD_Type.Value = "Insert";
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_WPT_ATBulkManualDetail_Employee.ModifiedBy = userName;
+                tbl_WPT_ATBulkManualDetail_Employee.ModifiedDate = DateTime.Now;
+                CRUD_Type.Value = "Update";
+            }
+            else if (operation == "Save Delete")
+            {
+                CRUD_Type.Value = "Delete";
+            }
+
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_WPT_ATBulkManualDetail_Employee] 
+                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@FK_tbl_WPT_ATBulkManualMaster_ID={4},@FK_tbl_WPT_Employee_ID={5}
+                ,@CreatedBy={6},@CreatedDate={7},@ModifiedBy={8},@ModifiedDate={9}",
+                CRUD_Type, CRUD_Msg, CRUD_ID,
+                tbl_WPT_ATBulkManualDetail_Employee.ID, tbl_WPT_ATBulkManualDetail_Employee.FK_tbl_WPT_ATBulkManualMaster_ID, tbl_WPT_ATBulkManualDetail_Employee.FK_tbl_WPT_Employee_ID,
+                tbl_WPT_ATBulkManualDetail_Employee.CreatedBy, tbl_WPT_ATBulkManualDetail_Employee.CreatedDate, tbl_WPT_ATBulkManualDetail_Employee.ModifiedBy, tbl_WPT_ATBulkManualDetail_Employee.ModifiedDate
+                );
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+        }
+        public async Task<string> ATBulkManualUploadExcelFile(List<string> EmployeeATNoExcelDataList, int MasterID, string operation, string userName)
+        {
+            string RespondMsg = "";
+            if (operation == "Save New")
+            {
+                //------------Add compiled record to database--------------------//
+                SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+                SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+                SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+                foreach (var item in EmployeeATNoExcelDataList)
+                {
+                    var temp = await db.tbl_WPT_Employees.Where(w => w.ATEnrollmentNo_Default == item).FirstOrDefaultAsync();
+
+                    if (temp.ID > 0)
+                    {
+                        CRUD_Type.Value = "Insert";
+                        CRUD_ID.Value = 0;
+                        CRUD_Msg.Value = "";
+
+                        await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_WPT_ATBulkManualDetail_Employee] 
+                        @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                        ,@ID={3},@FK_tbl_WPT_ATBulkManualMaster_ID={4},@FK_tbl_WPT_Employee_ID={5}
+                        ,@CreatedBy={6},@CreatedDate={7},@ModifiedBy={8},@ModifiedDate={9}",
+                        CRUD_Type, CRUD_Msg, CRUD_ID,
+                        0, MasterID, temp.ID,
+                        userName, DateTime.Now, null, null
+                        );
+
+                        if ((string)CRUD_Msg.Value == "Successful")
+                            RespondMsg = RespondMsg + "\n" + "For: " + temp.ATEnrollmentNo_Default + ", Exception: " + (string)CRUD_Msg.Value;
+                    }
+
+                }
+
+            }
+            else
+            {
+                RespondMsg = "Wrong Operation";
+            }
+
+            if (string.IsNullOrEmpty(RespondMsg))
+                return "OK";
+            else
+                return RespondMsg;
+        }
+
+        #endregion
+
     }
     public class LeavePolicyRepository : ILeavePolicy
     {

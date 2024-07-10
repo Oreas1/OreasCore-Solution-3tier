@@ -548,6 +548,19 @@ namespace OreasServices
         #endregion
 
     }
+
+    public interface IATBulkManual
+    {
+        Task<string> ATBulkManualUploadExcelFile(List<string> EmployeeATNoExcelDataList, int MasterID, string operation, string userName);
+        Task<object> GetATBulkManualDetail(int id);
+        Task<object> GetATBulkManualMaster(int id);
+        object GetWCLATBulkManualDetail();
+        object GetWCLATBulkManualMaster();
+        Task<PagedData<object>> LoadATBulkManualDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<PagedData<object>> LoadATBulkManualMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "");
+        Task<string> PostATBulkManualDetail(tbl_WPT_ATBulkManualDetail_Employee tbl_WPT_ATBulkManualDetail_Employee, string operation = "", string userName = "");
+        Task<string> PostATBulkManualMaster(tbl_WPT_ATBulkManualMaster tbl_WPT_ATBulkManualMaster, string operation = "", string userName = "");
+    }
     public interface ILeavePolicy
     {
         #region Leave Policy Paid

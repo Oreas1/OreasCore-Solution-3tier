@@ -204,6 +204,8 @@ namespace OreasServices
         public DbSet<tbl_WPT_DepartmentDetail_Section_HOS> tbl_WPT_DepartmentDetail_Section_HOSs { get; set; }
         public DbSet<tbl_WPT_Designation> tbl_WPT_Designations { get; set; }
         public DbSet<tbl_WPT_AttendanceLog> tbl_WPT_AttendanceLogs { get; set; }
+        public DbSet<tbl_WPT_ATBulkManualMaster> tbl_WPT_ATBulkManualMasters { get; set; }
+        public DbSet<tbl_WPT_ATBulkManualDetail_Employee> tbl_WPT_ATBulkManualDetail_Employees { get; set; }
         public DbSet<tbl_WPT_ATTimeGrace> tbl_WPT_ATTimeGraces { get; set; }
         public DbSet<tbl_WPT_ATTimeGraceEmployeeLink> tbl_WPT_ATTimeGraceEmployeeLinks { get; set; }
 

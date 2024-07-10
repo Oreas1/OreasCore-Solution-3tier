@@ -48,6 +48,7 @@ namespace OreasCore
             services.AddScoped<ITransactionMode, TransactionModeRepository>();
             services.AddScoped<IATTimeGrace, ATTimeGraceRepository>();
             services.AddScoped<IAttendance, AttendanceRepository>();
+            services.AddScoped<IATBulkManual, ATBulkManualRepository>();
             services.AddScoped<ILeavePolicy, LeavePolicyRepository>();
             services.AddScoped<ICalendar, CalendarRepository>();
             services.AddScoped<ILeaveRequisition, LeaveRequisitionRepository>();

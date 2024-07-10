@@ -340,6 +340,8 @@ namespace OreasModel
         [Display(Name = "AT InOut Mode Value")]
         public int ATInOutMode { get; set; }
 
+        [InverseProperty(nameof(tbl_WPT_ATBulkManualMaster.tbl_WPT_ATInOutMode))]
+        public virtual ICollection<tbl_WPT_ATBulkManualMaster> tbl_WPT_ATBulkManualMasters { get; set; }
     }
 
     [Table("tbl_WPT_ATType")]
@@ -756,6 +758,9 @@ namespace OreasModel
 
         [InverseProperty(nameof(tbl_WPT_AttendanceLog.tbl_WPT_Employee))]
         public virtual ICollection<tbl_WPT_AttendanceLog> tbl_WPT_AttendanceLogs { get; set; }
+
+        [InverseProperty(nameof(tbl_WPT_ATBulkManualDetail_Employee.tbl_WPT_Employee))]
+        public virtual ICollection<tbl_WPT_ATBulkManualDetail_Employee> tbl_WPT_ATBulkManualDetail_Employees { get; set; }
 
         [InverseProperty(nameof(tbl_WPT_IncrementDetail.tbl_WPT_Employee))]
         public virtual ICollection<tbl_WPT_IncrementDetail> tbl_WPT_IncrementDetails { get; set; }
@@ -3231,12 +3236,11 @@ namespace OreasModel
         public int ID { get; set; }
 
         [ForeignKey(nameof(tbl_WPT_Employee))]
-
         public int? FK_tbl_WPT_Employee_ID { get; set; }
         public virtual tbl_WPT_Employee tbl_WPT_Employee { get; set; }
 
-        [ForeignKey(nameof(tbl_WPT_Machine))]
 
+        [ForeignKey(nameof(tbl_WPT_Machine))]
         public int? FK_tbl_WPT_Machine_ID { get; set; }
         public virtual tbl_WPT_Machine tbl_WPT_Machine { get; set; }
 
@@ -3255,6 +3259,79 @@ namespace OreasModel
         [Required]
         [Display(Name = "Logged by")]
         public int Loggedby { get; set; }
+
+        [ForeignKey(nameof(tbl_WPT_ATBulkManualDetail_Employee))]
+        public int? FK_tbl_WPT_ATBulkManualDetail_Employee_ID { get; set; }
+        public virtual tbl_WPT_ATBulkManualDetail_Employee tbl_WPT_ATBulkManualDetail_Employee { get; set; }
+
+    }
+
+    [Table("tbl_WPT_ATBulkManualMaster")]
+    public class tbl_WPT_ATBulkManualMaster
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+        public int ID { get; set; }
+
+        [Display(Name = "Doc No")]
+        public int? DocNo { get; set; }
+
+        [Required]
+        [Display(Name = "AT DateTime")]
+        public DateTime ATDateTime { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_WPT_ATInOutMode))]
+        public int FK_tbl_WPT_ATInOutMode_ID { get; set; }
+        public virtual tbl_WPT_ATInOutMode tbl_WPT_ATInOutMode { get; set; }
+
+        [MaxLength(50)]
+        public string Reason { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_WPT_ATBulkManualDetail_Employee.tbl_WPT_ATBulkManualMaster))]
+        public virtual ICollection<tbl_WPT_ATBulkManualDetail_Employee> tbl_WPT_ATBulkManualDetail_Employees { get; set; }
+
+    }
+
+    [Table("tbl_WPT_ATBulkManualDetail_Employee")]
+    public class tbl_WPT_ATBulkManualDetail_Employee
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_WPT_ATBulkManualMaster))]
+        public int FK_tbl_WPT_ATBulkManualMaster_ID { get; set; }
+        public virtual tbl_WPT_ATBulkManualMaster tbl_WPT_ATBulkManualMaster { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_WPT_Employee))]
+        public int FK_tbl_WPT_Employee_ID { get; set; }
+        public virtual tbl_WPT_Employee tbl_WPT_Employee { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_WPT_AttendanceLog.tbl_WPT_ATBulkManualDetail_Employee))]
+        public virtual ICollection<tbl_WPT_AttendanceLog> tbl_WPT_AttendanceLogs { get; set; }
 
     }
 
@@ -3331,18 +3408,19 @@ namespace OreasModel
     public class tbl_WPT_ATTimeGraceEmployeeLink
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
         public int ID { get; set; }
 
-        [ForeignKey(nameof(tbl_WPT_ATTimeGrace))]
 
-        public int? FK_tbl_WPT_ATTimeGrace_ID { get; set; }
+        [Required]
+        [ForeignKey(nameof(tbl_WPT_ATTimeGrace))]
+        public int FK_tbl_WPT_ATTimeGrace_ID { get; set; }
         public virtual tbl_WPT_ATTimeGrace tbl_WPT_ATTimeGrace { get; set; }
 
+        [Required]
         [ForeignKey(nameof(tbl_WPT_Employee))]
-
-        public int? FK_tbl_WPT_Employee_ID { get; set; }
+        public int FK_tbl_WPT_Employee_ID { get; set; }
         public virtual tbl_WPT_Employee tbl_WPT_Employee { get; set; }
+
 
         [MaxLength(50)]
         public string CreatedBy { get; set; }
