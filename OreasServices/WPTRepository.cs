@@ -7712,7 +7712,7 @@ namespace OreasServices
                       {
                           o.ID,
                           o.DocNo,
-                          o.ATDateTime,
+                          ATDateTime = o.ATDateTime.ToString("dd-MMM-yy hh:mm:ss tt"),
                           o.FK_tbl_WPT_ATInOutMode_ID,
                           FK_tbl_WPT_ATInOutMode_IDName = o.tbl_WPT_ATInOutMode.ATInOutModeName,
                           o.Reason,
@@ -7837,7 +7837,7 @@ namespace OreasServices
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          ATLogDateTime = ""//o?.tbl_WPT_AttendanceLogs?.FirstOrDefault()?.ATDateTime.ToString("dd-MMM-yy hh:mm tt") ?? ""
+                          ATLogDateTime = o?.tbl_WPT_AttendanceLogs?.FirstOrDefault()?.ATDateTime.ToString("dd-MMM-yy hh:mm:ss tt") ?? ""
                       };
 
             pageddata.Data = qry;

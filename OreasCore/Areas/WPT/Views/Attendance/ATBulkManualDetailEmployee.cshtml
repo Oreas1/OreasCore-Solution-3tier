@@ -87,11 +87,17 @@
                 <th>
                     Employee Name
                 </th>
+                <th>
+                    AT Log DateTime
+                </th>
                 <th></th>
             </tr>
             <tr ng-repeat="itm in pageddata.Data">
                 <td>
                     {{itm.FK_tbl_WPT_Employee_IDName}}
+                </td>
+                <td>
+                    {{itm.ATLogDateTime}}
                 </td>
                 <td>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
@@ -102,7 +108,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td colspan="3">
                     <div mycssclass="@MyCSSClassName.Table_NavDiv">
                         <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                         <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
