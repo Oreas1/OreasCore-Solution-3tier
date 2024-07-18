@@ -356,8 +356,6 @@ namespace OreasServices
                                                        string.IsNullOrEmpty(FilterValueByText)
                                                        ||
                                                        FilterByText == "byYear" && w.PeriodStart.Year.ToString() == FilterValueByText.ToLower()
-                                                       ||
-                                                       FilterByText == "byYear" && w.PeriodEnd.Year.ToString() == FilterValueByText.ToLower()
                                                      )
                                                .CountAsync();
 
@@ -371,8 +369,6 @@ namespace OreasServices
                                         string.IsNullOrEmpty(FilterValueByText)
                                         ||
                                         FilterByText == "byYear" && w.PeriodStart.Year.ToString() == FilterValueByText.ToLower()
-                                        ||
-                                        FilterByText == "byYear" && w.PeriodEnd.Year.ToString() == FilterValueByText.ToLower()
                                       )
                                   .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
@@ -2361,6 +2357,275 @@ namespace OreasServices
         }
 
         #endregion
+    }
+    public class PaymentPlanningRepository : IPaymentPlanning
+    {
+        private readonly OreasDbContext db;
+        public PaymentPlanningRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+
+        #region FiscalYear
+        public object GetWCLFiscalYear()
+        {
+            return new[]
+            {
+                new { n = "by Year", v = "byYear" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadFiscalYear(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Ac_FiscalYears
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byYear" && w.PeriodStart.Year.ToString() == FilterValueByText.ToLower()
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Ac_FiscalYears
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byYear" && w.PeriodStart.Year.ToString() == FilterValueByText.ToLower()
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          PeriodStart = o.PeriodStart.ToString("dd-MMM-yyyy"),
+                          PeriodEnd = o.PeriodEnd.ToString("dd-MMM-yyyy"),
+                          o.IsClosed,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          NoOfMonths = o.tbl_Ac_PaymentPlanningMasters.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+
+        #endregion
+
+        #region Master
+        public async Task<object> GetPaymentPlanningMaster(int id)
+        {
+            var qry = from o in await db.tbl_Ac_PaymentPlanningMasters.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Ac_FiscalYear_ID,
+                          o.MonthNo,
+                          MonthStart = o.MonthStart.HasValue ? o.MonthStart.Value.ToString("dd-MMM-yy") : "",
+                          MonthEnd = o.MonthEnd.HasValue ? o.MonthEnd.Value.ToString("dd-MMM-yy") : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public async Task<PagedData<object>> LoadPaymentPlanningMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string IsFor = "")
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Ac_PaymentPlanningMasters.Where(w => w.FK_tbl_Ac_FiscalYear_ID == MasterID).CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Ac_PaymentPlanningMasters.Where(w => w.FK_tbl_Ac_FiscalYear_ID == MasterID)
+                      .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Ac_FiscalYear_ID,
+                          o.MonthNo,
+                          MonthName = o.MonthStart.HasValue ? o.MonthStart.Value.ToString("MMMM") : "",
+                          MonthStart = o.MonthStart.HasValue ? o.MonthStart.Value.ToString("dd-MMM-yy hh:mm:ss tt") : "",
+                          MonthEnd = o.MonthEnd.HasValue ? o.MonthEnd.Value.ToString("dd-MMM-yy hh:mm:ss tt") : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalAc = o.tbl_Ac_PaymentPlanningDetails.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostPaymentPlanningMaster(tbl_Ac_PaymentPlanningMaster tbl_Ac_PaymentPlanningMaster, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            if (operation == "Save New")
+            {
+                tbl_Ac_PaymentPlanningMaster.CreatedBy = userName;
+                tbl_Ac_PaymentPlanningMaster.CreatedDate = DateTime.Now;
+                CRUD_Type.Value = "Insert";
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Ac_PaymentPlanningMaster.ModifiedBy = userName;
+                tbl_Ac_PaymentPlanningMaster.ModifiedDate = DateTime.Now;
+                CRUD_Type.Value = "Update";
+            }
+            else if (operation == "Save Delete")
+            {
+                CRUD_Type.Value = "Delete";
+            }
+
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Ac_PaymentPlanningMaster] 
+                 @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@FK_tbl_Ac_FiscalYear_ID={4}
+                ,@MonthNo={5},@MonthStart={6},@MonthEnd={7}
+                ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+                CRUD_Type, CRUD_Msg, CRUD_ID,
+                tbl_Ac_PaymentPlanningMaster.ID, tbl_Ac_PaymentPlanningMaster.FK_tbl_Ac_FiscalYear_ID,
+                tbl_Ac_PaymentPlanningMaster.MonthNo, tbl_Ac_PaymentPlanningMaster.MonthStart, tbl_Ac_PaymentPlanningMaster.MonthEnd,
+                tbl_Ac_PaymentPlanningMaster.CreatedBy, tbl_Ac_PaymentPlanningMaster.CreatedDate, tbl_Ac_PaymentPlanningMaster.ModifiedBy, tbl_Ac_PaymentPlanningMaster.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+        }
+        #endregion
+
+        #region Detail
+        public async Task<object> GetPaymentPlanningDetail(int id)
+        {
+            var qry = from o in await db.tbl_Ac_PaymentPlanningDetails.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Ac_PaymentPlanningMaster_ID,
+                          o.FK_tbl_Ac_ChartOfAccounts_ID,
+                          FK_tbl_Ac_ChartOfAccounts_IDName = o.tbl_Ac_ChartOfAccounts.AccountName,
+                          o.Amount,
+                          o.Restricted,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLPaymentPlanningDetail()
+        {
+            return new[]
+            {
+                new { n = "by Account Name", v = "byAccountName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadPaymentPlanningDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Ac_PaymentPlanningDetails
+                                               .Where(w => w.FK_tbl_Ac_PaymentPlanningMaster_ID == MasterID)
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byAccountName" && w.tbl_Ac_ChartOfAccounts.AccountName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Ac_PaymentPlanningDetails
+                                  .Where(w => w.FK_tbl_Ac_PaymentPlanningMaster_ID == MasterID)
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byAccountName" && w.tbl_Ac_ChartOfAccounts.AccountName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Ac_PaymentPlanningMaster_ID,
+                          o.FK_tbl_Ac_ChartOfAccounts_ID,
+                          FK_tbl_Ac_ChartOfAccounts_IDName = o.tbl_Ac_ChartOfAccounts.AccountName,
+                          o.Amount,
+                          o.Restricted,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+
+
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostPaymentPlanningDetail(tbl_Ac_PaymentPlanningDetail tbl_Ac_PaymentPlanningDetail, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            if (operation == "Save New")
+            {
+                tbl_Ac_PaymentPlanningDetail.CreatedBy = userName;
+                tbl_Ac_PaymentPlanningDetail.CreatedDate = DateTime.Now;
+                CRUD_Type.Value = "Insert";
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Ac_PaymentPlanningDetail.ModifiedBy = userName;
+                tbl_Ac_PaymentPlanningDetail.ModifiedDate = DateTime.Now;
+                CRUD_Type.Value = "Update";
+            }
+            else if (operation == "Save Delete")
+            {
+                CRUD_Type.Value = "Delete";
+            }
+
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Ac_PaymentPlanningDetail] 
+                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@FK_tbl_Ac_PaymentPlanningMaster_ID={4}
+                ,@FK_tbl_Ac_ChartOfAccounts_ID={5},@Amount={6},@Restricted={7}
+                ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+                CRUD_Type, CRUD_Msg, CRUD_ID,
+                tbl_Ac_PaymentPlanningDetail.ID, tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_PaymentPlanningMaster_ID,
+                tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID, tbl_Ac_PaymentPlanningDetail.Amount, tbl_Ac_PaymentPlanningDetail.Restricted,
+                tbl_Ac_PaymentPlanningDetail.CreatedBy, tbl_Ac_PaymentPlanningDetail.CreatedDate, tbl_Ac_PaymentPlanningDetail.ModifiedBy, tbl_Ac_PaymentPlanningDetail.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+
+        }
+
+        #endregion
+
     }
     public class BankDocumentRepository : IBankDocument
     {

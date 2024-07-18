@@ -187,10 +187,10 @@ namespace OreasCore
                     }
 
                     //-------------setting fiscal year---------//
-                    var fy = myDbContext.tbl_Ac_FiscalYears.Where(f => f.IsClosed == false).OrderByDescending(d => d.PeriodStart).FirstOrDefault();
+                    var fy = myDbContext.tbl_Ac_FiscalYears.Where(f => f.IsClosed == false).OrderBy(d => d.PeriodStart);
                     if (fy != null)
                     {
-                        FiscalYear.Set(fy.PeriodStart, fy.PeriodEnd);
+                        FiscalYear.Set(fy.FirstOrDefault().PeriodStart, fy.LastOrDefault().PeriodEnd);
                     }
                     else
                     {

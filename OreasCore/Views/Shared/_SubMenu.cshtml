@@ -216,6 +216,15 @@ else if (@Model.ToString() == "Accounts")
             <li><a asp-area="Accounts" asp-controller="SetUp" asp-action="CompositionCostingFactorsIndex" class="dropdown-item">Costing Factors</a></li>
         </ul>
     </li>
+    <li class="nav-item dropdown" style="padding-left: 1px;">
+        <a class="nav-link dropdown-toggle myNavBarDropDown" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" ng-click="HideW1000=true;HideW1001=true;HideW1002=true;" data-bs-auto-close="outside" aria-expanded="false">
+            <i class="fa fa-weight-scale" style="color: white;"></i>&nbsp;&nbsp;Strategy
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><hr class="dropdown-divider"></li>
+            <li><a asp-area="Accounts" asp-controller="Strategy" asp-action="PaymentPlanningIndex" class="dropdown-item">Payment Planning</a></li>
+        </ul>
+    </li>
 }
 else if (@Model.ToString() == "Inventory")
 {

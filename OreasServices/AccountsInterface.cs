@@ -102,6 +102,18 @@ namespace OreasServices
         Task<PagedData<object>> LoadAcPolicyWHTaxOnSalesMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<string> PostAcPolicyWHTaxOnSalesMaster(tbl_Ac_PolicyWHTaxOnSales tbl_Ac_PolicyWHTaxOnSales, string operation = "", string userName = "");
     }
+    public interface IPaymentPlanning
+    {
+        Task<object> GetPaymentPlanningDetail(int id);
+        Task<object> GetPaymentPlanningMaster(int id);
+        object GetWCLFiscalYear();
+        object GetWCLPaymentPlanningDetail();
+        Task<PagedData<object>> LoadFiscalYear(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<PagedData<object>> LoadPaymentPlanningDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<PagedData<object>> LoadPaymentPlanningMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string IsFor = "");
+        Task<string> PostPaymentPlanningDetail(tbl_Ac_PaymentPlanningDetail tbl_Ac_PaymentPlanningDetail, string operation = "", string userName = "");
+        Task<string> PostPaymentPlanningMaster(tbl_Ac_PaymentPlanningMaster tbl_Ac_PaymentPlanningMaster, string operation = "", string userName = "");
+    }
     public interface IBankDocument
     {
         Task<object> GetBankDocumentDetail(int id);

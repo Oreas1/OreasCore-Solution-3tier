@@ -268,6 +268,8 @@ namespace OreasServices
         public DbSet<tbl_Ac_CustomerApprovedRateList> tbl_Ac_CustomerApprovedRateLists { get; set; }
         public DbSet<tbl_Ac_CustomerSubDistributorList> tbl_Ac_CustomerSubDistributorLists { get; set; }
         public DbSet<tbl_Ac_Ledger> tbl_Ac_Ledgers { get; set; }
+        public DbSet<tbl_Ac_PaymentPlanningMaster> tbl_Ac_PaymentPlanningMasters { get; set; }
+        public DbSet<tbl_Ac_PaymentPlanningDetail> tbl_Ac_PaymentPlanningDetails { get; set; }
         public DbSet<tbl_Ac_PolicyPaymentTerm> tbl_Ac_PolicyPaymentTerms { get; set; }
         public DbSet<tbl_Ac_PolicyInventory> tbl_Ac_PolicyInventorys { get; set; }
         public DbSet<tbl_Ac_PolicyWHTaxOnPurchase> tbl_Ac_PolicyWHTaxOnPurchases { get; set; }

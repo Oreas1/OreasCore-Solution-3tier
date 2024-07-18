@@ -70,6 +70,7 @@ namespace OreasCore
             services.AddScoped<IAcPolicyInventory, AcPolicyInventoryRepository>();
             services.AddScoped<IAcPolicyWHTaxOnPurchase, AcPolicyWHTaxOnPurchaseRepository>();
             services.AddScoped<IAcPolicyWHTaxOnSales, AcPolicyWHTaxOnSalesRepository>();
+            services.AddScoped<IPaymentPlanning, PaymentPlanningRepository>();
             services.AddScoped<IAcLedger, AcLedgerRepository>();
             services.AddScoped<IPolicyPaymentTerm, PolicyPaymentTermRepository>();
             services.AddScoped<IBankDocument, BankDocumentRepository>();

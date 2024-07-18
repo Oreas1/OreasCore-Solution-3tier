@@ -82,6 +82,9 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Ac_FiscalYear_ClosingMaster.tbl_Ac_FiscalYear))]
         public virtual ICollection<tbl_Ac_FiscalYear_ClosingMaster> tbl_Ac_FiscalYear_ClosingMasters { get; set; }
 
+        [InverseProperty(nameof(tbl_Ac_PaymentPlanningMaster.tbl_Ac_FiscalYear))]
+        public virtual ICollection<tbl_Ac_PaymentPlanningMaster> tbl_Ac_PaymentPlanningMasters { get; set; }
+
     }
 
     [Table("tbl_Ac_FiscalYear_ClosingEntryType")]
@@ -412,6 +415,9 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Ac_CustomerSubDistributorList.tbl_Ac_ChartOfAccounts))]
         public virtual ICollection<tbl_Ac_CustomerSubDistributorList> tbl_Ac_CustomerSubDistributorLists { get; set; }
 
+        [InverseProperty(nameof(tbl_Ac_PaymentPlanningDetail.tbl_Ac_ChartOfAccounts))]
+        public virtual ICollection<tbl_Ac_PaymentPlanningDetail> tbl_Ac_PaymentPlanningDetails { get; set; }
+
     }
 
     [Table("tbl_Ac_CustomerApprovedRateList")]
@@ -659,6 +665,75 @@ namespace OreasModel
         [ForeignKey(nameof(tbl_Inv_PDRequestDispensing))]
         public int? FK_tbl_Inv_PDRequestDispensing_ID { get; set; }
         public virtual tbl_Inv_PDRequestDispensing tbl_Inv_PDRequestDispensing { get; set; }
+
+    }
+
+    [Table("tbl_Ac_PaymentPlanningMaster")]
+    public class tbl_Ac_PaymentPlanningMaster
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Ac_FiscalYear))]
+        public int FK_tbl_Ac_FiscalYear_ID { get; set; }
+        public virtual tbl_Ac_FiscalYear tbl_Ac_FiscalYear { get; set; }
+
+        [Required]
+        [Display(Name = "Month No")]
+        public int MonthNo { get; set; }
+
+        [Display(Name = "Month Start")]
+        public DateTime? MonthStart { get; set; }
+
+        [Display(Name = "Month End")]
+        public DateTime? MonthEnd { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_Ac_PaymentPlanningDetail.tbl_Ac_PaymentPlanningMaster))]
+        public virtual ICollection<tbl_Ac_PaymentPlanningDetail> tbl_Ac_PaymentPlanningDetails { get; set; }
+    }
+
+    [Table("tbl_Ac_PaymentPlanningDetail")]
+    public class tbl_Ac_PaymentPlanningDetail
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Ac_PaymentPlanningMaster))]
+        public int FK_tbl_Ac_PaymentPlanningMaster_ID { get; set; }
+        public virtual tbl_Ac_PaymentPlanningMaster tbl_Ac_PaymentPlanningMaster { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Ac_ChartOfAccounts))]
+        public int FK_tbl_Ac_ChartOfAccounts_ID { get; set; }
+        public virtual tbl_Ac_ChartOfAccounts tbl_Ac_ChartOfAccounts { get; set; }
+
+        [Required]
+        public double Amount { get; set; }
+
+        [Required]
+        public bool Restricted { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
 
     }
 

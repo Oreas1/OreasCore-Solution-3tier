@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Payment Planning";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-Accounts/Strategy/paymentplanningindex.180724.js"></script>
+}
+<div ng-controller="PaymentPlanningCtlr" class="container">
+    <div id="PaymentPlanningCtlr">
+        <MyViewName>Payment Planning Year</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Period Start
+                    </th>
+                    <th>
+                        Period End
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        No Of Months
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.PeriodStart}}
+                    </td>
+                    <td>
+                        {{itm.PeriodEnd}}
+                    </td>
+                    <td>
+                        {{itm.IsClosed ? 'Closed' : 'Open'}}
+                    </td>
+                    <td>
+                        {{itm.NoOfMonths}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('PaymentPlanningMasterCtlr',itm,'PaymentPlanningCtlr','PaymentPlanningMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Payment Planning Month">Month <span class="fa fa-calendar"></span></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "PaymentPlanningCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. If Fiscal year Closed then no changes is allowed</p>
+        </div>
+    </div>
+
+    <div ng-controller="PaymentPlanningMasterCtlr">
+        <div id="PaymentPlanningMasterCtlr" style="display: none;">
+            @await Html.PartialAsync("PaymentPlanningMaster")
+        </div>
+        <div ng-controller="PaymentPlanningDetailCtlr">
+            <div id="PaymentPlanningDetailCtlr" style="display: none;">
+                @await Html.PartialAsync("PaymentPlanningDetail")
+            </div>
+        </div>
+    </div>
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_COASearchModalGeneral")
+</div>
+
+
+
+
