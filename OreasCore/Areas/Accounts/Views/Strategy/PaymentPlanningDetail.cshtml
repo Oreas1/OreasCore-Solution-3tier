@@ -49,12 +49,12 @@
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Account</span>
-                        <MyButtonModal fieldname="tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName" ng-click="OpenCOASearchModalGeneral('General', 0, 'tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
+                        <MyButtonModal fieldname="tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName" ng-click="OpenCOASearchModalGeneral('PaymentPlanning', tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_PaymentPlanningMaster_ID, 'tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName', COASearch_CtrlFunction_Ref_InvokeOnSelection);myform['tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName'].$dirty=true;" ng-disabled="ng_readOnly" required></MyButtonModal>
                         <MyValidationSpan formname="myform" fieldname="tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName" required="true"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Amount</span>
-                        <input id="tbl_Ac_PaymentPlanningDetail.Amount" name="tbl_Ac_PaymentPlanningDetail.Amount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_PaymentPlanningDetail.Amount" ng-disabled="ng_readOnly" min="0.1" required />
+                        <input id="tbl_Ac_PaymentPlanningDetail.Amount" name="tbl_Ac_PaymentPlanningDetail.Amount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Ac_PaymentPlanningDetail.Amount" ng-disabled="ng_readOnly" min="0" required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Ac_PaymentPlanningDetail.Amount" required="true"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">

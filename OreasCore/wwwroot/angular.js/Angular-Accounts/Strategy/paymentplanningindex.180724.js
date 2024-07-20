@@ -125,6 +125,8 @@
             if (item.ID > 0) {
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID = item.ID;
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName = item.AccountName;
+
+                $scope.GetOutStanding(item.ID);
             }
             else {
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID = null;
@@ -159,6 +161,16 @@
         };
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; }; 
+
+        $scope.GetOutStanding = function (acID) {
+            setOperationMessage('Please Wait while Loading Outstanding...', 0);
+            var successcallback = function (response) {
+                console.log(response.data);
+            };
+            var errorcallback = function (error) { console.log(error) };
+            $http({ method: "GET", url: "/Accounts/Strategy/PaymentPlanningDetailOutStandingGet", params: { AcID: acID, MasterID: $scope.MasterObject.ID }, headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(successcallback, errorcallback);
+
+        };
 
     })
     .config(function ($httpProvider) {

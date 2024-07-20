@@ -166,8 +166,14 @@ namespace OreasCore.Areas.Accounts.Controllers
             return Json(await db.GetPaymentPlanningDetail(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        #endregion  
- 
+        [MyAuthorization(FormName = "Payment Planning", Operation = "CanView")]
+        public async Task<IActionResult> PaymentPlanningDetailOutStandingGet([FromServices] IPaymentPlanning db, int AcID, int MasterID)
+        {
+            return Json(await db.GetPaymentPlanningOutStanding(AcID, MasterID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
 
         #endregion
     }

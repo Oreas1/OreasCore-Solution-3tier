@@ -105,6 +105,7 @@ namespace OreasServices
     public interface IPaymentPlanning
     {
         Task<object> GetPaymentPlanningDetail(int id);
+        Task<object> GetPaymentPlanningOutStanding(int AcID = 0, int MasterID = 0);
         Task<object> GetPaymentPlanningMaster(int id);
         object GetWCLFiscalYear();
         object GetWCLPaymentPlanningDetail();

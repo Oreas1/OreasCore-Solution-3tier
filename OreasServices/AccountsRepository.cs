@@ -2623,6 +2623,48 @@ namespace OreasServices
                 return (string)CRUD_Msg.Value;
 
         }
+        public async Task<object> GetPaymentPlanningOutStanding(int AcID = 0, int MasterID = 0)
+        {
+            DateTime? MonthStart = db.tbl_Ac_PaymentPlanningMasters.Where(w => w.ID == MasterID).FirstOrDefault().MonthStart.Value;
+
+            if (!MonthStart.HasValue)
+            {
+                return "Date No Found";
+            }
+
+            SqlParameter TillDate = new SqlParameter("@TillDate", SqlDbType.DateTime) { Direction = ParameterDirection.Input, Value = MonthStart };
+            SqlParameter AccountID = new SqlParameter("@AccountID", SqlDbType.Int) { Direction = ParameterDirection.Input, Value = AcID };
+
+            SqlParameter TotalCredit = new SqlParameter("@TotalCredit", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter TotalPaid = new SqlParameter("@TotalPaid", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter Balance = new SqlParameter("@Balance", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter O91_End = new SqlParameter("@O91_End", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter O61_90 = new SqlParameter("@O61_90", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter O31_60 = new SqlParameter("@O31_60", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter O1_30 = new SqlParameter("@O1_30", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
+            SqlParameter PaymentTerm = new SqlParameter("@PaymentTerm", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "" };
+
+
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[USP_Ac_GetSinglePayableDetail] 
+                @TillDate={0},@AccountID={1},@TotalCredit={2} OUTPUT,@TotalPaid={3} OUTPUT,@Balance={4} OUTPUT,
+                @O91_End={5} OUTPUT,@O61_90={6} OUTPUT,@O31_60={7} OUTPUT,@O1_30={8} OUTPUT, @PaymentTerm={9} OUTPUT",
+                TillDate,AccountID,TotalCredit,TotalPaid,Balance,
+                O91_End,O61_90,O31_60,O1_30,PaymentTerm);
+
+                return new { 
+                    TillDate = TillDate.Value,
+                    AccountID = AccountID.Value,
+                    TotalCredit = TotalCredit.Value,
+                    TotalPaid = TotalPaid.Value,
+                    Balance = Balance.Value,
+                    O91_End = O91_End.Value,
+                    O61_90 = O61_90.Value,
+                    O31_60 = O31_60.Value,
+                    O1_30 = O1_30.Value,
+                    PaymentTerm = PaymentTerm.Value
+                };
+
+        }
 
         #endregion
 
