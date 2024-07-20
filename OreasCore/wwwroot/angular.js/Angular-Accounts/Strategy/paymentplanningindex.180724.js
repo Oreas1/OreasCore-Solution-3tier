@@ -44,8 +44,8 @@
         $scope.MasterObject = {};
         $scope.$on('PaymentPlanningMasterCtlr', function (e, itm) {
             $scope.MasterObject = itm;
-            $scope.pageNavigation('first'); 
             $scope.rptID = itm.ID;
+            $scope.pageNavigation('first');             
         });
 
         $scope.$on('init_PaymentPlanningMasterCtlr', function (e, itm) {
@@ -108,11 +108,13 @@
         $scope.MasterObject = {};
         $scope.$on('PaymentPlanningDetailCtlr', function (e, itm) {
             $scope.MasterObject = itm;
+            $scope.rptID = itm.ID;
             $scope.pageNavigation('first');
         });
 
         $scope.$on('init_PaymentPlanningDetailCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
+            init_Report($scope, itm.Reports, '/Accounts/Strategy/GetPaymentPlanningReport'); 
         });
 
         init_Operations($scope, $http,
@@ -125,19 +127,19 @@
             if (item.ID > 0) {
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID = item.ID;
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName = item.AccountName;
-
-                $scope.GetOutStanding(item.ID);
+                
             }
             else {
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID = null;
                 $scope.tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_IDName = null;
             }
+            $scope.GetOutStanding(item.ID);
         };
 
         $scope.tbl_Ac_PaymentPlanningDetail = {
             'ID': 0, 'FK_tbl_Ac_PaymentPlanningMaster_ID': $scope.MasterObject.ID,
             'FK_tbl_Ac_ChartOfAccounts_ID': null, 'FK_tbl_Ac_ChartOfAccounts_IDName': '',
-            'Amount': 0, 'Restricted': true, 
+            'Amount': 0, 'Restricted': true, 'Remarks': '',
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -149,9 +151,10 @@
             $scope.tbl_Ac_PaymentPlanningDetail = {
                 'ID': 0, 'FK_tbl_Ac_PaymentPlanningMaster_ID': $scope.MasterObject.ID,
                 'FK_tbl_Ac_ChartOfAccounts_ID': null, 'FK_tbl_Ac_ChartOfAccounts_IDName': '',
-                'Amount': 0, 'Restricted': true,
+                'Amount': 0, 'Restricted': true, 'Remarks': '',
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
+            $scope.outStanding = null;
         };
 
         $scope.postRowParam = function () { return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_Ac_PaymentPlanningDetail }; };
@@ -163,9 +166,10 @@
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; }; 
 
         $scope.GetOutStanding = function (acID) {
+            $scope.outStanding = null;
             setOperationMessage('Please Wait while Loading Outstanding...', 0);
             var successcallback = function (response) {
-                console.log(response.data);
+                $scope.outStanding = response.data;
             };
             var errorcallback = function (error) { console.log(error) };
             $http({ method: "GET", url: "/Accounts/Strategy/PaymentPlanningDetailOutStandingGet", params: { AcID: acID, MasterID: $scope.MasterObject.ID }, headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(successcallback, errorcallback);

@@ -317,7 +317,7 @@ namespace OreasCore.Custom_Classes
 
                 if (!output.Attributes.Any(w => w.Name == "ng-disabled"))
                     output.Attributes.SetAttribute("ng-disabled", "ng_DisabledBtnAll");
-                
+
                 if (!output.Attributes.Any(w => w.Name == "ng-hide"))
                     output.Attributes.SetAttribute("ng-hide", @"!Privilege.CanEdit");
                 else

@@ -51,7 +51,7 @@ namespace OreasCore.Areas.Accounts.Controllers
                     {
                         Controller = "PaymentPlanningDetailCtlr",
                         WildCard = db2.GetWCLPaymentPlanningDetail(),
-                        Reports = null,
+                        Reports = db2.GetRLPaymentPlanningDetail(),
                         Privilege = null,
                         Otherdata = null
                     }
@@ -174,7 +174,15 @@ namespace OreasCore.Areas.Accounts.Controllers
 
         #endregion
 
+        #region Report
 
+        [MyAuthorization(FormName = "Payment Planning", Operation = "CanViewReport")]
+        public async Task<IActionResult> GetPaymentPlanningReport([FromServices] IPaymentPlanning db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
+        {
+            return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), rn.ToLower().Contains("excel") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf");
+        }
+
+        #endregion
         #endregion
     }
 }

@@ -39,7 +39,7 @@
 
     @*-----------------------------------this is entry panel-----------------------------*@
     <MyButton operation="@MyButtonOperation.Add"></MyButton>
-    <div ng-hide="ng_entryPanelHide">
+    <div ng-hide="ng_entryPanelHide;">
         <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
             @Html.Hidden("tbl_Ac_PaymentPlanningDetail.ID", "{{tbl_Ac_PaymentPlanningDetail.ID}}")
             @Html.Hidden("tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_PaymentPlanningMaster_ID", "{{tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_PaymentPlanningMaster_ID}}")
@@ -60,16 +60,56 @@
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Restricted</span>
                         <select id="tbl_Ac_PaymentPlanningDetail.Restricted" name="tbl_Ac_PaymentPlanningDetail.Restricted" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Ac_PaymentPlanningDetail.Restricted" ng-disabled="ng_readOnly" required>
-                         </select>
+                        </select>
                         <MyValidationSpan formname="myform" fieldname="tbl_Ac_PaymentPlanningDetail.Restricted" required="true"></MyValidationSpan>
                     </div>
-                </div>   
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
+                        <input id="tbl_Ac_PaymentPlanningDetail.Remarks" name="tbl_Ac_PaymentPlanningDetail.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_PaymentPlanningDetail.Remarks" ng-model="tbl_Ac_PaymentPlanningDetail.Remarks" ng-disabled="ng_readOnly" maxlength="100" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Ac_PaymentPlanningDetail.Remarks" required="true" minlength="1" maxlength="100"></MyValidationSpan>
+                    </div>
+                </div>
 
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
                         <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
                     </div>
                 </div>
+
+                <MyFieldSet legendtext="OutStanding" child="true" ng-hide="!outStanding.AccountID>0">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Till Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.TillDate}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Payment Term</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.PaymentTerm}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Current Balance</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.Balance}}" disabled />
+                        </div>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Over 90 Days</span>
+                            <input type="text" style="background-color: pink;" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.O91_End}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">61-90 Days</span>
+                            <input type="text" style="background-color: burlywood;" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.O61_90}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">31-60 Days</span>
+                            <input type="text" style="background-color: lemonchiffon;" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.O31_60}}" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">01-30 Days</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{outStanding.O1_30}}" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
 
                 <MyFieldSet legendtext="User" child="true">
                     <div mycssclass="@MyCSSClassName.RowInForm">
@@ -108,6 +148,9 @@
                 <th>
                     Restricted
                 </th>
+                <th>
+                    Remarks
+                </th>
                 <th></th>
             </tr>
             <tr ng-repeat="itm in pageddata.Data">
@@ -115,10 +158,13 @@
                     {{itm.FK_tbl_Ac_ChartOfAccounts_IDName}}
                 </td>
                 <td>
-                    {{itm.Amount}} 
+                    {{itm.Amount}}
                 </td>
                 <td>
                     {{itm.Restricted ? 'Yes' : 'no'}}
+                </td>
+                <td>
+                    {{itm.Remarks}}
                 </td>
                 <td>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
@@ -129,7 +175,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <div mycssclass="@MyCSSClassName.Table_NavDiv">
                         <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                         <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
@@ -144,4 +190,5 @@
     </div>
     @*-----------------------------------this is search view-----------------------------*@
     @await Html.PartialAsync("_Filter", "PaymentPlanningDetailCtlr")
+    @await Html.PartialAsync("_ReportPanelGeneral")
 </div>

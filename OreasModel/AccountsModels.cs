@@ -725,6 +725,9 @@ namespace OreasModel
         [Required]
         public bool Restricted { get; set; }
 
+        [MaxLength(100)]
+        public string Remarks { get; set; }
+
         [MaxLength(50)]
         public string CreatedBy { get; set; }
 

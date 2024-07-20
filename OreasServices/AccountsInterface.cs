@@ -105,8 +105,10 @@ namespace OreasServices
     public interface IPaymentPlanning
     {
         Task<object> GetPaymentPlanningDetail(int id);
-        Task<object> GetPaymentPlanningOutStanding(int AcID = 0, int MasterID = 0);
         Task<object> GetPaymentPlanningMaster(int id);
+        Task<object> GetPaymentPlanningOutStanding(int AcID = 0, int MasterID = 0);
+        Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
+        List<ReportCallingModel> GetRLPaymentPlanningDetail();
         object GetWCLFiscalYear();
         object GetWCLPaymentPlanningDetail();
         Task<PagedData<object>> LoadFiscalYear(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);

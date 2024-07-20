@@ -2358,6 +2358,9 @@ namespace OreasServices
 
         #endregion
     }
+
+ 
+
     public class PaymentPlanningRepository : IPaymentPlanning
     {
         private readonly OreasDbContext db;
@@ -2521,6 +2524,7 @@ namespace OreasServices
                           FK_tbl_Ac_ChartOfAccounts_IDName = o.tbl_Ac_ChartOfAccounts.AccountName,
                           o.Amount,
                           o.Restricted,
+                          o.Remarks,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -2571,6 +2575,7 @@ namespace OreasServices
                           FK_tbl_Ac_ChartOfAccounts_IDName = o.tbl_Ac_ChartOfAccounts.AccountName,
                           o.Amount,
                           o.Restricted,
+                          o.Remarks,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -2610,11 +2615,11 @@ namespace OreasServices
             await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Ac_PaymentPlanningDetail] 
                 @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
                 ,@ID={3},@FK_tbl_Ac_PaymentPlanningMaster_ID={4}
-                ,@FK_tbl_Ac_ChartOfAccounts_ID={5},@Amount={6},@Restricted={7}
-                ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+                ,@FK_tbl_Ac_ChartOfAccounts_ID={5},@Amount={6},@Restricted={7},@Remarks={8}
+                ,@CreatedBy={9},@CreatedDate={10},@ModifiedBy={11},@ModifiedDate={12}",
                 CRUD_Type, CRUD_Msg, CRUD_ID,
                 tbl_Ac_PaymentPlanningDetail.ID, tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_PaymentPlanningMaster_ID,
-                tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID, tbl_Ac_PaymentPlanningDetail.Amount, tbl_Ac_PaymentPlanningDetail.Restricted,
+                tbl_Ac_PaymentPlanningDetail.FK_tbl_Ac_ChartOfAccounts_ID, tbl_Ac_PaymentPlanningDetail.Amount, tbl_Ac_PaymentPlanningDetail.Restricted, tbl_Ac_PaymentPlanningDetail.Remarks,
                 tbl_Ac_PaymentPlanningDetail.CreatedBy, tbl_Ac_PaymentPlanningDetail.CreatedDate, tbl_Ac_PaymentPlanningDetail.ModifiedBy, tbl_Ac_PaymentPlanningDetail.ModifiedDate);
 
             if ((string)CRUD_Msg.Value == "Successful")
@@ -2625,14 +2630,16 @@ namespace OreasServices
         }
         public async Task<object> GetPaymentPlanningOutStanding(int AcID = 0, int MasterID = 0)
         {
-            DateTime? MonthStart = db.tbl_Ac_PaymentPlanningMasters.Where(w => w.ID == MasterID).FirstOrDefault().MonthStart.Value;
+            DateTime? MonthStart = DateTime.Now;
 
-            if (!MonthStart.HasValue)
-            {
-                return "Date No Found";
-            }
+            //DateTime? MonthStart = db.tbl_Ac_PaymentPlanningMasters.Where(w => w.ID == MasterID).FirstOrDefault().MonthStart.Value;
 
-            SqlParameter TillDate = new SqlParameter("@TillDate", SqlDbType.DateTime) { Direction = ParameterDirection.Input, Value = MonthStart };
+            //if (!MonthStart.HasValue)
+            //{
+            //    return "Date No Found";
+            //}
+
+            SqlParameter TillDate = new SqlParameter("@TillDate", SqlDbType.DateTime) { Direction = ParameterDirection.Input, Value = MonthStart.Value };
             SqlParameter AccountID = new SqlParameter("@AccountID", SqlDbType.Int) { Direction = ParameterDirection.Input, Value = AcID };
 
             SqlParameter TotalCredit = new SqlParameter("@TotalCredit", SqlDbType.Float) { Direction = ParameterDirection.Output, Value = 0 };
@@ -2648,22 +2655,181 @@ namespace OreasServices
             await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[USP_Ac_GetSinglePayableDetail] 
                 @TillDate={0},@AccountID={1},@TotalCredit={2} OUTPUT,@TotalPaid={3} OUTPUT,@Balance={4} OUTPUT,
                 @O91_End={5} OUTPUT,@O61_90={6} OUTPUT,@O31_60={7} OUTPUT,@O1_30={8} OUTPUT, @PaymentTerm={9} OUTPUT",
-                TillDate,AccountID,TotalCredit,TotalPaid,Balance,
-                O91_End,O61_90,O31_60,O1_30,PaymentTerm);
+                TillDate, AccountID, TotalCredit, TotalPaid, Balance,
+                O91_End, O61_90, O31_60, O1_30, PaymentTerm);
 
-                return new { 
-                    TillDate = TillDate.Value,
-                    AccountID = AccountID.Value,
-                    TotalCredit = TotalCredit.Value,
-                    TotalPaid = TotalPaid.Value,
-                    Balance = Balance.Value,
-                    O91_End = O91_End.Value,
-                    O61_90 = O61_90.Value,
-                    O31_60 = O31_60.Value,
-                    O1_30 = O1_30.Value,
-                    PaymentTerm = PaymentTerm.Value
-                };
+            return new
+            {
+                TillDate = Convert.ToDateTime(TillDate.Value).ToString("dd-MMM-yy"),
+                AccountID = AccountID.Value,
+                TotalCredit = TotalCredit.Value,
+                TotalPaid = TotalPaid.Value,
+                Balance = Balance.Value,
+                O91_End = O91_End.Value,
+                O61_90 = O61_90.Value,
+                O31_60 = O31_60.Value,
+                O1_30 = O1_30.Value,
+                PaymentTerm = PaymentTerm.Value
+            };
 
+        }
+
+        #endregion
+
+        #region Report  
+        public List<ReportCallingModel> GetRLPaymentPlanningDetail()
+        {
+            return new List<ReportCallingModel>() {
+                new ReportCallingModel()
+                {
+                    ReportType= EnumReportType.OnlyID,
+                    ReportName ="Payment Planning",
+                    GroupBy = null,
+                    OrderBy = null,
+                    SeekBy = null
+                }
+            };
+        }
+        public async Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "")
+        {
+            if (rn == "Payment Planning")
+            {
+                return await Task.Run(() => PaymentPlanning(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
+            }
+            return Encoding.ASCII.GetBytes("Wrong Parameters");
+        }
+        private async Task<byte[]> PaymentPlanning(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 15f, 35f, "----- " + rn + " -----", true);
+            var ColorSteelBlue = new MyDeviceRgb(MyColor.SteelBlue).color;
+            var ColorWhite = new MyDeviceRgb(MyColor.White).color;
+            var ColorGray = new MyDeviceRgb(MyColor.Gray).color;
+
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+               
+
+                command.CommandText = "EXECUTE [dbo].[Report_Ac_General] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn;
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                /////////////------------------------------table for master 6------------------------------////////////////
+                Table pdftableMaster = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth() * 0.10), //SNo
+                        (float)(PageSize.A4.GetWidth() * 0.25), //AccountName
+                        (float)(PageSize.A4.GetWidth() * 0.15), //AccountType
+                        (float)(PageSize.A4.GetWidth() * 0.15),  //Amount
+                        (float)(PageSize.A4.GetWidth() * 0.05),  //Restricted
+                        (float)(PageSize.A4.GetWidth() * 0.30)  //Remarks
+                }
+                ).SetFontSize(7).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                await command.Connection.OpenAsync();
+
+                int SNo = 1;
+                double TotalAmount = 0;
+
+                string CreatedBy = "";
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    while (sqlReader.Read())
+                    {
+                        if (SNo == 1)
+                        {
+                            CreatedBy = sqlReader["CreatedBy"].ToString();
+
+                            pdftableMaster.AddCell(new Cell(1, 2).Add(new Paragraph().Add("Month-Year")).SetBackgroundColor(ColorGray).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Month Start")).SetBackgroundColor(ColorGray).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Month End")).SetBackgroundColor(ColorGray).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell(1, 2).Add(new Paragraph().Add("Fiscal Year Status")).SetBackgroundColor(ColorGray).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                            pdftableMaster.AddCell(new Cell(1, 2).Add(new Paragraph().Add(((DateTime)sqlReader["MonthStart"]).ToString("MMMM-yyyy"))).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["MonthStart"]).ToString("dd-MM-yy"))).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["MonthEnd"]).ToString("dd-MM-yy"))).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell(1, 2).Add(new Paragraph().Add(sqlReader["FiscalYearStatus"].ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                            pdftableMaster.AddCell(new Cell(1, 6).Add(new Paragraph().Add("\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("S.No")).SetBackgroundColor(ColorSteelBlue).SetFontColor(ColorWhite).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Account")).SetBackgroundColor(ColorSteelBlue).SetFontColor(ColorWhite).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Type")).SetBackgroundColor(ColorSteelBlue).SetFontColor(ColorWhite).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Amount")).SetBackgroundColor(ColorSteelBlue).SetFontColor(ColorWhite).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Rest")).SetBackgroundColor(ColorSteelBlue).SetFontColor(ColorWhite).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                            pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Remarks")).SetBackgroundColor(ColorSteelBlue).SetFontColor(ColorWhite).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                        }
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(SNo.ToString())).SetTextAlignment(TextAlignment.CENTER).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["AccountName"].ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["AccountType"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", sqlReader["Amount"])).SetTextAlignment(TextAlignment.RIGHT)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Restricted"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Remarks"].ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        TotalAmount = TotalAmount + (double)sqlReader["Amount"];
+                        SNo++;
+
+                    }
+                }
+
+
+                pdftableMaster.AddCell(new Cell(1, 3).Add(new Paragraph().Add("")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableMaster.AddCell(new Cell(1, 2).Add(new Paragraph().Add(string.Format("{0:n0}", TotalAmount))).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                page.InsertContent(pdftableMaster);
+
+                ///////////------------------------------Signature Footer table------------------------------////////////////
+                Table pdftableSignature = new Table(new float[] {
+                (float)(PageSize.A4.GetWidth() * 0.25), (float)(PageSize.A4.GetWidth() * 0.25),
+                (float)(PageSize.A4.GetWidth() * 0.25), (float)(PageSize.A4.GetWidth() * 0.25)
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                pdftableSignature.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell().Add(new Paragraph().Add("Created By: " + CreatedBy)).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetBorderTop(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell(1, 2).Add(new Paragraph().Add(" ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell().Add(new Paragraph().Add("Authorized By")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetBorderTop(new SolidBorder(0.5f)).SetKeepTogether(true));
+                page.InsertContent(pdftableSignature);
+
+            }
+
+
+            return page.FinishToGetBytes();
         }
 
         #endregion
