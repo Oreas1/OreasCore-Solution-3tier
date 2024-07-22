@@ -26,6 +26,7 @@
             if (data.find(o => o.Controller === 'PaymentPlanningCtlr') != undefined) {
                 $scope.Privilege = data.find(o => o.Controller === 'PaymentPlanningCtlr').Privilege;
                 init_Filter($scope, data.find(o => o.Controller === 'PaymentPlanningCtlr').WildCard, null, null, data.find(o => o.Controller === 'PaymentPlanningCtlr').LoadByCard);
+                init_Report($scope, data.find(o => o.Controller === 'PaymentPlanningCtlr').Reports, '/Accounts/Strategy/GetPaymentPlanningReport');
                 $scope.pageNavigation('first');
             }
             if (data.find(o => o.Controller === 'PaymentPlanningMasterCtlr') != undefined) {
@@ -50,6 +51,7 @@
 
         $scope.$on('init_PaymentPlanningMasterCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);   
+            init_Report($scope, itm.Reports, '/Accounts/Strategy/GetPaymentPlanningReport');
             $scope.MonthList = itm.Otherdata === null ? [] : itm.Otherdata.MonthList; 
         });
 

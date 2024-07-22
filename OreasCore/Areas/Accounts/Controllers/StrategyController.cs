@@ -25,7 +25,7 @@ namespace OreasCore.Areas.Accounts.Controllers
                         Controller = "PaymentPlanningCtlr",
                         WildCard = db2.GetWCLFiscalYear(),
                         LoadByCard = null,
-                        Reports = null,
+                        Reports = db2.GetRLPaymentPlanning(),
                         Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Payment Planning"),
                         Otherdata = null
                     },
@@ -33,7 +33,7 @@ namespace OreasCore.Areas.Accounts.Controllers
                     {
                         Controller = "PaymentPlanningMasterCtlr",
                         WildCard = null,
-                        Reports = null,
+                        Reports = db2.GetRLPaymentPlanning(),
                         Privilege = null,
                         Otherdata = new { 
                             MonthList = new[]

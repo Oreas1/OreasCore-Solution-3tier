@@ -62,7 +62,7 @@
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">MonthEnd</span>
                         <input id="tbl_Ac_PaymentPlanningMaster.MonthEnd" name="tbl_Ac_PaymentPlanningMaster.MonthEnd" type="datetime-local" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Ac_PaymentPlanningMaster.MonthEnd}}" ng-model="tbl_Ac_PaymentPlanningMaster.MonthEnd" ng-disabled="ng_readOnly" readonly />
                     </div>
-                </div>                
+                </div>
 
 
                 <div mycssclass="@MyCSSClassName.RowInForm">
@@ -153,5 +153,5 @@
     </div>
     @*-----------------------------------this is search view-----------------------------*@
     @await Html.PartialAsync("_Filter", "PaymentPlanningMasterCtlr")
-
+    @await Html.PartialAsync("_ReportPanelGeneral")
 </div>

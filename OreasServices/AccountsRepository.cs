@@ -2677,6 +2677,19 @@ namespace OreasServices
         #endregion
 
         #region Report  
+        public List<ReportCallingModel> GetRLPaymentPlanning()
+        {
+            return new List<ReportCallingModel>() {
+                new ReportCallingModel()
+                {
+                    ReportType= EnumReportType.Periodic,
+                    ReportName ="Register Payment Planning",
+                     GroupBy = new List<string>(){ "Account" },
+                    OrderBy = null,
+                    SeekBy = null
+                }
+            };
+        }
         public List<ReportCallingModel> GetRLPaymentPlanningDetail()
         {
             return new List<ReportCallingModel>() {
@@ -2695,6 +2708,10 @@ namespace OreasServices
             if (rn == "Payment Planning")
             {
                 return await Task.Run(() => PaymentPlanning(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
+            }
+            else if (rn == "Register Payment Planning")
+            {
+                return await Task.Run(() => RegisterPaymentPlanning(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
             }
             return Encoding.ASCII.GetBytes("Wrong Parameters");
         }
@@ -2831,7 +2848,143 @@ namespace OreasServices
 
             return page.FinishToGetBytes();
         }
+        private async Task<byte[]> RegisterPaymentPlanning(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
 
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 20f, 30f, "----- " + rn + " From: " + datefrom.Value.ToString("dd-MMM-yy") + " TO " + datetill.Value.ToString("dd-MMM-yy") + "-----", true);
+
+            /////////////------------------------------table for Detail 8------------------------------////////////////
+            Table pdftableMain = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth() * 0.05),//S No
+                        (float)(PageSize.A4.GetWidth() * 0.10),//Year
+                        (float)(PageSize.A4.GetWidth() * 0.10),//Month 
+                        (float)(PageSize.A4.GetWidth() * 0.10),//FiscalYearStatus 
+                        (float)(PageSize.A4.GetWidth() * 0.30),//AccountName 
+                        (float)(PageSize.A4.GetWidth() * 0.10),//Amount
+                        (float)(PageSize.A4.GetWidth() * 0.10),//Restricted
+                        (float)(PageSize.A4.GetWidth() * 0.20) //Remarks 
+                }
+            ).SetFontSize(7).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("S. No.")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("Year")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("Month")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("FY Status")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("Account")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("Amount")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("Restricted")).SetBold());
+            pdftableMain.AddHeaderCell(new Cell().Add(new Paragraph().Add("Remarks")).SetBold());
+
+
+            int SNo = 1;
+
+            double GrandTotalAmount = 0, GroupTotalAmount = 0;
+
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXECUTE [dbo].[Report_Ac_General] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn;
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                string GroupbyValue = string.Empty;
+                string GroupbyFieldName = GroupBy == "Account" ? "AccountName" :
+                                          "";
+
+                await command.Connection.OpenAsync();
+
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    while (sqlReader.Read())
+                    {
+                        if (!string.IsNullOrEmpty(GroupbyFieldName) && GroupbyValue != sqlReader[GroupbyFieldName].ToString())
+                        {
+
+                            if (!string.IsNullOrEmpty(GroupbyValue))
+                            {
+                                pdftableMain.AddCell(new Cell(1, 5).Add(new Paragraph().Add("Sub Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", GroupTotalAmount))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                                pdftableMain.AddCell(new Cell(1, 2).Add(new Paragraph().Add("Sub Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                            }
+
+
+                            GroupbyValue = sqlReader[GroupbyFieldName].ToString();
+
+                            if (GroupID > 0)
+                                pdftableMain.AddCell(new Cell(1, 8).Add(new Paragraph().Add(GroupbyValue)).SetFontSize(10).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                            else
+                                pdftableMain.AddCell(new Cell(1, 8).Add(new Paragraph().Add(new Link(GroupbyValue, PdfAction.CreateURI(uri + "?rn=" + rn + "&datefrom=" + datefrom.Value.ToString("MM/dd/yyyy hh:mm:ss tt") + "&datetill=" + datetill.Value.ToString("MM/dd/yyyy hh:mm:ss tt") + "&SeekBy=" + SeekBy + "&GroupBy=" + GroupBy + "&OrderBy=" + Orderby + "&GroupID=" + sqlReader[GroupbyFieldName + "ID"].ToString())))).SetFontColor(new DeviceRgb(0, 102, 204)).SetFontSize(10).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                            GroupTotalAmount = 0;
+                        }
+
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(SNo.ToString())).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["MonthStart"]).ToString("yyyy"))).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["MonthStart"]).ToString("MMMM"))).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["FiscalYearStatus"].ToString())).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["AccountName"].ToString())).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", sqlReader["Amount"]))).SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Restricted"].ToString())).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Remarks"].ToString())).SetKeepTogether(true));
+
+                        GroupTotalAmount += Convert.ToDouble(sqlReader["Amount"]);
+                        GrandTotalAmount += Convert.ToDouble(sqlReader["Amount"]);
+                    }
+
+
+                }
+            }
+
+            pdftableMain.AddCell(new Cell(1, 5).Add(new Paragraph().Add("Sub Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+            pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", GroupTotalAmount))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+            pdftableMain.AddCell(new Cell(1, 2).Add(new Paragraph().Add("Sub Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+
+            pdftableMain.AddCell(new Cell(1, 8).Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER).SetBorderBottom(new SolidBorder(0.5f)));
+
+            pdftableMain.AddCell(new Cell(1, 5).Add(new Paragraph().Add("Grand Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+            pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", GrandTotalAmount))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+            pdftableMain.AddCell(new Cell(1, 2).Add(new Paragraph().Add("Grand Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+            page.InsertContent(new Cell().Add(pdftableMain).SetBorder(Border.NO_BORDER));
+            return page.FinishToGetBytes();
+        }
         #endregion
 
     }
