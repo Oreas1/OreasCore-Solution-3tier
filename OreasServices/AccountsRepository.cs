@@ -2358,9 +2358,6 @@ namespace OreasServices
 
         #endregion
     }
-
- 
-
     public class PaymentPlanningRepository : IPaymentPlanning
     {
         private readonly OreasDbContext db;
