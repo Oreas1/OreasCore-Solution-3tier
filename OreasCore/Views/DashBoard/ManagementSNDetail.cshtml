@@ -1,0 +1,206 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'ManagementSNDetailCtlr','ManagementSNCtlr', this);">Purchase Note For {{IsFor}}</a>
+    <MyViewName child="true"> Detail</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th>
+                        Invoice #
+                    </th>
+                    <th>
+                        Invoice Date
+                    </th>
+                    <th>
+                        Customer Name
+                    </th>
+                    <th>
+                        Net Amount
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {{MasterObject.DocNo}}
+                    </td>
+                    <td>
+                        {{MasterObject.DocDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.AccountName}}
+                    </td>
+                    <td>
+                        {{MasterObject.TotalNetAmount}}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Product Name
+                    <br />
+                    Ref #
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Rate
+                    <br />
+                    Gross
+                </th>
+                <th>
+                    ST%
+                    <br />
+                    ST Amount
+                </th>
+                <th>
+                    FST%
+                    <br />
+                    FST Amount
+                </th>
+                <th>
+                    WHT%
+                    <br />
+                    WHT Amount
+                </th>
+                <th>
+                    Net Amount
+                </th>
+                <th>
+                    Order Note Detail
+                </th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Inv_ProductRegistrationDetail_IDName}}
+                    <br />
+                    {{itm.ReferenceNo}}
+                </td>
+                <td>
+                    {{itm.Quantity}} {{itm.MeasurementUnit}}
+                </td>
+                <td>
+                    {{itm.Rate}}
+                    <br />
+                    {{itm.GrossAmount}}
+                </td>
+                <td>
+                    {{itm.STPercentage}}%
+                    <br />
+                    {{itm.STAmount}}
+                </td>
+                <td>
+                    {{itm.FSTPercentage}}%
+                    <br />
+                    {{itm.FSTAmount}}
+                </td>
+                <td>
+                    {{itm.WHTPercentage}}%
+                    <br />
+                    {{itm.WHTAmount}}
+                </td>
+                <td>
+                    {{itm.NetAmount}}
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm" ng-hide="itm.ONDetail === null" ng-click="OpenONDetailModal(itm.ONDetail);">
+                        ON#: {{itm.ONDetail.DocNo}}
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "ManagementSNDetailCtlr")
+
+    @*-----------------------------------Scheme Search Modal-----------------------------*@
+    <!-- Modal -->
+    <div class="modal fade" id="ONDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Order Note Detail</h6>
+                    <button id="btnClose" type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table mycssclass="@MyCSSClassName.Table_Table">
+                        <tr>
+                            <th>
+                                Order No
+                            </th>
+                            <th>
+                                Order Date
+                            </th>
+                            <th>
+                                Order Qty
+                            </th>
+                            <th>
+                                Rate
+                            </th>
+                            <th>
+                                Mfg Qty
+                            </th>
+                            <th>
+                                Sold Qty
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{ONDetailModalitems.DocNo}}
+                            </td>
+                            <td>
+                                {{ONDetailModalitems.DocDate}}
+                            </td>
+                            <td>
+                                <b>{{ONDetailModalitems.Quantity}}</b> 
+                            </td>
+                            <td>
+                                <b>{{ONDetailModalitems.Rate}}</b>
+                            </td>
+                            <td>
+                                <b>{{ONDetailModalitems.ManufacturingQty}}</b>
+                            </td>
+                            <td>
+                                {{ONDetailModalitems.SoldQty}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="6">
+
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

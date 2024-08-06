@@ -171,7 +171,6 @@ namespace OreasServices
         #endregion
 
 
-
         #region PurchaseReturnNote
         object GetWCLPurchaseReturnNote();
         Task<PagedData<object>> LoadPurchaseReturnNote(int CurrentPage = 1, string IsFor = "", string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
@@ -182,6 +181,13 @@ namespace OreasServices
         object GetWCLSalesNote();
         Task<PagedData<object>> LoadSalesNote(int CurrentPage = 1, string IsFor = "", string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<string> SupervisedSalesNote(int ID, string userName = "");
+
+        #region PurchaseNoteDetail
+        object GetWCLSalesNoteDetail();
+        Task<PagedData<object>> LoadSalesNoteDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+
+        #endregion
+
         #endregion
 
         #region SalesReturnNote

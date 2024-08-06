@@ -7640,36 +7640,34 @@ namespace OreasServices
                 }
                 page.InsertContent(pdftableMaster);
 
-                /////////////------------------------------table for detail 11------------------------------////////////////
+                /////////////------------------------------table for detail 10------------------------------////////////////
                 Table pdftableDetail = new Table(new float[] {
                         (float)(PageSize.A4.GetWidth() * 0.08), // SNo
-                        (float)(PageSize.A4.GetWidth() * 0.09), // ReferenceNo
-                        (float)(PageSize.A4.GetWidth() * 0.05), // Expiry Date
-                        (float)(PageSize.A4.GetWidth() * 0.35), // ProductName
-                        (float)(PageSize.A4.GetWidth() * 0.09), // Quantity
-                        (float)(PageSize.A4.GetWidth() * 0.05), // MeasurementUnit                        
+                        (float)(PageSize.A4.GetWidth() * 0.10), // ReferenceNo / Expiry Date
+                        (float)(PageSize.A4.GetWidth() * 0.36), // ProductName
+                        (float)(PageSize.A4.GetWidth() * 0.09), // Quantity                      
                         (float)(PageSize.A4.GetWidth() * 0.05), // Rate
                         (float)(PageSize.A4.GetWidth() * 0.05), // STPercentage
                         (float)(PageSize.A4.GetWidth() * 0.05), // FSTPercentage
+                        (float)(PageSize.A4.GetWidth() * 0.05), // WHTPercentage
                         (float)(PageSize.A4.GetWidth() * 0.05), // DiscountAmount
-                        (float)(PageSize.A4.GetWidth() * 0.09)  // NetAmount
+                        (float)(PageSize.A4.GetWidth() * 0.12)  // NetAmount
                         
                 }
                 ).SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
-                pdftableDetail.AddCell(new Cell(1, 12).Add(new Paragraph().Add("Detail")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 10).Add(new Paragraph().Add("Detail")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("S No")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Reference #")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Expiry")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Batch# / Expiry")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Product Name")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Quantity")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Unit")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Rate")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("ST %")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("FST %")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Quantity / Unit")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Rate / Gross")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("ST% / Value")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("FST% / Value")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("WHT% / Value")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Disc")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
-                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Net Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Net Value")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true).SetBackgroundColor(new DeviceRgb(176, 196, 222)));
 
                 ReportName.Value = rn + "2";
 
@@ -7681,23 +7679,22 @@ namespace OreasServices
                     while (sqlReader.Read())
                     {
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(SNo.ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ExpiryDate"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString() + "\n" + sqlReader["ExpiryDate"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Quantity"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["MeasurementUnit"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Rate"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["STPercentage"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["FSTPercentage"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Quantity"].ToString() + "\n" + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Rate"].ToString() + "\n" + sqlReader["GrossAmount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["STPercentage"].ToString() + "%\n" + sqlReader["STAmount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["FSTPercentage"].ToString() + "%\n" + sqlReader["FSTAmount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["WHTPercentage"].ToString() + "%\n" + sqlReader["WHTAmount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["DiscountAmount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", sqlReader["NetAmount"]))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n1}", sqlReader["NetAmount"]))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         
                         SNo++;
                         TotalNetAmount += Convert.ToDouble(sqlReader["NetAmount"]);
                     }
                 }
 
-                pdftableDetail.AddCell(new Cell(1, 10).Add(new Paragraph().Add(" ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 9).Add(new Paragraph().Add(" ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                 pdftableDetail.AddCell(new Cell(1, 1).Add(new Paragraph().Add(string.Format("{0:n0}", TotalNetAmount))).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                 page.InsertContent(pdftableDetail);

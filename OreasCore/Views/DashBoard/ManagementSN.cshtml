@@ -33,6 +33,9 @@
                     {{itm.TotalNetAmount}}
                 </td>
                 <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="DivHideShow('ManagementSNDetailCtlr',itm,'ManagementSNCtlr','ManagementSNDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                    </div>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv" ng-hide="IsFor=='Processed'">
                         <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button>
                     </div>

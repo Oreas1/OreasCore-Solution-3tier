@@ -3,7 +3,7 @@
 }
 @section Scripts {
 
-    <script src="~/angular.js/dashboardmanagement.130624.js"></script>
+    <script src="~/angular.js/dashboardmanagement.060824.js"></script>
     <script src="~/lib/Chart.js/chart.umd.js"></script>
 
 }
@@ -217,6 +217,11 @@
                 <div ng-controller="ManagementSNCtlr">
                     <div id="ManagementSNCtlr" style="display: none;">
                         @await Html.PartialAsync("ManagementSN")
+                    </div>
+                    <div ng-controller="ManagementSNDetailCtlr">
+                        <div id="ManagementSNDetailCtlr" style="display: none;">
+                            @await Html.PartialAsync("ManagementSNDetail")
+                        </div>
                     </div>
                 </div>
                 <div ng-controller="ManagementSRNCtlr">

@@ -228,6 +228,15 @@ namespace OreasCore.Controllers
                     },
                     new Init_ViewSetupStructure()
                     {
+                        Controller = "ManagementSNDetailCtlr",
+                        WildCard = db2.GetWCLSalesNoteDetail(),
+                        WildCardDateRange = null,
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
                         Controller = "ManagementSRNCtlr",
                         WildCard = db2.GetWCLSalesReturnNote(),
                         WildCardDateRange = null,
@@ -487,6 +496,27 @@ namespace OreasCore.Controllers
             return await db.SupervisedSalesNote(ID, User.Identity.Name);
         }
 
+        #endregion
+
+        #region SaleseNoteDetail  
+
+        [AjaxOnly]
+        [MyAuthorization]
+        public async Task<IActionResult> SalesNoteDetailLoad([FromServices] IManagementDashBoard db,
+        int CurrentPage = 1, int MasterID = 0,
+        string FilterByText = null, string FilterValueByText = null,
+        string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+        string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+        string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadSalesNoteDetail(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
         #endregion
 
         #region SalesReturnNote  

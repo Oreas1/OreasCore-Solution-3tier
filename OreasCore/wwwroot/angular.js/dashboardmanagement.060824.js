@@ -63,6 +63,9 @@
             if (data.find(o => o.Controller === 'ManagementSNCtlr') != undefined) {
                 $scope.$broadcast('init_ManagementSNCtlr', data.find(o => o.Controller === 'ManagementSNCtlr'));
             }
+            if (data.find(o => o.Controller === 'ManagementSNDetailCtlr') != undefined) {
+                $scope.$broadcast('init_ManagementSNDetailCtlr', data.find(o => o.Controller === 'ManagementSNDetailCtlr'));
+            }
             if (data.find(o => o.Controller === 'ManagementSRNCtlr') != undefined) {
                 $scope.$broadcast('init_ManagementSRNCtlr', data.find(o => o.Controller === 'ManagementSRNCtlr'));
             }
@@ -514,6 +517,40 @@
                 method: "POST", url: '/DashBoard/SalesNoteSupervised', async: true, params: { ID: id }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
             }).then(successcallback, errorcallback);
         };
+
+    })
+    .controller("ManagementSNDetailCtlr", function ($scope, $http) {
+
+        $scope.$on('ManagementSNDetailCtlr', function (e, itm) {
+            $scope.MasterObject = itm;
+            $scope.FilterByText = null;
+            $scope.FilterValueByText = '';
+            $scope.pageNavigation('first');
+        });
+
+        $scope.$on('init_ManagementSNDetailCtlr', function (e, itm) {
+            init_Filter($scope, itm.WildCard, null, null, null);
+
+        });
+
+        init_Operations($scope, $http,
+            '/DashBoard/SalesNoteDetailLoad', //--v_Load
+            '', // getrow
+            '' // PostRow
+        );
+
+        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
+
+        $scope.GetpageNavigationResponse = function (data) {
+            $scope.pageddata = data.pageddata;
+
+        };
+
+        $scope.OpenONDetailModal = function (itm) {
+            $('#ONDetailModal').modal('show');
+            $scope.ONDetailModalitems = itm;
+        };
+
 
     })
     .controller("ManagementSRNCtlr", function ($scope, $http) {
