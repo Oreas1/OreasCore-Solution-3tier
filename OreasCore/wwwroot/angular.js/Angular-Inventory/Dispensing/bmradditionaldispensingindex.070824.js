@@ -67,18 +67,28 @@
       
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
 
-        $scope.AutoIssuanceRequest = function (BMR_RawItemID, BMR_PackagingItemID, BMR_AdditionalItemID, OR_ItemID, scope) {
-            
+        $scope.AutoIssuanceRequest = function (BMR_RawItemID, BMR_PackagingItemID, BMR_AdditionalItemID, OR_ItemID, scope, event) {
+            event.target.disabled = true; 
+
             var successcallback = function (response) {
                 alert(response.data);
                 $scope.callerscope = scope;
                 $scope.callerscope.pageNavigation('Load');
+                event.target.disabled = false;
             };
             var errorcallback = function (error) {
                 console.log('Post error', error);
+
+                if (error.xhrStatus === 'timeout')
+                    alert('Network Problem! Request timeout');
+
+                event.target.disabled = false;
             };
             $http({
-                method: "POST", url: '/Inventory/Dispensing/BMRAdditionalStockIssuanceReservationItemPost', async: false, params: { BMR_RawItemID: BMR_RawItemID, BMR_PackagingItemID: BMR_PackagingItemID, BMR_AdditionalItemID: BMR_AdditionalItemID, OR_ItemID: OR_ItemID, operation: 'Save New' }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'NOSpinner': true, 'RequestVerificationToken': $scope.antiForgeryToken }
+                method: "POST", url: '/Inventory/Dispensing/BMRAdditionalStockIssuanceReservationItemPost', async: false,
+                params: { BMR_RawItemID: BMR_RawItemID, BMR_PackagingItemID: BMR_PackagingItemID, BMR_AdditionalItemID: BMR_AdditionalItemID, OR_ItemID: OR_ItemID, operation: 'Save New' },
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'NOSpinner': false, 'RequestVerificationToken': $scope.antiForgeryToken },
+                timeout: 15000
             }).then(successcallback, errorcallback);
         };
        

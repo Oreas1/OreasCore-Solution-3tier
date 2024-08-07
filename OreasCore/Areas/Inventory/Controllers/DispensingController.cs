@@ -599,6 +599,7 @@ namespace OreasCore.Areas.Inventory.Controllers
         [MyAuthorization(FormName = "BMR Dispensing", Operation = "CanPost")]
         public async Task<string> BMRStockIssuanceReservationItemPost([FromServices] IBMRDispensing db, int BMR_RawItemID = 0, int BMR_PackagingItemID = 0, int BMR_AdditionalItemID = 0, int OR_ItemID = 0, string operation = "")
         {
+
             if (ModelState.IsValid)
                 return await db.PostStockIssuanceReservation(BMR_RawItemID, BMR_PackagingItemID, BMR_AdditionalItemID, OR_ItemID, true, User.Identity.Name);
             else

@@ -169,7 +169,7 @@
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                         <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>
                         <span ng-hide="!Privilege.CanAdd || itm.Quantity<=itm.DispensedQty || itm.RequiredTrue_ReturnFalse===false">
-                            |<button class="btn" ng-click="AutoIssuanceRequest(0,0,itm.ID,0, this);" title="Auto Dispensing FIFO"><i class='fa fa-person-running' style='color: maroon;'></i></button>
+                            |<button class="btn" ng-click="AutoIssuanceRequest(0,0,itm.ID,0, this, $event);" title="Auto Dispensing FIFO"><i class='fa fa-person-running' style='color: maroon;'></i></button>
                         </span>
                     </div>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">

@@ -85,7 +85,7 @@ namespace OreasModel
             _font = PdfFontFactory.CreateFont(StandardFonts.COURIER);
             try
             {
-                string fullFilePath = new System.Uri(Assembly.GetExecutingAssembly().CodeBase).ToString();
+                string fullFilePath = new System.Uri(Assembly.GetExecutingAssembly().Location).ToString();
                 fullFilePath = fullFilePath.Split(new string[] { "/OreasServices.dll" }, StringSplitOptions.None)[0];
                 var filePath = fullFilePath + @"/Font/verdana.ttf";
 
