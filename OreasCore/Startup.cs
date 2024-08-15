@@ -29,7 +29,6 @@ namespace OreasCore
         {
             Configuration = configuration;
             //var contentRoot = env.ContentRootPath;
-
         }
 
         public IConfiguration Configuration { get; }
@@ -140,6 +139,7 @@ namespace OreasCore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             //------setting culture
             var cultureInfo = new CultureInfo("en-US"); // Change this according to your desired culture
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
@@ -243,6 +243,11 @@ namespace OreasCore
 
         }
 
+        //-------when application shutdown---------/
+        public void Dispose()
+        {
+            
+        }
 
         //-----------------this class is used for learning purpose i.e this call is used to intercept when asp core going to run queries of select/update/delete/ 
         public class OreasDbCommandInterceptor : DbCommandInterceptor
