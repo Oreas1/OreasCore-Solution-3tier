@@ -400,6 +400,7 @@
 
         $scope.GetRowResponse = function (data, operation) {
             $scope.tbl_WPT_EmployeeSalaryStructureDeductible = data;
+
         };
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
