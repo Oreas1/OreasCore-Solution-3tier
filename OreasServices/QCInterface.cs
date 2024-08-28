@@ -9,6 +9,7 @@ namespace OreasServices
     public interface IQcList
     {
         Task<object> GetActionTypeListAsync(string FilterByText = null, string FilterValueByText = null);
+        Task<object> GetQcLabListAsync(string FilterByText = null, string FilterValueByText = null);
     }
     public interface IQcPurchaseNote
     {
@@ -40,5 +41,19 @@ namespace OreasServices
         Task<PagedData<object>> LoadBPRSample(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<string> PostBMRSample(tbl_Qc_SampleProcessBMR tbl_Qc_SampleProcessBMR, string operation = "", string userName = "");
         Task<string> PostBPRSample(tbl_Qc_SampleProcessBPR tbl_Qc_SampleProcessBPR, string operation = "", string userName = "");
+    }
+    public interface IQcLab
+    {
+        Task<object> Get(int id);
+        object GetWCLQcLab();
+        Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> Post(tbl_Qc_Lab tbl_Qc_Lab, string operation = "", string userName = "");
+    }
+    public interface IQcTest
+    {
+        Task<object> Get(int id);
+        object GetWCLQcTest();
+        Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> Post(tbl_Qc_Test tbl_Qc_Test, string operation = "", string userName = "");
     }
 }

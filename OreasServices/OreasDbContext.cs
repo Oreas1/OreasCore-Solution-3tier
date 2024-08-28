@@ -346,10 +346,11 @@ namespace OreasServices
         #endregion
 
         #region Qc
-
         public DbSet<tbl_Qc_ActionType> tbl_Qc_ActionTypes { get; set; }
         public DbSet<tbl_Qc_SampleProcessBMR> tbl_Qc_SampleProcessBMRs { get; set; }
         public DbSet<tbl_Qc_SampleProcessBPR> tbl_Qc_SampleProcessBPRs { get; set; }
+        public DbSet<tbl_Qc_Lab> tbl_Qc_Labs { get; set; }
+        public DbSet<tbl_Qc_Test> tbl_Qc_Tests { get; set; }
 
         #endregion
 

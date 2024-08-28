@@ -125,6 +125,8 @@ namespace OreasCore
             services.AddScoped<IQcList, QcListRepository>();
             services.AddScoped<IQcPurchaseNote, QcPurchaseNoteRepository>();
             services.AddScoped<IQCProcess, QCProcessRepository>();
+            services.AddScoped<IQcLab, QcLabRepository>();
+            services.AddScoped<IQcTest, QcTestRepository>();
 
             //------------------Qa-----------------------------------//
             services.AddScoped<IQAProcess, QAProcessRepository>();

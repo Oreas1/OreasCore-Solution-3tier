@@ -121,4 +121,60 @@ namespace OreasModel
 
     }
 
+    [Table("tbl_Qc_Lab")]
+    public class tbl_Qc_Lab
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Lab Name")]
+        public string LabName { get; set; }
+
+        [Required]
+        [MaxLength(5)]
+        public string Prefix { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_Qc_Test.tbl_Qc_Lab))]
+        public virtual ICollection<tbl_Qc_Test> tbl_Qc_Tests { get; set; }
+    }
+
+    [Table("tbl_Qc_Test")]
+    public class tbl_Qc_Test
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(250)]
+        [Display(Name = "Test Name")]
+        public string TestName { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_Lab))]
+        public int FK_tbl_Qc_Lab_ID { get; set; }
+        public virtual tbl_Qc_Lab tbl_Qc_Lab { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+    }
+
 }

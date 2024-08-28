@@ -45,7 +45,28 @@ namespace OreasServices
                                   a.ActionName
                               }).Take(5).ToListAsync();
         }
-
+        public async Task<object> GetQcLabListAsync(string FilterByText = null, string FilterValueByText = null)
+        {
+            if (string.IsNullOrEmpty(FilterByText))
+                return await (from a in db.tbl_Qc_Labs
+                              select new
+                              {
+                                  a.ID,
+                                  a.LabName,
+                                  a.Prefix
+                              }).ToListAsync();
+            else
+                return await (from a in db.tbl_Qc_Labs
+                                        .Where(w => string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byName" && w.LabName.ToLower().Contains(FilterValueByText.ToLower()))
+                              select new
+                              {
+                                  a.ID,
+                                  a.LabName,
+                                  a.Prefix
+                              }).Take(5).ToListAsync();
+        }
     }
     public class QcPurchaseNoteRepository : IQcPurchaseNote
     {
@@ -776,6 +797,198 @@ namespace OreasServices
         }
 
         #endregion
+
+    }
+    public class QcLabRepository : IQcLab
+    {
+        private readonly OreasDbContext db;
+        public QcLabRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+        public async Task<object> Get(int id)
+        {
+            var qry = from o in await db.tbl_Qc_Labs.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.LabName,
+                          o.Prefix,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLQcLab()
+        {
+            return new[]
+            {
+                new { n = "by Lab Name", v = "byLabName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Qc_Labs
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byLabName" && w.LabName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Qc_Labs
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byLabName" && w.LabName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.LabName,
+                          o.Prefix,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> Post(tbl_Qc_Lab tbl_Qc_Lab, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Qc_Lab.CreatedBy = userName;
+                tbl_Qc_Lab.CreatedDate = DateTime.Now;
+                db.tbl_Qc_Labs.Add(tbl_Qc_Lab);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Qc_Lab.ModifiedBy = userName;
+                tbl_Qc_Lab.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Qc_Lab).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Qc_Labs.Remove(db.tbl_Qc_Labs.Find(tbl_Qc_Lab.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+    }
+    public class QcTestRepository : IQcTest
+    {
+        private readonly OreasDbContext db;
+        public QcTestRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+        public async Task<object> Get(int id)
+        {
+            var qry = from o in await db.tbl_Qc_Tests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.TestName,
+                          o.FK_tbl_Qc_Lab_ID,
+                          FK_tbl_Qc_Lab_IDName = o.tbl_Qc_Lab.LabName,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }, new { n = "by Lab Name", v = "byLabName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Qc_Tests
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byLabName" && w.tbl_Qc_Lab.LabName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Qc_Tests
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byTestName" && w.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byLabName" && w.tbl_Qc_Lab.LabName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.TestName,
+                          o.FK_tbl_Qc_Lab_ID,
+                          FK_tbl_Qc_Lab_IDName = o.tbl_Qc_Lab.LabName,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> Post(tbl_Qc_Test tbl_Qc_Test, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Qc_Test.CreatedBy = userName;
+                tbl_Qc_Test.CreatedDate = DateTime.Now;
+                db.tbl_Qc_Tests.Add(tbl_Qc_Test);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Qc_Test.ModifiedBy = userName;
+                tbl_Qc_Test.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Qc_Test).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Qc_Tests.Remove(db.tbl_Qc_Tests.Find(tbl_Qc_Test.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
 
     }
 }
