@@ -1,19 +1,19 @@
 ﻿MainModule
     .controller("ProProcedureIndexCtlr", function ($scope, $http) { 
         const urlParams = new URLSearchParams(window.location.search);
-       
+
         if (urlParams.get('by') != null) {
             $scope.caller = urlParams.get('by');
         }
         ////////////data structure define//////////////////
         //for entrypanel model
         init_Operations($scope, $http,
-            '/QA/SetUp/ProProcedureLoad', //--v_Load
-            '/QA/SetUp/ProProcedureGet', // getrow
-            '/QA/SetUp/ProProcedurePost' // PostRow
+            '/Production/SetUp/ProProcedureLoad', //--v_Load
+            '/Production/SetUp/ProProcedureGet', // getrow
+            '/Production/SetUp/ProProcedurePost' // PostRow
         );
 
-        init_ViewSetup($scope, $http, '/QA/SetUp/GetInitializedProProcedure');
+        init_ViewSetup($scope, $http, '/Production/SetUp/GetInitializedProProcedure');
         $scope.init_ViewSetup_Response = function (data) {
             if (data.find(o => o.Controller === 'ProProcedureIndexCtlr') != undefined) {
                 $scope.Privilege = data.find(o => o.Controller === 'ProProcedureIndexCtlr').Privilege;
@@ -24,23 +24,9 @@
 
         };
 
-        init_ProductSearchModalGeneral($scope, $http);
-
-        $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
-            if (item.ID > 0) {
-                $scope.tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample = item.ID;
-                $scope.tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = item.ProductName + ' ' + item.MeasurementUnit;
-            }
-            else
-            {
-                $scope.tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample = null;
-                $scope.tbl_Pro_Procedure.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = null;
-            }            
-        };
 
         $scope.tbl_Pro_Procedure = {
             'ID': 0, 'ProcedureName': null, 'ForRaw1_Packaging0': $scope.caller === 'BMR' ? true : $scope.caller === 'BPR' ? false : null,
-            'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName': '',
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -51,7 +37,6 @@
             //rededine to orignal values            
             $scope.tbl_Pro_Procedure = {
                 'ID': 0, 'ProcedureName': null, 'ForRaw1_Packaging0': $scope.caller === 'BMR' ? true : $scope.caller === 'BPR' ? false : null,
-                'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName': '',
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };

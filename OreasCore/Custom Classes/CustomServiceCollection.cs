@@ -138,7 +138,6 @@ namespace OreasCore
             services.AddScoped<IProductionList, ProductionListRepository>();
             services.AddScoped<ICompositionFilterPolicy, CompositionFilterPolicyRepository>();
             services.AddScoped<IProProcedure, ProProcedureRepository>();
-            services.AddScoped<IProProcess, ProProcessRepository>();
             services.AddScoped<IComposition, CompositionRepository>();
             services.AddScoped<IBMR, BMRRepository>();
             services.AddScoped<IBMRBPRProcess, BMRBPRProcessRepository>();

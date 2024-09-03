@@ -363,8 +363,6 @@ namespace OreasServices
         public DbSet<tbl_Pro_CompositionFilterPolicyMaster> tbl_Pro_CompositionFilterPolicyMasters { get; set; }
         public DbSet<tbl_Pro_CompositionFilterPolicyDetail> tbl_Pro_CompositionFilterPolicyDetails { get; set; }
         public DbSet<tbl_Pro_Procedure> tbl_Pro_Procedures { get; set; }
-        public DbSet<tbl_Pro_ProcessMaster> tbl_Pro_ProcessMasters { get; set; }
-        public DbSet<tbl_Pro_ProcessDetail> tbl_Pro_ProcessDetails { get; set; }
 
         //----------------------Composition---------------------------//
         public DbSet<tbl_Pro_CompositionMaster> tbl_Pro_CompositionMasters { get; set; }

@@ -76,7 +76,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="wwwroot\angular.js\Angular-Production\SetUp\proprocedureindex.0.1.js">
+    <Content Update="wwwroot\angular.js\Angular-Production\SetUp\proprocedureindex.030924.js">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

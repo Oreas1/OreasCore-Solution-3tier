@@ -30,13 +30,9 @@
                 init_Filter($scope, data.find(o => o.Controller === 'CompositionMasterCtlr').WildCard, null, null, null);
                 if (data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata === null) {
                     $scope.MeasurementUnitList = [];
-                    $scope.ProProcessBMRList = [];
-                    $scope.ProProcessBPRList = [];
                 }
                 else {
                     $scope.MeasurementUnitList = data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata.MeasurementUnitList;
-                    $scope.ProProcessBMRList = data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata.ProProcessBMRList;
-                    $scope.ProProcessBPRList = data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata.ProProcessBPRList;
                 }
                 $scope.pageNavigation('first');
             }
@@ -66,7 +62,7 @@
         $scope.tbl_Pro_CompositionMaster = {
             'ID': 0, 'DocNo': null, 'DocDate': new Date(), 'CompositionName': '', 'ShelfLifeInMonths': 1,
             'DimensionValue': 1, 'FK_tbl_Inv_MeasurementUnit_ID_Dimension': null, 'FK_tbl_Inv_MeasurementUnit_ID_DimensionName': '',
-            'RevisionNo': null, 'RevisionDate': new Date(), 'FK_tbl_Pro_ProcessMaster_ID': null, 'FK_tbl_Pro_ProcessMaster_IDName': '',
+            'RevisionNo': null, 'RevisionDate': new Date(), 
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -78,7 +74,7 @@
             $scope.tbl_Pro_CompositionMaster = {
                 'ID': 0, 'DocNo': null, 'DocDate': new Date(), 'CompositionName': '', 'ShelfLifeInMonths': 1,
                 'DimensionValue': 1, 'FK_tbl_Inv_MeasurementUnit_ID_Dimension': null, 'FK_tbl_Inv_MeasurementUnit_ID_DimensionName': '',
-                'RevisionNo': null, 'RevisionDate': new Date(), 'FK_tbl_Pro_ProcessMaster_ID': null, 'FK_tbl_Pro_ProcessMaster_IDName': '',
+                'RevisionNo': null, 'RevisionDate': new Date(), 
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };
@@ -326,7 +322,7 @@
             'ID': 0, 'FK_tbl_Pro_CompositionDetail_Coupling_ID': $scope.MasterObject.ID,
             'FK_tbl_Inv_ProductRegistrationDetail_ID_Primary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName': '',
             'FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName': '',
-            'PackagingName': '', 'IsDiscontinue': false, 'FK_tbl_Pro_ProcessMaster_ID': null, 'FK_tbl_Pro_ProcessMaster_IDName': '',
+            'PackagingName': '', 'IsDiscontinue': false, 
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -339,7 +335,7 @@
                 'ID': 0, 'FK_tbl_Pro_CompositionDetail_Coupling_ID': $scope.MasterObject.ID,
                 'FK_tbl_Inv_ProductRegistrationDetail_ID_Primary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName': '',
                 'FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName': '',
-                'PackagingName': '', 'IsDiscontinue': false, 'FK_tbl_Pro_ProcessMaster_ID': null, 'FK_tbl_Pro_ProcessMaster_IDName': '',
+                'PackagingName': '', 'IsDiscontinue': false, 
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };

@@ -2,7 +2,7 @@
     ViewBag.Title = "Composition";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-Production/Composition/compositionindex.050724.js"></script>
+    <script src="~/angular.js/Angular-Production/Composition/compositionindex.030924.js"></script>
 }
 <div ng-controller="CompositionMasterCtlr" class="container">
 
@@ -33,13 +33,6 @@
                         <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                             <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Revision Date</span>
                             <input id="tbl_Pro_CompositionMaster.RevisionDate" name="tbl_Pro_CompositionMaster.RevisionDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_CompositionMaster.RevisionDate}}" ng-model="tbl_Pro_CompositionMaster.RevisionDate" ng-disabled="ng_readOnly" readonly />
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Process</span>
-                            <select id="tbl_Pro_CompositionMaster.FK_tbl_Pro_ProcessMaster_ID" name="tbl_Pro_CompositionMaster.FK_tbl_Pro_ProcessMaster_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ProcessName for x in ProProcessBMRList" data-ng-model="tbl_Pro_CompositionMaster.FK_tbl_Pro_ProcessMaster_ID" ng-disabled="ng_readOnly">
-                                <option value="">Select Process</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.FK_tbl_Pro_ProcessMaster_ID"></MyValidationSpan>
                         </div>
                     </div>
 
@@ -120,9 +113,6 @@
                     <th>
                         Couplings
                     </th>
-                    <th>
-                        Process
-                    </th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="itm in pageddata.Data">
@@ -145,9 +135,6 @@
                         {{itm.NoOfCouplings}}
                     </td>
                     <td>
-                        {{itm.FK_tbl_Pro_ProcessMaster_IDName}}
-                    </td>
-                    <td>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                             <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
                             <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
@@ -160,7 +147,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="7">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

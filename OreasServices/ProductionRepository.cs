@@ -75,30 +75,6 @@ namespace OreasServices
                                   a.ProcedureName
                               }).ToListAsync();
         }
-        public async Task<object> GetProProcessListAsync(string FilterByText = null, string FilterValueByText = null)
-        {
-            if (string.IsNullOrEmpty(FilterByText))
-                return await (from a in db.tbl_Pro_ProcessMasters
-                              select new
-                              {
-                                  a.ID,
-                                  a.ProcessName,
-                                  a.ForRaw1_Packaging0
-                              }).ToListAsync();
-            else
-                return await (from a in db.tbl_Pro_ProcessMasters
-                                        .Where(w => string.IsNullOrEmpty(FilterValueByText)
-                                        ||
-                                        FilterByText == "byBMRBPR" && FilterValueByText.ToUpper() == "BMR" && w.ForRaw1_Packaging0 == true
-                                        ||
-                                        FilterByText == "byBMRBPR" && FilterValueByText.ToUpper() == "BPR" && w.ForRaw1_Packaging0 == false
-                                        )
-                              select new
-                              {
-                                  a.ID,
-                                  a.ProcessName
-                              }).ToListAsync();
-        }
         public async Task<object> GetBMRAdditionalTypeListAsync(string FilterByText = null, string FilterValueByText = null)
         {
             if (string.IsNullOrEmpty(FilterByText))
@@ -334,12 +310,6 @@ namespace OreasServices
                           o.ID,
                           o.ProcedureName,
                           o.ForRaw1_Packaging0,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample.HasValue ?
-                                                                                    o.tbl_Inv_ProductRegistrationDetail_QCSample.tbl_Inv_ProductRegistrationMaster?.ProductName
-                                                                                    + " " +
-                                                                                    o.tbl_Inv_ProductRegistrationDetail_QCSample.tbl_Inv_MeasurementUnit.MeasurementUnit
-                                                                                    : "",
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -395,12 +365,6 @@ namespace OreasServices
                           o.ID,
                           o.ProcedureName,
                           o.ForRaw1_Packaging0,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample.HasValue ?
-                                                                                    o.tbl_Inv_ProductRegistrationDetail_QCSample.tbl_Inv_ProductRegistrationMaster?.ProductName
-                                                                                    + " " +
-                                                                                    o.tbl_Inv_ProductRegistrationDetail_QCSample.tbl_Inv_MeasurementUnit.MeasurementUnit
-                                                                                    : "",
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -439,222 +403,6 @@ namespace OreasServices
         }
 
     }
-    public class ProProcessRepository : IProProcess
-    {
-        private readonly OreasDbContext db;
-        public ProProcessRepository(OreasDbContext oreasDbContext)
-        {
-            this.db = oreasDbContext;
-        }
-
-        #region Master
-        public async Task<object> GetProProcessMaster(int id)
-        {
-            var qry = from o in await db.tbl_Pro_ProcessMasters.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.ProcessName,
-                          o.ForRaw1_Packaging0,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          TotalDetail = o.tbl_Pro_ProcessDetails.Count()
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLProProcessMaster()
-        {
-            return new[]
-            {
-                new { n = "by Process Name", v = "byProcessName" }, new { n = "by Procedure Name", v = "byProcedureName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadProProcessMaster(string caller = "", int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "")
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_ProcessMasters
-                                    .Where(w =>
-                                                caller.ToUpper() == "BMR" && w.ForRaw1_Packaging0 == true
-                                                ||
-                                                caller.ToUpper() == "BPR" && w.ForRaw1_Packaging0 == false
-                                                )
-                                    .Where(w =>
-                                            string.IsNullOrEmpty(FilterValueByText)
-                                            ||
-                                            FilterByText == "byProcessName" && w.ProcessName.ToLower().Contains(FilterValueByText.ToLower())
-                                            ||
-                                            FilterByText == "byProcedureName" && w.tbl_Pro_ProcessDetails.Any(a=> a.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower()))
-                                            )
-                                    .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_ProcessMasters
-                                      .Where(w =>
-                                                caller.ToUpper() == "BMR" && w.ForRaw1_Packaging0 == true
-                                                ||
-                                                caller.ToUpper() == "BPR" && w.ForRaw1_Packaging0 == false
-                                                )
-                                      .Where(w =>
-                                            string.IsNullOrEmpty(FilterValueByText)
-                                            ||
-                                            FilterByText == "byProcessName" && w.ProcessName.ToLower().Contains(FilterValueByText.ToLower())
-                                            ||
-                                            FilterByText == "byProcedureName" && w.tbl_Pro_ProcessDetails.Any(a => a.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower()))
-                                          )
-                                      .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.ProcessName,
-                          o.ForRaw1_Packaging0,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          TotalDetail = o.tbl_Pro_ProcessDetails.Count()
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        public async Task<string> PostProProcessMaster(tbl_Pro_ProcessMaster tbl_Pro_ProcessMaster, string operation = "", string userName = "")
-        {
-            if (operation == "Save New")
-            {
-                tbl_Pro_ProcessMaster.CreatedBy = userName;
-                tbl_Pro_ProcessMaster.CreatedDate = DateTime.Now;
-                db.tbl_Pro_ProcessMasters.Add(tbl_Pro_ProcessMaster);
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Update")
-            {
-                tbl_Pro_ProcessMaster.ModifiedBy = userName;
-                tbl_Pro_ProcessMaster.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_ProcessMaster).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Delete")
-            {
-                db.tbl_Pro_ProcessMasters.Remove(db.tbl_Pro_ProcessMasters.Find(tbl_Pro_ProcessMaster.ID));
-                await db.SaveChangesAsync();
-            }
-
-            return "OK";
-        }
-
-        #endregion
-
-        #region Detail
-        public async Task<object> GetProProcessDetail(int id)
-        {
-            var qry = from o in await db.tbl_Pro_ProcessDetails.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_ProcessMaster_ID,
-                          o.FK_tbl_Pro_Procedure_ID,
-                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_ProcessMaster.ProcessName,
-                          o.IsQAClearanceBeforeStart,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLProProcessDetail()
-        {
-            return new[]
-            {
-                new { n = "by Procedure Name", v = "byProcedureName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadProProcessDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_ProcessDetails
-                                               .Where(w => w.FK_tbl_Pro_ProcessMaster_ID == MasterID)
-                                               .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                                     )
-                                               .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_ProcessDetails
-                                  .Where(w => w.FK_tbl_Pro_ProcessMaster_ID == MasterID)
-                                  .Where(w =>
-                                        string.IsNullOrEmpty(FilterValueByText)
-                                        ||
-                                        FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                      )
-                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_ProcessMaster_ID,
-                          o.FK_tbl_Pro_Procedure_ID,
-                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
-                          o.IsQAClearanceBeforeStart,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        public async Task<string> PostProProcessDetail(tbl_Pro_ProcessDetail tbl_Pro_ProcessDetail, string operation = "", string userName = "")
-        {
-
-            if (operation == "Save New")
-            {
-                tbl_Pro_ProcessDetail.CreatedBy = userName;
-                tbl_Pro_ProcessDetail.CreatedDate = DateTime.Now;
-                db.tbl_Pro_ProcessDetails.Add(tbl_Pro_ProcessDetail);
-                await db.SaveChangesAsync();
-
-            }
-            else if (operation == "Save Update")
-            {
-                tbl_Pro_ProcessDetail.ModifiedBy = userName;
-                tbl_Pro_ProcessDetail.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_ProcessDetail).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Delete")
-            {
-                db.tbl_Pro_ProcessDetails.Remove(db.tbl_Pro_ProcessDetails.Find(tbl_Pro_ProcessDetail.ID));
-                await db.SaveChangesAsync();
-            }
-
-            return "OK";
-
-        }
-
-        #endregion         
-
-    }
     public class CompositionRepository : IComposition
     {
         private readonly OreasDbContext db;
@@ -679,8 +427,6 @@ namespace OreasServices
                           FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.RevisionNo,
                           RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : null,
-                          o.FK_tbl_Pro_ProcessMaster_ID,
-                          FK_tbl_Pro_ProcessMaster_IDName = o?.tbl_Pro_ProcessMaster?.ProcessName ?? "",
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -741,8 +487,6 @@ namespace OreasServices
                           FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.RevisionNo,
                           RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.FK_tbl_Pro_ProcessMaster_ID,
-                          FK_tbl_Pro_ProcessMaster_IDName = o?.tbl_Pro_ProcessMaster?.ProcessName ?? "",
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -787,12 +531,11 @@ namespace OreasServices
                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
               ,@ID={3},@DocNo={4},@DocDate={5},@CompositionName={6},@ShelfLifeInMonths={7}
               ,@DimensionValue={8},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={9}
-              ,@RevisionNo={10},@RevisionDate={11},@FK_tbl_Pro_ProcessMaster_ID={12}
-              ,@CreatedBy={13},@CreatedDate={14},@ModifiedBy={15},@ModifiedDate={16}",
+              ,@RevisionNo={10},@RevisionDate={11},@CreatedBy={12},@CreatedDate={13},@ModifiedBy={14},@ModifiedDate={15}",
               CRUD_Type, CRUD_Msg, CRUD_ID,
               tbl_Pro_CompositionMaster.ID, tbl_Pro_CompositionMaster.DocNo, tbl_Pro_CompositionMaster.DocDate, tbl_Pro_CompositionMaster.CompositionName, tbl_Pro_CompositionMaster.ShelfLifeInMonths,
               tbl_Pro_CompositionMaster.DimensionValue, tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
-              tbl_Pro_CompositionMaster.RevisionNo, tbl_Pro_CompositionMaster.RevisionDate, tbl_Pro_CompositionMaster.FK_tbl_Pro_ProcessMaster_ID,
+              tbl_Pro_CompositionMaster.RevisionNo, tbl_Pro_CompositionMaster.RevisionDate, 
               tbl_Pro_CompositionMaster.CreatedBy, tbl_Pro_CompositionMaster.CreatedDate, tbl_Pro_CompositionMaster.ModifiedBy, tbl_Pro_CompositionMaster.ModifiedDate);
 
             if ((string)CRUD_Msg.Value == "Successful")
@@ -1134,8 +877,6 @@ namespace OreasServices
                           FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
                           o.PackagingName,
                           o.IsDiscontinue,
-                          o.FK_tbl_Pro_ProcessMaster_ID,
-                          FK_tbl_Pro_ProcessMaster_IDName = o?.tbl_Pro_ProcessMaster?.ProcessName ?? "",
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -1193,8 +934,6 @@ namespace OreasServices
                           FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
                           o.PackagingName,
                           o.IsDiscontinue,
-                          o.FK_tbl_Pro_ProcessMaster_ID,
-                          FK_tbl_Pro_ProcessMaster_IDName = o?.tbl_Pro_ProcessMaster?.ProcessName ?? "",
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,

@@ -10,7 +10,6 @@ namespace OreasServices
     {
         Task<object> GetCompositionFilterPolicyListAsync(bool? ForRaw1_Packaging0 = null);
         Task<object> GetProProcedureListAsync(string FilterByText = null, string FilterValueByText = null);
-        Task<object> GetProProcessListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetBMRAdditionalTypeListAsync(string FilterByText = null, string FilterValueByText = null);
     }
     public interface ICompositionFilterPolicy
@@ -29,17 +28,6 @@ namespace OreasServices
         object GetWCLProProcedure();
         Task<PagedData<object>> Load(string caller = "", int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<string> Post(tbl_Pro_Procedure tbl_Pro_Procedure, string operation = "", string userName = "");
-    }
-    public interface IProProcess
-    {
-        Task<object> GetProProcessDetail(int id);
-        Task<object> GetProProcessMaster(int id);
-        object GetWCLProProcessDetail();
-        object GetWCLProProcessMaster();
-        Task<PagedData<object>> LoadProProcessDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
-        Task<PagedData<object>> LoadProProcessMaster(string caller = "", int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "");
-        Task<string> PostProProcessDetail(tbl_Pro_ProcessDetail tbl_Pro_ProcessDetail, string operation = "", string userName = "");
-        Task<string> PostProProcessMaster(tbl_Pro_ProcessMaster tbl_Pro_ProcessMaster, string operation = "", string userName = "");
     }
     public interface IComposition
     {

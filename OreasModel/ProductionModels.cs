@@ -23,10 +23,6 @@ namespace OreasModel
         [Display(Name = "For Raw1_Packaging0")]
         public bool ForRaw1_Packaging0 { get; set; }
 
-        [ForeignKey(nameof(tbl_Inv_ProductRegistrationDetail_QCSample))]
-        public int? FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample { get; set; }
-        public virtual tbl_Inv_ProductRegistrationDetail tbl_Inv_ProductRegistrationDetail_QCSample { get; set; }
-
         [MaxLength(50)]
         public string CreatedBy { get; set; }
 
@@ -36,9 +32,6 @@ namespace OreasModel
         public string ModifiedBy { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
-
-        [InverseProperty(nameof(tbl_Pro_ProcessDetail.tbl_Pro_Procedure))]
-        public virtual ICollection<tbl_Pro_ProcessDetail> tbl_Pro_ProcessDetails { get; set; }
 
         [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR.tbl_Pro_Procedure))]
         public virtual ICollection<tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR> tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMRs { get; set; }
@@ -48,75 +41,6 @@ namespace OreasModel
 
         [InverseProperty(nameof(tbl_PD_RequestDetailTR_Procedure.tbl_Pro_Procedure))]
         public virtual ICollection<tbl_PD_RequestDetailTR_Procedure> tbl_PD_RequestDetailTR_Procedures { get; set; }
-
-    }
-
-    //-------------------Process--------------------------//
-    [Table("tbl_Pro_ProcessMaster")]
-    public class tbl_Pro_ProcessMaster
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        [Display(Name = "Process Name")]
-        public string ProcessName { get; set; }
-
-        [Required]
-        [Display(Name = "For Raw1_Packaging0")]
-        public bool ForRaw1_Packaging0 { get; set; }
-
-        [MaxLength(50)]
-        public string CreatedBy { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
-
-        [MaxLength(50)]
-        public string ModifiedBy { get; set; }
-
-        public DateTime? ModifiedDate { get; set; }
-
-        [InverseProperty(nameof(tbl_Pro_ProcessDetail.tbl_Pro_ProcessMaster))]
-        public virtual ICollection<tbl_Pro_ProcessDetail> tbl_Pro_ProcessDetails { get; set; }
-
-        [InverseProperty(nameof(tbl_Pro_CompositionMaster.tbl_Pro_ProcessMaster))]
-        public virtual ICollection<tbl_Pro_CompositionMaster> tbl_Pro_CompositionMasters { get; set; }
-
-        [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster.tbl_Pro_ProcessMaster))]
-        public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster> tbl_Pro_CompositionDetail_Coupling_PackagingMasters { get; set; }
-
-    }
-
-    [Table("tbl_Pro_ProcessDetail")]
-    public class tbl_Pro_ProcessDetail
-    {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-
-        [Required]
-        [ForeignKey(nameof(tbl_Pro_ProcessMaster))]
-        public int FK_tbl_Pro_ProcessMaster_ID { get; set; }
-        public virtual tbl_Pro_ProcessMaster tbl_Pro_ProcessMaster { get; set; }
-
-        [Required]
-        [ForeignKey(nameof(tbl_Pro_Procedure))]
-        public int FK_tbl_Pro_Procedure_ID { get; set; }
-        public virtual tbl_Pro_Procedure tbl_Pro_Procedure { get; set; }
-
-        [Required]
-        [Display(Name = "QA Clearance Req before Start")]
-        public bool IsQAClearanceBeforeStart { get; set; }
-
-        [MaxLength(50)]
-        public string CreatedBy { get; set; }
-
-        public DateTime? CreatedDate { get; set; }
-
-        [MaxLength(50)]
-        public string ModifiedBy { get; set; }
-
-        public DateTime? ModifiedDate { get; set; }
 
     }
 
@@ -261,10 +185,6 @@ namespace OreasModel
         [Required]
         [DataType(DataType.Date)]
         public DateTime? RevisionDate { get; set; }
-
-        [ForeignKey(nameof(tbl_Pro_ProcessMaster))]
-        public int? FK_tbl_Pro_ProcessMaster_ID { get; set; }
-        public virtual tbl_Pro_ProcessMaster tbl_Pro_ProcessMaster { get; set; }
 
         [MaxLength(50)]
         [Display(Name = "Created By")]
@@ -445,10 +365,6 @@ namespace OreasModel
 
         [Required]
         public bool IsDiscontinue { get; set; }
-
-        [ForeignKey(nameof(tbl_Pro_ProcessMaster))]
-        public int? FK_tbl_Pro_ProcessMaster_ID { get; set; }
-        public virtual tbl_Pro_ProcessMaster tbl_Pro_ProcessMaster { get; set; }
 
         [MaxLength(50)]
         [Display(Name = "Created By")]

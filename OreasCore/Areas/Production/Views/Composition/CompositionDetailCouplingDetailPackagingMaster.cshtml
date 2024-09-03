@@ -64,16 +64,6 @@
                     </div>
                 </div>
 
-                <div mycssclass="@MyCSSClassName.RowInForm">                   
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Process</span>
-                        <select id="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Pro_ProcessMaster_ID" name="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Pro_ProcessMaster_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ProcessName for x in ProProcessBPRList" data-ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Pro_ProcessMaster_ID" ng-disabled="ng_readOnly">
-                            <option value="">Select Process</option>
-                        </select>
-                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Pro_ProcessMaster_ID"></MyValidationSpan>
-                    </div>
-                </div>
-
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
                         <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
@@ -120,9 +110,6 @@
                 <th>
                     Status
                 </th>
-                <th>
-                    Process
-                </th>
                 <th></th>
             </tr>
             <tr ng-repeat="itm in pageddata.Data">
@@ -139,9 +126,6 @@
                     {{itm.IsDiscontinue ? 'In-Active' :  'Active'}}
                 </td>
                 <td>
-                    {{itm.FK_tbl_Pro_ProcessMaster_IDName}}
-                </td>
-                <td>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                         <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
                         <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
@@ -153,7 +137,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="6">
+                <td colspan="5">
                     <div mycssclass="@MyCSSClassName.Table_NavDiv">
                         <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                         <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

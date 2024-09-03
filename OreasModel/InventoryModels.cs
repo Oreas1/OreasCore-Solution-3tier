@@ -415,10 +415,6 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Inv_PurchaseRequestDetail.tbl_Inv_ProductRegistrationDetail))]
         public virtual ICollection<tbl_Inv_PurchaseRequestDetail> tbl_Inv_PurchaseRequestDetails { get; set; }
 
-        //-----------------------------------Sample---------------------------------//
-        [InverseProperty(nameof(tbl_Pro_Procedure.tbl_Inv_ProductRegistrationDetail_QCSample))]
-        public virtual ICollection<tbl_Pro_Procedure> tbl_Pro_Procedures { get; set; }
-
         //-----------------------------------BMR---------------------------------//
         [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR.tbl_Inv_ProductRegistrationDetail_QCSample))]
         public virtual ICollection<tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR> tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMRs { get; set; }

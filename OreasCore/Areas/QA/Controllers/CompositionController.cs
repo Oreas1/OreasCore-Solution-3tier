@@ -26,9 +26,7 @@ namespace OreasCore.Areas.QA.Controllers
                         Reports = null,
                         Privilege = await db.GetUserAuthorizatedOnOperationAsync("QA", User.Identity.Name, "Composition"),
                         Otherdata = new {
-                            MeasurementUnitList = await db3.GetMeasurementUnitListAsync(null,null),
-                            ProProcessBMRList = await db4.GetProProcessListAsync("byBMRBPR","BMR"),
-                            ProProcessBPRList = await db4.GetProProcessListAsync("byBMRBPR","BPR")
+                            MeasurementUnitList = await db3.GetMeasurementUnitListAsync(null,null)
                         }
                     },
                     new Init_ViewSetupStructure()

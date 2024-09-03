@@ -375,13 +375,6 @@ else if (@Model.ToString() == "Production")
                 ]" ng-hide="HideW3000">
                 <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
             </li>
-            <li ng-hide="HideW3000"><hr class="dropdown-divider"></li>
-            <li ng-repeat="itm in [
-                { 'Name': 'Process BMR', 'Url': '/Production/SetUp/ProProcessIndex?by=BMR' },
-                { 'Name': 'Process BPR', 'Url': '/Production/SetUp/ProProcessIndex?by=BPR' }
-                ]" ng-hide="HideW3000">
-                <a href="{{itm.Url}}" class="dropdown-item">{{itm.Name}}</a>
-            </li>
             <li><hr class="dropdown-divider"></li>
         </ul>
     </li>
@@ -436,9 +429,6 @@ else if (@Model.ToString() == "QA")
             <li><hr class="dropdown-divider"></li>
             <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcedureIndex" asp-route-by="BMR" class="dropdown-item">Procedure BMR</a></li>
             <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcedureIndex" asp-route-by="BPR" class="dropdown-item">Procedure BPR</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcessIndex" asp-route-by="BMR" class="dropdown-item">Process BMR</a></li>
-            <li><a asp-area="QA" asp-controller="SetUp" asp-action="ProProcessIndex" asp-route-by="BPR" class="dropdown-item">Process BPR</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a asp-area="QA" asp-controller="SetUp" asp-action="CompositionFilterPolicyIndex" class="dropdown-item">Composition Filter Policy</a></li>
             <li><hr class="dropdown-divider"></li>
