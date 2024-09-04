@@ -80,6 +80,26 @@ namespace OreasCore.Areas.Production.Controllers
                         Reports = null,
                         Privilege = null,
                         Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BMRProcessCtlr",
+                        WildCard =  db2.GetWCLBMRProcess(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = new {
+                            BMRProcedureList = await db4.GetProProcedureListAsync("byBMRBPR","BMR")
+                        }
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BPRProcessCtlr",
+                        WildCard =  db2.GetWCLBMRProcess(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = new {
+                            BPRProcedureList = await db4.GetProProcedureListAsync("byBMRBPR","BPR")
+                        }
                     }
                 }
                 , new Newtonsoft.Json.JsonSerializerSettings()
@@ -372,7 +392,85 @@ namespace OreasCore.Areas.Production.Controllers
 
         #endregion
 
-        
+        #region Composition BMRProcess
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        public async Task<IActionResult> BMRProcessLoad([FromServices] IComposition db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBMRProcess(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Composition", Operation = "CanPost")]
+        public async Task<string> BMRProcessPost([FromServices] IComposition db, [FromBody] tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBMRProcess(tbl_Pro_CompositionMaster_ProcessBMR, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        public async Task<IActionResult> BMRProcessGet([FromServices] IComposition db, int ID)
+        {
+            return Json(await db.GetBMRProcess(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region Composition BPRProcess
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        public async Task<IActionResult> BPRProcessLoad([FromServices] IComposition db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBPRProcess(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Composition", Operation = "CanPost")]
+        public async Task<string> BPRProcessPost([FromServices] IComposition db, [FromBody] tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBPRProcess(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        public async Task<IActionResult> BPRProcessGet([FromServices] IComposition db, int ID)
+        {
+            return Json(await db.GetBPRProcess(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
 
         #region Report
 

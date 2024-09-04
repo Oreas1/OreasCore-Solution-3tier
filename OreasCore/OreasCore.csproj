@@ -64,6 +64,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\Production\Views\Composition\CompositionDetailRawMaster_Tab1.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Update="Views\DashBoard\ManagementPNDetail.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

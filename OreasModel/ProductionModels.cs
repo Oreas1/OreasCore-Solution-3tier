@@ -206,6 +206,9 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling.tbl_Pro_CompositionMaster))]
         public virtual ICollection<tbl_Pro_CompositionDetail_Coupling> tbl_Pro_CompositionDetail_Couplings { get; set; }
 
+        [InverseProperty(nameof(tbl_Pro_CompositionMaster_ProcessBMR.tbl_Pro_CompositionMaster))]
+        public virtual ICollection<tbl_Pro_CompositionMaster_ProcessBMR> tbl_Pro_CompositionMaster_ProcessBMRs { get; set; }
+
     }
 
     [Table("tbl_Pro_CompositionDetail_RawMaster")]
@@ -388,6 +391,9 @@ namespace OreasModel
 
         [InverseProperty(nameof(tbl_Inv_OrderNoteDetail.tbl_Pro_CompositionDetail_Coupling_PackagingMaster))]
         public virtual ICollection<tbl_Inv_OrderNoteDetail> tbl_Inv_OrderNoteDetails { get; set; }
+
+        [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.tbl_Pro_CompositionDetail_Coupling_PackagingMaster))]
+        public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs { get; set; }
     }
 
     [Table("tbl_Pro_CompositionDetail_Coupling_PackagingDetail")]
@@ -472,6 +478,79 @@ namespace OreasModel
         [Required]
         [Display(Name = "Percentage On Rate")]
         public double PercentageOnRate { get; set; }
+
+    }
+
+    //------//
+    [Table("tbl_Pro_CompositionMaster_ProcessBMR")]
+    public class tbl_Pro_CompositionMaster_ProcessBMR
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_CompositionMaster))]
+        public int FK_tbl_Pro_CompositionMaster_ID { get; set; }
+        public virtual tbl_Pro_CompositionMaster tbl_Pro_CompositionMaster { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_Procedure))]
+        public int FK_tbl_Pro_Procedure_ID { get; set; }
+        public virtual tbl_Pro_Procedure tbl_Pro_Procedure { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_ProductRegistrationDetail_QCSample))]
+        public int? FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample { get; set; }
+        public virtual tbl_Inv_ProductRegistrationDetail tbl_Inv_ProductRegistrationDetail_QCSample { get; set; }
+
+        [Required]
+        [Display(Name = "QA Clearance Req before Start")]
+        public bool IsQAClearanceBeforeStart { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+    }
+
+    [Table("tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR")]
+    public class tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster))]
+        public int FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID { get; set; }
+        public virtual tbl_Pro_CompositionDetail_Coupling_PackagingMaster tbl_Pro_CompositionDetail_Coupling_PackagingMaster { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_Procedure))]
+        public int FK_tbl_Pro_Procedure_ID { get; set; }
+        public virtual tbl_Pro_Procedure tbl_Pro_Procedure { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_ProductRegistrationDetail_QCSample))]
+        public int? FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample { get; set; }
+        public virtual tbl_Inv_ProductRegistrationDetail tbl_Inv_ProductRegistrationDetail_QCSample { get; set; }
+
+        [Required]
+        [Display(Name = "QA Clearance Req before Start")]
+        public bool IsQAClearanceBeforeStart { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
 
     }
 

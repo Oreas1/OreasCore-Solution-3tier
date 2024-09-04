@@ -141,7 +141,11 @@
                             <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
                         </div>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
-                            <button ng-click="DivHideShow('CompositionDetailRawMasterCtlr',itm,'CompositionMasterCtlr','CompositionDetailRawMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Raw Detail">BMR <span class="fa fa-leaf"></span></button>|
+                            <button ng-click="
+                                    DivHideShow('CompositionDetailRawMasterCtlr',itm,'CompositionMasterCtlr','CompositionDetailRawMasterCtlr', null);
+                                    DivHideShow('BMRProcessCtlr',itm,null,'BMRProcessCtlr', null);
+                                    " 
+                                    mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Raw Detail">BMR <span class="fa fa-leaf"></span></button>|
                             <button ng-click="DivHideShow('CompositionDetailCouplingMasterCtlr',itm,'CompositionMasterCtlr','CompositionDetailCouplingMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Coupling Detail"> BPR <span class="fa fa-object-group"></span>:{{itm.NoOfCouplings}}</button>
                         </div>
                     </td>

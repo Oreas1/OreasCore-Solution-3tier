@@ -1177,6 +1177,210 @@ namespace OreasServices
 
         #endregion
 
+        #region BMRProcess
+        public async Task<object> GetBMRProcess(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMRs.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBMRProcess()
+        {
+            return new[]
+            {
+                new { n = "by Procedure Name", v = "byProcedureName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBMRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionMaster_ProcessBMRs
+                                      .Where(w => w.FK_tbl_Pro_CompositionMaster_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMRs
+                                        .Where(w => w.FK_tbl_Pro_CompositionMaster_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBMRProcess(tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Pro_CompositionMaster_ProcessBMR.CreatedBy = userName;
+                tbl_Pro_CompositionMaster_ProcessBMR.CreatedDate = DateTime.Now;
+                db.tbl_Pro_CompositionMaster_ProcessBMRs.Add(tbl_Pro_CompositionMaster_ProcessBMR);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Pro_CompositionMaster_ProcessBMR.ModifiedBy = userName;
+                tbl_Pro_CompositionMaster_ProcessBMR.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Pro_CompositionMaster_ProcessBMR).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Pro_CompositionMaster_ProcessBMRs.Remove(db.tbl_Pro_CompositionMaster_ProcessBMRs.Find(tbl_Pro_CompositionMaster_ProcessBMR.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+        #endregion
+
+        #region BPRProcess
+        public async Task<object> GetBPRProcess(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBPRProcess()
+        {
+            return new[]
+            {
+                new { n = "by Procedure Name", v = "byProcedureName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBPRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs
+                                      .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs
+                                        .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBPRProcess(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedBy = userName;
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedDate = DateTime.Now;
+                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Add(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedBy = userName;
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Remove(db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Find(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+        #endregion
+
         #region Report     
 
         public List<ReportCallingModel> GetRLCompositionRawMaster()

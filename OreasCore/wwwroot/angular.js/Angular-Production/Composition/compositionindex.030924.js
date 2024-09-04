@@ -54,6 +54,12 @@
             if (data.find(o => o.Controller === 'CompositionDetailCouplingDetailPackagingDetailDetailCtlr') != undefined) {
                 $scope.$broadcast('init_CompositionDetailCouplingDetailPackagingDetailDetailCtlr', data.find(o => o.Controller === 'CompositionDetailCouplingDetailPackagingDetailDetailCtlr'));
             }
+            if (data.find(o => o.Controller === 'BMRProcessCtlr') != undefined) {
+                $scope.$broadcast('init_BMRProcessCtlr', data.find(o => o.Controller === 'BMRProcessCtlr'));
+            }
+            if (data.find(o => o.Controller === 'BPRProcessCtlr') != undefined) {
+                $scope.$broadcast('init_BPRProcessCtlr', data.find(o => o.Controller === 'BPRProcessCtlr'));
+            }
 
         };
 
@@ -91,9 +97,9 @@
        
     })
     .controller("CompositionDetailRawMasterCtlr", function ($scope, $http) {
-        
         $scope.MasterObject = {};
         $scope.$on('CompositionDetailRawMasterCtlr', function (e, itm) {
+            $('[href="#BMRFormulaType"]').tab('show');
             $scope.MasterObject = itm;
             $scope.pageNavigation('first');         
             $scope.rptID = itm.ID;
@@ -271,8 +277,7 @@
         $scope.MasterObject = {};
         $scope.$on('CompositionDetailCouplingDetailPackagingMasterCtlr', function (e, itm) {
             $scope.MasterObject = itm;
-            $scope.pageNavigation('first');
-            
+            $scope.pageNavigation('first');   
         });
 
         $scope.$on('init_CompositionDetailCouplingDetailPackagingMasterCtlr', function (e, itm) {
@@ -352,6 +357,7 @@
     .controller("CompositionDetailCouplingDetailPackagingDetailMasterCtlr", function ($scope, $http) {
         $scope.MasterObject = {};
         $scope.$on('CompositionDetailCouplingDetailPackagingDetailMasterCtlr', function (e, itm) {
+            $('[href="#BPRFormulaType"]').tab('show');
             $scope.MasterObject = itm;
             $scope.pageNavigation('first');
             $scope.rptID = itm.ID;
@@ -456,6 +462,124 @@
 
         $scope.GetRowResponse = function (data, operation) {
             $scope.tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Items = data;
+        };
+
+        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
+
+    })
+    .controller("BMRProcessCtlr", function ($scope, $http) {
+        $scope.MasterObject = {};
+        $scope.$on('BMRProcessCtlr', function (e, itm) {
+            $scope.MasterObject = itm;
+            $scope.pageNavigation('first');
+        });
+
+        $scope.$on('init_BMRProcessCtlr', function (e, itm) {
+            init_Filter($scope, itm.WildCard, null, null, null);
+            $scope.BMRProcedureList = itm.Otherdata === null ? [] : itm.Otherdata.BMRProcedureList;
+        });
+
+        $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
+            if (item.ID > 0) {
+                $scope.tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample = item.ID;
+                $scope.tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = item.ProductName + ' ' + item.MeasurementUnit;
+            }
+            else {
+                $scope.tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample = null;
+                $scope.tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = null;
+            }
+        };
+
+        init_Operations($scope, $http,
+            '/Production/Composition/BMRProcessLoad', //--v_Load
+            '/Production/Composition/BMRProcessGet', // getrow
+            '/Production/Composition/BMRProcessPost' // PostRow
+        );
+
+        $scope.tbl_Pro_CompositionMaster_ProcessBMR = {
+            'ID': 0, 'FK_tbl_Pro_CompositionMaster_ID': $scope.MasterObject.ID,
+            'FK_tbl_Pro_Procedure_ID': null, 'FK_tbl_Pro_Procedure_IDName': '',
+            'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName': '', 'MeasurementUnit': '',
+            'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+        };
+
+        //for list model which will be coming as as data in pageddata
+        $scope.tbl_Pro_CompositionMaster_ProcessBMRs = [$scope.tbl_Pro_CompositionMaster_ProcessBMR];
+
+        $scope.clearEntryPanel = function () {
+            //rededine to orignal values
+            $scope.tbl_Pro_CompositionMaster_ProcessBMR = {
+                'ID': 0, 'FK_tbl_Pro_CompositionMaster_ID': $scope.MasterObject.ID,
+                'FK_tbl_Pro_Procedure_ID': null, 'FK_tbl_Pro_Procedure_IDName': '',
+                'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName': '', 'MeasurementUnit': '',
+                'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+            };
+        };
+
+        $scope.postRowParam = function () { return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_Pro_CompositionMaster_ProcessBMR }; };
+
+        $scope.GetRowResponse = function (data, operation) {
+            $scope.tbl_Pro_CompositionMaster_ProcessBMR = data;
+        };
+
+        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
+
+
+
+    })
+    .controller("BPRProcessCtlr", function ($scope, $http) {
+        $scope.MasterObject = {};
+        $scope.$on('BPRProcessCtlr', function (e, itm) {
+            $scope.MasterObject = itm;
+            $scope.pageNavigation('first');
+        });
+
+        $scope.$on('init_BPRProcessCtlr', function (e, itm) {
+            init_Filter($scope, itm.WildCard, null, null, null);
+            $scope.BPRProcedureList = itm.Otherdata === null ? [] : itm.Otherdata.BPRProcedureList;
+        });
+
+        $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
+            if (item.ID > 0) {
+                $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample = item.ID;
+                $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = item.ProductName + ' ' + item.MeasurementUnit;
+            }
+            else {
+                $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample = null;
+                $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = null;
+            }
+        };
+
+        init_Operations($scope, $http,
+            '/Production/Composition/BPRProcessLoad', //--v_Load
+            '/Production/Composition/BPRProcessGet', // getrow
+            '/Production/Composition/BPRProcessPost' // PostRow
+        );
+
+        $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR = {
+            'ID': 0, 'FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID': $scope.MasterObject.ID,
+            'FK_tbl_Pro_Procedure_ID': null, 'FK_tbl_Pro_Procedure_IDName': '',
+            'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName': '', 'MeasurementUnit': '',
+            'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+        };
+
+        //for list model which will be coming as as data in pageddata
+        $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs = [$scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR];
+
+        $scope.clearEntryPanel = function () {
+            //rededine to orignal values
+            $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR = {
+                'ID': 0, 'FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID': $scope.MasterObject.ID,
+                'FK_tbl_Pro_Procedure_ID': null, 'FK_tbl_Pro_Procedure_IDName': '',
+                'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName': '', 'MeasurementUnit': '',
+                'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+            };
+        };
+
+        $scope.postRowParam = function () { return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR }; };
+
+        $scope.GetRowResponse = function (data, operation) {
+            $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR = data;
         };
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };

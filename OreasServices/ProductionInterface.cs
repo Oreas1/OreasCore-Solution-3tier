@@ -1,6 +1,8 @@
-﻿using OreasModel;
+﻿using Microsoft.EntityFrameworkCore;
+using OreasModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,6 +61,20 @@ namespace OreasServices
         Task<string> PostCompositionDetailRawDetail(tbl_Pro_CompositionDetail_RawDetail_Items tbl_Pro_CompositionDetail_RawDetail_Items, string operation = "", string userName = "");
         Task<string> PostCompositionDetailRawMaster(tbl_Pro_CompositionDetail_RawMaster tbl_Pro_CompositionDetail_RawMaster, string operation = "", string userName = "");
         Task<string> PostCompositionMaster(tbl_Pro_CompositionMaster tbl_Pro_CompositionMaster, string operation = "", string userName = "");
+
+        #region BMRProcess
+        Task<object> GetBMRProcess(int id);
+        object GetWCLBMRProcess();
+        Task<PagedData<object>> LoadBMRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> PostBMRProcess(tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "", string userName = "");
+        #endregion
+
+        #region BPRProcess
+        Task<object> GetBPRProcess(int id);
+        object GetWCLBPRProcess();
+        Task<PagedData<object>> LoadBPRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> PostBPRProcess(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "", string userName = "");
+        #endregion
 
         #region Report
         List<ReportCallingModel> GetRLCompositionRawMaster();

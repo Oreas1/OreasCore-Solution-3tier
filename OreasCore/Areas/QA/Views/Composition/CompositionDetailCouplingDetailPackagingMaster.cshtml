@@ -132,7 +132,12 @@
                         <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
                     </div>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
-                        <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('CompositionDetailCouplingDetailPackagingDetailMasterCtlr',itm,'CompositionDetailCouplingDetailPackagingMasterCtlr','CompositionDetailCouplingDetailPackagingDetailMasterCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Packaging Formula Type">Formula Type <span class="fa fa-cubes"></span>:{{itm.NoOfItems}}</button>
+                        <button ng-click="
+                                itm['MasterObject']=MasterObject; 
+                                DivHideShow('CompositionDetailCouplingDetailPackagingDetailMasterCtlr',itm,'CompositionDetailCouplingDetailPackagingMasterCtlr','CompositionDetailCouplingDetailPackagingDetailMasterCtlr', null);
+                                DivHideShow('BPRProcessCtlr',itm,null,'BPRProcessCtlr', null);
+                                " 
+                                mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Packaging Formula Type">Formula Type <span class="fa fa-cubes"></span>:{{itm.NoOfItems}}</button>
                     </div>
                 </td>
             </tr>
