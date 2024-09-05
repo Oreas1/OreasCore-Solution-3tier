@@ -101,6 +101,7 @@ namespace OreasCore.Areas.Production.Controllers
                             BPRProcedureList = await db4.GetProProcedureListAsync("byBMRBPR","BPR")
                         }
                     }
+
                 }
                 , new Newtonsoft.Json.JsonSerializerSettings()
                 );

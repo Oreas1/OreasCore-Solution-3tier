@@ -44,6 +44,12 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Inv_PurchaseOrderDetail.tbl_Inv_MeasurementUnit))]
         public virtual ICollection<tbl_Inv_PurchaseOrderDetail> tbl_Inv_PurchaseOrderDetails { get; set; }
 
+        [InverseProperty(nameof(tbl_Pro_CompositionMaster_ProcessBMR_QcTest.tbl_Inv_MeasurementUnit))]
+        public virtual ICollection<tbl_Pro_CompositionMaster_ProcessBMR_QcTest> tbl_Pro_CompositionMaster_ProcessBMR_QcTests { get; set; }
+
+        [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.tbl_Inv_MeasurementUnit))]
+        public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests { get; set; }
+
     }
 
     [Table("tbl_Inv_ProductClassification")]

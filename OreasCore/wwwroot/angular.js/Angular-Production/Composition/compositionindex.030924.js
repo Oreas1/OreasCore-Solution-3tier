@@ -29,10 +29,11 @@
                 $scope.Privilege = data.find(o => o.Controller === 'CompositionMasterCtlr').Privilege;
                 init_Filter($scope, data.find(o => o.Controller === 'CompositionMasterCtlr').WildCard, null, null, null);
                 if (data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata === null) {
-                    $scope.MeasurementUnitList = [];
+                    $scope.MeasurementUnitList = []; $scope.QcTestList = [];
                 }
                 else {
                     $scope.MeasurementUnitList = data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata.MeasurementUnitList;
+                    $scope.QcTestList = data.find(o => o.Controller === 'CompositionMasterCtlr').Otherdata.QcTestList;
                 }
                 $scope.pageNavigation('first');
             }

@@ -374,6 +374,8 @@ namespace OreasServices
         public DbSet<tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Items> tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Itemss { get; set; }
         public DbSet<tbl_Pro_CompositionMaster_ProcessBMR> tbl_Pro_CompositionMaster_ProcessBMRs { get; set; }
         public DbSet<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs { get; set; }
+        public DbSet<tbl_Pro_CompositionMaster_ProcessBMR_QcTest> tbl_Pro_CompositionMaster_ProcessBMR_QcTests { get; set; }
+        public DbSet<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests { get; set; }
 
         //----------------------BMR---------------------------//
         public DbSet<tbl_Pro_BatchMaterialRequisitionMaster> tbl_Pro_BatchMaterialRequisitionMasters { get; set; }

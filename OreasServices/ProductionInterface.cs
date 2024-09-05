@@ -13,6 +13,8 @@ namespace OreasServices
         Task<object> GetCompositionFilterPolicyListAsync(bool? ForRaw1_Packaging0 = null);
         Task<object> GetProProcedureListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetBMRAdditionalTypeListAsync(string FilterByText = null, string FilterValueByText = null);
+
+        Task<object> GetQcTestListAsync(string FilterByText = null, string FilterValueByText = null);
     }
     public interface ICompositionFilterPolicy
     {

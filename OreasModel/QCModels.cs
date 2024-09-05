@@ -175,6 +175,14 @@ namespace OreasModel
         public string ModifiedBy { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
+
+
+        [InverseProperty(nameof(tbl_Pro_CompositionMaster_ProcessBMR_QcTest.tbl_Qc_Test))]
+        public virtual ICollection<tbl_Pro_CompositionMaster_ProcessBMR_QcTest> tbl_Pro_CompositionMaster_ProcessBMR_QcTests { get; set; }
+        
+        [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.tbl_Qc_Test))]
+        public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests { get; set; }
+
     }
 
 }

@@ -516,6 +516,54 @@ namespace OreasModel
 
         public DateTime? ModifiedDate { get; set; }
 
+        [InverseProperty(nameof(tbl_Pro_CompositionMaster_ProcessBMR_QcTest.tbl_Pro_CompositionMaster_ProcessBMR))]
+        public virtual ICollection<tbl_Pro_CompositionMaster_ProcessBMR_QcTest> tbl_Pro_CompositionMaster_ProcessBMR_QcTests { get; set; }
+
+    }
+
+    [Table("tbl_Pro_CompositionMaster_ProcessBMR_QcTest")]
+    public class tbl_Pro_CompositionMaster_ProcessBMR_QcTest
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_CompositionMaster_ProcessBMR))]
+        public int FK_tbl_Pro_CompositionMaster_ProcessBMR_ID { get; set; }
+        public virtual tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_Test))]
+        public int FK_tbl_Qc_Test_ID { get; set; }
+        public virtual tbl_Qc_Test tbl_Qc_Test { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Test Description")]
+        public string TestDescription { get; set; }
+
+        [MaxLength(250)]
+        public string Specification { get; set; }
+
+        [Display(Name = "Range From")]
+        public double? RangeFrom { get; set; }
+
+        [Display(Name = "Range Till")]
+        public double? RangeTill { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_MeasurementUnit))]
+        public int? FK_tbl_Inv_MeasurementUnit_ID { get; set; }
+        public virtual tbl_Inv_MeasurementUnit tbl_Inv_MeasurementUnit { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
     }
 
     [Table("tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR")]
@@ -541,6 +589,54 @@ namespace OreasModel
         [Required]
         [Display(Name = "QA Clearance Req before Start")]
         public bool IsQAClearanceBeforeStart { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR))]
+        public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests { get; set; }
+
+    }
+
+    [Table("tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest")]
+    public class tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR))]
+        public int FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID { get; set; }
+        public virtual tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_Test))]
+        public int FK_tbl_Qc_Test_ID { get; set; }
+        public virtual tbl_Qc_Test tbl_Qc_Test { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Test Description")]
+        public string TestDescription { get; set; }
+
+        [MaxLength(250)]
+        public string Specification { get; set; }
+
+        [Display(Name = "Range From")]
+        public double? RangeFrom { get; set; }
+
+        [Display(Name = "Range Till")]
+        public double? RangeTill { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_MeasurementUnit))]
+        public int? FK_tbl_Inv_MeasurementUnit_ID { get; set; }
+        public virtual tbl_Inv_MeasurementUnit tbl_Inv_MeasurementUnit { get; set; }
 
         [MaxLength(50)]
         public string CreatedBy { get; set; }

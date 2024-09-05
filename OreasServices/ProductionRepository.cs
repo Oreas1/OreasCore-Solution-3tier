@@ -95,6 +95,26 @@ namespace OreasServices
                                   a.TypeName
                               }).Take(5).ToListAsync();
         }
+        public async Task<object> GetQcTestListAsync(string FilterByText = null, string FilterValueByText = null)
+        {
+            if (string.IsNullOrEmpty(FilterByText))
+                return await (from a in db.tbl_Qc_Tests
+                              select new
+                              {
+                                  a.ID,
+                                  a.TestName
+                              }).ToListAsync();
+            else
+                return await (from a in db.tbl_Qc_Tests
+                                        .Where(w => string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byName" && w.TestName.ToLower().Contains(FilterValueByText.ToLower()))
+                              select new
+                              {
+                                  a.ID,
+                                  a.TestName
+                              }).Take(5).ToListAsync();
+        }
     }
     public class CompositionFilterPolicyRepository : ICompositionFilterPolicy
     {
@@ -1379,7 +1399,7 @@ namespace OreasServices
             return "OK";
         }
 
-        #endregion
+        #endregion      
 
         #region Report     
 
