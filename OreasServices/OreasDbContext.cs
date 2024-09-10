@@ -349,6 +349,10 @@ namespace OreasServices
         public DbSet<tbl_Qc_ActionType> tbl_Qc_ActionTypes { get; set; }
         public DbSet<tbl_Qc_SampleProcessBMR> tbl_Qc_SampleProcessBMRs { get; set; }
         public DbSet<tbl_Qc_SampleProcessBPR> tbl_Qc_SampleProcessBPRs { get; set; }
+        public DbSet<tbl_Qc_SampleProcessBMR_QcTest> tbl_Qc_SampleProcessBMR_QcTests { get; set; }
+        public DbSet<tbl_Qc_SampleProcessBPR_QcTest> tbl_Qc_SampleProcessBPR_QcTests { get; set; }
+
+
         public DbSet<tbl_Qc_Lab> tbl_Qc_Labs { get; set; }
         public DbSet<tbl_Qc_Test> tbl_Qc_Tests { get; set; }
 
@@ -386,8 +390,6 @@ namespace OreasServices
         public DbSet<tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR> tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPRs { get; set; }
         public DbSet<tbl_Pro_BatchMaterialRequisitionDetail_PackagingDetail> tbl_Pro_BatchMaterialRequisitionDetail_PackagingDetails { get; set; }
         public DbSet<tbl_Pro_BatchMaterialRequisitionDetail_PackagingDetail_Items> tbl_Pro_BatchMaterialRequisitionDetail_PackagingDetail_Itemss { get; set; }
-        public DbSet<tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTest> tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTests { get; set; }
-        public DbSet<tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTests { get; set; }
 
         //----------------------BMR Additional---------------------------//
         public DbSet<tbl_Pro_BMRAdditionalType> tbl_Pro_BMRAdditionalTypes { get; set; }

@@ -614,9 +614,9 @@ namespace OreasServices
             PagedData<object> pageddata = new PagedData<object>();
 
             int NoOfRecords = await (from o in db.tbl_Qc_SampleProcessBMRs
-                              join p in db.tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMRs on o.FK_tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_ID equals p.ID
-                              where p.FK_tbl_Pro_BatchMaterialRequisitionMaster_ID == MasterID && p.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample != null
-                              select o).CountAsync();
+                                     join p in db.tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMRs on o.FK_tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_ID equals p.ID
+                                     where p.FK_tbl_Pro_BatchMaterialRequisitionMaster_ID == MasterID && p.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample != null
+                                     select o).CountAsync();
 
             pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
 
@@ -637,7 +637,7 @@ namespace OreasServices
                           o.FK_tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_ID,
                           d.ProcedureName,
                           pm.ProductName,
-                          u.MeasurementUnit,                          
+                          u.MeasurementUnit,
                           SampleDate = o.SampleDate.ToString("dd-MMM-yyyy hh:mm tt"),
                           o.SampleQty,
                           o.FK_tbl_Qc_ActionType_ID,
@@ -794,6 +794,230 @@ namespace OreasServices
                 return "OK";
             else
                 return (string)CRUD_Msg.Value;
+        }
+
+        #endregion
+
+        #region BMRSample QcTest
+        public async Task<object> GetBMRSampleQcTest(int id)
+        {
+            var qry = from o in await db.tbl_Qc_SampleProcessBMR_QcTests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Qc_SampleProcessBMR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.ResultValue,
+                          o.ResultRemarks,
+                          o.IsPrintOnCOA,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBMRSampleQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBMRSampleQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Qc_SampleProcessBMR_QcTests
+                                      .Where(w => w.FK_tbl_Qc_SampleProcessBMR_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Qc_SampleProcessBMR_QcTests
+                                        .Where(w => w.FK_tbl_Qc_SampleProcessBMR_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Qc_SampleProcessBMR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.ResultValue,
+                          o.ResultRemarks,
+                          o.IsPrintOnCOA,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBMRSampleQcTest(tbl_Qc_SampleProcessBMR_QcTest tbl_Qc_SampleProcessBMR_QcTest, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Qc_SampleProcessBMR_QcTest.CreatedBy = userName;
+                tbl_Qc_SampleProcessBMR_QcTest.CreatedDate = DateTime.Now;
+                db.tbl_Qc_SampleProcessBMR_QcTests.Add(tbl_Qc_SampleProcessBMR_QcTest);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Qc_SampleProcessBMR_QcTest.ModifiedBy = userName;
+                tbl_Qc_SampleProcessBMR_QcTest.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Qc_SampleProcessBMR_QcTest).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Qc_SampleProcessBMR_QcTests.Remove(db.tbl_Qc_SampleProcessBMR_QcTests.Find(tbl_Qc_SampleProcessBMR_QcTest.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+        #endregion
+
+        #region BPRSample QcTest
+        public async Task<object> GetBPRSampleQcTest(int id)
+        {
+            var qry = from o in await db.tbl_Qc_SampleProcessBPR_QcTests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Qc_SampleProcessBPR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.ResultValue,
+                          o.ResultRemarks,
+                          o.IsPrintOnCOA,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBPRSampleQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBPRSampleQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Qc_SampleProcessBPR_QcTests
+                                      .Where(w => w.FK_tbl_Qc_SampleProcessBPR_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Qc_SampleProcessBPR_QcTests
+                                        .Where(w => w.FK_tbl_Qc_SampleProcessBPR_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Qc_SampleProcessBPR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.ResultValue,
+                          o.ResultRemarks,
+                          o.IsPrintOnCOA,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBPRSampleQcTest(tbl_Qc_SampleProcessBPR_QcTest tbl_Qc_SampleProcessBPR_QcTest, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Qc_SampleProcessBPR_QcTest.CreatedBy = userName;
+                tbl_Qc_SampleProcessBPR_QcTest.CreatedDate = DateTime.Now;
+                db.tbl_Qc_SampleProcessBPR_QcTests.Add(tbl_Qc_SampleProcessBPR_QcTest);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Qc_SampleProcessBPR_QcTest.ModifiedBy = userName;
+                tbl_Qc_SampleProcessBPR_QcTest.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Qc_SampleProcessBPR_QcTest).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Qc_SampleProcessBPR_QcTests.Remove(db.tbl_Qc_SampleProcessBPR_QcTests.Find(tbl_Qc_SampleProcessBPR_QcTest.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
         }
 
         #endregion

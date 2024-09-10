@@ -78,6 +78,8 @@ namespace OreasModel
 
         public DateTime? ModifiedDate { get; set; }
 
+        [InverseProperty(nameof(tbl_Qc_SampleProcessBMR_QcTest.tbl_Qc_SampleProcessBMR))]
+        public virtual ICollection<tbl_Qc_SampleProcessBMR_QcTest> tbl_Qc_SampleProcessBMR_QcTests { get; set; }
 
     }
 
@@ -118,6 +120,118 @@ namespace OreasModel
 
         public DateTime? ModifiedDate { get; set; }
 
+        [InverseProperty(nameof(tbl_Qc_SampleProcessBPR_QcTest.tbl_Qc_SampleProcessBPR))]
+        public virtual ICollection<tbl_Qc_SampleProcessBPR_QcTest> tbl_Qc_SampleProcessBPR_QcTests { get; set; }
+
+    }
+
+    [Table("tbl_Qc_SampleProcessBMR_QcTest")]
+    public class tbl_Qc_SampleProcessBMR_QcTest
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_SampleProcessBMR))]
+        public int FK_tbl_Qc_SampleProcessBMR_ID { get; set; }
+        public virtual tbl_Qc_SampleProcessBMR tbl_Qc_SampleProcessBMR { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_Test))]
+        public int FK_tbl_Qc_Test_ID { get; set; }
+        public virtual tbl_Qc_Test tbl_Qc_Test { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Test Description")]
+        public string TestDescription { get; set; }
+
+        [MaxLength(250)]
+        public string Specification { get; set; }
+
+        [Display(Name = "Range From")]
+        public double? RangeFrom { get; set; }
+
+        [Display(Name = "Range Till")]
+        public double? RangeTill { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_MeasurementUnit))]
+        public int? FK_tbl_Inv_MeasurementUnit_ID { get; set; }
+        public virtual tbl_Inv_MeasurementUnit tbl_Inv_MeasurementUnit { get; set; }
+
+        [Display(Name = "Result Value")]
+        public double? ResultValue { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Result Remarks")]
+        public string ResultRemarks { get; set; }
+
+        [Required]
+        public bool IsPrintOnCOA { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+    }
+
+    [Table("tbl_Qc_SampleProcessBPR_QcTest")]
+    public class tbl_Qc_SampleProcessBPR_QcTest
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_SampleProcessBPR))]
+        public int FK_tbl_Qc_SampleProcessBPR_ID { get; set; }
+        public virtual tbl_Qc_SampleProcessBPR tbl_Qc_SampleProcessBPR { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_Test))]
+        public int FK_tbl_Qc_Test_ID { get; set; }
+        public virtual tbl_Qc_Test tbl_Qc_Test { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Test Description")]
+        public string TestDescription { get; set; }
+
+        [MaxLength(250)]
+        public string Specification { get; set; }
+
+        [Display(Name = "Range From")]
+        public double? RangeFrom { get; set; }
+
+        [Display(Name = "Range Till")]
+        public double? RangeTill { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_MeasurementUnit))]
+        public int? FK_tbl_Inv_MeasurementUnit_ID { get; set; }
+        public virtual tbl_Inv_MeasurementUnit tbl_Inv_MeasurementUnit { get; set; }
+
+        [Display(Name = "Result Value")]
+        public double? ResultValue { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Result Remarks")]
+        public string ResultRemarks { get; set; }
+
+        [Required]
+        public bool IsPrintOnCOA { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
 
     }
 
@@ -183,11 +297,11 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.tbl_Qc_Test))]
         public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests { get; set; }
 
-        [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTest.tbl_Qc_Test))]
-        public virtual ICollection<tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTest> tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTests { get; set; }
+        [InverseProperty(nameof(tbl_Qc_SampleProcessBMR_QcTest.tbl_Qc_Test))]
+        public virtual ICollection<tbl_Qc_SampleProcessBMR_QcTest> tbl_Qc_SampleProcessBMR_QcTests { get; set; }
 
-        [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTest.tbl_Qc_Test))]
-        public virtual ICollection<tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTests { get; set; }
+        [InverseProperty(nameof(tbl_Qc_SampleProcessBPR_QcTest.tbl_Qc_Test))]
+        public virtual ICollection<tbl_Qc_SampleProcessBPR_QcTest> tbl_Qc_SampleProcessBPR_QcTests { get; set; }
 
     }
 

@@ -50,11 +50,11 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.tbl_Inv_MeasurementUnit))]
         public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests { get; set; }
 
-        [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTest.tbl_Inv_MeasurementUnit))]
-        public virtual ICollection<tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTest> tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR_QcTests { get; set; }
+        [InverseProperty(nameof(tbl_Qc_SampleProcessBMR_QcTest.tbl_Inv_MeasurementUnit))]
+        public virtual ICollection<tbl_Qc_SampleProcessBMR_QcTest> tbl_Qc_SampleProcessBMR_QcTests { get; set; }
 
-        [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTest.tbl_Inv_MeasurementUnit))]
-        public virtual ICollection<tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTest> tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR_QcTests { get; set; }
+        [InverseProperty(nameof(tbl_Qc_SampleProcessBPR_QcTest.tbl_Inv_MeasurementUnit))]
+        public virtual ICollection<tbl_Qc_SampleProcessBPR_QcTest> tbl_Qc_SampleProcessBPR_QcTests { get; set; }
 
     }
 
