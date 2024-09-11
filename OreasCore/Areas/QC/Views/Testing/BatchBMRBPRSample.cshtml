@@ -1,8 +1,10 @@
 ﻿<MyViewName>
     <a href="" ng-click="
-       DivHideShow(null,null,'BMRBPRSampleCtlr','BMRBPRMasterCtlr', this);
-       DivHideShow(null,null,'BMRSampleCtlr',null, this);
-       DivHideShow(null,null,'BPRSampleCtlr',null, this);
+       DivHideShow(null,null,'BatchBMRBPRSampleCtlr','BatchMasterCtlr', this);
+       DivHideShow(null,null,'BatchBMRSampleCtlr',null, this);
+       DivHideShow(null,null,'BatchBPRSampleCtlr',null, this);
+       DivHideShow(null,null,'BatchBMRSampleQcTestCtlr',null, this);
+       DivHideShow(null,null,'BatchBPRSampleQcTestCtlr',null, this);
                 ">Batch Record</a>
     <MyViewName child="true"> BMR BPR Sample(s)</MyViewName>
 </MyViewName>
@@ -69,22 +71,35 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#BPRSample">
                 <span class="fa fa-boxes" style="font-size:large; color:steelblue;"></span>
-                BPR Process(s)
+                BPR Sample(s)
             </a>
         </li>
     </ul>
 
     <div class="tab-content">
-        <div id="BMRSample" ng-controller="BMRSampleCtlr" class="container tab-pane active" style="border-left: 1px solid lightgray; border-right: 1px solid lightgray;">
-            <div id="BMRSampleCtlr" style="display: none;">
-                @await Html.PartialAsync("BMRBPRSample_Tab1")
+
+        <div id="BMRSample" ng-controller="BatchBMRSampleCtlr" class="container tab-pane active" style="border-left: 1px solid lightgray; border-right: 1px solid lightgray;">
+            <div id="BatchBMRSampleCtlr" style="display: none;">
+                @await Html.PartialAsync("BatchBMRBPRSample_Tab1")
+            </div>
+            <div ng-controller="BatchBMRSampleQcTestCtlr">
+                <div id="BatchBMRSampleQcTestCtlr" style="display: none;">
+                    @await Html.PartialAsync("BatchBMRSampleQcTest")
+                </div>
             </div>
         </div>
-        <div id="BPRSample" ng-controller="BPRSampleCtlr" class="container tab-pane fade" style="border-left: 1px solid lightgray; border-right: 1px solid lightgray;">
-            <div id="BPRSampleCtlr" style="display: none;">
-                @await Html.PartialAsync("BMRBPRSample_Tab2")
+
+        <div id="BPRSample" ng-controller="BatchBPRSampleCtlr" class="container tab-pane fade" style="border-left: 1px solid lightgray; border-right: 1px solid lightgray;">
+            <div id="BatchBPRSampleCtlr" style="display: none;">
+                @await Html.PartialAsync("BatchBMRBPRSample_Tab2")
+            </div>
+            <div ng-controller="BatchBPRSampleQcTestCtlr">
+                <div id="BatchBPRSampleQcTestCtlr" style="display: none;">
+                    @await Html.PartialAsync("BatchBPRSampleQcTest")
+                </div>
             </div>
         </div>
+
     </div>
 
 </div>

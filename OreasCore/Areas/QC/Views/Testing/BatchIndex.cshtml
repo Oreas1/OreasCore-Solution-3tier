@@ -1,12 +1,12 @@
 ﻿@{
-    ViewBag.Title = "BMR BPR Process";
+    ViewBag.Title = "Batch Testing";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-QC/Action/bmrbprprocessqcindex.0.1.js"></script>
+    <script src="~/angular.js/Angular-QC/Testing/batchqcindex.110924.js"></script>
 }
-<div ng-controller="BMRBPRMasterCtlr" class="container">
-    <div id="BMRBPRMasterCtlr">
-        <MyViewName>Batch Record Process</MyViewName>
+<div ng-controller="BatchMasterCtlr" class="container">
+    <div id="BatchMasterCtlr">
+        <MyViewName>Batch Testing</MyViewName>
         <MyAntiforgeryToken></MyAntiforgeryToken>
         @*-----------------------------------this is data list view-----------------------------*@
         <div mycssclass="@MyCSSClassName.Table_Div">
@@ -82,9 +82,9 @@
                     <td>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                             <button ng-click="
-                                    DivHideShow('BMRBPRSampleCtlr',itm,'BMRBPRMasterCtlr','BMRBPRSampleCtlr', null);
-                                    DivHideShow('BMRSampleCtlr',itm,null,'BMRSampleCtlr', null);
-                                    DivHideShow('BPRSampleCtlr',itm,null,'BPRSampleCtlr', null);
+                                    DivHideShow('BatchBMRBPRSampleCtlr',itm,'BatchMasterCtlr','BatchBMRBPRSampleCtlr', null);
+                                    DivHideShow('BatchBMRSampleCtlr',itm,null,'BatchBMRSampleCtlr', null);
+                                    DivHideShow('BatchBPRSampleCtlr',itm,null,'BatchBPRSampleCtlr', null);
                                     "
                                     mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Process(s)">
                                 Process(s) <span class="fa fa-gears"></span>
@@ -107,7 +107,7 @@
         </div>
 
         @*-----------------------------------this is search view-----------------------------*@
-        @await Html.PartialAsync("_Filter", "BMRBPRMasterCtlr")
+        @await Html.PartialAsync("_Filter", "BatchMasterCtlr")
         <br />
         <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
         <div style="font-size:x-small;" ng-hide="cautionhide">
@@ -115,9 +115,9 @@
         </div>
     </div>
 
-    <div ng-controller="BMRBPRSampleCtlr">
-        <div id="BMRBPRSampleCtlr" style="display: none;">
-            @await Html.PartialAsync("BMRBPRSample")
+    <div ng-controller="BatchBMRBPRSampleCtlr">
+        <div id="BatchBMRBPRSampleCtlr" style="display: none;">
+            @await Html.PartialAsync("BatchBMRBPRSample")
         </div>
     </div>
 

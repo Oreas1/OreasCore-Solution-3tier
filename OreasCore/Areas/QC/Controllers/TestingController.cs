@@ -26,7 +26,7 @@ namespace OreasCore.Areas.Qc.Controllers
                         Controller = "CompositionMasterCtlr",
                         WildCard =  db2.GetWCLCompositionMaster(),
                         Reports = null,
-                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "Composition"),
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "Composition Testing"),
                         Otherdata = new {
                             MeasurementUnitList = await db3.GetMeasurementUnitListAsync(null,null),
                             QcTestList = await db4.GetQcTestListAsync(null,null)
@@ -82,7 +82,7 @@ namespace OreasCore.Areas.Qc.Controllers
                 );
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public IActionResult CompositionIndex()
         {
             return View();
@@ -91,7 +91,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region Composition Master
 
         [AjaxOnly]
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionMasterLoad([FromServices] ICompositionQcTest db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
@@ -108,7 +108,7 @@ namespace OreasCore.Areas.Qc.Controllers
             return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionMasterGet([FromServices] ICompositionQcTest db, int ID)
         {
             return Json(await db.GetCompositionMaster(ID), new Newtonsoft.Json.JsonSerializerSettings());
@@ -119,7 +119,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region Composition BMRProcess
 
         [AjaxOnly]
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBMRProcessLoad([FromServices] ICompositionQcTest db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
@@ -139,7 +139,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [AjaxOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [MyAuthorization(FormName = "Composition", Operation = "CanPost")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanPost")]
         public async Task<string> CompositionBMRProcessPost([FromServices] ICompositionQcTest db, [FromBody] tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "")
         {
             if (ModelState.IsValid)
@@ -148,7 +148,7 @@ namespace OreasCore.Areas.Qc.Controllers
                 return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBMRProcessGet([FromServices] ICompositionQcTest db, int ID)
         {
             return Json(await db.GetBMRProcess(ID), new Newtonsoft.Json.JsonSerializerSettings());
@@ -159,7 +159,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region Composition BMRProcess QcTest
 
         [AjaxOnly]
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBMRProcessQcTestLoad([FromServices] ICompositionQcTest db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
@@ -179,7 +179,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [AjaxOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [MyAuthorization(FormName = "Composition", Operation = "CanPost")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanPost")]
         public async Task<string> CompositionBMRProcessQcTestPost([FromServices] ICompositionQcTest db, [FromBody] tbl_Pro_CompositionMaster_ProcessBMR_QcTest tbl_Pro_CompositionMaster_ProcessBMR_QcTest, string operation = "")
         {
             if (ModelState.IsValid)
@@ -188,7 +188,7 @@ namespace OreasCore.Areas.Qc.Controllers
                 return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBMRProcessQcTestGet([FromServices] ICompositionQcTest db, int ID)
         {
             return Json(await db.GetBMRProcessQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
@@ -199,7 +199,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region CompositionPackagingMaster
 
         [AjaxOnly]
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionPackagingMasterLoad([FromServices] ICompositionQcTest db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
@@ -216,7 +216,7 @@ namespace OreasCore.Areas.Qc.Controllers
             return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionPackagingMasterGet([FromServices] ICompositionQcTest db, int ID)
         {
             return Json(await db.GetCompositionPackagingMaster(ID), new Newtonsoft.Json.JsonSerializerSettings());
@@ -227,7 +227,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region Composition BPRProcess
 
         [AjaxOnly]
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBPRProcessLoad([FromServices] ICompositionQcTest db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
@@ -247,7 +247,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [AjaxOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [MyAuthorization(FormName = "Composition", Operation = "CanPost")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanPost")]
         public async Task<string> CompositionBPRProcessPost([FromServices] ICompositionQcTest db, [FromBody] tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "")
         {
             if (ModelState.IsValid)
@@ -256,7 +256,7 @@ namespace OreasCore.Areas.Qc.Controllers
                 return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBPRProcessGet([FromServices] ICompositionQcTest db, int ID)
         {
             return Json(await db.GetBPRProcess(ID), new Newtonsoft.Json.JsonSerializerSettings());
@@ -267,7 +267,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region Composition BPRProcess QcTest
 
         [AjaxOnly]
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBPRProcessQcTestLoad([FromServices] ICompositionQcTest db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
@@ -287,7 +287,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [AjaxOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [MyAuthorization(FormName = "Composition", Operation = "CanPost")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanPost")]
         public async Task<string> CompositionBPRProcessQcTestPost([FromServices] ICompositionQcTest db, [FromBody] tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest, string operation = "")
         {
             if (ModelState.IsValid)
@@ -296,10 +296,333 @@ namespace OreasCore.Areas.Qc.Controllers
                 return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
-        [MyAuthorization(FormName = "Composition", Operation = "CanView")]
+        [MyAuthorization(FormName = "Composition Testing", Operation = "CanView")]
         public async Task<IActionResult> CompositionBPRProcessQcTestGet([FromServices] ICompositionQcTest db, int ID)
         {
             return Json(await db.GetBPRProcessQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Batch Qc Testing
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedBatchAsync([FromServices] IAuthorizationScheme db, [FromServices] IQCProcess db2, [FromServices] IQcList db3, [FromServices] IProductionList db4, [FromServices] IInventoryList db5)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BatchMasterCtlr",
+                        WildCard =  db2.GetWCLBatchRecordMaster(),
+                        LoadByCard = db2.GetWCLBBatchRecordMaster(),
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "Batch Testing"),
+                        Otherdata = new {
+                            ActionList = await db3.GetActionTypeListAsync(null,null),
+                            QcTestList = await db4.GetQcTestListAsync(null,null),
+                            MeasurementUnitList = await db5.GetMeasurementUnitListAsync(null,null)
+                        }
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BatchBMRSampleCtlr",
+                        WildCard =  db2.GetWCLBMRSample(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BatchBPRSampleCtlr",
+                        WildCard =  db2.GetWCLBPRSample(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BatchBMRSampleQcTestCtlr",
+                        WildCard =  db2.GetWCLBMRSampleQcTest(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "BatchBPRSampleQcTestCtlr",
+                        WildCard =  db2.GetWCLBPRSampleQcTest(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public IActionResult BatchIndex()
+        {
+            return View();
+        }
+
+        #region BatchMaster
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchMasterLoad([FromServices] IQCProcess db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBatchRecordMaster(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region BatchBMRSample
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBMRSampleLoad([FromServices] IQCProcess db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBMRSample(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchBMRSamplePost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBMR tbl_Qc_SampleProcessBMR, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBMRSample(tbl_Qc_SampleProcessBMR, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBMRSampleGet([FromServices] IQCProcess db, int ID)
+        {
+            return Json(await db.GetBMRSample(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region BatchBPRSample
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBPRSampleLoad([FromServices] IQCProcess db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBPRSample(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchBPRSamplePost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBPR tbl_Qc_SampleProcessBPR, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBPRSample(tbl_Qc_SampleProcessBPR, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBPRSampleGet([FromServices] IQCProcess db, int ID)
+        {
+            return Json(await db.GetBPRSample(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region BatchBMRSample QcTest
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBMRSampleQcTestLoad([FromServices] IQCProcess db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBMRSampleQcTest(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchBMRSampleQcTestPost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBMR_QcTest tbl_Qc_SampleProcessBMR_QcTest, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBMRSampleQcTest(tbl_Qc_SampleProcessBMR_QcTest, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBMRSampleQcTestGet([FromServices] IQCProcess db, int ID)
+        {
+            return Json(await db.GetBMRSampleQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region BatchBPRSample QcTest
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBPRSampleQcTestLoad([FromServices] IQCProcess db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadBPRSampleQcTest(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchBPRSampleQcTestPost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBPR_QcTest tbl_Qc_SampleProcessBPR_QcTest, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBPRSampleQcTest(tbl_Qc_SampleProcessBPR_QcTest, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchBPRSampleQcTestGet([FromServices] IQCProcess db, int ID)
+        {
+            return Json(await db.GetBPRSampleQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #endregion
+
+        #region PurchaseNoteAction
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedPurchaseNoteActionAsync([FromServices] IAuthorizationScheme db, [FromServices] IQcPurchaseNote db2, [FromServices] IQcList db3)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "PurchaseNoteActionIndexCtlr",
+                        WildCard = db2.GetWCLQcPurchaseNote(),
+                        LoadByCard = db2.GetWCLBQcPurchaseNote(),
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "PurchaseNote Action"),
+                        Otherdata = new { ActionList = await db3.GetActionTypeListAsync(null,null) }
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
+
+        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanView")]
+        public IActionResult PurchaseNoteActionIndex()
+        {
+            return View();
+        }
+
+        [AjaxOnly]
+        public async Task<IActionResult> PurchaseNoteActionLoad([FromServices] IQcPurchaseNote db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.Load(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad, User.Identity.Name);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanPost")]
+        public async Task<string> PurchaseNoteActionPost([FromServices] IQcPurchaseNote db, [FromBody] tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.Post(tbl_Inv_PurchaseNoteDetail, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanView")]
+        public async Task<IActionResult> PurchaseNoteActionGet([FromServices] IQcPurchaseNote db, int ID)
+        {
+            return Json(await db.Get(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #region Report
+
+        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanViewReport")]
+        public async Task<IActionResult> GetPurchaseNoteActionReport([FromServices] IQcPurchaseNote db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
+        {
+            return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), rn.ToLower().Contains("excel") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf");
         }
 
         #endregion

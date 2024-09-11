@@ -120,6 +120,9 @@
                     <MyButton operation="@MyButtonOperation.AddDetail" ng-hide="itm.FK_tbl_Qc_ActionType_ID != 1 || itm.IsCompleted" ng-click="GetRow(itm.ID,'Add')"></MyButton>
                     <MyButton operation="@MyButtonOperation.Edit" ng-hide="itm.FK_tbl_Qc_ActionType_ID == 1  || itm.IsCompleted" ng-click="GetRow(itm.ID,'Edit')"></MyButton>
                 </div>
+                <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                    <button ng-click="itm['MasterObject']=MasterObject; DivHideShow('BatchBMRSampleQcTestCtlr',itm,'BatchBMRSampleCtlr','BatchBMRSampleQcTestCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Testing">Tests <span class="fa fa-flask-vial"></span></button>
+                </div>
             </td>
         </tr>
         <tr>
@@ -137,4 +140,4 @@
     </table>
 </div>
 @*-----------------------------------this is search view-----------------------------*@
-@await Html.PartialAsync("_Filter", "BMRSampleCtlr")
+@await Html.PartialAsync("_Filter", "BatchBMRSampleCtlr")

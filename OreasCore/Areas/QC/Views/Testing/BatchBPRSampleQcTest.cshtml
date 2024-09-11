@@ -1,0 +1,208 @@
+﻿<MyViewName>
+    <a href="" ng-click="DivHideShow(null,null,'BatchBPRSampleQcTestCtlr','BatchBPRSampleCtlr', this);">Sample(s)</a>
+    <MyViewName child="true">Testing</MyViewName>
+</MyViewName>
+<div>
+    <div>
+        <div mycssclass="@MyCSSClassName.Table_DivSubPage">
+            <table mycssclass="@MyCSSClassName.Table_TableSubPage">
+                <tr>
+                    <th style="font-weight:bold">
+                        Procedure
+                    </th>
+                    <th>
+                        Sample Description
+                    </th>
+                    <th>
+                        Sample Date
+                    </th>
+                    <th>
+                        Sample Qty
+                    </th>
+                </tr>
+                <tr>
+                    <td style="font-weight:bold">
+                        {{MasterObject.ProcedureName}}
+                    </td>
+                    <td>
+                        {{MasterObject.ProductName}}
+                    </td>
+                    <td>
+                        {{MasterObject.SampleDate}}
+                    </td>
+                    <td>
+                        {{MasterObject.SampleQty}} [{{MasterObject.MeasurementUnit}}]
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @*-----------------------------------this is entry panel-----------------------------*@
+    <MyButton operation="@MyButtonOperation.Add"></MyButton>
+    <div ng-hide="ng_entryPanelHide">
+        <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+            @Html.Hidden("tbl_Qc_SampleProcessBPR_QcTest.ID", "{{tbl_Qc_SampleProcessBPR_QcTest.ID}}")
+            @Html.Hidden("tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Qc_SampleProcessBPR_ID", "{{tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Qc_SampleProcessBPR_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Test</span>
+                        <select id="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Qc_Test_ID" name="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Qc_Test_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.TestName for x in QcTestList" data-ng-model="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Qc_Test_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Test</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Qc_Test_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Test Description</span>
+                        <input type="text" id="tbl_Qc_SampleProcessBPR_QcTest.TestDescription" name="tbl_Qc_SampleProcessBPR_QcTest.TestDescription" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Qc_SampleProcessBPR_QcTest.TestDescription" ng-model="tbl_Qc_SampleProcessBPR_QcTest.TestDescription" ng-disabled="ng_readOnly" maxlength="100" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.TestDescription" maxlength="100"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Specification</span>
+                        <input type="text" id="tbl_Qc_SampleProcessBPR_QcTest.Specification" name="tbl_Qc_SampleProcessBPR_QcTest.Specification" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Qc_SampleProcessBPR_QcTest.Specification" ng-model="tbl_Qc_SampleProcessBPR_QcTest.Specification" ng-disabled="ng_readOnly" maxlength="250" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.Specification" maxlength="250"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Range From</span>
+                        <input id="tbl_Qc_SampleProcessBPR_QcTest.RangeFrom" name="tbl_Qc_SampleProcessBPR_QcTest.RangeFrom" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Qc_SampleProcessBPR_QcTest.RangeFrom" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.RangeFrom"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Range Till</span>
+                        <input id="tbl_Qc_SampleProcessBPR_QcTest.RangeTill" name="tbl_Qc_SampleProcessBPR_QcTest.RangeTill" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Qc_SampleProcessBPR_QcTest.RangeTill" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.RangeTill"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Unit</span>
+                        <select id="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Inv_MeasurementUnit_ID" name="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Inv_MeasurementUnit_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.MeasurementUnit + ' [' + x.ID + ']' for x in MeasurementUnitList" data-ng-model="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Inv_MeasurementUnit_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Unit</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.FK_tbl_Inv_MeasurementUnit_ID"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Result Value</span>
+                        <input id="tbl_Qc_SampleProcessBPR_QcTest.ResultValue" name="tbl_Qc_SampleProcessBPR_QcTest.ResultValue" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Qc_SampleProcessBPR_QcTest.ResultValue" ng-disabled="ng_readOnly" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.ResultValue"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Result Remarks</span>
+                        <input type="text" id="tbl_Qc_SampleProcessBPR_QcTest.ResultRemarks" name="tbl_Qc_SampleProcessBPR_QcTest.ResultRemarks" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Qc_SampleProcessBPR_QcTest.ResultRemarks" ng-model="tbl_Qc_SampleProcessBPR_QcTest.ResultRemarks" ng-disabled="ng_readOnly" maxlength="100" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.ResultRemarks" maxlength="100"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Print On COA</span>
+                        <select id="tbl_Qc_SampleProcessBPR_QcTest.IsPrintOnCOA" name="tbl_Qc_SampleProcessBPR_QcTest.IsPrintOnCOA" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Qc_SampleProcessBPR_QcTest.IsPrintOnCOA" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qc_SampleProcessBPR_QcTest.IsPrintOnCOA" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBPR_QcTest.CreatedBy}}" ng-model="tbl_Qc_SampleProcessBPR_QcTest.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBPR_QcTest.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Qc_SampleProcessBPR_QcTest.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBPR_QcTest.ModifiedBy}}" ng-model="tbl_Qc_SampleProcessBPR_QcTest.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qc_SampleProcessBPR_QcTest.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Qc_SampleProcessBPR_QcTest.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+        </form>
+    </div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    Test Name
+                </th>
+                <th>
+                    Specification
+                </th>
+                <th>
+                    Range
+                </th>
+                <th>
+                    Result Value
+                </th>
+                <th>
+                    Result Remarks
+                </th>
+                <th>
+                    Print On COA
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    {{itm.FK_tbl_Qc_Test_IDName}}<br />
+                    <span style="font-size:xx-small">{{itm.TestDescription}}</span>
+                </td>
+                <td>
+                    {{itm.Specification}}
+                </td>
+                <td>
+                    {{itm.RangeFrom}}-{{itm.RangeTill}} {{itm.FK_tbl_Inv_MeasurementUnit_IDName}}
+                </td>
+                <td>
+                    {{itm.ResultValue}}
+                </td>
+                <td>
+                    {{itm.ResultRemarks}}
+                </td>
+                <td>
+                    {{itm.IsPrintOnCOA ? 'Yes' : 'No'}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "BatchBPRSampleQcTestCtlr")
+</div>
