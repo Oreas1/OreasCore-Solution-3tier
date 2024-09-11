@@ -6,6 +6,9 @@ using OreasServices;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Http;
+using OfficeOpenXml;
+using System.IO;
 
 namespace OreasCore.Areas.Qc.Controllers
 {
@@ -551,6 +554,109 @@ namespace OreasCore.Areas.Qc.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region ProductRegistration QcTest For PN
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedProductRegistrationPNQcTestAsync([FromServices] IAuthorizationScheme db, [FromServices] IProductRegistrationQcTestForPN db2, [FromServices] IInventoryList db3, [FromServices] IProductionList db4)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "ProductRegistrationPNQcTestCtlr",
+                        WildCard = db2.GetWCLProductRegistration(),
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "Product Registration PN QcTest"),
+                        Otherdata = new {
+                            MeasurementUnitList = await db3.GetMeasurementUnitListAsync(null,null),
+                            QcTestList = await db4.GetQcTestListAsync(null,null)
+                        }
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "ProductRegistrationPNQcTestDetailCtlr",
+                        WildCard = db2.GetWCLProductRegistrationPNQcTest(),
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
+
+        [MyAuthorization(FormName = "Product Registration PN QcTest", Operation = "CanView")]
+        public IActionResult ProductRegistrationPNQcTestIndex()
+        {
+            return View();
+        }
+
+        #region ProductRegistrationPNQcTest 
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Product Registration PN QcTest", Operation = "CanView")]
+        public async Task<IActionResult> ProductRegistrationPNQcTestLoad([FromServices] IProductRegistrationQcTestForPN db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadProductRegistration(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad, User.Identity.Name);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region ProductRegistrationPNQcTest Detail
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Product Registration PN QcTest", Operation = "CanView")]
+        public async Task<IActionResult> ProductRegistrationPNQcTestDetailLoad([FromServices] IProductRegistrationQcTestForPN db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadProductRegistrationPNQcTest(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Product Registration PN QcTest", Operation = "CanPost")]
+        public async Task<string> ProductRegistrationPNQcTestDetailPost([FromServices] IProductRegistrationQcTestForPN db, [FromBody] tbl_Inv_ProductRegistrationDetail_PNQcTest tbl_Inv_ProductRegistrationDetail_PNQcTest, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostProductRegistrationPNQcTest(tbl_Inv_ProductRegistrationDetail_PNQcTest, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Product Registration PN QcTest", Operation = "CanView")]
+        public async Task<IActionResult> ProductRegistrationPNQcTestDetailGet([FromServices] IProductRegistrationQcTestForPN db, int ID)
+        {
+            return Json(await db.GetProductRegistrationPNQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+
+        #endregion        
 
         #endregion
 

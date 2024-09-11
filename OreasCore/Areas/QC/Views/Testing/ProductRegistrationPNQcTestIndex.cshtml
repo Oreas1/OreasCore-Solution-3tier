@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Product Registration PN QcTest";
+}
+@section Scripts {
+    <script src="~/angular.js/Angular-QC/Testing/productregistrationpnqctestindex.110924.js"></script>
+}
+<div ng-controller="ProductRegistrationPNQcTestCtlr" class="container">
+    <div id="ProductRegistrationPNQcTestCtlr">
+        <MyViewName>Product Registration PN QcTest</MyViewName>
+        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Product Type
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Unit
+                    </th>
+                    <th>
+                        Product Code
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        {{itm.ProductName}}
+                    </td>
+                    <td>
+                        {{itm.ProductType}}
+                    </td>
+                    <td>
+                        {{itm.CategoryName}}
+                    </td>
+                    <td>
+                        {{itm.MeasurementUnit}}
+                    </td>
+                    <td>
+                        {{itm.ProductCode}}
+                    </td>                   
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('ProductRegistrationPNQcTestDetailCtlr',itm,'ProductRegistrationPNQcTestCtlr','ProductRegistrationPNQcTestDetailCtlr', null);"  mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Qc Test for Purchase Note">Purchse Note Test(s) <span class="fa fa-flask-vial"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "ProductRegistrationPNQcTestCtlr")
+        <br />
+        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
+        <div style="font-size:x-small;" ng-hide="cautionhide">
+            <p>1. Any changes cannot create impact on previous receivings</p>
+        </div>
+    </div>
+
+    <div ng-controller="ProductRegistrationPNQcTestDetailCtlr">
+        <div id="ProductRegistrationPNQcTestDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("ProductRegistrationPNQcTestDetail")
+        </div>
+    </div>
+
+</div>
+
+
+
+

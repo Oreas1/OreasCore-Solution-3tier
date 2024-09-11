@@ -301,6 +301,7 @@ namespace OreasServices
         public DbSet<tbl_Inv_WareHouseDetail> tbl_Inv_WareHouseDetails { get; set; }
         public DbSet<tbl_Inv_ProductRegistrationMaster> tbl_Inv_ProductRegistrationMasters { get; set; }
         public DbSet<tbl_Inv_ProductRegistrationDetail> tbl_Inv_ProductRegistrationDetails { get; set; }
+        public DbSet<tbl_Inv_ProductRegistrationDetail_PNQcTest> tbl_Inv_ProductRegistrationDetail_PNQcTests { get; set; }
         public DbSet<tbl_Inv_Ledger> tbl_Inv_Ledgers { get; set; }        
         public DbSet<tbl_Inv_PurchaseNoteMaster> tbl_Inv_PurchaseNoteMasters { get; set; }
         public DbSet<tbl_Inv_PurchaseNoteDetail> tbl_Inv_PurchaseNoteDetails { get; set; }

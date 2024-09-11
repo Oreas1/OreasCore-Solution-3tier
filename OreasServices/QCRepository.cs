@@ -68,6 +68,192 @@ namespace OreasServices
                               }).Take(5).ToListAsync();
         }
     }
+    public class ProductRegistrationQcTestForPNRepository : IProductRegistrationQcTestForPN
+    {
+        private readonly OreasDbContext db;
+
+        public ProductRegistrationQcTestForPNRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+
+        #region ProductRegistration
+        public object GetWCLProductRegistration()
+        {
+            return new[]
+            {
+                new { n = "by Product Name", v = "byProductName" }, new { n = "by Product Code", v = "byProductCode" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadProductRegistration(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "")
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Inv_ProductRegistrationDetails
+                                      .Where(w => w.tbl_Inv_ProductType_Category.tbl_Inv_WareHouseDetails
+                                                   .Any(x =>
+                                                        x.tbl_Inv_WareHouseMaster.AspNetOreasAuthorizationScheme_WareHouses
+                                                        .Any(y => y.AspNetOreasAuthorizationScheme.ApplicationUsers
+                                                        .Count(c => c.UserName == userName) > 0))
+                                            )
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byProductCode" && w.ProductCode.ToLower() == FilterValueByText.ToLower()
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Inv_ProductRegistrationDetails
+                                        .Where(w => w.tbl_Inv_ProductType_Category.tbl_Inv_WareHouseDetails
+                                                   .Any(x =>
+                                                        x.tbl_Inv_WareHouseMaster.AspNetOreasAuthorizationScheme_WareHouses
+                                                        .Any(y => y.AspNetOreasAuthorizationScheme.ApplicationUsers
+                                                        .Count(c => c.UserName == userName) > 0))
+                                            )
+                                      .Where(w =>
+                                            string.IsNullOrEmpty(FilterValueByText)
+                                            ||
+                                            FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                            ||
+                                            FilterByText == "byProductCode" && w.ProductCode.ToLower() == FilterValueByText.ToLower()
+                                          )
+                                      .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.tbl_Inv_ProductRegistrationMaster.ProductName,
+                          o.tbl_Inv_ProductType_Category.tbl_Inv_ProductType.ProductType,
+                          o.tbl_Inv_ProductType_Category.CategoryName,
+                          o.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.ProductCode,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+
+        #endregion
+
+        #region ProductRegistrationDetail QcTest For Purchase Note
+        public async Task<object> GetProductRegistrationPNQcTest(int id)
+        {
+            var qry = from o in await db.tbl_Inv_ProductRegistrationDetail_PNQcTests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLProductRegistrationPNQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadProductRegistrationPNQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Inv_ProductRegistrationDetail_PNQcTests
+                                               .Where(w => w.FK_tbl_Inv_ProductRegistrationDetail_ID == MasterID)
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Inv_ProductRegistrationDetail_PNQcTests
+                                  .Where(w => w.FK_tbl_Inv_ProductRegistrationDetail_ID == MasterID)
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostProductRegistrationPNQcTest(tbl_Inv_ProductRegistrationDetail_PNQcTest tbl_Inv_ProductRegistrationDetail_PNQcTest, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Inv_ProductRegistrationDetail_PNQcTest.CreatedBy = userName;
+                tbl_Inv_ProductRegistrationDetail_PNQcTest.CreatedDate = DateTime.Now;
+                db.tbl_Inv_ProductRegistrationDetail_PNQcTests.Add(tbl_Inv_ProductRegistrationDetail_PNQcTest);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Inv_ProductRegistrationDetail_PNQcTest.ModifiedBy = userName;
+                tbl_Inv_ProductRegistrationDetail_PNQcTest.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Inv_ProductRegistrationDetail_PNQcTest).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Inv_ProductRegistrationDetail_PNQcTests.Remove(db.tbl_Inv_ProductRegistrationDetail_PNQcTests.Find(tbl_Inv_ProductRegistrationDetail_PNQcTest.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+        #endregion      
+
+    }
     public class QcPurchaseNoteRepository : IQcPurchaseNote
     {
         private readonly OreasDbContext db;

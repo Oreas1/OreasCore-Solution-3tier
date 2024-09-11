@@ -303,6 +303,9 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Qc_SampleProcessBPR_QcTest.tbl_Qc_Test))]
         public virtual ICollection<tbl_Qc_SampleProcessBPR_QcTest> tbl_Qc_SampleProcessBPR_QcTests { get; set; }
 
+        [InverseProperty(nameof(tbl_Inv_ProductRegistrationDetail_PNQcTest.tbl_Qc_Test))]
+        public virtual ICollection<tbl_Inv_ProductRegistrationDetail_PNQcTest> tbl_Inv_ProductRegistrationDetail_PNQcTests { get; set; }
+
     }
 
 }

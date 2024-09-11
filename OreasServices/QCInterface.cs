@@ -11,6 +11,15 @@ namespace OreasServices
         Task<object> GetActionTypeListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetQcLabListAsync(string FilterByText = null, string FilterValueByText = null);
     }
+    public interface IProductRegistrationQcTestForPN
+    {
+        Task<object> GetProductRegistrationPNQcTest(int id);
+        object GetWCLProductRegistrationPNQcTest();
+        object GetWCLProductRegistration();
+        Task<PagedData<object>> LoadProductRegistrationPNQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<PagedData<object>> LoadProductRegistration(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "");
+        Task<string> PostProductRegistrationPNQcTest(tbl_Inv_ProductRegistrationDetail_PNQcTest tbl_Inv_ProductRegistrationDetail_PNQcTest, string operation = "", string userName = "");
+    }
     public interface IQcPurchaseNote
     {
         Task<object> Get(int id);
