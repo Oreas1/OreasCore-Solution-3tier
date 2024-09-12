@@ -16,6 +16,9 @@
                         Product Name
                     </th>
                     <th>
+                        Product Code
+                    </th>
+                    <th>
                         Product Type
                     </th>
                     <th>
@@ -25,13 +28,16 @@
                         Unit
                     </th>
                     <th>
-                        Product Code
+                        Total Test(s)
                     </th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="itm in pageddata.Data">
                     <td>
                         {{itm.ProductName}}
+                    </td>
+                    <td>
+                        {{itm.ProductCode}}
                     </td>
                     <td>
                         {{itm.ProductType}}
@@ -43,17 +49,18 @@
                         {{itm.MeasurementUnit}}
                     </td>
                     <td>
-                        {{itm.ProductCode}}
-                    </td>                   
+                        {{itm.TotalTests}}
+                    </td>
                     <td>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
-                            <button ng-click="DivHideShow('ProductRegistrationPNQcTestDetailCtlr',itm,'ProductRegistrationPNQcTestCtlr','ProductRegistrationPNQcTestDetailCtlr', null);"  mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Qc Test for Purchase Note">Purchse Note Test(s) <span class="fa fa-flask-vial"></span>
+                            <button ng-click="DivHideShow('ProductRegistrationPNQcTestDetailCtlr',itm,'ProductRegistrationPNQcTestCtlr','ProductRegistrationPNQcTestDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Qc Test for Purchase Note">
+                                Purchse Note Test(s) <span class="fa fa-flask-vial"></span>
                             </button>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

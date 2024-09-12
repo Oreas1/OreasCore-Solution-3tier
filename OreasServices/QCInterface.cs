@@ -10,7 +10,9 @@ namespace OreasServices
     {
         Task<object> GetActionTypeListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetQcLabListAsync(string FilterByText = null, string FilterValueByText = null);
+        Task<object> GetQcTestListAsync(string FilterByText = null, string FilterValueByText = null);
     }
+
     public interface IProductRegistrationQcTestForPN
     {
         Task<object> GetProductRegistrationPNQcTest(int id);
@@ -22,16 +24,18 @@ namespace OreasServices
     }
     public interface IQcPurchaseNote
     {
-        Task<object> Get(int id);
-        object GetWCLQcPurchaseNote();
-        object GetWCLBQcPurchaseNote();
-        Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "");
-        Task<string> Post(tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "", string userName = "");
-
-        #region Report     
-        List<ReportCallingModel> GetRLQcQaPurchaseNote();
         Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
-        #endregion
+        Task<object> GetPurchaseNote(int id);
+        Task<object> GetPurchaseNoteQcTest(int id);
+        List<ReportCallingModel> GetRLQcQaPurchaseNote();
+        object GetWCLBQcPurchaseNote();
+        object GetWCLPurchaseNoteQcTest();
+        object GetWCLQcPurchaseNote();
+        Task<PagedData<object>> LoadPurchaseNote(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "");
+        Task<PagedData<object>> LoadPurchaseNoteQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> PostPurchaseNote(tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "", string userName = "");
+        Task<string> PostPurchaseNoteQcTest(tbl_Qc_PurchaseNoteDetail_QcTest tbl_Qc_PurchaseNoteDetail_QcTest, string operation = "", string userName = "");
+        Task<string> PostPurchaseNoteQcTestReplicationFromStandard(int MasterID, string userName = "");
     }
     public interface IQcDashboard
     {

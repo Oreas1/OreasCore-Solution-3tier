@@ -67,6 +67,26 @@ namespace OreasServices
                                   a.Prefix
                               }).Take(5).ToListAsync();
         }
+        public async Task<object> GetQcTestListAsync(string FilterByText = null, string FilterValueByText = null)
+        {
+            if (string.IsNullOrEmpty(FilterByText))
+                return await (from a in db.tbl_Qc_Tests
+                              select new
+                              {
+                                  a.ID,
+                                  a.TestName
+                              }).ToListAsync();
+            else
+                return await (from a in db.tbl_Qc_Tests
+                                        .Where(w => string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byName" && w.TestName.ToLower().Contains(FilterValueByText.ToLower()))
+                              select new
+                              {
+                                  a.ID,
+                                  a.TestName
+                              }).Take(5).ToListAsync();
+        }
     }
     public class ProductRegistrationQcTestForPNRepository : IProductRegistrationQcTestForPN
     {
@@ -137,7 +157,8 @@ namespace OreasServices
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalTests = o.tbl_Inv_ProductRegistrationDetail_PNQcTests.Count()
                       };
 
             pageddata.Data = qry;
@@ -261,7 +282,9 @@ namespace OreasServices
         {
             this.db = oreasDbContext;
         }
-        public async Task<object> Get(int id)
+
+        #region PurchaseNote
+        public async Task<object> GetPurchaseNote(int id)
         {
             var qry = from o in await db.tbl_Inv_PurchaseNoteDetails.Where(w => w.ID == id).ToListAsync()
                       select new
@@ -313,7 +336,7 @@ namespace OreasServices
                 new { n = "by Rejected", v = "byRejected" }, new { n = "by Approved", v = "byApproved" }
             }.ToList();
         }
-        public async Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "")
+        public async Task<PagedData<object>> LoadPurchaseNote(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "")
         {
             PagedData<object> pageddata = new PagedData<object>();
 
@@ -388,7 +411,7 @@ namespace OreasServices
                           o.tbl_Inv_PurchaseNoteMaster.tbl_Ac_ChartOfAccounts.AccountName,
                           o.FK_tbl_Inv_ProductRegistrationDetail_ID,
                           FK_tbl_Inv_ProductRegistrationDetail_IDName = o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName,
-                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit,                          
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.Quantity,
                           o.ReferenceNo,
                           o.FK_tbl_Qc_ActionType_ID,
@@ -401,7 +424,8 @@ namespace OreasServices
                           ModifiedDateQcQa = o.ModifiedDateQcQa.HasValue ? o.ModifiedDateQcQa.Value.ToString("dd-MMM-yyyy") : "",
                           o.IsProcessed,
                           o.IsSupervised,
-                          o.Remarks
+                          o.Remarks,
+                          TotalTests = o.tbl_Qc_PurchaseNoteDetail_QcTests.Count()
                       };
 
 
@@ -409,9 +433,9 @@ namespace OreasServices
 
             return pageddata;
         }
-        public async Task<string> Post(tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "", string userName = "")
+        public async Task<string> PostPurchaseNote(tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "", string userName = "")
         {
-  
+
             SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
             SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
             SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
@@ -449,12 +473,12 @@ namespace OreasServices
                 CRUD_Type, CRUD_Msg, CRUD_ID,
                 tbl_Inv_PurchaseNoteDetail.ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseNoteMaster_ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_ID,
                 tbl_Inv_PurchaseNoteDetail.Quantity, tbl_Inv_PurchaseNoteDetail.Rate, tbl_Inv_PurchaseNoteDetail.GrossAmount,
-                tbl_Inv_PurchaseNoteDetail.GSTPercentage, tbl_Inv_PurchaseNoteDetail.GSTAmount,tbl_Inv_PurchaseNoteDetail.FreightIn, tbl_Inv_PurchaseNoteDetail.DiscountAmount, tbl_Inv_PurchaseNoteDetail.CostAmount,
+                tbl_Inv_PurchaseNoteDetail.GSTPercentage, tbl_Inv_PurchaseNoteDetail.GSTAmount, tbl_Inv_PurchaseNoteDetail.FreightIn, tbl_Inv_PurchaseNoteDetail.DiscountAmount, tbl_Inv_PurchaseNoteDetail.CostAmount,
                 tbl_Inv_PurchaseNoteDetail.WHTPercentage, tbl_Inv_PurchaseNoteDetail.WHTAmount, tbl_Inv_PurchaseNoteDetail.NetAmount,
                 tbl_Inv_PurchaseNoteDetail.MfgBatchNo, tbl_Inv_PurchaseNoteDetail.MfgDate, tbl_Inv_PurchaseNoteDetail.ExpiryDate, tbl_Inv_PurchaseNoteDetail.Remarks, tbl_Inv_PurchaseNoteDetail.ReferenceNo, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseOrderDetail_ID,
                 tbl_Inv_PurchaseNoteDetail.NoOfContainers, tbl_Inv_PurchaseNoteDetail.PotencyPercentage,
                 tbl_Inv_PurchaseNoteDetail.CreatedBy, tbl_Inv_PurchaseNoteDetail.CreatedDate, tbl_Inv_PurchaseNoteDetail.ModifiedBy, tbl_Inv_PurchaseNoteDetail.ModifiedDate,
-                tbl_Inv_PurchaseNoteDetail.FK_tbl_Qc_ActionType_ID, tbl_Inv_PurchaseNoteDetail.QuantitySample,tbl_Inv_PurchaseNoteDetail.RetestDate,
+                tbl_Inv_PurchaseNoteDetail.FK_tbl_Qc_ActionType_ID, tbl_Inv_PurchaseNoteDetail.QuantitySample, tbl_Inv_PurchaseNoteDetail.RetestDate,
                 tbl_Inv_PurchaseNoteDetail.CreatedByQcQa, tbl_Inv_PurchaseNoteDetail.CreatedDateQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedByQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedDateQcQa
                 );
 
@@ -464,10 +488,173 @@ namespace OreasServices
                 return (string)CRUD_Msg.Value;
         }
 
+        #endregion
+
+        #region PurchaseNote QcTest
+        public async Task<object> GetPurchaseNoteQcTest(int id)
+        {
+            var qry = from o in await db.tbl_Qc_PurchaseNoteDetail_QcTests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Inv_PurchaseNoteDetail_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.ResultValue,
+                          o.ResultRemarks,
+                          o.IsPrintOnCOA,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLPurchaseNoteQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadPurchaseNoteQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Qc_PurchaseNoteDetail_QcTests
+                                      .Where(w => w.FK_tbl_Inv_PurchaseNoteDetail_ID == MasterID)
+                                      .Where(w =>
+                                                    string.IsNullOrEmpty(FilterValueByText)
+                                                    ||
+                                                    FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                    )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Qc_PurchaseNoteDetail_QcTests
+                                        .Where(w => w.FK_tbl_Inv_PurchaseNoteDetail_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Inv_PurchaseNoteDetail_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.ResultValue,
+                          o.ResultRemarks,
+                          o.IsPrintOnCOA,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostPurchaseNoteQcTest(tbl_Qc_PurchaseNoteDetail_QcTest tbl_Qc_PurchaseNoteDetail_QcTest, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Qc_PurchaseNoteDetail_QcTest.CreatedBy = userName;
+                tbl_Qc_PurchaseNoteDetail_QcTest.CreatedDate = DateTime.Now;
+                db.tbl_Qc_PurchaseNoteDetail_QcTests.Add(tbl_Qc_PurchaseNoteDetail_QcTest);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Qc_PurchaseNoteDetail_QcTest.ModifiedBy = userName;
+                tbl_Qc_PurchaseNoteDetail_QcTest.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Qc_PurchaseNoteDetail_QcTest).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Qc_PurchaseNoteDetail_QcTests.Remove(db.tbl_Qc_PurchaseNoteDetail_QcTests.Find(tbl_Qc_PurchaseNoteDetail_QcTest.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+        public async Task<string> PostPurchaseNoteQcTestReplicationFromStandard(int MasterID, string userName = "")
+        {
+            var PurchaseNoteDetail = await db.tbl_Inv_PurchaseNoteDetails.Where(w=> w.ID == MasterID).FirstOrDefaultAsync();
+
+            if(db.tbl_Qc_PurchaseNoteDetail_QcTests.Count(c=> c.FK_tbl_Inv_PurchaseNoteDetail_ID == MasterID) > 0)
+                return "Replication Aborted! because the test list has already been entered";
+
+            if (PurchaseNoteDetail != null)
+            {
+                var StandardQcTestList = await db.tbl_Inv_ProductRegistrationDetail_PNQcTests
+                                           .Where(w => w.FK_tbl_Inv_ProductRegistrationDetail_ID == PurchaseNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_ID)
+                                           .ToListAsync();
+
+                DateTime currentDateTime = DateTime.Now;
+
+                var qcTestList = StandardQcTestList.Select(s => new tbl_Qc_PurchaseNoteDetail_QcTest
+                {
+                    ID = 0,
+                    FK_tbl_Inv_PurchaseNoteDetail_ID = MasterID,
+                    FK_tbl_Qc_Test_ID = s.FK_tbl_Qc_Test_ID,
+                    TestDescription = s.TestDescription,
+                    Specification = s.Specification,
+                    RangeFrom = s.RangeFrom,
+                    RangeTill = s.RangeTill,
+                    FK_tbl_Inv_MeasurementUnit_ID = s.FK_tbl_Inv_MeasurementUnit_ID,
+                    ResultValue = 0,
+                    ResultRemarks = null,
+                    IsPrintOnCOA = true,
+                    CreatedBy = userName,
+                    CreatedDate = currentDateTime,
+                    ModifiedBy = null,
+                    ModifiedDate = null                    
+                }).ToList();
+
+                if(qcTestList.Count == 0)
+                    return "No Test Found in Product Registration for Replication";
+
+                await db.tbl_Qc_PurchaseNoteDetail_QcTests.AddRangeAsync(qcTestList);
+                await db.SaveChangesAsync();
+
+                return "OK";
+            }
+            else
+            {
+                return "Purchae Note Record Not Found";
+            }            
+            
+        }
+
+        #endregion
+
         #region Report   
         public List<ReportCallingModel> GetRLQcQaPurchaseNote()
         {
-            return new List<ReportCallingModel>() {                
+            return new List<ReportCallingModel>()
+            {
                 //new ReportCallingModel()
                 //{
                 //    ReportType= EnumReportType.Periodic,
@@ -554,7 +741,7 @@ namespace OreasServices
                 {
                     while (sqlReader.Read())
                     {
-                        pdftableMaster.AddCell(new Cell(1,4).Add(new Paragraph().Add(sqlReader["ActionName"].ToString())).SetBold().SetFontSize(10).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add(sqlReader["ActionName"].ToString())).SetBold().SetFontSize(10).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Reference No")).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
@@ -566,27 +753,27 @@ namespace OreasServices
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["DocDate"]).ToString("dd-MMM-yy"))).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("By")).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("\n\n" + "____________________\n" + sqlReader["CreatedBy"].ToString()  )).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("\n\n" + "____________________\n" + sqlReader["CreatedBy"].ToString())).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                         pdftable.AddCell(new Cell().Add(pdftableMaster).SetBorder(Border.NO_BORDER));
                         pdftable.AddCell(new Cell().Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER));
                         pdftable.AddCell(new Cell().Add(pdftableMaster).SetBorder(Border.NO_BORDER));
 
-                        pdftable.AddCell(new Cell(1,3).Add(new Paragraph().Add("\n\n")).SetBorder(Border.NO_BORDER));
+                        pdftable.AddCell(new Cell(1, 3).Add(new Paragraph().Add("\n\n")).SetBorder(Border.NO_BORDER));
 
                         pdftable.AddCell(new Cell().Add(pdftableMaster).SetBorder(Border.NO_BORDER));
                         pdftable.AddCell(new Cell().Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER));
                         pdftable.AddCell(new Cell().Add(pdftableMaster).SetBorder(Border.NO_BORDER));
                     }
                 }
-                
+
                 page.InsertContent(new Cell().Add(pdftable).SetBorder(Border.NO_BORDER));
 
             }
 
             return page.FinishToGetBytes();
         }
-              
+
 
         #endregion
     }
@@ -833,7 +1020,8 @@ namespace OreasServices
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          p.IsCompleted
+                          p.IsCompleted,
+                          TotalTests = o.tbl_Qc_SampleProcessBMR_QcTests.Count()
                       };
 
             pageddata.Data = qry;
@@ -948,7 +1136,8 @@ namespace OreasServices
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          p.IsCompleted
+                          p.IsCompleted,
+                          TotalTests = o.tbl_Qc_SampleProcessBPR_QcTests.Count()
                       };
 
             pageddata.Data = qry;
@@ -1568,7 +1757,8 @@ namespace OreasServices
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalTests = o.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Count()
                       };
 
             pageddata.Data = qry;
@@ -1856,7 +2046,8 @@ namespace OreasServices
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalTests = o.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Count()
                       };
 
             pageddata.Data = qry;

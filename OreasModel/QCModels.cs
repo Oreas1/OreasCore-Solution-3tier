@@ -235,6 +235,61 @@ namespace OreasModel
 
     }
 
+    [Table("tbl_Qc_PurchaseNoteDetail_QcTest")]
+    public class tbl_Qc_PurchaseNoteDetail_QcTest
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Inv_PurchaseNoteDetail))]
+        public int FK_tbl_Inv_PurchaseNoteDetail_ID { get; set; }
+        public virtual tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_Test))]
+        public int FK_tbl_Qc_Test_ID { get; set; }
+        public virtual tbl_Qc_Test tbl_Qc_Test { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Test Description")]
+        public string TestDescription { get; set; }
+
+        [MaxLength(250)]
+        public string Specification { get; set; }
+
+        [Display(Name = "Range From")]
+        public double? RangeFrom { get; set; }
+
+        [Display(Name = "Range Till")]
+        public double? RangeTill { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_MeasurementUnit))]
+        public int? FK_tbl_Inv_MeasurementUnit_ID { get; set; }
+        public virtual tbl_Inv_MeasurementUnit tbl_Inv_MeasurementUnit { get; set; }
+
+        [Display(Name = "Result Value")]
+        public double? ResultValue { get; set; }
+
+        [MaxLength(100)]
+        [Display(Name = "Result Remarks")]
+        public string ResultRemarks { get; set; }
+
+        [Required]
+        public bool IsPrintOnCOA { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+    }
+
     [Table("tbl_Qc_Lab")]
     public class tbl_Qc_Lab
     {
@@ -305,6 +360,9 @@ namespace OreasModel
 
         [InverseProperty(nameof(tbl_Inv_ProductRegistrationDetail_PNQcTest.tbl_Qc_Test))]
         public virtual ICollection<tbl_Inv_ProductRegistrationDetail_PNQcTest> tbl_Inv_ProductRegistrationDetail_PNQcTests { get; set; }
+
+        [InverseProperty(nameof(tbl_Qc_PurchaseNoteDetail_QcTest.tbl_Qc_Test))]
+        public virtual ICollection<tbl_Qc_PurchaseNoteDetail_QcTest> tbl_Qc_PurchaseNoteDetail_QcTests { get; set; }
 
     }
 

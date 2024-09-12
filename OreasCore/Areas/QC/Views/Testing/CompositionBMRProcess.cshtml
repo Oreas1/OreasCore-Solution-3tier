@@ -121,6 +121,9 @@
                 <th>
                     QA Req
                 </th>
+                <th>
+                    Total Tests
+                </th>
                 <th></th>
             </tr>
             <tr ng-repeat="itm in pageddata.Data">
@@ -134,6 +137,9 @@
                     {{itm.IsQAClearanceBeforeStart ? 'Yes': 'No'}}
                 </td>
                 <td>
+                    {{itm.TotalTests}}
+                </td>
+                <td>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                         <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
                         <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
@@ -145,7 +151,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4">
+                <td colspan="5">
                     <div mycssclass="@MyCSSClassName.Table_NavDiv">
                         <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                         <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

@@ -560,7 +560,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region ProductRegistration QcTest For PN
 
         [MyAuthorization]
-        public async Task<IActionResult> GetInitializedProductRegistrationPNQcTestAsync([FromServices] IAuthorizationScheme db, [FromServices] IProductRegistrationQcTestForPN db2, [FromServices] IInventoryList db3, [FromServices] IProductionList db4)
+        public async Task<IActionResult> GetInitializedProductRegistrationPNQcTestAsync([FromServices] IAuthorizationScheme db, [FromServices] IProductRegistrationQcTestForPN db2, [FromServices] IInventoryList db3, [FromServices] IQcList db4)
         {
             return Json(
                 new List<Init_ViewSetupStructure>()
@@ -660,36 +660,50 @@ namespace OreasCore.Areas.Qc.Controllers
 
         #endregion
 
-        #region PurchaseNoteAction
+        #region PurchaseNote Qc Testing
 
         [MyAuthorization]
-        public async Task<IActionResult> GetInitializedPurchaseNoteActionAsync([FromServices] IAuthorizationScheme db, [FromServices] IQcPurchaseNote db2, [FromServices] IQcList db3)
+        public async Task<IActionResult> GetInitializedPurchaseNoteQcTestAsync([FromServices] IAuthorizationScheme db, [FromServices] IQcPurchaseNote db2, [FromServices] IQcList db3, [FromServices] IInventoryList db4, [FromServices] IQcList db5)
         {
             return Json(
                 new List<Init_ViewSetupStructure>()
                 {
                     new Init_ViewSetupStructure()
                     {
-                        Controller = "PurchaseNoteActionIndexCtlr",
+                        Controller = "PurchaseNoteQcTestCtlr",
                         WildCard = db2.GetWCLQcPurchaseNote(),
                         LoadByCard = db2.GetWCLBQcPurchaseNote(),
                         Reports = null,
-                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "PurchaseNote Action"),
-                        Otherdata = new { ActionList = await db3.GetActionTypeListAsync(null,null) }
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QC", User.Identity.Name, "Purchase Note Testing"),
+                        Otherdata = new { 
+                            ActionList = await db3.GetActionTypeListAsync(null,null),
+                            QcTestList = await db5.GetQcTestListAsync(null,null),
+                            MeasurementUnitList = await db4.GetMeasurementUnitListAsync(null,null)
+                        }
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "PurchaseNoteQcTestDetailCtlr",
+                        WildCard = db2.GetWCLPurchaseNoteQcTest(),
+                        LoadByCard = null,
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
                     }
                 }
                 , new Newtonsoft.Json.JsonSerializerSettings()
                 );
         }
 
-        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanView")]
-        public IActionResult PurchaseNoteActionIndex()
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanView")]
+        public IActionResult PurchaseNoteQcTestIndex()
         {
             return View();
         }
 
+        #region PurchaseNoteQcTest
         [AjaxOnly]
-        public async Task<IActionResult> PurchaseNoteActionLoad([FromServices] IQcPurchaseNote db,
+        public async Task<IActionResult> PurchaseNoteQcTestLoad([FromServices] IQcPurchaseNote db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -697,7 +711,7 @@ namespace OreasCore.Areas.Qc.Controllers
             string FilterByLoad = null)
         {
             PagedData<object> pageddata =
-                await db.Load(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                await db.LoadPurchaseNote(CurrentPage, MasterID, FilterByText, FilterValueByText,
                 FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
                 FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
                 FilterByLoad, User.Identity.Name);
@@ -708,25 +722,80 @@ namespace OreasCore.Areas.Qc.Controllers
         [AjaxOnly]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanPost")]
-        public async Task<string> PurchaseNoteActionPost([FromServices] IQcPurchaseNote db, [FromBody] tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "")
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanPost")]
+        public async Task<string> PurchaseNoteQcTestPost([FromServices] IQcPurchaseNote db, [FromBody] tbl_Inv_PurchaseNoteDetail tbl_Inv_PurchaseNoteDetail, string operation = "")
         {
             if (ModelState.IsValid)
-                return await db.Post(tbl_Inv_PurchaseNoteDetail, operation, User.Identity.Name);
+                return await db.PostPurchaseNote(tbl_Inv_PurchaseNoteDetail, operation, User.Identity.Name);
             else
                 return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
-        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanView")]
-        public async Task<IActionResult> PurchaseNoteActionGet([FromServices] IQcPurchaseNote db, int ID)
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanView")]
+        public async Task<IActionResult> PurchaseNoteQcTestGet([FromServices] IQcPurchaseNote db, int ID)
         {
-            return Json(await db.Get(ID), new Newtonsoft.Json.JsonSerializerSettings());
+            return Json(await db.GetPurchaseNote(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        #endregion
+
+        #region PurchaseNoteQcTest Detail
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanView")]
+        public async Task<IActionResult> PurchaseNoteQcTestDetailLoad([FromServices] IQcPurchaseNote db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadPurchaseNoteQcTest(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanPost")]
+        public async Task<string> PurchaseNoteQcTestDetailPost([FromServices] IQcPurchaseNote db, [FromBody] tbl_Qc_PurchaseNoteDetail_QcTest tbl_Qc_PurchaseNoteDetail_QcTest, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostPurchaseNoteQcTest(tbl_Qc_PurchaseNoteDetail_QcTest, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanView")]
+        public async Task<IActionResult> PurchaseNoteQcTestDetailGet([FromServices] IQcPurchaseNote db, int ID)
+        {
+            return Json(await db.GetPurchaseNoteQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanPost")]
+        public async Task<string> PurchaseNoteQcTestDetailPostReplication([FromServices] IQcPurchaseNote db, int MasterID, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostPurchaseNoteQcTestReplicationFromStandard(MasterID, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+
+        #endregion        
 
         #region Report
 
-        [MyAuthorization(FormName = "PurchaseNote Action", Operation = "CanViewReport")]
-        public async Task<IActionResult> GetPurchaseNoteActionReport([FromServices] IQcPurchaseNote db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
+        [MyAuthorization(FormName = "Purchase Note Testing", Operation = "CanViewReport")]
+        public async Task<IActionResult> GetPurchaseNoteQcTestReport([FromServices] IQcPurchaseNote db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
         {
             return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), rn.ToLower().Contains("excel") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf");
         }

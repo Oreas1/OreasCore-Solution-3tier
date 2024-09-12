@@ -90,6 +90,9 @@
             <th>
                 At
             </th>
+            <th>
+                Total Test(s)
+            </th>
             <th></th>
         </tr>
         <tr ng-repeat="itm in pageddata.Data">
@@ -115,6 +118,9 @@
                 {{itm.ActionDate}}
             </td>
             <td>
+                {{itm.TotalTests}}
+            </td>
+            <td>
                 <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                     <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
                     <MyButton operation="@MyButtonOperation.AddDetail" ng-hide="itm.FK_tbl_Qc_ActionType_ID != 1 || itm.IsCompleted" ng-click="GetRow(itm.ID,'Add')"></MyButton>
@@ -126,7 +132,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="8">
+            <td colspan="9">
                 <div mycssclass="@MyCSSClassName.Table_NavDiv">
                     <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                     <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

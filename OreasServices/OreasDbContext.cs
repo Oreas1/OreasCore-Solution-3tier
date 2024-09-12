@@ -352,7 +352,7 @@ namespace OreasServices
         public DbSet<tbl_Qc_SampleProcessBPR> tbl_Qc_SampleProcessBPRs { get; set; }
         public DbSet<tbl_Qc_SampleProcessBMR_QcTest> tbl_Qc_SampleProcessBMR_QcTests { get; set; }
         public DbSet<tbl_Qc_SampleProcessBPR_QcTest> tbl_Qc_SampleProcessBPR_QcTests { get; set; }
-
+        public DbSet<tbl_Qc_PurchaseNoteDetail_QcTest> tbl_Qc_PurchaseNoteDetail_QcTests { get; set; }
 
         public DbSet<tbl_Qc_Lab> tbl_Qc_Labs { get; set; }
         public DbSet<tbl_Qc_Test> tbl_Qc_Tests { get; set; }

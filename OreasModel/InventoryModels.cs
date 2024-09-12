@@ -59,6 +59,9 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Inv_ProductRegistrationDetail_PNQcTest.tbl_Inv_MeasurementUnit))]
         public virtual ICollection<tbl_Inv_ProductRegistrationDetail_PNQcTest> tbl_Inv_ProductRegistrationDetail_PNQcTests { get; set; }
 
+        [InverseProperty(nameof(tbl_Qc_PurchaseNoteDetail_QcTest.tbl_Inv_MeasurementUnit))]
+        public virtual ICollection<tbl_Qc_PurchaseNoteDetail_QcTest> tbl_Qc_PurchaseNoteDetail_QcTests { get; set; }
+
     }
 
     [Table("tbl_Inv_ProductClassification")]
@@ -897,6 +900,10 @@ namespace OreasModel
 
         [InverseProperty(nameof(tbl_Inv_Ledger.tbl_Inv_PurchaseNoteDetail))]
         public virtual ICollection<tbl_Inv_Ledger> tbl_Inv_Ledgers { get; set; }
+
+        //----------------------Qc Test-----------------------------//
+        [InverseProperty(nameof(tbl_Qc_PurchaseNoteDetail_QcTest.tbl_Inv_PurchaseNoteDetail))]
+        public virtual ICollection<tbl_Qc_PurchaseNoteDetail_QcTest> tbl_Qc_PurchaseNoteDetail_QcTests { get; set; }
 
     }
 
