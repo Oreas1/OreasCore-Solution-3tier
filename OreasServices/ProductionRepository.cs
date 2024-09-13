@@ -1275,26 +1275,40 @@ namespace OreasServices
         }
         public async Task<string> PostBMRProcess(tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "", string userName = "")
         {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
             if (operation == "Save New")
             {
                 tbl_Pro_CompositionMaster_ProcessBMR.CreatedBy = userName;
                 tbl_Pro_CompositionMaster_ProcessBMR.CreatedDate = DateTime.Now;
-                db.tbl_Pro_CompositionMaster_ProcessBMRs.Add(tbl_Pro_CompositionMaster_ProcessBMR);
-                await db.SaveChangesAsync();
+                CRUD_Type.Value = "Insert";
             }
             else if (operation == "Save Update")
             {
                 tbl_Pro_CompositionMaster_ProcessBMR.ModifiedBy = userName;
                 tbl_Pro_CompositionMaster_ProcessBMR.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_CompositionMaster_ProcessBMR).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                CRUD_Type.Value = "Update";
             }
             else if (operation == "Save Delete")
             {
-                db.tbl_Pro_CompositionMaster_ProcessBMRs.Remove(db.tbl_Pro_CompositionMaster_ProcessBMRs.Find(tbl_Pro_CompositionMaster_ProcessBMR.ID));
-                await db.SaveChangesAsync();
+                CRUD_Type.Value = "Delete";
             }
-            return "OK";
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_CompositionMaster_ProcessBMR] 
+               @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+              ,@ID={3},@FK_tbl_Pro_CompositionMaster_ID={4},@FK_tbl_Pro_Procedure_ID={5}
+              ,@FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample={6},@IsQAClearanceBeforeStart={7}
+              ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+              CRUD_Type, CRUD_Msg, CRUD_ID,
+              tbl_Pro_CompositionMaster_ProcessBMR.ID, tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Pro_CompositionMaster_ID, tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Pro_Procedure_ID, 
+              tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample, tbl_Pro_CompositionMaster_ProcessBMR.IsQAClearanceBeforeStart,
+              tbl_Pro_CompositionMaster_ProcessBMR.CreatedBy, tbl_Pro_CompositionMaster_ProcessBMR.CreatedDate, tbl_Pro_CompositionMaster_ProcessBMR.ModifiedBy, tbl_Pro_CompositionMaster_ProcessBMR.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
         }
 
         #endregion
@@ -1377,26 +1391,40 @@ namespace OreasServices
         }
         public async Task<string> PostBPRProcess(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "", string userName = "")
         {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
             if (operation == "Save New")
             {
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedBy = userName;
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedDate = DateTime.Now;
-                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Add(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR);
-                await db.SaveChangesAsync();
+                CRUD_Type.Value = "Insert";
             }
             else if (operation == "Save Update")
             {
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedBy = userName;
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                CRUD_Type.Value = "Update";
             }
             else if (operation == "Save Delete")
             {
-                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Remove(db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Find(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ID));
-                await db.SaveChangesAsync();
+                CRUD_Type.Value = "Delete";
             }
-            return "OK";
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR] 
+               @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+              ,@ID={3},@FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID={4},@FK_tbl_Pro_Procedure_ID={5}
+              ,@FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample={6},@IsQAClearanceBeforeStart={7}
+              ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+              CRUD_Type, CRUD_Msg, CRUD_ID,
+              tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ID, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Pro_Procedure_ID,
+              tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.IsQAClearanceBeforeStart,
+              tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedBy, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedDate, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedBy, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
         }
 
         #endregion      
@@ -3702,7 +3730,7 @@ namespace OreasServices
                                                        ||
                                                        FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
                                                        )
-                                        .OrderByDescending(i => i.FK_tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
                       select new
                       {

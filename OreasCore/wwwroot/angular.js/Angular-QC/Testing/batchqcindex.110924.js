@@ -200,6 +200,28 @@
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
 
+        $scope.Replication = function (id) {
+            var successcallback = function (response) {
+                if (response.data === 'OK') {
+                    $scope.pageNavigation('first');
+                }
+                else {
+                    alert(response.data);
+                }
+            };
+
+            var errorcallback = function (error) {
+                alert(error.data);
+                console.log(error);
+            };
+
+            if (confirm("Are you sure! you want to Fetch Standard Test List") === true) {
+                $http({
+                    method: "POST", url: '/QC/Testing/BatchBMRSampleQcTestPostReplication', async: true, params: { MasterID: id, operation: 'Save New' }, data: null, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
+                }).then(successcallback, errorcallback);
+            }
+
+        };
     })
     .controller("BatchBPRSampleQcTestCtlr", function ($scope, $http) {
         $scope.MasterObject = {};
@@ -248,6 +270,28 @@
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
 
+        $scope.Replication = function (id) {
+            var successcallback = function (response) {
+                if (response.data === 'OK') {
+                    $scope.pageNavigation('first');
+                }
+                else {
+                    alert(response.data);
+                }
+            };
+
+            var errorcallback = function (error) {
+                alert(error.data);
+                console.log(error);
+            };
+
+            if (confirm("Are you sure! you want to Fetch Standard Test List") === true) {
+                $http({
+                    method: "POST", url: '/QC/Testing/BatchBPRSampleQcTestPostReplication', async: true, params: { MasterID: id, operation: 'Save New' }, data: null, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
+                }).then(successcallback, errorcallback);
+            }
+
+        };
     })
     .config(function ($httpProvider) {
         $httpProvider.interceptors.push(http_interceptor_loading);

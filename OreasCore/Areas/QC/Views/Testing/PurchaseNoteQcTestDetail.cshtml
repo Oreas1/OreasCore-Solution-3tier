@@ -209,7 +209,8 @@
                 <td>
                     <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                         <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
-                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                        <MyButton operation="@MyButtonOperation.AddDetail" ng-click="GetRow(itm.ID,'Add')" ng-hide="itm.ResultRemarks.length>0"></MyButton>
+                        <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')" ng-hide="!itm.ResultRemarks.length>0"></MyButton>|
                         <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
                     </div>
                 </td>
@@ -230,4 +231,10 @@
     </div>
     @*-----------------------------------this is search view-----------------------------*@
     @await Html.PartialAsync("_Filter", "PurchaseNoteQcTestDetailCtlr")
+    <br />
+    <span style="color: red">
+        Note: <br />
+        When you enter 'Result Remarks' then you need Edit Permission to change record <br />
+        Replication can only be done when you have not entered any test against the sample
+    </span>
 </div>

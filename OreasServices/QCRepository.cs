@@ -578,14 +578,14 @@ namespace OreasServices
         }
         public async Task<string> PostPurchaseNoteQcTest(tbl_Qc_PurchaseNoteDetail_QcTest tbl_Qc_PurchaseNoteDetail_QcTest, string operation = "", string userName = "")
         {
-            if (operation == "Save New")
+            if (operation == "Save New" && tbl_Qc_PurchaseNoteDetail_QcTest.ID == 0)
             {
                 tbl_Qc_PurchaseNoteDetail_QcTest.CreatedBy = userName;
                 tbl_Qc_PurchaseNoteDetail_QcTest.CreatedDate = DateTime.Now;
                 db.tbl_Qc_PurchaseNoteDetail_QcTests.Add(tbl_Qc_PurchaseNoteDetail_QcTest);
                 await db.SaveChangesAsync();
             }
-            else if (operation == "Save Update")
+            else if (operation == "Save Update" || (operation == "Save New" && tbl_Qc_PurchaseNoteDetail_QcTest.ID > 0))
             {
                 tbl_Qc_PurchaseNoteDetail_QcTest.ModifiedBy = userName;
                 tbl_Qc_PurchaseNoteDetail_QcTest.ModifiedDate = DateTime.Now;
@@ -777,58 +777,634 @@ namespace OreasServices
 
         #endregion
     }
-    public class QcDashboardRepository : IQcDashboard
+    public class CompositionQcTestRepository : ICompositionQcTest
     {
         private readonly OreasDbContext db;
-        public QcDashboardRepository(OreasDbContext oreasDbContext)
+        public CompositionQcTestRepository(OreasDbContext oreasDbContext)
         {
             this.db = oreasDbContext;
         }
-        public async Task<object> GetDashBoardData(string userName = "")
+
+        #region CompositionMaster
+        public async Task<object> GetCompositionMaster(int id)
         {
-            int PN_PendingActionAfterSample = 0; int PN_PendingSamples = 0;
-            int BMR_PendingAction = 0; int BPR_PendingAction = 0;
+            var qry = from o in await db.tbl_Pro_CompositionMasters.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.DocNo,
+                          DocDate = o.DocDate.ToString("dd-MMM-yyyy"),
+                          o.CompositionName,
+                          o.ShelfLifeInMonths,
+                          o.DimensionValue,
+                          o.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
+                          FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.RevisionNo,
+                          RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : null,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
 
-            using (var command = db.Database.GetDbConnection().CreateCommand())
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLCompositionMaster()
+        {
+            return new[]
             {
-                command.CommandText = "EXECUTE [dbo].[USP_Qc_DashBoard] @UserName ";
-                command.CommandType = CommandType.Text;
-                command.CommandTimeout = 0;
+                new { n = "by Composition Name", v = "byCompositionName" }, new { n = "by Raw Product Name", v = "byRawProductName" }, new { n = "by Semi Finished Product Name", v = "bySemiFinishedProductName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadCompositionMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
 
-                var UserName = command.CreateParameter();
-                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
-                command.Parameters.Add(UserName);
+            int NoOfRecords = await db.tbl_Pro_CompositionMasters
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byCompositionName" && w.CompositionName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byRawProductName" && w.tbl_Pro_CompositionDetail_RawMasters.Any(a => a.tbl_Pro_CompositionDetail_RawDetail_Itemss.Any(b => b.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())))
+                                                       ||
+                                                       FilterByText == "bySemiFinishedProductName" && w.tbl_Pro_CompositionDetail_Couplings.Any(a => a.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower()))
+                                                       )
+                                       .CountAsync();
 
-                await command.Connection.OpenAsync();
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
 
-                using (DbDataReader sqlReader = command.ExecuteReader(CommandBehavior.SingleRow))
-                {
-                    while (sqlReader.Read())
-                    {
-                        PN_PendingActionAfterSample = (int)sqlReader["PN_PendingActionAfterSample"];
-                        PN_PendingSamples = (int)sqlReader["PN_PendingSamples"];
 
-                        BMR_PendingAction = (int)sqlReader["BMR_PendingAction"];
-                        BPR_PendingAction = (int)sqlReader["BPR_PendingAction"];
+            pageddata.CurrentPage = CurrentPage;
 
-                    }
-                }
-            }
-            return new
-            {
-                PN_PendingActionAfterSample,
-                PN_PendingSamples,
-                BMR_PendingAction,
-                BPR_PendingAction
+            var qry = from o in await db.tbl_Pro_CompositionMasters
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byCompositionName" && w.CompositionName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byRawProductName" && w.tbl_Pro_CompositionDetail_RawMasters.Any(a => a.tbl_Pro_CompositionDetail_RawDetail_Itemss.Any(b => b.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())))
+                                                       ||
+                                                       FilterByText == "bySemiFinishedProductName" && w.tbl_Pro_CompositionDetail_Couplings.Any(a => a.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower()))
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
-            };
+                      select new
+                      {
+                          o.ID,
+                          o.DocNo,
+                          DocDate = o.DocDate.ToString("dd-MMM-yyyy"),
+                          o.CompositionName,
+                          o.ShelfLifeInMonths,
+                          o.DimensionValue,
+                          o.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
+                          FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.RevisionNo,
+                          RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          NoOfCouplings = o.tbl_Pro_CompositionDetail_Couplings.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
         }
 
+        #endregion
+
+        #region BMRProcess
+        public async Task<object> GetBMRProcess(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMRs.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBMRProcess()
+        {
+            return new[]
+            {
+                new { n = "by Procedure Name", v = "byProcedureName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBMRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionMaster_ProcessBMRs
+                                      .Where(w => w.FK_tbl_Pro_CompositionMaster_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMRs
+                                        .Where(w => w.FK_tbl_Pro_CompositionMaster_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalTests = o.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBMRProcess(tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            if (operation == "Save New")
+            {
+                tbl_Pro_CompositionMaster_ProcessBMR.CreatedBy = userName;
+                tbl_Pro_CompositionMaster_ProcessBMR.CreatedDate = DateTime.Now;
+                CRUD_Type.Value = "Insert";
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Pro_CompositionMaster_ProcessBMR.ModifiedBy = userName;
+                tbl_Pro_CompositionMaster_ProcessBMR.ModifiedDate = DateTime.Now;
+                CRUD_Type.Value = "Update";
+            }
+            else if (operation == "Save Delete")
+            {
+                CRUD_Type.Value = "Delete";
+            }
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_CompositionMaster_ProcessBMR] 
+               @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+              ,@ID={3},@FK_tbl_Pro_CompositionMaster_ID={4},@FK_tbl_Pro_Procedure_ID={5}
+              ,@FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample={6},@IsQAClearanceBeforeStart={7}
+              ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+              CRUD_Type, CRUD_Msg, CRUD_ID,
+              tbl_Pro_CompositionMaster_ProcessBMR.ID, tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Pro_CompositionMaster_ID, tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Pro_Procedure_ID,
+              tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample, tbl_Pro_CompositionMaster_ProcessBMR.IsQAClearanceBeforeStart,
+              tbl_Pro_CompositionMaster_ProcessBMR.CreatedBy, tbl_Pro_CompositionMaster_ProcessBMR.CreatedDate, tbl_Pro_CompositionMaster_ProcessBMR.ModifiedBy, tbl_Pro_CompositionMaster_ProcessBMR.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+        }
+
+        #endregion
+
+        #region BMRProcess QcTest
+        public async Task<object> GetBMRProcessQcTest(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBMRProcessQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBMRProcessQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests
+                                      .Where(w => w.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests
+                                        .Where(w => w.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBMRProcessQcTest(tbl_Pro_CompositionMaster_ProcessBMR_QcTest tbl_Pro_CompositionMaster_ProcessBMR_QcTest, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.CreatedBy = userName;
+                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.CreatedDate = DateTime.Now;
+                db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Add(tbl_Pro_CompositionMaster_ProcessBMR_QcTest);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.ModifiedBy = userName;
+                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Pro_CompositionMaster_ProcessBMR_QcTest).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Remove(db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Find(tbl_Pro_CompositionMaster_ProcessBMR_QcTest.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+        #endregion
+
+        #region CompositionPackagingMaster
+        public async Task<object> GetCompositionPackagingMaster(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Primary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName = o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Primary.Split_Into.ToString() + "'s " + o.tbl_Inv_ProductRegistrationDetail_Primary.Description,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
+                          o.PackagingName,
+                          o.IsDiscontinue,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          NoOfItems = o.tbl_Pro_CompositionDetail_Coupling_PackagingDetails.Count()
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLCompositionPackagingMaster()
+        {
+            return new[]
+            {
+                new { n = "by Product Name", v = "byProductName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadCompositionPackagingMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters
+                                      .Where(w => w.tbl_Pro_CompositionDetail_Coupling.FK_tbl_Pro_CompositionMaster_ID == MasterID)
+                                      .Where(w =>
+                                                 string.IsNullOrEmpty(FilterValueByText)
+                                                 ||
+                                                 FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                             )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters
+                                        .Where(w => w.tbl_Pro_CompositionDetail_Coupling.FK_tbl_Pro_CompositionMaster_ID == MasterID)
+                                        .Where(w =>
+                                                   string.IsNullOrEmpty(FilterValueByText)
+                                                   ||
+                                                   FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                               )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Primary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName = o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Primary.Split_Into.ToString() + "'s " + o.tbl_Inv_ProductRegistrationDetail_Primary.Description,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
+                          o.PackagingName,
+                          o.IsDiscontinue,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          NoOfItems = o.tbl_Pro_CompositionDetail_Coupling_PackagingDetails.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        #endregion
+
+        #region BPRProcess
+        public async Task<object> GetBPRProcess(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBPRProcess()
+        {
+            return new[]
+            {
+                new { n = "by Procedure Name", v = "byProcedureName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBPRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs
+                                      .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs
+                                        .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
+                          o.FK_tbl_Pro_Procedure_ID,
+                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.IsQAClearanceBeforeStart,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          TotalTests = o.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Count()
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBPRProcess(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            if (operation == "Save New")
+            {
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedBy = userName;
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedDate = DateTime.Now;
+                CRUD_Type.Value = "Insert";
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedBy = userName;
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedDate = DateTime.Now;
+                CRUD_Type.Value = "Update";
+            }
+            else if (operation == "Save Delete")
+            {
+                CRUD_Type.Value = "Delete";
+            }
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR] 
+               @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+              ,@ID={3},@FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID={4},@FK_tbl_Pro_Procedure_ID={5}
+              ,@FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample={6},@IsQAClearanceBeforeStart={7}
+              ,@CreatedBy={8},@CreatedDate={9},@ModifiedBy={10},@ModifiedDate={11}",
+              CRUD_Type, CRUD_Msg, CRUD_ID,
+              tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ID, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Pro_Procedure_ID,
+              tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.IsQAClearanceBeforeStart,
+              tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedBy, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedDate, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedBy, tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedDate);
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+        }
+
+        #endregion      
+
+        #region BPRProcess QcTest
+        public async Task<object> GetBPRProcessQcTest(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLBPRProcessQcTest()
+        {
+            return new[]
+            {
+                new { n = "by Test Name", v = "byTestName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadBPRProcessQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests
+                                      .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID == MasterID)
+                                      .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                       .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests
+                                        .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID == MasterID)
+                                        .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       )
+                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID,
+                          o.FK_tbl_Qc_Test_ID,
+                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
+                          o.TestDescription,
+                          o.Specification,
+                          o.RangeFrom,
+                          o.RangeTill,
+                          o.FK_tbl_Inv_MeasurementUnit_ID,
+                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostBPRProcessQcTest(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.CreatedBy = userName;
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.CreatedDate = DateTime.Now;
+                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Add(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.ModifiedBy = userName;
+                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Remove(db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Find(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+        #endregion
     }
-    public class QCProcessRepository : IQCProcess
+    public class QCBatchRepository : IQCBatch
     {
         private readonly OreasDbContext db;
-        public QCProcessRepository(OreasDbContext oreasDbContext)
+        public QCBatchRepository(OreasDbContext oreasDbContext)
         {
             this.db = oreasDbContext;
         }
@@ -1261,14 +1837,14 @@ namespace OreasServices
         }
         public async Task<string> PostBMRSampleQcTest(tbl_Qc_SampleProcessBMR_QcTest tbl_Qc_SampleProcessBMR_QcTest, string operation = "", string userName = "")
         {
-            if (operation == "Save New")
+            if (operation == "Save New" && tbl_Qc_SampleProcessBMR_QcTest.ID == 0)
             {
                 tbl_Qc_SampleProcessBMR_QcTest.CreatedBy = userName;
                 tbl_Qc_SampleProcessBMR_QcTest.CreatedDate = DateTime.Now;
                 db.tbl_Qc_SampleProcessBMR_QcTests.Add(tbl_Qc_SampleProcessBMR_QcTest);
                 await db.SaveChangesAsync();
             }
-            else if (operation == "Save Update")
+            else if (operation == "Save Update" || (operation == "Save New" && tbl_Qc_SampleProcessBMR_QcTest.ID > 0))
             {
                 tbl_Qc_SampleProcessBMR_QcTest.ModifiedBy = userName;
                 tbl_Qc_SampleProcessBMR_QcTest.ModifiedDate = DateTime.Now;
@@ -1281,6 +1857,63 @@ namespace OreasServices
                 await db.SaveChangesAsync();
             }
             return "OK";
+        }
+        public async Task<string> PostBMRSampleQcTestReplicationFromStandard(int MasterID, string userName = "")
+        {
+            var SampleProcessBMR = await db.tbl_Qc_SampleProcessBMRs.Where(w => w.ID == MasterID).FirstOrDefaultAsync();
+            
+            if (db.tbl_Qc_SampleProcessBMR_QcTests.Count(c => c.FK_tbl_Qc_SampleProcessBMR_ID == MasterID) > 0)
+                return "Replication Aborted! because the test list has already been entered";
+
+            if (SampleProcessBMR != null)
+            {
+                var CompositionID = SampleProcessBMR.tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR.tbl_Pro_BatchMaterialRequisitionMaster?.tbl_Pro_CompositionDetail_Coupling?.FK_tbl_Pro_CompositionMaster_ID ?? 0;
+                if (CompositionID == 0)
+                    return "No Link Found From Batch to Composition";
+
+                var ProcedureID = SampleProcessBMR.tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR.FK_tbl_Pro_Procedure_ID;
+
+                var StandardQcTestList = await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests
+                    .Where(w => w.tbl_Pro_CompositionMaster_ProcessBMR.tbl_Pro_CompositionMaster.ID == CompositionID
+                                 &&
+                                 w.tbl_Pro_CompositionMaster_ProcessBMR.FK_tbl_Pro_Procedure_ID == ProcedureID
+                          )
+                    .ToListAsync();
+
+                DateTime currentDateTime = DateTime.Now;
+
+                var qcTestList = StandardQcTestList.Select(s => new tbl_Qc_SampleProcessBMR_QcTest
+                {
+                    ID = 0,
+                    FK_tbl_Qc_SampleProcessBMR_ID = MasterID,
+                    FK_tbl_Qc_Test_ID = s.FK_tbl_Qc_Test_ID,
+                    TestDescription = s.TestDescription,
+                    Specification = s.Specification,
+                    RangeFrom = s.RangeFrom,
+                    RangeTill = s.RangeTill,
+                    FK_tbl_Inv_MeasurementUnit_ID = s.FK_tbl_Inv_MeasurementUnit_ID,
+                    ResultValue = 0,
+                    ResultRemarks = null,
+                    IsPrintOnCOA = true,
+                    CreatedBy = userName,
+                    CreatedDate = currentDateTime,
+                    ModifiedBy = null,
+                    ModifiedDate = null
+                }).ToList();
+
+                if (qcTestList.Count == 0)
+                    return "No Test Found in Composition for Replication";
+
+                await db.tbl_Qc_SampleProcessBMR_QcTests.AddRangeAsync(qcTestList);
+                await db.SaveChangesAsync();
+
+                return "OK";
+            }
+            else
+            {
+                return "QC Sample Record Not Found";
+            }
+
         }
 
         #endregion
@@ -1373,14 +2006,14 @@ namespace OreasServices
         }
         public async Task<string> PostBPRSampleQcTest(tbl_Qc_SampleProcessBPR_QcTest tbl_Qc_SampleProcessBPR_QcTest, string operation = "", string userName = "")
         {
-            if (operation == "Save New")
+            if (operation == "Save New" && tbl_Qc_SampleProcessBPR_QcTest.ID == 0)
             {
                 tbl_Qc_SampleProcessBPR_QcTest.CreatedBy = userName;
                 tbl_Qc_SampleProcessBPR_QcTest.CreatedDate = DateTime.Now;
                 db.tbl_Qc_SampleProcessBPR_QcTests.Add(tbl_Qc_SampleProcessBPR_QcTest);
                 await db.SaveChangesAsync();
             }
-            else if (operation == "Save Update")
+            else if (operation == "Save Update" || (operation == "Save New" && tbl_Qc_SampleProcessBPR_QcTest.ID > 0))
             {
                 tbl_Qc_SampleProcessBPR_QcTest.ModifiedBy = userName;
                 tbl_Qc_SampleProcessBPR_QcTest.ModifiedDate = DateTime.Now;
@@ -1394,7 +2027,63 @@ namespace OreasServices
             }
             return "OK";
         }
+        public async Task<string> PostBPRSampleQcTestReplicationFromStandard(int MasterID, string userName = "")
+        {
+            var SampleProcessBMR = await db.tbl_Qc_SampleProcessBPRs.Where(w => w.ID == MasterID).FirstOrDefaultAsync();
 
+            if (db.tbl_Qc_SampleProcessBPR_QcTests.Count(c => c.FK_tbl_Qc_SampleProcessBPR_ID == MasterID) > 0)
+                return "Replication Aborted! because the test list has already been entered";
+
+            if (SampleProcessBMR != null)
+            {
+                var CompositionCouplingID = SampleProcessBMR.tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR.tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster?.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID ?? 0;
+                if (CompositionCouplingID == 0)
+                    return "No Link Found From Batch to Composition Coupling";
+
+                var ProcedureID = SampleProcessBMR.tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR.FK_tbl_Pro_Procedure_ID;
+
+                var StandardQcTestList = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests
+                    .Where(w => w.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == CompositionCouplingID
+                                &&
+                                w.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.FK_tbl_Pro_Procedure_ID == ProcedureID
+                          )
+                    .ToListAsync();
+
+                DateTime currentDateTime = DateTime.Now;
+
+                var qcTestList = StandardQcTestList.Select(s => new tbl_Qc_SampleProcessBPR_QcTest
+                {
+                    ID = 0,
+                    FK_tbl_Qc_SampleProcessBPR_ID = MasterID,
+                    FK_tbl_Qc_Test_ID = s.FK_tbl_Qc_Test_ID,
+                    TestDescription = s.TestDescription,
+                    Specification = s.Specification,
+                    RangeFrom = s.RangeFrom,
+                    RangeTill = s.RangeTill,
+                    FK_tbl_Inv_MeasurementUnit_ID = s.FK_tbl_Inv_MeasurementUnit_ID,
+                    ResultValue = 0,
+                    ResultRemarks = null,
+                    IsPrintOnCOA = true,
+                    CreatedBy = userName,
+                    CreatedDate = currentDateTime,
+                    ModifiedBy = null,
+                    ModifiedDate = null
+                }).ToList();
+
+                if (qcTestList.Count == 0)
+                    return "No Test Found in Composition for Replication";
+
+                await db.tbl_Qc_SampleProcessBPR_QcTests.AddRangeAsync(qcTestList);
+                await db.SaveChangesAsync();
+
+                return "OK";
+            }
+            else
+            {
+                return "QC Sample Record Not Found";
+            }
+
+        }
         #endregion
 
     }
@@ -1590,601 +2279,53 @@ namespace OreasServices
         }
 
     }
-    public class CompositionQcTestRepository : ICompositionQcTest
+    public class QcDashboardRepository : IQcDashboard
     {
         private readonly OreasDbContext db;
-        public CompositionQcTestRepository(OreasDbContext oreasDbContext)
+        public QcDashboardRepository(OreasDbContext oreasDbContext)
         {
             this.db = oreasDbContext;
         }
-
-        #region CompositionMaster
-        public async Task<object> GetCompositionMaster(int id)
+        public async Task<object> GetDashBoardData(string userName = "")
         {
-            var qry = from o in await db.tbl_Pro_CompositionMasters.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.DocNo,
-                          DocDate = o.DocDate.ToString("dd-MMM-yyyy"),
-                          o.CompositionName,
-                          o.ShelfLifeInMonths,
-                          o.DimensionValue,
-                          o.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
-                          FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
-                          o.RevisionNo,
-                          RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : null,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
+            int PN_PendingActionAfterSample = 0; int PN_PendingSamples = 0;
+            int BMR_PendingAction = 0; int BPR_PendingAction = 0;
 
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLCompositionMaster()
-        {
-            return new[]
+            using (var command = db.Database.GetDbConnection().CreateCommand())
             {
-                new { n = "by Composition Name", v = "byCompositionName" }, new { n = "by Raw Product Name", v = "byRawProductName" }, new { n = "by Semi Finished Product Name", v = "bySemiFinishedProductName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadCompositionMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
+                command.CommandText = "EXECUTE [dbo].[USP_Qc_DashBoard] @UserName ";
+                command.CommandType = CommandType.Text;
+                command.CommandTimeout = 0;
 
-            int NoOfRecords = await db.tbl_Pro_CompositionMasters
-                                      .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byCompositionName" && w.CompositionName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       ||
-                                                       FilterByText == "byRawProductName" && w.tbl_Pro_CompositionDetail_RawMasters.Any(a => a.tbl_Pro_CompositionDetail_RawDetail_Itemss.Any(b => b.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())))
-                                                       ||
-                                                       FilterByText == "bySemiFinishedProductName" && w.tbl_Pro_CompositionDetail_Couplings.Any(a => a.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower()))
-                                                       )
-                                       .CountAsync();
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
 
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+                await command.Connection.OpenAsync();
 
+                using (DbDataReader sqlReader = command.ExecuteReader(CommandBehavior.SingleRow))
+                {
+                    while (sqlReader.Read())
+                    {
+                        PN_PendingActionAfterSample = (int)sqlReader["PN_PendingActionAfterSample"];
+                        PN_PendingSamples = (int)sqlReader["PN_PendingSamples"];
 
-            pageddata.CurrentPage = CurrentPage;
+                        BMR_PendingAction = (int)sqlReader["BMR_PendingAction"];
+                        BPR_PendingAction = (int)sqlReader["BPR_PendingAction"];
 
-            var qry = from o in await db.tbl_Pro_CompositionMasters
-                                        .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byCompositionName" && w.CompositionName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       ||
-                                                       FilterByText == "byRawProductName" && w.tbl_Pro_CompositionDetail_RawMasters.Any(a => a.tbl_Pro_CompositionDetail_RawDetail_Itemss.Any(b => b.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())))
-                                                       ||
-                                                       FilterByText == "bySemiFinishedProductName" && w.tbl_Pro_CompositionDetail_Couplings.Any(a => a.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower()))
-                                                       )
-                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.DocNo,
-                          DocDate = o.DocDate.ToString("dd-MMM-yyyy"),
-                          o.CompositionName,
-                          o.ShelfLifeInMonths,
-                          o.DimensionValue,
-                          o.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
-                          FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
-                          o.RevisionNo,
-                          RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          NoOfCouplings = o.tbl_Pro_CompositionDetail_Couplings.Count()
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-
-        #endregion
-
-        #region BMRProcess
-        public async Task<object> GetBMRProcess(int id)
-        {
-            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMRs.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionMaster_ID,
-                          o.FK_tbl_Pro_Procedure_ID,
-                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
-                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
-                          o.IsQAClearanceBeforeStart,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLBMRProcess()
-        {
-            return new[]
-            {
-                new { n = "by Procedure Name", v = "byProcedureName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadBMRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_CompositionMaster_ProcessBMRs
-                                      .Where(w => w.FK_tbl_Pro_CompositionMaster_ID == MasterID)
-                                      .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                       .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMRs
-                                        .Where(w => w.FK_tbl_Pro_CompositionMaster_ID == MasterID)
-                                        .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionMaster_ID,
-                          o.FK_tbl_Pro_Procedure_ID,
-                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
-                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
-                          o.IsQAClearanceBeforeStart,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          TotalTests = o.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Count()
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        public async Task<string> PostBMRProcess(tbl_Pro_CompositionMaster_ProcessBMR tbl_Pro_CompositionMaster_ProcessBMR, string operation = "", string userName = "")
-        {
-            if (operation == "Save New")
-            {
-                tbl_Pro_CompositionMaster_ProcessBMR.CreatedBy = userName;
-                tbl_Pro_CompositionMaster_ProcessBMR.CreatedDate = DateTime.Now;
-                db.tbl_Pro_CompositionMaster_ProcessBMRs.Add(tbl_Pro_CompositionMaster_ProcessBMR);
-                await db.SaveChangesAsync();
+                    }
+                }
             }
-            else if (operation == "Save Update")
+            return new
             {
-                tbl_Pro_CompositionMaster_ProcessBMR.ModifiedBy = userName;
-                tbl_Pro_CompositionMaster_ProcessBMR.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_CompositionMaster_ProcessBMR).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Delete")
-            {
-                db.tbl_Pro_CompositionMaster_ProcessBMRs.Remove(db.tbl_Pro_CompositionMaster_ProcessBMRs.Find(tbl_Pro_CompositionMaster_ProcessBMR.ID));
-                await db.SaveChangesAsync();
-            }
-            return "OK";
+                PN_PendingActionAfterSample,
+                PN_PendingSamples,
+                BMR_PendingAction,
+                BPR_PendingAction
+
+            };
         }
 
-        #endregion
-
-        #region BMRProcess QcTest
-        public async Task<object> GetBMRProcessQcTest(int id)
-        {
-            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID,
-                          o.FK_tbl_Qc_Test_ID,
-                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
-                          o.TestDescription,
-                          o.Specification,
-                          o.RangeFrom,
-                          o.RangeTill,
-                          o.FK_tbl_Inv_MeasurementUnit_ID,
-                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLBMRProcessQcTest()
-        {
-            return new[]
-            {
-                new { n = "by Test Name", v = "byTestName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadBMRProcessQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests
-                                      .Where(w => w.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID == MasterID)
-                                      .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                       .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests
-                                        .Where(w => w.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID == MasterID)
-                                        .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionMaster_ProcessBMR_ID,
-                          o.FK_tbl_Qc_Test_ID,
-                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
-                          o.TestDescription,
-                          o.Specification,
-                          o.RangeFrom,
-                          o.RangeTill,
-                          o.FK_tbl_Inv_MeasurementUnit_ID,
-                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        public async Task<string> PostBMRProcessQcTest(tbl_Pro_CompositionMaster_ProcessBMR_QcTest tbl_Pro_CompositionMaster_ProcessBMR_QcTest, string operation = "", string userName = "")
-        {
-            if (operation == "Save New")
-            {
-                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.CreatedBy = userName;
-                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.CreatedDate = DateTime.Now;
-                db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Add(tbl_Pro_CompositionMaster_ProcessBMR_QcTest);
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Update")
-            {
-                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.ModifiedBy = userName;
-                tbl_Pro_CompositionMaster_ProcessBMR_QcTest.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_CompositionMaster_ProcessBMR_QcTest).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Delete")
-            {
-                db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Remove(db.tbl_Pro_CompositionMaster_ProcessBMR_QcTests.Find(tbl_Pro_CompositionMaster_ProcessBMR_QcTest.ID));
-                await db.SaveChangesAsync();
-            }
-            return "OK";
-        }
-
-        #endregion
-
-        #region CompositionPackagingMaster
-        public async Task<object> GetCompositionPackagingMaster(int id)
-        {
-            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Primary,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName = o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Primary.Split_Into.ToString() + "'s " + o.tbl_Inv_ProductRegistrationDetail_Primary.Description,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
-                          o.PackagingName,
-                          o.IsDiscontinue,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          NoOfItems = o.tbl_Pro_CompositionDetail_Coupling_PackagingDetails.Count()
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLCompositionPackagingMaster()
-        {
-            return new[]
-            {
-                new { n = "by Product Name", v = "byProductName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadCompositionPackagingMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters
-                                      .Where(w => w.tbl_Pro_CompositionDetail_Coupling.FK_tbl_Pro_CompositionMaster_ID == MasterID)
-                                      .Where(w =>
-                                                 string.IsNullOrEmpty(FilterValueByText)
-                                                 ||
-                                                 FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
-                                             )
-                                       .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters
-                                        .Where(w => w.tbl_Pro_CompositionDetail_Coupling.FK_tbl_Pro_CompositionMaster_ID == MasterID)
-                                        .Where(w =>
-                                                   string.IsNullOrEmpty(FilterValueByText)
-                                                   ||
-                                                   FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
-                                               )
-                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Primary,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName = o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Primary.Split_Into.ToString() + "'s " + o.tbl_Inv_ProductRegistrationDetail_Primary.Description,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
-                          o.PackagingName,
-                          o.IsDiscontinue,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          NoOfItems = o.tbl_Pro_CompositionDetail_Coupling_PackagingDetails.Count()
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        #endregion
-
-        #region BPRProcess
-        public async Task<object> GetBPRProcess(int id)
-        {
-            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
-                          o.FK_tbl_Pro_Procedure_ID,
-                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
-                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
-                          o.IsQAClearanceBeforeStart,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLBPRProcess()
-        {
-            return new[]
-            {
-                new { n = "by Procedure Name", v = "byProcedureName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadBPRProcess(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs
-                                      .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
-                                      .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                       .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs
-                                        .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
-                                        .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byProcedureName" && w.tbl_Pro_Procedure.ProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
-                          o.FK_tbl_Pro_Procedure_ID,
-                          FK_tbl_Pro_Procedure_IDName = o.tbl_Pro_Procedure.ProcedureName,
-                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_QCSample,
-                          FK_tbl_Inv_ProductRegistrationDetail_ID_QCSampleName = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_ProductRegistrationMaster.ProductName ?? "",
-                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail_QCSample?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
-                          o.IsQAClearanceBeforeStart,
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          TotalTests = o.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Count()
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        public async Task<string> PostBPRProcess(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR, string operation = "", string userName = "")
-        {
-            if (operation == "Save New")
-            {
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedBy = userName;
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.CreatedDate = DateTime.Now;
-                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Add(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR);
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Update")
-            {
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedBy = userName;
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Delete")
-            {
-                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Remove(db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs.Find(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.ID));
-                await db.SaveChangesAsync();
-            }
-            return "OK";
-        }
-
-        #endregion      
-
-        #region BPRProcess QcTest
-        public async Task<object> GetBPRProcessQcTest(int id)
-        {
-            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Where(w => w.ID == id).ToListAsync()
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID,
-                          o.FK_tbl_Qc_Test_ID,
-                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
-                          o.TestDescription,
-                          o.Specification,
-                          o.RangeFrom,
-                          o.RangeTill,
-                          o.FK_tbl_Inv_MeasurementUnit_ID,
-                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            return qry.FirstOrDefault();
-        }
-        public object GetWCLBPRProcessQcTest()
-        {
-            return new[]
-            {
-                new { n = "by Test Name", v = "byTestName" }
-            }.ToList();
-        }
-        public async Task<PagedData<object>> LoadBPRProcessQcTest(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
-        {
-            PagedData<object> pageddata = new PagedData<object>();
-
-            int NoOfRecords = await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests
-                                      .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID == MasterID)
-                                      .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                       .CountAsync();
-
-            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
-
-
-            pageddata.CurrentPage = CurrentPage;
-
-            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests
-                                        .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID == MasterID)
-                                        .Where(w =>
-                                                       string.IsNullOrEmpty(FilterValueByText)
-                                                       ||
-                                                       FilterByText == "byTestName" && w.tbl_Qc_Test.TestName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       )
-                                        .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
-                      select new
-                      {
-                          o.ID,
-                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_ID,
-                          o.FK_tbl_Qc_Test_ID,
-                          FK_tbl_Qc_Test_IDName = o.tbl_Qc_Test.TestName,
-                          o.TestDescription,
-                          o.Specification,
-                          o.RangeFrom,
-                          o.RangeTill,
-                          o.FK_tbl_Inv_MeasurementUnit_ID,
-                          FK_tbl_Inv_MeasurementUnit_IDName = o.FK_tbl_Inv_MeasurementUnit_ID.HasValue ? o.tbl_Inv_MeasurementUnit.MeasurementUnit : "",
-                          o.CreatedBy,
-                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
-                      };
-
-            pageddata.Data = qry;
-
-            return pageddata;
-        }
-        public async Task<string> PostBPRProcessQcTest(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest, string operation = "", string userName = "")
-        {
-            if (operation == "Save New")
-            {
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.CreatedBy = userName;
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.CreatedDate = DateTime.Now;
-                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Add(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest);
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Update")
-            {
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.ModifiedBy = userName;
-                tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-            }
-            else if (operation == "Save Delete")
-            {
-                db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Remove(db.tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTests.Find(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR_QcTest.ID));
-                await db.SaveChangesAsync();
-            }
-            return "OK";
-        }
-
-        #endregion
     }
 
 }

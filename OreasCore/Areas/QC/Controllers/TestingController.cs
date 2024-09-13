@@ -312,7 +312,7 @@ namespace OreasCore.Areas.Qc.Controllers
         #region Batch Qc Testing
 
         [MyAuthorization]
-        public async Task<IActionResult> GetInitializedBatchAsync([FromServices] IAuthorizationScheme db, [FromServices] IQCProcess db2, [FromServices] IQcList db3, [FromServices] IProductionList db4, [FromServices] IInventoryList db5)
+        public async Task<IActionResult> GetInitializedBatchAsync([FromServices] IAuthorizationScheme db, [FromServices] IQCBatch db2, [FromServices] IQcList db3, [FromServices] IProductionList db4, [FromServices] IInventoryList db5)
         {
             return Json(
                 new List<Init_ViewSetupStructure>()
@@ -377,7 +377,7 @@ namespace OreasCore.Areas.Qc.Controllers
 
         [AjaxOnly]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchMasterLoad([FromServices] IQCProcess db,
+        public async Task<IActionResult> BatchMasterLoad([FromServices] IQCBatch db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -399,7 +399,7 @@ namespace OreasCore.Areas.Qc.Controllers
 
         [AjaxOnly]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBMRSampleLoad([FromServices] IQCProcess db,
+        public async Task<IActionResult> BatchBMRSampleLoad([FromServices] IQCBatch db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -419,7 +419,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
-        public async Task<string> BatchBMRSamplePost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBMR tbl_Qc_SampleProcessBMR, string operation = "")
+        public async Task<string> BatchBMRSamplePost([FromServices] IQCBatch db, [FromBody] tbl_Qc_SampleProcessBMR tbl_Qc_SampleProcessBMR, string operation = "")
         {
             if (ModelState.IsValid)
                 return await db.PostBMRSample(tbl_Qc_SampleProcessBMR, operation, User.Identity.Name);
@@ -428,7 +428,7 @@ namespace OreasCore.Areas.Qc.Controllers
         }
 
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBMRSampleGet([FromServices] IQCProcess db, int ID)
+        public async Task<IActionResult> BatchBMRSampleGet([FromServices] IQCBatch db, int ID)
         {
             return Json(await db.GetBMRSample(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
@@ -439,7 +439,7 @@ namespace OreasCore.Areas.Qc.Controllers
 
         [AjaxOnly]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBPRSampleLoad([FromServices] IQCProcess db,
+        public async Task<IActionResult> BatchBPRSampleLoad([FromServices] IQCBatch db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -459,7 +459,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
-        public async Task<string> BatchBPRSamplePost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBPR tbl_Qc_SampleProcessBPR, string operation = "")
+        public async Task<string> BatchBPRSamplePost([FromServices] IQCBatch db, [FromBody] tbl_Qc_SampleProcessBPR tbl_Qc_SampleProcessBPR, string operation = "")
         {
             if (ModelState.IsValid)
                 return await db.PostBPRSample(tbl_Qc_SampleProcessBPR, operation, User.Identity.Name);
@@ -468,7 +468,7 @@ namespace OreasCore.Areas.Qc.Controllers
         }
 
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBPRSampleGet([FromServices] IQCProcess db, int ID)
+        public async Task<IActionResult> BatchBPRSampleGet([FromServices] IQCBatch db, int ID)
         {
             return Json(await db.GetBPRSample(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
@@ -479,7 +479,7 @@ namespace OreasCore.Areas.Qc.Controllers
 
         [AjaxOnly]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBMRSampleQcTestLoad([FromServices] IQCProcess db,
+        public async Task<IActionResult> BatchBMRSampleQcTestLoad([FromServices] IQCBatch db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -499,7 +499,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
-        public async Task<string> BatchBMRSampleQcTestPost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBMR_QcTest tbl_Qc_SampleProcessBMR_QcTest, string operation = "")
+        public async Task<string> BatchBMRSampleQcTestPost([FromServices] IQCBatch db, [FromBody] tbl_Qc_SampleProcessBMR_QcTest tbl_Qc_SampleProcessBMR_QcTest, string operation = "")
         {
             if (ModelState.IsValid)
                 return await db.PostBMRSampleQcTest(tbl_Qc_SampleProcessBMR_QcTest, operation, User.Identity.Name);
@@ -508,10 +508,23 @@ namespace OreasCore.Areas.Qc.Controllers
         }
 
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBMRSampleQcTestGet([FromServices] IQCProcess db, int ID)
+        public async Task<IActionResult> BatchBMRSampleQcTestGet([FromServices] IQCBatch db, int ID)
         {
             return Json(await db.GetBMRSampleQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchBMRSampleQcTestPostReplication([FromServices] IQCBatch db, int MasterID, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBMRSampleQcTestReplicationFromStandard(MasterID, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
 
         #endregion
 
@@ -519,7 +532,7 @@ namespace OreasCore.Areas.Qc.Controllers
 
         [AjaxOnly]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBPRSampleQcTestLoad([FromServices] IQCProcess db,
+        public async Task<IActionResult> BatchBPRSampleQcTestLoad([FromServices] IQCBatch db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -539,7 +552,7 @@ namespace OreasCore.Areas.Qc.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
-        public async Task<string> BatchBPRSampleQcTestPost([FromServices] IQCProcess db, [FromBody] tbl_Qc_SampleProcessBPR_QcTest tbl_Qc_SampleProcessBPR_QcTest, string operation = "")
+        public async Task<string> BatchBPRSampleQcTestPost([FromServices] IQCBatch db, [FromBody] tbl_Qc_SampleProcessBPR_QcTest tbl_Qc_SampleProcessBPR_QcTest, string operation = "")
         {
             if (ModelState.IsValid)
                 return await db.PostBPRSampleQcTest(tbl_Qc_SampleProcessBPR_QcTest, operation, User.Identity.Name);
@@ -548,9 +561,21 @@ namespace OreasCore.Areas.Qc.Controllers
         }
 
         [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
-        public async Task<IActionResult> BatchBPRSampleQcTestGet([FromServices] IQCProcess db, int ID)
+        public async Task<IActionResult> BatchBPRSampleQcTestGet([FromServices] IQCBatch db, int ID)
         {
             return Json(await db.GetBPRSampleQcTest(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchBPRSampleQcTestPostReplication([FromServices] IQCBatch db, int MasterID, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostBPRSampleQcTestReplicationFromStandard(MasterID, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
         #endregion
@@ -803,5 +828,6 @@ namespace OreasCore.Areas.Qc.Controllers
         #endregion
 
         #endregion
+
     }
 }
