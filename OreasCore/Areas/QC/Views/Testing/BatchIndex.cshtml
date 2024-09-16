@@ -7,7 +7,104 @@
 <div ng-controller="BatchMasterCtlr" class="container">
     <div id="BatchMasterCtlr">
         <MyViewName>Batch Testing</MyViewName>
-        <MyAntiforgeryToken></MyAntiforgeryToken>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.CancelOfAdd"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Pro_BatchMaterialRequisitionMaster.ID", "{{tbl_Pro_BatchMaterialRequisitionMaster.ID}}")
+                @Html.Hidden("tbl_Pro_BatchMaterialRequisitionMaster.TotalProd", "{{tbl_Pro_BatchMaterialRequisitionMaster.TotalProd}}")
+                @Html.Hidden("tbl_Pro_BatchMaterialRequisitionMaster.Cost", "{{tbl_Pro_BatchMaterialRequisitionMaster.Cost}}")
+                @Html.Hidden("tbl_Pro_BatchMaterialRequisitionMaster.FinishedDate", "{{tbl_Pro_BatchMaterialRequisitionMaster.FinishedDate}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_Pro_BatchMaterialRequisitionMaster.DocNo" name="tbl_Pro_BatchMaterialRequisitionMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Pro_BatchMaterialRequisitionMaster.DocNo" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc Date</span>
+                        <input id="tbl_Pro_BatchMaterialRequisitionMaster.DocDate" name="tbl_Pro_BatchMaterialRequisitionMaster.DocDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_BatchMaterialRequisitionMaster.DocDate}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.DocDate" ng-disabled="ng_readOnly" readonly />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.DocDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Mfg Date</span>
+                        <input id="tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate" name="tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate" ng-disabled="ng_readOnly" readonly />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Expiry Date</span>
+                        <input id="tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate" name="tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate" ng-disabled="ng_readOnly" readonly />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup5">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Manufacturing Product</span>
+                        <MyButtonModal fieldname="tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_IDName" ng-click="OpenProductSearchModalGeneral('BMRSemi', 0, 'tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_IDName', ProductSearch_CtrlFunction_Ref_InvokeOnSelection, null, 0); myform['tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_IDName'].$dirty=true;" ng-disabled="ng_readOnly || ng_readOnlyOnEdit" readonly></MyButtonModal>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_IDName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">BatchSize In {{tbl_Pro_BatchMaterialRequisitionMaster.BatchSizeUnit}}</span>
+                        <input id="tbl_Pro_BatchMaterialRequisitionMaster.BatchSize" name="tbl_Pro_BatchMaterialRequisitionMaster.BatchSize" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.BatchSize" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="tbl_Pro_BatchMaterialRequisitionMaster.IsRawDispened ? tbl_Pro_BatchMaterialRequisitionMaster.BatchSize : 1" readonly />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.BatchSize" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Batch No</span>
+                        <input type="text" id="tbl_Pro_BatchMaterialRequisitionMaster.BatchNo" name="tbl_Pro_BatchMaterialRequisitionMaster.BatchNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Pro_BatchMaterialRequisitionMaster.BatchNo" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.BatchNo" ng-disabled="ng_readOnly" minlength="1" maxlength="25" readonly />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.BatchNo" required="true" minlength="1" maxlength="25"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup1">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Dispensed</span>
+                        <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BatchMaterialRequisitionMaster.IsRawDispened ? 'Yes' : 'No'}}" disabled />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Action</span>
+                        <select id="tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID" name="tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ActionName for x in ActionList" data-ng-model="tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID" ng-disabled="ng_readOnly" required>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup10">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">QC Comments</span>
+                        <input type="text" id="tbl_Pro_BatchMaterialRequisitionMaster.QCComments" name="tbl_Pro_BatchMaterialRequisitionMaster.QCComments" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="The undersigned hereby certifies that the product complies / Not complies" value="tbl_Pro_BatchMaterialRequisitionMaster.QCComments" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.QCComments" ng-disabled="ng_readOnly" maxlength="150" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_BatchMaterialRequisitionMaster.QCComments" maxlength="150"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by Qc</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date Qc</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by Qc</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date Qc</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
         @*-----------------------------------this is data list view-----------------------------*@
         <div mycssclass="@MyCSSClassName.Table_Div">
             <table mycssclass="@MyCSSClassName.Table_Table">
@@ -22,22 +119,25 @@
                         Product
                     </th>
                     <th>
-                        Batch Size [Raw/Packaging]
+                        Batch Size <br /> [Raw/Packaging]
                     </th>
                     <th>
                         Total Prod
                     </th>
                     <th>
-                        Sample Pending BMR
+                        Sample Pending <br /> BMR
                     </th>
                     <th>
-                        Sample Pending BPR
+                        Sample Pending <br /> BPR
                     </th>
                     <th>
                         [R / P] Dispensed
                     </th>
                     <th>
-                        Status
+                        Production <br /> Status
+                    </th>
+                    <th>
+                        Qc <br /> Status
                     </th>
                     <th></th>
                 </tr>
@@ -80,6 +180,9 @@
                         {{itm.FinishedDate}}
                     </td>
                     <td>
+                        {{ itm.FK_tbl_Qc_ActionType_ID === 1 ? 'Pending' : itm.FK_tbl_Qc_ActionType_ID === 2 ? 'Approved' : 'Rejected' }}
+                    </td>
+                    <td>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                             <button ng-click="
                                     DivHideShow('BatchBMRBPRSampleCtlr',itm,'BatchMasterCtlr','BatchBMRBPRSampleCtlr', null);
@@ -87,13 +190,18 @@
                                     DivHideShow('BatchBPRSampleCtlr',itm,null,'BatchBPRSampleCtlr', null);
                                     "
                                     mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto BMR BPR Sample(s)">
-                                    Sample(s) <span class="fa fa-vials"></span>
+                                Sample(s) <span class="fa fa-vials"></span>
                             </button>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.AddDetail" ng-click="GetRow(itm.ID,'Add')" ng-hide="itm.FK_tbl_Qc_ActionType_ID > 1"></MyButton>
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')" ng-hide="itm.FK_tbl_Qc_ActionType_ID === 1"></MyButton>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="10">
+                    <td colspan="11">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

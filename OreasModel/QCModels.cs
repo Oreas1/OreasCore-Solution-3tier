@@ -39,6 +39,9 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Qc_SampleProcessBPR.tbl_Qc_ActionType))]
         public virtual ICollection<tbl_Qc_SampleProcessBPR> tbl_Qc_SampleProcessBPRs { get; set; }
 
+        [InverseProperty(nameof(tbl_Pro_BatchMaterialRequisitionMaster.tbl_Qc_ActionType))]
+        public virtual ICollection<tbl_Pro_BatchMaterialRequisitionMaster> tbl_Pro_BatchMaterialRequisitionMasters { get; set; }
+
     }
 
     [Table("tbl_Qc_SampleProcessBMR")]

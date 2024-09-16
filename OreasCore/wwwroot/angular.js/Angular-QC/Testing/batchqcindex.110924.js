@@ -55,7 +55,9 @@
             'FK_tbl_Inv_ProductRegistrationDetail_ID': null, 'FK_tbl_Inv_ProductRegistrationDetail_IDName': '', 'BatchSizeUnit': '',
             'BatchSize': 1, 'FK_tbl_Pro_CompositionDetail_Coupling_ID': 0, 'TotalProd': 0, 'Cost': 0, 'IsCompleted': false, 'FinishedDate': null,
             'IsDispensedR': false, 'IsDispensedP': false, 'IsQAClearanceBMRPending': false, 'IsQAClearanceBPRPending': false, 'IsQCSampleBMRPending': false, 'IsQCSampleBPRPending': false,
-            'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+            'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '',
+            'FK_tbl_Qc_ActionType_ID': null, 'FK_tbl_Qc_ActionType_IDName': null, 'QCComments': null, 
+            'CreatedByQc': '', 'CreatedDateQc': '', 'ModifiedByQc': '', 'ModifiedDateQc': ''            
         };
 
         //for list model which will be coming as as data in pageddata
@@ -69,8 +71,21 @@
                 'FK_tbl_Inv_ProductRegistrationDetail_ID': null, 'FK_tbl_Inv_ProductRegistrationDetail_IDName': '', 'BatchSizeUnit': '',
                 'BatchSize': 1, 'FK_tbl_Pro_CompositionDetail_Coupling_ID': 0, 'TotalProd': 0, 'Cost': 0, 'IsCompleted': false, 'FinishedDate': null,
                 'IsDispensedR': false, 'IsDispensedP': false, 'IsQAClearanceBMRPending': false, 'IsQAClearanceBPRPending': false, 'IsQCSampleBMRPending': false, 'IsQCSampleBPRPending': false,
-                'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+                'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '',
+                'FK_tbl_Qc_ActionType_ID': null, 'FK_tbl_Qc_ActionType_IDName': null, 'QCComments': null,
+                'CreatedByQc': '', 'CreatedDateQc': '', 'ModifiedByQc': '', 'ModifiedDateQc': ''
             };
+        };
+
+        $scope.postRowParam = function () {
+            return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_Pro_BatchMaterialRequisitionMaster };
+        };
+
+        $scope.GetRowResponse = function (data, operation) {
+            $scope.tbl_Pro_BatchMaterialRequisitionMaster = data; 
+            $scope.tbl_Pro_BatchMaterialRequisitionMaster.DocDate = new Date(data.DocDate);
+            $scope.tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate = new Date(data.BatchMfgDate);
+            $scope.tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate = new Date(data.BatchExpiryDate);
         };
       
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };

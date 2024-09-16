@@ -12,6 +12,7 @@ namespace OreasCore.Custom_Classes
     {
         RowInForm,
         RowInForm_FormGroup12,
+        RowInForm_FormGroup10,
         RowInForm_FormGroup9,
         RowInForm_FormGroup8,
         RowInForm_FormGroup6,
@@ -54,6 +55,8 @@ namespace OreasCore.Custom_Classes
                 output.Attributes.SetAttribute("class", "row col-lg-12 mimWidthDiv250 mt-2");
             else if (mycssclass == MyCSSClassName.RowInForm_FormGroup12)
                 output.Attributes.SetAttribute("class", "form-group col-lg-12 col-md-12");
+            else if (mycssclass == MyCSSClassName.RowInForm_FormGroup10)
+                output.Attributes.SetAttribute("class", "form-group col-lg-10 col-md-10");
             else if (mycssclass == MyCSSClassName.RowInForm_FormGroup9)
                 output.Attributes.SetAttribute("class", "form-group col-lg-9 col-md-9");
             else if (mycssclass == MyCSSClassName.RowInForm_FormGroup8)

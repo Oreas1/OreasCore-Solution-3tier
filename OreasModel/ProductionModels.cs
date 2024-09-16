@@ -735,6 +735,33 @@ namespace OreasModel
         [Required]
         public bool IsQCSampleBPRPending { get; set; }
 
+        //---------------------------qc-----------------------------//
+        [Required]
+        [ForeignKey(nameof(tbl_Qc_ActionType))]
+        public int FK_tbl_Qc_ActionType_ID { get; set; }
+        public virtual tbl_Qc_ActionType tbl_Qc_ActionType { get; set; }
+
+
+        [Display(Name = "QC Comments")]
+        [MaxLength(150)]
+        public string QCComments { get; set; }
+
+        [MaxLength(50)]
+        [Display(Name = "Created By Qc")]
+        public string CreatedByQc { get; set; }
+
+        [Display(Name = "Created Date Qc")]
+        public DateTime? CreatedDateQc { get; set; }
+
+        [MaxLength(50)]
+        [Display(Name = "Modified By Qc")]
+        public string ModifiedByQc { get; set; }
+
+        [Display(Name = "Modified Date Qc")]
+        public DateTime? ModifiedDateQc { get; set; }
+
+        //--------------------------------------------------//
+
         [MaxLength(50)]
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }

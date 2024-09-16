@@ -2095,7 +2095,6 @@ namespace OreasServices
                           o.FK_tbl_Qc_ActionType_ID,
                           FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
                           o.QuantitySample
-                          
                       };
 
             pageddata.Data = qry;
@@ -2134,19 +2133,19 @@ namespace OreasServices
                 ,@MfgBatchNo={17},@MfgDate={18},@ExpiryDate={19},@Remarks={20},@ReferenceNo={21},@FK_tbl_Inv_PurchaseOrderDetail_ID={22}
                 ,@NoOfContainers={23},@PotencyPercentage={24}
                 ,@CreatedBy={25},@CreatedDate={26},@ModifiedBy={27},@ModifiedDate={28}
-                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31}
-                ,@CreatedByQcQa={32},@CreatedDateQcQa={33},@ModifiedByQcQa={34},@ModifiedDateQcQa={35}",
-                CRUD_Type, CRUD_Msg, CRUD_ID,
-                tbl_Inv_PurchaseNoteDetail.ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseNoteMaster_ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_ID,
-                tbl_Inv_PurchaseNoteDetail.Quantity, tbl_Inv_PurchaseNoteDetail.Rate, tbl_Inv_PurchaseNoteDetail.GrossAmount,
-                tbl_Inv_PurchaseNoteDetail.GSTPercentage, tbl_Inv_PurchaseNoteDetail.GSTAmount, tbl_Inv_PurchaseNoteDetail.FreightIn, tbl_Inv_PurchaseNoteDetail.DiscountAmount, tbl_Inv_PurchaseNoteDetail.CostAmount,
-                tbl_Inv_PurchaseNoteDetail.WHTPercentage, tbl_Inv_PurchaseNoteDetail.WHTAmount, tbl_Inv_PurchaseNoteDetail.NetAmount,
-                tbl_Inv_PurchaseNoteDetail.MfgBatchNo, tbl_Inv_PurchaseNoteDetail.MfgDate, tbl_Inv_PurchaseNoteDetail.ExpiryDate, tbl_Inv_PurchaseNoteDetail.Remarks, tbl_Inv_PurchaseNoteDetail.ReferenceNo, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseOrderDetail_ID,
-                tbl_Inv_PurchaseNoteDetail.NoOfContainers, tbl_Inv_PurchaseNoteDetail.PotencyPercentage,
-                tbl_Inv_PurchaseNoteDetail.CreatedBy, tbl_Inv_PurchaseNoteDetail.CreatedDate, tbl_Inv_PurchaseNoteDetail.ModifiedBy, tbl_Inv_PurchaseNoteDetail.ModifiedDate,
-                tbl_Inv_PurchaseNoteDetail.FK_tbl_Qc_ActionType_ID, tbl_Inv_PurchaseNoteDetail.QuantitySample, tbl_Inv_PurchaseNoteDetail.RetestDate,
-                tbl_Inv_PurchaseNoteDetail.CreatedByQcQa, tbl_Inv_PurchaseNoteDetail.CreatedDateQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedByQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedDateQcQa
-                );
+                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31},@QCComments={32}
+                ,@CreatedByQcQa={33},@CreatedDateQcQa={34},@ModifiedByQcQa={35},@ModifiedDateQcQa={36}",
+                 CRUD_Type, CRUD_Msg, CRUD_ID,
+                 tbl_Inv_PurchaseNoteDetail.ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseNoteMaster_ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                 tbl_Inv_PurchaseNoteDetail.Quantity, tbl_Inv_PurchaseNoteDetail.Rate, tbl_Inv_PurchaseNoteDetail.GrossAmount,
+                 tbl_Inv_PurchaseNoteDetail.GSTPercentage, tbl_Inv_PurchaseNoteDetail.GSTAmount, tbl_Inv_PurchaseNoteDetail.FreightIn, tbl_Inv_PurchaseNoteDetail.DiscountAmount, tbl_Inv_PurchaseNoteDetail.CostAmount,
+                 tbl_Inv_PurchaseNoteDetail.WHTPercentage, tbl_Inv_PurchaseNoteDetail.WHTAmount, tbl_Inv_PurchaseNoteDetail.NetAmount,
+                 tbl_Inv_PurchaseNoteDetail.MfgBatchNo, tbl_Inv_PurchaseNoteDetail.MfgDate, tbl_Inv_PurchaseNoteDetail.ExpiryDate, tbl_Inv_PurchaseNoteDetail.Remarks, tbl_Inv_PurchaseNoteDetail.ReferenceNo, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseOrderDetail_ID,
+                 tbl_Inv_PurchaseNoteDetail.NoOfContainers, tbl_Inv_PurchaseNoteDetail.PotencyPercentage,
+                 tbl_Inv_PurchaseNoteDetail.CreatedBy, tbl_Inv_PurchaseNoteDetail.CreatedDate, tbl_Inv_PurchaseNoteDetail.ModifiedBy, tbl_Inv_PurchaseNoteDetail.ModifiedDate,
+                 tbl_Inv_PurchaseNoteDetail.FK_tbl_Qc_ActionType_ID, tbl_Inv_PurchaseNoteDetail.QuantitySample, tbl_Inv_PurchaseNoteDetail.RetestDate, tbl_Inv_PurchaseNoteDetail.QCComments,
+                 tbl_Inv_PurchaseNoteDetail.CreatedByQcQa, tbl_Inv_PurchaseNoteDetail.CreatedDateQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedByQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedDateQcQa
+                 );
 
             if ((string)CRUD_Msg.Value == "Successful")
                 return "OK";
@@ -2181,6 +2180,7 @@ namespace OreasServices
                     else
                         PODID = null;
 
+                    
                     if (item.Quantity > 0 && temp.ID > 0)
                     {
                         CRUD_Type.Value = "Insert";
@@ -2196,8 +2196,8 @@ namespace OreasServices
                         ,@MfgBatchNo={17},@MfgDate={18},@ExpiryDate={19},@Remarks={20},@ReferenceNo={21},@FK_tbl_Inv_PurchaseOrderDetail_ID={22}
                         ,@NoOfContainers={23},@PotencyPercentage={24}
                         ,@CreatedBy={25},@CreatedDate={26},@ModifiedBy={27},@ModifiedDate={28}
-                        ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31}
-                        ,@CreatedByQcQa={32},@CreatedDateQcQa={33},@ModifiedByQcQa={34},@ModifiedDateQcQa={35}",
+                        ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31},@QCComments={32}
+                        ,@CreatedByQcQa={33},@CreatedDateQcQa={34},@ModifiedByQcQa={35},@ModifiedDateQcQa={36}",
                         CRUD_Type, CRUD_Msg, CRUD_ID,
                         0, MasterID, temp.ID,
                         item.Quantity, item.Rate, 0,
@@ -2206,7 +2206,7 @@ namespace OreasServices
                         item.MfgBatchNo, null, item.ExpiryDate, "excel", null, PODID,
                         null,0,
                         userName, DateTime.Now, null, null,
-                        1, 0,null,
+                        1, 0,null,null,
                         null, null, null, null
                         );
 
@@ -2231,8 +2231,8 @@ namespace OreasServices
                                 ,@MfgBatchNo={17},@MfgDate={18},@ExpiryDate={19},@Remarks={20},@ReferenceNo={21},@FK_tbl_Inv_PurchaseOrderDetail_ID={22}
                                 ,@NoOfContainers={23},@PotencyPercentage={24}
                                 ,@CreatedBy={25},@CreatedDate={26},@ModifiedBy={27},@ModifiedDate={28}
-                                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31}
-                                ,@CreatedByQcQa={32},@CreatedDateQcQa={33},@ModifiedByQcQa={34},@ModifiedDateQcQa={35}",
+                                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31},@QCComments={32}
+                                ,@CreatedByQcQa={33},@CreatedDateQcQa={34},@ModifiedByQcQa={35},@ModifiedDateQcQa={36}",
                                 CRUD_Type, CRUD_Msg, CRUD_ID,
                                 pnd.ID, pnd.FK_tbl_Inv_PurchaseNoteMaster_ID, pnd.FK_tbl_Inv_ProductRegistrationDetail_ID,
                                 pnd.Quantity, pnd.Rate, pnd.GrossAmount,
@@ -2241,7 +2241,7 @@ namespace OreasServices
                                 pnd.MfgBatchNo, pnd.MfgDate, pnd.ExpiryDate, pnd.Remarks, pnd.ReferenceNo, pnd.FK_tbl_Inv_PurchaseOrderDetail_ID,
                                 pnd.NoOfContainers, pnd.PotencyPercentage,
                                 pnd.CreatedBy, pnd.CreatedDate, pnd.ModifiedBy, pnd.ModifiedDate,
-                                pnd.FK_tbl_Qc_ActionType_ID, pnd.QuantitySample,pnd.RetestDate,
+                                pnd.FK_tbl_Qc_ActionType_ID, pnd.QuantitySample,pnd.RetestDate,pnd.QCComments,
                                 pnd.CreatedByQcQa, pnd.CreatedDateQcQa, pnd.ModifiedByQcQa, pnd.ModifiedDateQcQa
                                 );
 

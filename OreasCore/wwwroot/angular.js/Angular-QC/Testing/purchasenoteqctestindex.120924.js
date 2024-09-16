@@ -44,7 +44,7 @@
             'ID': 0, 'FK_tbl_Inv_PurchaseNoteMaster_ID': null, 'DocNo': null, 'DocDate': new Date(), 'AccountName': '',
             'FK_tbl_Inv_ProductRegistrationDetail_ID': null, 'FK_tbl_Inv_ProductRegistrationDetail_IDName': '', 'MeasurementUnit': '',
             'Quantity': 0, 'ReferenceNo': '', 'FK_tbl_Qc_ActionType_ID': 1, 'FK_tbl_Qc_ActionType_IDName': '',
-            'QuantitySample': 0, 'RetestDate': null, 'PotencyPercentage': 0,
+            'QuantitySample': 0, 'RetestDate': null, 'QCComments': null, 'PotencyPercentage': 0,
             'CreatedByQcQa': '', 'CreatedDateQcQa': '', 'ModifiedByQcQa': '', 'ModifiedDateQcQa': '',
             'IsProcessed': false, 'IsSupervised': false
         };
@@ -58,7 +58,7 @@
                 'ID': 0, 'FK_tbl_Inv_PurchaseNoteMaster_ID': null, 'DocNo': null, 'DocDate': new Date(), 'AccountName': '',
                 'FK_tbl_Inv_ProductRegistrationDetail_ID': null, 'FK_tbl_Inv_ProductRegistrationDetail_IDName': '', 'MeasurementUnit': '',
                 'Quantity': 0, 'ReferenceNo': '', 'FK_tbl_Qc_ActionType_ID': 1, 'FK_tbl_Qc_ActionType_IDName': '',
-                'QuantitySample': 0, 'RetestDate': null, 'PotencyPercentage': 0,
+                'QuantitySample': 0, 'RetestDate': null, 'QCComments': null, 'PotencyPercentage': 0,
                 'CreatedByQcQa': '', 'CreatedDateQcQa': '', 'ModifiedByQcQa': '', 'ModifiedDateQcQa': '',
                 'IsProcessed': false, 'IsSupervised': false
             };

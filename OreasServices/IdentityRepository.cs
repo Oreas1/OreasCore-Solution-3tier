@@ -2402,19 +2402,19 @@ namespace OreasServices
                 ,@MfgBatchNo={17},@MfgDate={18},@ExpiryDate={19},@Remarks={20},@ReferenceNo={21},@FK_tbl_Inv_PurchaseOrderDetail_ID={22}
                 ,@NoOfContainers={23},@PotencyPercentage={24}
                 ,@CreatedBy={25},@CreatedDate={26},@ModifiedBy={27},@ModifiedDate={28}
-                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31}
-                ,@CreatedByQcQa={32},@CreatedDateQcQa={33},@ModifiedByQcQa={34},@ModifiedDateQcQa={35}",
-                CRUD_Type, CRUD_Msg, CRUD_ID,
-                PND.ID, PND.FK_tbl_Inv_PurchaseNoteMaster_ID, PND.FK_tbl_Inv_ProductRegistrationDetail_ID,
-                PND.Quantity, PND.Rate, PND.GrossAmount,
-                PND.GSTPercentage, PND.GSTAmount, PND.FreightIn, PND.DiscountAmount, PND.CostAmount,
-                PND.WHTPercentage, PND.WHTAmount, PND.NetAmount,
-                PND.MfgBatchNo, PND.MfgDate, PND.ExpiryDate, PND.Remarks, PND.ReferenceNo, PND.FK_tbl_Inv_PurchaseOrderDetail_ID,
-                PND.NoOfContainers, PND.PotencyPercentage,
-                PND.CreatedBy, PND.CreatedDate, PND.ModifiedBy, PND.ModifiedDate,
-                PND.FK_tbl_Qc_ActionType_ID, PND.QuantitySample,PND.RetestDate,
-                PND.CreatedByQcQa, PND.CreatedDateQcQa, PND.ModifiedByQcQa, PND.ModifiedDateQcQa
-                );
+                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31},@QCComments={32}
+                ,@CreatedByQcQa={33},@CreatedDateQcQa={34},@ModifiedByQcQa={35},@ModifiedDateQcQa={36}",
+                 CRUD_Type, CRUD_Msg, CRUD_ID,
+                 PND.ID, PND.FK_tbl_Inv_PurchaseNoteMaster_ID, PND.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                 PND.Quantity, PND.Rate, PND.GrossAmount,
+                 PND.GSTPercentage, PND.GSTAmount, PND.FreightIn, PND.DiscountAmount, PND.CostAmount,
+                 PND.WHTPercentage, PND.WHTAmount, PND.NetAmount,
+                 PND.MfgBatchNo, PND.MfgDate, PND.ExpiryDate, PND.Remarks, PND.ReferenceNo, PND.FK_tbl_Inv_PurchaseOrderDetail_ID,
+                 PND.NoOfContainers, PND.PotencyPercentage,
+                 PND.CreatedBy, PND.CreatedDate, PND.ModifiedBy, PND.ModifiedDate,
+                 PND.FK_tbl_Qc_ActionType_ID, PND.QuantitySample, PND.RetestDate, PND.QCComments,
+                 PND.CreatedByQcQa, PND.CreatedDateQcQa, PND.ModifiedByQcQa, PND.ModifiedDateQcQa
+                 );
 
                 if ((string)CRUD_Msg.Value == "Successful")
                     continue;

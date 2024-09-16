@@ -393,6 +393,26 @@ namespace OreasCore.Areas.Qc.Controllers
             return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanPost")]
+        public async Task<string> BatchMasterPost([FromServices] IQCBatch db, [FromBody] tbl_Pro_BatchMaterialRequisitionMaster tbl_Pro_BatchMaterialRequisitionMaster, string operation = "")
+        {
+            ModelState.Remove("BatchExpiryDate"); ModelState.Remove("FK_tbl_Inv_MeasurementUnit_ID_Dimension"); ModelState.Remove("FK_tbl_Pro_CompositionMaster_ID");
+            if (ModelState.IsValid)
+                return await db.PostBatchRecordMaster(tbl_Pro_BatchMaterialRequisitionMaster, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanView")]
+        public async Task<IActionResult> BatchMasterGet([FromServices] IQCBatch db, int ID)
+        {
+            return Json(await db.GetBatchRecordMaster(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+
         #endregion
 
         #region BatchBMRSample

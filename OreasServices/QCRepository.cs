@@ -307,6 +307,7 @@ namespace OreasServices
                           FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
                           o.QuantitySample,
                           o.RetestDate,
+                          o.QCComments,
                           o.NoOfContainers,
                           o.PotencyPercentage,
                           o.CreatedByQcQa,
@@ -418,6 +419,7 @@ namespace OreasServices
                           FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
                           o.QuantitySample,
                           RetestDate = o.RetestDate.HasValue ? o.RetestDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.QCComments,
                           o.CreatedByQcQa,
                           CreatedDateQcQa = o.CreatedDateQcQa.HasValue ? o.CreatedDateQcQa.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedByQcQa,
@@ -468,8 +470,8 @@ namespace OreasServices
                 ,@MfgBatchNo={17},@MfgDate={18},@ExpiryDate={19},@Remarks={20},@ReferenceNo={21},@FK_tbl_Inv_PurchaseOrderDetail_ID={22}
                 ,@NoOfContainers={23},@PotencyPercentage={24}
                 ,@CreatedBy={25},@CreatedDate={26},@ModifiedBy={27},@ModifiedDate={28}
-                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31}
-                ,@CreatedByQcQa={32},@CreatedDateQcQa={33},@ModifiedByQcQa={34},@ModifiedDateQcQa={35}",
+                ,@FK_tbl_Qc_ActionType_ID={29},@QuantitySample={30},@RetestDate={31},@QCComments={32}
+                ,@CreatedByQcQa={33},@CreatedDateQcQa={34},@ModifiedByQcQa={35},@ModifiedDateQcQa={36}",
                 CRUD_Type, CRUD_Msg, CRUD_ID,
                 tbl_Inv_PurchaseNoteDetail.ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseNoteMaster_ID, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_ProductRegistrationDetail_ID,
                 tbl_Inv_PurchaseNoteDetail.Quantity, tbl_Inv_PurchaseNoteDetail.Rate, tbl_Inv_PurchaseNoteDetail.GrossAmount,
@@ -478,7 +480,7 @@ namespace OreasServices
                 tbl_Inv_PurchaseNoteDetail.MfgBatchNo, tbl_Inv_PurchaseNoteDetail.MfgDate, tbl_Inv_PurchaseNoteDetail.ExpiryDate, tbl_Inv_PurchaseNoteDetail.Remarks, tbl_Inv_PurchaseNoteDetail.ReferenceNo, tbl_Inv_PurchaseNoteDetail.FK_tbl_Inv_PurchaseOrderDetail_ID,
                 tbl_Inv_PurchaseNoteDetail.NoOfContainers, tbl_Inv_PurchaseNoteDetail.PotencyPercentage,
                 tbl_Inv_PurchaseNoteDetail.CreatedBy, tbl_Inv_PurchaseNoteDetail.CreatedDate, tbl_Inv_PurchaseNoteDetail.ModifiedBy, tbl_Inv_PurchaseNoteDetail.ModifiedDate,
-                tbl_Inv_PurchaseNoteDetail.FK_tbl_Qc_ActionType_ID, tbl_Inv_PurchaseNoteDetail.QuantitySample, tbl_Inv_PurchaseNoteDetail.RetestDate,
+                tbl_Inv_PurchaseNoteDetail.FK_tbl_Qc_ActionType_ID, tbl_Inv_PurchaseNoteDetail.QuantitySample, tbl_Inv_PurchaseNoteDetail.RetestDate, tbl_Inv_PurchaseNoteDetail.QCComments,
                 tbl_Inv_PurchaseNoteDetail.CreatedByQcQa, tbl_Inv_PurchaseNoteDetail.CreatedDateQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedByQcQa, tbl_Inv_PurchaseNoteDetail.ModifiedDateQcQa
                 );
 
@@ -1410,6 +1412,50 @@ namespace OreasServices
         }
 
         #region Master
+        public async Task<object> GetBatchRecordMaster(int id)
+        {
+            var qry = from o in await db.tbl_Pro_BatchMaterialRequisitionMasters.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.DocNo,
+                          DocDate = o.DocDate.ToString("dd-MMM-yyyy"),
+                          o.BatchNo,
+                          BatchMfgDate = o.BatchMfgDate.ToString("dd-MMM-yyyy"),
+                          BatchExpiryDate = o.BatchExpiryDate.ToString("dd-MMM-yyyy"),
+                          o.DimensionValue,
+                          o.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
+                          FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          FK_tbl_Inv_ProductRegistrationDetail_IDName = o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName,
+                          BatchSizeUnit = o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.BatchSize,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
+                          o.TotalProd,
+                          o.Cost,
+                          o.IsCompleted,
+                          FinishedDate = o.FinishedDate.HasValue ? o.FinishedDate.Value.ToString("dd-MMM-yyyy hh:mm tt") : "",
+                          o.IsDispensedR,
+                          o.IsDispensedP,
+                          o.IsQAClearanceBMRPending,
+                          o.IsQAClearanceBPRPending,
+                          o.IsQCSampleBMRPending,
+                          o.IsQCSampleBPRPending,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.FK_tbl_Qc_ActionType_ID,
+                          FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
+                          o.QCComments,
+                          o.CreatedByQc,
+                          CreatedDateQc = o.CreatedDateQc.HasValue ? o.CreatedDateQc.Value.ToString("dd-MMM-yyyy hh:mm tt") : "",
+                          o.ModifiedByQc,
+                          ModifiedDateQc = o.ModifiedDateQc.HasValue ? o.ModifiedDateQc.Value.ToString("dd-MMM-yyyy hh:mm tt") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
         public object GetWCLBatchRecordMaster()
         {
             return new[]
@@ -1421,7 +1467,9 @@ namespace OreasServices
         {
             return new[]
             {
-                new { n = "by QC Sample BMR Pending", v = "byQCSampleBMRPending" }, new { n = "by QC Sample BPR Pending", v = "byQCSampleBPRPending" }, new { n = "by Finished", v = "byFinished" }, new { n = "by Partial Finished", v = "byPartialFinished" }, new { n = "by InProcess", v = "byInProcess" }
+                new { n = "by QC Sample BMR Pending", v = "byQCSampleBMRPending" }, new { n = "by QC Sample BPR Pending", v = "byQCSampleBPRPending" }, 
+                new { n = "by Finished", v = "byFinished" }, new { n = "by Partial Finished", v = "byPartialFinished" }, new { n = "by InProcess", v = "byInProcess" },
+                new { n = "by QC Batch Pending", v = "byQCBatchPending" }
             }.ToList();
         }
         public async Task<PagedData<object>> LoadBatchRecordMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
@@ -1441,6 +1489,8 @@ namespace OreasServices
                                                  FilterByLoad == "byPartialFinished" && w.IsCompleted == null
                                                  ||
                                                  FilterByLoad == "byInProcess" && w.IsCompleted == false
+                                                 ||
+                                                 FilterByLoad == "byQCBatchPending" && w.FK_tbl_Qc_ActionType_ID == 1
                                                  )
                                                .Where(w =>
                                                        string.IsNullOrEmpty(FilterValueByText)
@@ -1469,6 +1519,8 @@ namespace OreasServices
                                                  FilterByLoad == "byPartialFinished" && w.IsCompleted == null
                                                  ||
                                                  FilterByLoad == "byInProcess" && w.IsCompleted == false
+                                                 ||
+                                                 FilterByLoad == "byQCBatchPending" && w.FK_tbl_Qc_ActionType_ID == 1
                                                  )
                                   .Where(w =>
                                         string.IsNullOrEmpty(FilterValueByText)
@@ -1508,7 +1560,13 @@ namespace OreasServices
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          TotalPackageBatchSize = o.tbl_Pro_BatchMaterialRequisitionDetail_PackagingMasters?.Sum(s => s.BatchSize) ?? 0
+                          o.FK_tbl_Qc_ActionType_ID,
+                          FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
+                          o.QCComments,
+                          o.CreatedByQc,
+                          CreatedDateQc = o.CreatedDateQc.HasValue ? o.CreatedDateQc.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedByQc,
+                          ModifiedDateQc = o.ModifiedDateQc.HasValue ? o.ModifiedDateQc.Value.ToString("dd-MMM-yyyy") : ""
                       };
 
 
@@ -1518,7 +1576,62 @@ namespace OreasServices
 
             return pageddata;
         }
+        public async Task<string> PostBatchRecordMaster(tbl_Pro_BatchMaterialRequisitionMaster tbl_Pro_BatchMaterialRequisitionMaster, string operation = "", string userName = "")
+        {
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
 
+            var tbl_Pro_BatchMaterialRequisitionMaster_old = await db.tbl_Pro_BatchMaterialRequisitionMasters.Where(w => w.ID == tbl_Pro_BatchMaterialRequisitionMaster.ID).FirstOrDefaultAsync();
+
+            if (tbl_Pro_BatchMaterialRequisitionMaster_old == null)
+                return "Record Not Found"; 
+
+            if ((tbl_Pro_BatchMaterialRequisitionMaster_old.CreatedByQc?.Length ?? 0) > 0)
+            {
+                tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc = tbl_Pro_BatchMaterialRequisitionMaster_old.CreatedByQc;
+                tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc = tbl_Pro_BatchMaterialRequisitionMaster_old.CreatedDateQc;
+
+                tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc = userName;
+                tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc = DateTime.Now;
+
+            }
+            else
+            {
+                tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc = userName;
+                tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc = DateTime.Now;
+
+                tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc = tbl_Pro_BatchMaterialRequisitionMaster_old.ModifiedByQc;
+                tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc = tbl_Pro_BatchMaterialRequisitionMaster_old.ModifiedDateQc;
+            }
+
+            CRUD_Type.Value = "UpdateByQc";
+
+            await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_BatchMaterialRequisitionMaster] 
+                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@DocNo={4},@DocDate={5},@BatchNo={6}
+                ,@BatchMfgDate={7},@BatchExpiryDate={8}
+                ,@DimensionValue={9},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={10}
+                ,@FK_tbl_Inv_ProductRegistrationDetail_ID={11},@BatchSize={12}
+                ,@FK_tbl_Pro_CompositionDetail_Coupling_ID={13},@IsCompleted={14},@FinishedDate={15}
+                ,@FK_tbl_Qc_ActionType_ID={16},@QCComments={17},@CreatedByQc={18},@CreatedDateQc={19},@ModifiedByQc={20},@ModifiedDateQc={21}
+                ,@CreatedBy={22},@CreatedDate={23},@ModifiedBy={24},@ModifiedDate={25}",
+               CRUD_Type, CRUD_Msg, CRUD_ID,
+               tbl_Pro_BatchMaterialRequisitionMaster.ID, tbl_Pro_BatchMaterialRequisitionMaster.DocNo, tbl_Pro_BatchMaterialRequisitionMaster.DocDate, tbl_Pro_BatchMaterialRequisitionMaster.BatchNo,
+               tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate, tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate,
+               tbl_Pro_BatchMaterialRequisitionMaster.DimensionValue, tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
+               tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_ID, tbl_Pro_BatchMaterialRequisitionMaster.BatchSize,
+               tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Pro_CompositionDetail_Coupling_ID, tbl_Pro_BatchMaterialRequisitionMaster.IsCompleted, tbl_Pro_BatchMaterialRequisitionMaster.FinishedDate,
+               tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID, tbl_Pro_BatchMaterialRequisitionMaster.QCComments, tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc, tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc,
+               tbl_Pro_BatchMaterialRequisitionMaster.CreatedBy, tbl_Pro_BatchMaterialRequisitionMaster.CreatedDate,
+               tbl_Pro_BatchMaterialRequisitionMaster.ModifiedBy, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDate);
+
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+        }
         #endregion
 
         #region BMRSample
@@ -1861,7 +1974,7 @@ namespace OreasServices
         public async Task<string> PostBMRSampleQcTestReplicationFromStandard(int MasterID, string userName = "")
         {
             var SampleProcessBMR = await db.tbl_Qc_SampleProcessBMRs.Where(w => w.ID == MasterID).FirstOrDefaultAsync();
-            
+
             if (db.tbl_Qc_SampleProcessBMR_QcTests.Count(c => c.FK_tbl_Qc_SampleProcessBMR_ID == MasterID) > 0)
                 return "Replication Aborted! because the test list has already been entered";
 

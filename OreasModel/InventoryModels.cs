@@ -846,6 +846,10 @@ namespace OreasModel
         [Display(Name = "Retest Date")]
         public DateTime? RetestDate { get; set; }
 
+        [Display(Name = "QC Comments")]
+        [MaxLength(150)]
+        public string QCComments { get; set; }
+
         [MaxLength(50)]
         [Display(Name = "Created By QcQa")]
         public string CreatedByQcQa { get; set; }

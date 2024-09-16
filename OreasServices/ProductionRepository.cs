@@ -2017,19 +2017,21 @@ namespace OreasServices
             }
 
             await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_BatchMaterialRequisitionMaster] 
-                               @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
-                              ,@ID={3},@DocNo={4},@DocDate={5},@BatchNo={6}
-                              ,@BatchMfgDate={7},@BatchExpiryDate={8}
-                              ,@DimensionValue={9},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={10}
-                              ,@FK_tbl_Inv_ProductRegistrationDetail_ID={11},@BatchSize={12}
-                              ,@FK_tbl_Pro_CompositionDetail_Coupling_ID={13},@IsCompleted={14},@FinishedDate={15}
-                              ,@CreatedBy={16},@CreatedDate={17},@ModifiedBy={18},@ModifiedDate={19}",
+                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@DocNo={4},@DocDate={5},@BatchNo={6}
+                ,@BatchMfgDate={7},@BatchExpiryDate={8}
+                ,@DimensionValue={9},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={10}
+                ,@FK_tbl_Inv_ProductRegistrationDetail_ID={11},@BatchSize={12}
+                ,@FK_tbl_Pro_CompositionDetail_Coupling_ID={13},@IsCompleted={14},@FinishedDate={15}
+                ,@FK_tbl_Qc_ActionType_ID={16},@QCComments={17},@CreatedByQc={18},@CreatedDateQc={19},@ModifiedByQc={20},@ModifiedDateQc={21}
+                ,@CreatedBy={22},@CreatedDate={23},@ModifiedBy={24},@ModifiedDate={25}",
                CRUD_Type, CRUD_Msg, CRUD_ID,
                tbl_Pro_BatchMaterialRequisitionMaster.ID, tbl_Pro_BatchMaterialRequisitionMaster.DocNo, tbl_Pro_BatchMaterialRequisitionMaster.DocDate, tbl_Pro_BatchMaterialRequisitionMaster.BatchNo,
                tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate, tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate,
                tbl_Pro_BatchMaterialRequisitionMaster.DimensionValue, tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
                tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_ID, tbl_Pro_BatchMaterialRequisitionMaster.BatchSize,
                tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Pro_CompositionDetail_Coupling_ID, tbl_Pro_BatchMaterialRequisitionMaster.IsCompleted, tbl_Pro_BatchMaterialRequisitionMaster.FinishedDate,
+               tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID, tbl_Pro_BatchMaterialRequisitionMaster.QCComments, tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc, tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc,
                tbl_Pro_BatchMaterialRequisitionMaster.CreatedBy, tbl_Pro_BatchMaterialRequisitionMaster.CreatedDate,
                tbl_Pro_BatchMaterialRequisitionMaster.ModifiedBy, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDate);
 
@@ -3397,19 +3399,21 @@ namespace OreasServices
             }
 
             await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Pro_BatchMaterialRequisitionMaster] 
-                               @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
-                              ,@ID={3},@DocNo={4},@DocDate={5},@BatchNo={6}
-                              ,@BatchMfgDate={7},@BatchExpiryDate={8}
-                              ,@DimensionValue={9},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={10}
-                              ,@FK_tbl_Inv_ProductRegistrationDetail_ID={11},@BatchSize={12}
-                              ,@FK_tbl_Pro_CompositionDetail_Coupling_ID={13},@IsCompleted={14},@FinishedDate={15}
-                              ,@CreatedBy={16},@CreatedDate={17},@ModifiedBy={18},@ModifiedDate={19}",
+                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@DocNo={4},@DocDate={5},@BatchNo={6}
+                ,@BatchMfgDate={7},@BatchExpiryDate={8}
+                ,@DimensionValue={9},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={10}
+                ,@FK_tbl_Inv_ProductRegistrationDetail_ID={11},@BatchSize={12}
+                ,@FK_tbl_Pro_CompositionDetail_Coupling_ID={13},@IsCompleted={14},@FinishedDate={15}
+                ,@FK_tbl_Qc_ActionType_ID={16},@QCComments={17},@CreatedByQc={18},@CreatedDateQc={19},@ModifiedByQc={20},@ModifiedDateQc={21}
+                ,@CreatedBy={22},@CreatedDate={23},@ModifiedBy={24},@ModifiedDate={25}",
                CRUD_Type, CRUD_Msg, CRUD_ID,
                tbl_Pro_BatchMaterialRequisitionMaster.ID, tbl_Pro_BatchMaterialRequisitionMaster.DocNo, tbl_Pro_BatchMaterialRequisitionMaster.DocDate, tbl_Pro_BatchMaterialRequisitionMaster.BatchNo,
                tbl_Pro_BatchMaterialRequisitionMaster.BatchMfgDate, tbl_Pro_BatchMaterialRequisitionMaster.BatchExpiryDate,
                tbl_Pro_BatchMaterialRequisitionMaster.DimensionValue, tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
                tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Inv_ProductRegistrationDetail_ID, tbl_Pro_BatchMaterialRequisitionMaster.BatchSize,
                tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Pro_CompositionDetail_Coupling_ID, tbl_Pro_BatchMaterialRequisitionMaster.IsCompleted, tbl_Pro_BatchMaterialRequisitionMaster.FinishedDate,
+               tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Qc_ActionType_ID, tbl_Pro_BatchMaterialRequisitionMaster.QCComments, tbl_Pro_BatchMaterialRequisitionMaster.CreatedByQc, tbl_Pro_BatchMaterialRequisitionMaster.CreatedDateQc, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedByQc, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDateQc,
                tbl_Pro_BatchMaterialRequisitionMaster.CreatedBy, tbl_Pro_BatchMaterialRequisitionMaster.CreatedDate,
                tbl_Pro_BatchMaterialRequisitionMaster.ModifiedBy, tbl_Pro_BatchMaterialRequisitionMaster.ModifiedDate);
 
