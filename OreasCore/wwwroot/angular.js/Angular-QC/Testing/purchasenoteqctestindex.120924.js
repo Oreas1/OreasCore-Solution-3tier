@@ -89,11 +89,13 @@
         $scope.MasterObject = {};
         $scope.$on('PurchaseNoteQcTestDetailCtlr', function (e, itm) {
             $scope.MasterObject = itm;
+            $scope.rptID = itm.ID;
             $scope.pageNavigation('first');
         });
 
         $scope.$on('init_PurchaseNoteQcTestDetailCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
+            init_Report($scope, itm.Reports, '/QC/Testing/GetPurchaseNoteQcTestReport'); 
         });
 
         init_Operations($scope, $http,

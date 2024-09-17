@@ -334,7 +334,7 @@ namespace OreasCore.Areas.Qc.Controllers
                     {
                         Controller = "BatchBMRSampleCtlr",
                         WildCard =  db2.GetWCLBMRSample(),
-                        Reports = null,
+                        Reports = db2.GetRLBMRSample(),
                         Privilege = null,
                         Otherdata = null
                     },
@@ -342,7 +342,7 @@ namespace OreasCore.Areas.Qc.Controllers
                     {
                         Controller = "BatchBPRSampleCtlr",
                         WildCard =  db2.GetWCLBPRSample(),
-                        Reports = null,
+                        Reports = db2.GetRLBPRSample(),
                         Privilege = null,
                         Otherdata = null
                     },
@@ -600,6 +600,16 @@ namespace OreasCore.Areas.Qc.Controllers
 
         #endregion
 
+        #region Report
+
+        [MyAuthorization(FormName = "Batch Testing", Operation = "CanViewReport")]
+        public async Task<IActionResult> GetBatchQcTestReport([FromServices] IQCBatch db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
+        {
+            return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), rn.ToLower().Contains("excel") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf");
+        }
+
+        #endregion
+
         #endregion
 
         #region ProductRegistration QcTest For PN
@@ -731,7 +741,7 @@ namespace OreasCore.Areas.Qc.Controllers
                         Controller = "PurchaseNoteQcTestDetailCtlr",
                         WildCard = db2.GetWCLPurchaseNoteQcTest(),
                         LoadByCard = null,
-                        Reports = null,
+                        Reports = db2.GetRLPurchaseNoteQcTest(),
                         Privilege = null,
                         Otherdata = null
                     }

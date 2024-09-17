@@ -102,11 +102,13 @@
         $scope.MasterObject = {};
         $scope.$on('BatchBMRSampleCtlr', function (e, itm) {
             $scope.MasterObject = itm;
+            $scope.rptID = itm.ID;
             $scope.pageNavigation('first');
         });
 
         $scope.$on('init_BatchBMRSampleCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
+            init_Report($scope, itm.Reports, '/QC/Testing/GetBatchQcTestReport');
         });
 
         init_Operations($scope, $http,
@@ -138,11 +140,13 @@
         $scope.MasterObject = {};
         $scope.$on('BatchBPRSampleCtlr', function (e, itm) {
             $scope.MasterObject = itm;
+            $scope.rptID = itm.ID;
             $scope.pageNavigation('first');
         });
 
         $scope.$on('init_BatchBPRSampleCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
+            init_Report($scope, itm.Reports, '/QC/Testing/GetBatchQcTestReport');
         });
 
         init_Operations($scope, $http,

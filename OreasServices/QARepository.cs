@@ -27,6 +27,133 @@ using OfficeOpenXml.Drawing.Controls;
 
 namespace OreasServices
 {
+    public class QaDocumentControlRepository : IQaDocumentControl
+    {
+        private readonly OreasDbContext db;
+        public QaDocumentControlRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+        public async Task<object> GetQaDocumentControl(int id)
+        {
+            var qry = from o in await db.tbl_Qa_DocumentControls.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.DocumentNo,
+                          o.DocumentName,
+                          IssuedDate = o.IssuedDate.ToString("dd-MMM-yyyy"),
+                          o.RevisionNo,
+                          o.ControlProcedureNo,
+                          o.ControlProcedureName,
+                          o.StandardOperatingProcedureNo,
+                          o.StandardOperatingProcedureName,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLQaDocumentControl()
+        {
+            return new[]
+            {
+                new { n = "by Document No", v = "byDocumentNo" }, new { n = "by Document Name", v = "byDocumentName" },
+                new { n = "by Control Pro No", v = "byControlProNo" }, new { n = "by Control Pro Name", v = "byControlProName" },
+                new { n = "by Standard Op Pro No", v = "byStandardOpProNo" }, new { n = "by Standard Op Pro Name", v = "byStandardOpProName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadQaDocumentControl(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Qa_DocumentControls
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byDocumentNo" && w.DocumentNo.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byDocumentName" && w.DocumentName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byControlProNo" && w.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byControlProName" && w.ControlProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byStandardOpProNo" && w.StandardOperatingProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byStandardOpProName" && w.StandardOperatingProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Qa_DocumentControls
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byDocumentNo" && w.DocumentNo.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byDocumentName" && w.DocumentName.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byControlProNo" && w.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byControlProName" && w.ControlProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byStandardOpProNo" && w.StandardOperatingProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
+                                        ||
+                                        FilterByText == "byStandardOpProName" && w.StandardOperatingProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                       )
+                                   .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.DocumentNo,
+                          o.DocumentName,
+                          IssuedDate = o.IssuedDate.ToString("dd-MMM-yyyy"),
+                          o.RevisionNo,
+                          o.ControlProcedureNo,
+                          o.ControlProcedureName,
+                          o.StandardOperatingProcedureNo,
+                          o.StandardOperatingProcedureName,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostQaDocumentControl(tbl_Qa_DocumentControl tbl_Qa_DocumentControl, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Qa_DocumentControl.CreatedBy = userName;
+                tbl_Qa_DocumentControl.CreatedDate = DateTime.Now;
+                db.tbl_Qa_DocumentControls.Add(tbl_Qa_DocumentControl);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Qa_DocumentControl.ModifiedBy = userName;
+                tbl_Qa_DocumentControl.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Qa_DocumentControl).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Qa_DocumentControls.Remove(db.tbl_Qa_DocumentControls.Find(tbl_Qa_DocumentControl.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+    }
     public class QAProcessRepository : IQAProcess
     {
         private readonly OreasDbContext db;

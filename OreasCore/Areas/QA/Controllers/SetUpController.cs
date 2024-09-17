@@ -12,6 +12,69 @@ namespace OreasCore.Areas.QA.Controllers
     [Area("QA")]
     public class SetUpController : Controller
     {
+        #region QaDocumentControl
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedQaDocumentControlAsync([FromServices] IAuthorizationScheme db, [FromServices] IQaDocumentControl db2)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "QaDocumentControlIndexCtlr",
+                        WildCard = db2.GetWCLQaDocumentControl(),
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("QA", User.Identity.Name, "Qa Document Control"),
+                        Otherdata = null
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
+
+        [MyAuthorization(FormName = "Qa Document Control", Operation = "CanView")]
+        public IActionResult QaDocumentControlIndex()
+        {
+            return View();
+        }
+
+        [AjaxOnly]
+        public async Task<IActionResult> QaDocumentControlLoad([FromServices] IQaDocumentControl db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadQaDocumentControl(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Qa Document Control", Operation = "CanPost")]
+        public async Task<string> QaDocumentControlPost([FromServices] IQaDocumentControl db, [FromBody] tbl_Qa_DocumentControl tbl_Qa_DocumentControl, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostQaDocumentControl(tbl_Qa_DocumentControl, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Qa Document Control", Operation = "CanView")]
+        public async Task<IActionResult> QaDocumentControlGet([FromServices] IQaDocumentControl db, int ID)
+        {
+            return Json(await db.GetQaDocumentControl(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
 
 
         #region Composition Filter Policy

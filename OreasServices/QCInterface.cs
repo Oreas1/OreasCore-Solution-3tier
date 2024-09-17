@@ -26,7 +26,7 @@ namespace OreasServices
         Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
         Task<object> GetPurchaseNote(int id);
         Task<object> GetPurchaseNoteQcTest(int id);
-        List<ReportCallingModel> GetRLQcQaPurchaseNote();
+        List<ReportCallingModel> GetRLPurchaseNoteQcTest();
         object GetWCLBQcPurchaseNote();
         object GetWCLPurchaseNoteQcTest();
         object GetWCLQcPurchaseNote();
@@ -63,11 +63,14 @@ namespace OreasServices
     }
     public interface IQCBatch
     {
+        Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
         Task<object> GetBatchRecordMaster(int id);
         Task<object> GetBMRSample(int id);
         Task<object> GetBMRSampleQcTest(int id);
         Task<object> GetBPRSample(int id);
         Task<object> GetBPRSampleQcTest(int id);
+        List<ReportCallingModel> GetRLBMRSample();
+        List<ReportCallingModel> GetRLBPRSample();
         object GetWCLBatchRecordMaster();
         object GetWCLBBatchRecordMaster();
         object GetWCLBMRSample();

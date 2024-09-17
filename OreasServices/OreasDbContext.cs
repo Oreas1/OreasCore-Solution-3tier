@@ -360,7 +360,7 @@ namespace OreasServices
         #endregion
 
         #region QA
-
+        public DbSet<tbl_Qa_DocumentControl> tbl_Qa_DocumentControls { get; set; }
         #endregion
 
         #region Production

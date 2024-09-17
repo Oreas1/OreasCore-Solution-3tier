@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace OreasServices
 {
+    public interface IQaDocumentControl
+    {
+        Task<object> GetQaDocumentControl(int id);
+        object GetWCLQaDocumentControl();
+        Task<PagedData<object>> LoadQaDocumentControl(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> PostQaDocumentControl(tbl_Qa_DocumentControl tbl_Qa_DocumentControl, string operation = "", string userName = "");
+    }
     public interface IQAProcess
     {
         Task<object> GetBMRProcess(int id);

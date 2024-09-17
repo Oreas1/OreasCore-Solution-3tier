@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Qa Document Control";
+}
+@section Scripts {
+
+    <script src="~/angular.js/Angular-QA/SetUp/qadocumentcontrolindex.170924.js"></script>
+}
+<div ng-controller="QaDocumentControlIndexCtlr" class="container">
+    <div id="QaDocumentControlIndexCtlr">
+        <MyViewName>Qa Document Control</MyViewName>
+        @*-----------------------------------this is entry panel-----------------------------*@
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
+
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Qa_DocumentControl.ID", "{{tbl_Qa_DocumentControl.ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">DocumentNo</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.DocumentNo" name="tbl_Qa_DocumentControl.DocumentNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="PD-RM-01...." value="tbl_Qa_DocumentControl.DocumentNo" ng-model="tbl_Qa_DocumentControl.DocumentNo" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.DocumentNo" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">DocumentName</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.DocumentNo" name="tbl_Qa_DocumentControl.DocumentName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Incoming Raw...." value="tbl_Qa_DocumentControl.DocumentName" ng-model="tbl_Qa_DocumentControl.DocumentName" ng-disabled="ng_readOnly" minlength="1" maxlength="100" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.DocumentName" required="true" minlength="1" maxlength="100"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Issued Date</span>
+                        <input id="tbl_Qa_DocumentControl.IssuedDate" name="tbl_Qa_DocumentControl.IssuedDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Qa_DocumentControl.IssuedDate}}" ng-model="tbl_Qa_DocumentControl.IssuedDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.IssuedDate"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">RevisionNo</span>
+                        <input id="tbl_Qa_DocumentControl.RevisionNo" name="tbl_Qa_DocumentControl.RevisionNo" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Qa_DocumentControl.RevisionNo" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.RevisionNo" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Pro No</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.ControlProcedureNo" name="tbl_Qa_DocumentControl.ControlProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Control Procedure No...." value="tbl_Qa_DocumentControl.ControlProcedureNo" ng-model="tbl_Qa_DocumentControl.ControlProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.ControlProcedureNo" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Pro Name</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.ControlProcedureName" name="tbl_Qa_DocumentControl.ControlProcedureName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Control Procedure Name...." value="tbl_Qa_DocumentControl.ControlProcedureName" ng-model="tbl_Qa_DocumentControl.ControlProcedureName" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.ControlProcedureName" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Standard Opr Pro No</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" name="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Standard Operating Procedure No...." value="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" ng-model="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Standard Opr Pro Name</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.StandardOperatingProcedureName" name="tbl_Qa_DocumentControl.StandardOperatingProcedureName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Standard Operating Procedure Name...." value="tbl_Qa_DocumentControl.StandardOperatingProcedureName" ng-model="tbl_Qa_DocumentControl.StandardOperatingProcedureName" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.StandardOperatingProcedureName" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qa_DocumentControl.CreatedBy}}" ng-model="tbl_Qa_DocumentControl.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qa_DocumentControl.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Qa_DocumentControl.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qa_DocumentControl.ModifiedBy}}" ng-model="tbl_Qa_DocumentControl.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Qa_DocumentControl.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Qa_DocumentControl.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+            </MyFieldSet>
+            </form>
+        </div>
+
+        @*-----------------------------------this is data list view-----------------------------*@
+        <div mycssclass="@MyCSSClassName.Table_Div">
+            <table mycssclass="@MyCSSClassName.Table_Table">
+                <tr>
+                    <th>
+                        Document 
+                    </th>
+                    <th>
+                        Issued Date
+                    </th>
+                    <th>
+                        Revision No
+                    </th>
+                    <th>
+                        Control Procedure
+                    </th>
+                    <th>
+                        Standard Operating Procedure
+                    </th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="itm in pageddata.Data">
+                    <td>
+                        No: {{itm.DocumentNo}}<br />
+                        Name: {{itm.DocumentName}}
+                    </td>
+                    <td>
+                        {{itm.IssuedDate}}
+                    </td>
+                    <td>
+                        {{itm.RevisionNo}}
+                    </td>
+                    <td>
+                        No: {{itm.ControlProcedureNo}} <br />
+                        Name: {{itm.ControlProcedureName}}
+                    </td>
+                    <td>
+                        No: {{itm.StandardOperatingProcedureNo}} <br />
+                        Name: {{itm.StandardOperatingProcedureName}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
+                            <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                            <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                            <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                            <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                            <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                            <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        @*-----------------------------------this is search view-----------------------------*@
+        @await Html.PartialAsync("_Filter", "QaDocumentControlIndexCtlr")
+    </div>
+</div>
+
+
+
+

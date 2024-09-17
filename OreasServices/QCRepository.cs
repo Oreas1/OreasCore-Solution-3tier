@@ -653,18 +653,18 @@ namespace OreasServices
         #endregion
 
         #region Report   
-        public List<ReportCallingModel> GetRLQcQaPurchaseNote()
+        public List<ReportCallingModel> GetRLPurchaseNoteQcTest()
         {
             return new List<ReportCallingModel>()
             {
-                //new ReportCallingModel()
-                //{
-                //    ReportType= EnumReportType.Periodic,
-                //    ReportName ="Register QcQa Purchase Note",
-                //    GroupBy = new List<string>(){ "WareHouse", "Product" },
-                //    OrderBy = new List<string>(){ "Doc Date", "Doc No" },
-                //    SeekBy = null,
-                //}
+                new ReportCallingModel()
+                {
+                    ReportType= EnumReportType.OnlyID,
+                    ReportName ="Purchase Note COA",
+                    GroupBy = null,
+                    OrderBy = null,
+                    SeekBy = null,
+                }
             };
         }
         public async Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "")
@@ -673,8 +673,151 @@ namespace OreasServices
             {
                 return await Task.Run(() => PurchaseNoteLabel(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
             }
+            else if (rn == "Purchase Note COA")
+            {
+                return await Task.Run(() => PurchaseNoteCOA(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
+            }
 
             return Encoding.ASCII.GetBytes("Wrong Parameters");
+        }
+        private async Task<byte[]> PurchaseNoteCOA(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 15f, 35f, "Certificate of Analysis", true, true, false);
+            var B5 = new SolidBorder(0.5f);
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                /////////////------------------------------table for master 4------------------------------////////////////
+                Table pdftableMaster = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth() * 0.15), //
+                        (float)(PageSize.A4.GetWidth() * 0.35), //
+                        (float)(PageSize.A4.GetWidth() * 0.15),  //
+                        (float)(PageSize.A4.GetWidth() * 0.35)  //   
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                command.CommandText = "EXECUTE [dbo].[Report_Qc_General] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn + "1";
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                await command.Connection.OpenAsync();
+                string CreatedBy = ""; string Action = ""; string QcComments = "";
+                using (DbDataReader sqlReader = command.ExecuteReader(CommandBehavior.SingleRow))
+                {
+                    while (sqlReader.Read())
+                    {
+                        pdftableMaster.AddCell(new Cell(1,4).Add(new Paragraph().Add("\n\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Material Name")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Reference No")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ReferenceNo"].ToString())).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Mfg Batch No")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["MfgBatchNo"].ToString())).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("MfgDate")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["MfgDate"] != DBNull.Value ? ((DateTime?)sqlReader["MfgDate"]).Value.ToString("MMM-yyyy") : "")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("No & Date")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("PN#:" + sqlReader["DocNo"].ToString() + " On " + ((DateTime)sqlReader["DocDate"]).ToString("dd-MMM-yyyy"))).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Expiry Date")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ExpiryDate"] != DBNull.Value ? ((DateTime?)sqlReader["ExpiryDate"]).Value.ToString("MMM-yyyy") : "")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+
+                        CreatedBy = sqlReader["CreatedByQcQa"].ToString();
+                        Action = sqlReader["ActionName"].ToString();
+                        QcComments = sqlReader["QCComments"].ToString();
+                    }
+                }
+                page.InsertContent(pdftableMaster);
+
+                /////////////------------------------------table for detail 4------------------------------////////////////
+                Table pdftableDetail = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth() * 0.10), //Lab
+                        (float)(PageSize.A4.GetWidth() * 0.30), //Test
+                        (float)(PageSize.A4.GetWidth() * 0.40),  //Specification
+                        (float)(PageSize.A4.GetWidth() * 0.20)  //ResultRemarks
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Lab")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Test")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Specification")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Result")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+
+                ReportName.Value = rn + "2";
+       
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    while (sqlReader.Read())
+                    {                        
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Prefix"].ToString())).SetTextAlignment(TextAlignment.CENTER).SetBorder(B5).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["TestName"].ToString() + "\n" + sqlReader["TestDescription"].ToString())).SetBorder(B5).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Specification"].ToString())).SetBorder(B5).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ResultRemarks"].ToString())).SetBorder(B5).SetKeepTogether(true));
+                    }
+                }
+
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Decision")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1,3).Add(new Paragraph().Add(Action)).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Comments")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 3).Add(new Paragraph().Add(QcComments)).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                page.InsertContent(pdftableDetail);
+                /////////////------------------------------Signature Footer table------------------------------////////////////
+                Table pdftableSignature = new Table(new float[] {
+                (float)(PageSize.A4.GetWidth() * 0.25), (float)(PageSize.A4.GetWidth() * 0.25),
+                (float)(PageSize.A4.GetWidth() * 0.25), (float)(PageSize.A4.GetWidth() * 0.25)
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                pdftableSignature.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                
+                pdftableSignature.AddCell(new Cell().Add(new Paragraph().Add("Analyst ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetBorderTop(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell(1, 2).Add(new Paragraph().Add(" ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell().Add(new Paragraph().Add("Manager Qc")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetBorderTop(new SolidBorder(0.5f)).SetKeepTogether(true));
+                page.InsertContent(pdftableSignature);
+            }
+
+            return page.FinishToGetBytes();
         }
         private async Task<byte[]> PurchaseNoteLabel(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
         {
@@ -775,7 +918,6 @@ namespace OreasServices
 
             return page.FinishToGetBytes();
         }
-
 
         #endregion
     }
@@ -2197,6 +2339,180 @@ namespace OreasServices
             }
 
         }
+        #endregion
+
+        #region Report   
+        public List<ReportCallingModel> GetRLBMRSample()
+        {
+            return new List<ReportCallingModel>()
+            {
+                new ReportCallingModel()
+                {
+                    ReportType= EnumReportType.OnlyID,
+                    ReportName ="Batch Requisition COA",
+                    GroupBy = null,
+                    OrderBy = null,
+                    SeekBy = null,
+                }
+            };
+        }
+        public List<ReportCallingModel> GetRLBPRSample()
+        {
+            return new List<ReportCallingModel>()
+            {
+                new ReportCallingModel()
+                {
+                    ReportType= EnumReportType.OnlyID,
+                    ReportName ="Batch Requisition COA",
+                    GroupBy = null,
+                    OrderBy = null,
+                    SeekBy = null,
+                }
+            };
+        }
+        public async Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "")
+        {
+            if (rn == "Batch Requisition COA")
+            {
+                return await Task.Run(() => BatchRequisitionCOA(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
+            }
+
+            return Encoding.ASCII.GetBytes("Wrong Parameters");
+        }
+        private async Task<byte[]> BatchRequisitionCOA(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 15f, 35f, "Certificate of Analysis", true, true, false);
+            var B5 = new SolidBorder(0.5f);
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                /////////////------------------------------table for master 4------------------------------////////////////
+                Table pdftableMaster = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth() * 0.15), //
+                        (float)(PageSize.A4.GetWidth() * 0.35), //
+                        (float)(PageSize.A4.GetWidth() * 0.15),  //
+                        (float)(PageSize.A4.GetWidth() * 0.35)  //   
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                command.CommandText = "EXECUTE [dbo].[Report_Qc_General] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn + "1";
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                await command.Connection.OpenAsync();
+                string CreatedBy = ""; string Action = ""; string QcComments = "";
+                using (DbDataReader sqlReader = command.ExecuteReader(CommandBehavior.SingleRow))
+                {
+                    while (sqlReader.Read())
+                    {
+                        pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Product Name")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Batch No")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["BatchNo"].ToString())).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Mfg Date")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["BatchMfgDate"]).ToString("MMM-yyyy"))).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Expiry Date")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["BatchExpiryDate"]).ToString("MMM-yyyy"))).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        
+                        CreatedBy = sqlReader["CreatedByQc"].ToString();
+                        Action = sqlReader["ActionName"].ToString();
+                        QcComments = sqlReader["QCComments"].ToString();
+                    }
+                }
+                page.InsertContent(pdftableMaster);
+
+                /////////////------------------------------table for detail 4------------------------------////////////////
+                Table pdftableDetail = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth() * 0.10), //Lab
+                        (float)(PageSize.A4.GetWidth() * 0.30), //Test
+                        (float)(PageSize.A4.GetWidth() * 0.40),  //Specification
+                        (float)(PageSize.A4.GetWidth() * 0.20)  //ResultRemarks
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Lab")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Test")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Specification")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Result")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
+
+                ReportName.Value = rn + "2";
+
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    while (sqlReader.Read())
+                    {
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Prefix"].ToString())).SetTextAlignment(TextAlignment.CENTER).SetBorder(B5).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["TestName"].ToString() + "\n" + sqlReader["TestDescription"].ToString())).SetBorder(B5).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Specification"].ToString())).SetBorder(B5).SetKeepTogether(true));
+                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ResultRemarks"].ToString())).SetBorder(B5).SetKeepTogether(true));
+                    }
+                }
+
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Decision")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 3).Add(new Paragraph().Add(Action)).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Comments")).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 3).Add(new Paragraph().Add(QcComments)).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                page.InsertContent(pdftableDetail);
+                /////////////------------------------------Signature Footer table------------------------------////////////////
+                Table pdftableSignature = new Table(new float[] {
+                (float)(PageSize.A4.GetWidth() * 0.25), (float)(PageSize.A4.GetWidth() * 0.25),
+                (float)(PageSize.A4.GetWidth() * 0.25), (float)(PageSize.A4.GetWidth() * 0.25)
+                }
+                ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+                pdftableSignature.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                pdftableSignature.AddCell(new Cell().Add(new Paragraph().Add("Analyst ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetBorderTop(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell(1, 2).Add(new Paragraph().Add(" ")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableSignature.AddCell(new Cell().Add(new Paragraph().Add("Manager Qc")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetBorderTop(new SolidBorder(0.5f)).SetKeepTogether(true));
+                page.InsertContent(pdftableSignature);
+            }
+
+            return page.FinishToGetBytes();
+        }
+
         #endregion
 
     }
