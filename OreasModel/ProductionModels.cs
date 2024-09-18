@@ -187,6 +187,10 @@ namespace OreasModel
         public DateTime? RevisionDate { get; set; }
 
         [MaxLength(50)]
+        [Display(Name = "Control Procedure No")]
+        public string ControlProcedureNo { get; set; }
+
+        [MaxLength(50)]
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }
 

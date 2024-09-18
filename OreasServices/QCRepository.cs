@@ -102,7 +102,8 @@ namespace OreasServices
         {
             return new[]
             {
-                new { n = "by Product Name", v = "byProductName" }, new { n = "by Product Code", v = "byProductCode" }
+                new { n = "by Product Name", v = "byProductName" }, new { n = "by Product Code", v = "byProductCode" },
+                new { n = "by Control Procedure No", v = "byControlProcedureNo" }
             }.ToList();
         }
         public async Task<PagedData<object>> LoadProductRegistration(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string userName = "")
@@ -122,6 +123,8 @@ namespace OreasServices
                                                        FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
                                                        ||
                                                        FilterByText == "byProductCode" && w.ProductCode.ToLower() == FilterValueByText.ToLower()
+                                                       ||
+                                                       FilterByText == "byControlProcedureNo" && w.tbl_Inv_ProductRegistrationMaster.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
                                                      )
                                                .CountAsync();
 
@@ -143,6 +146,8 @@ namespace OreasServices
                                             FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
                                             ||
                                             FilterByText == "byProductCode" && w.ProductCode.ToLower() == FilterValueByText.ToLower()
+                                            ||
+                                            FilterByText == "byControlProcedureNo" && w.tbl_Inv_ProductRegistrationMaster.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
                                           )
                                       .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
@@ -154,6 +159,7 @@ namespace OreasServices
                           o.tbl_Inv_ProductType_Category.CategoryName,
                           o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.ProductCode,
+                          o.tbl_Inv_ProductRegistrationMaster.ControlProcedureNo,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -689,10 +695,10 @@ namespace OreasServices
             {
                 /////////////------------------------------table for master 4------------------------------////////////////
                 Table pdftableMaster = new Table(new float[] {
-                        (float)(PageSize.A4.GetWidth() * 0.15), //
+                        (float)(PageSize.A4.GetWidth() * 0.20), //
                         (float)(PageSize.A4.GetWidth() * 0.35), //
                         (float)(PageSize.A4.GetWidth() * 0.15),  //
-                        (float)(PageSize.A4.GetWidth() * 0.35)  //   
+                        (float)(PageSize.A4.GetWidth() * 0.30)  //   
                 }
                 ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
@@ -741,7 +747,7 @@ namespace OreasServices
                 {
                     while (sqlReader.Read())
                     {
-                        pdftableMaster.AddCell(new Cell(1,4).Add(new Paragraph().Add("\n\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell(1,4).Add(new Paragraph().Add("\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
 
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Material Name")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
@@ -757,6 +763,11 @@ namespace OreasServices
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("PN#:" + sqlReader["DocNo"].ToString() + " On " + ((DateTime)sqlReader["DocDate"]).ToString("dd-MMM-yyyy"))).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Expiry Date")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ExpiryDate"] != DBNull.Value ? ((DateTime?)sqlReader["ExpiryDate"]).Value.ToString("MMM-yyyy") : "")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Control Procedure No")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ControlProcedureNo"].ToString())).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
 
 
                         CreatedBy = sqlReader["CreatedByQcQa"].ToString();
@@ -775,7 +786,7 @@ namespace OreasServices
                 }
                 ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
-                pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
 
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Lab")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Test")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
@@ -945,6 +956,7 @@ namespace OreasServices
                           FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.RevisionNo,
                           RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : null,
+                          o.ControlProcedureNo,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -1005,6 +1017,7 @@ namespace OreasServices
                           FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.RevisionNo,
                           RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ControlProcedureNo,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -2388,10 +2401,10 @@ namespace OreasServices
             {
                 /////////////------------------------------table for master 4------------------------------////////////////
                 Table pdftableMaster = new Table(new float[] {
-                        (float)(PageSize.A4.GetWidth() * 0.15), //
+                        (float)(PageSize.A4.GetWidth() * 0.20), //
                         (float)(PageSize.A4.GetWidth() * 0.35), //
                         (float)(PageSize.A4.GetWidth() * 0.15),  //
-                        (float)(PageSize.A4.GetWidth() * 0.35)  //   
+                        (float)(PageSize.A4.GetWidth() * 0.30)  //   
                 }
                 ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
@@ -2440,7 +2453,7 @@ namespace OreasServices
                 {
                     while (sqlReader.Read())
                     {
-                        pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
 
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Product Name")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBold().SetBorder(Border.NO_BORDER).SetKeepTogether(true));
@@ -2451,7 +2464,12 @@ namespace OreasServices
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["BatchMfgDate"]).ToString("MMM-yyyy"))).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Expiry Date")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                         pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(((DateTime)sqlReader["BatchExpiryDate"]).ToString("MMM-yyyy"))).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
-                        
+
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Control Procedure No")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ControlProcedureNo"].ToString())).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                        pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
                         CreatedBy = sqlReader["CreatedByQc"].ToString();
                         Action = sqlReader["ActionName"].ToString();
                         QcComments = sqlReader["QCComments"].ToString();
@@ -2468,7 +2486,7 @@ namespace OreasServices
                 }
                 ).SetFontSize(8).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
-                pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add("\n")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
 
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Lab")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));
                 pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add("Test")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(B5).SetKeepTogether(true));

@@ -67,7 +67,7 @@
         $scope.tbl_Pro_CompositionMaster = {
             'ID': 0, 'DocNo': null, 'DocDate': new Date(), 'CompositionName': '', 'ShelfLifeInMonths': 1,
             'DimensionValue': 1, 'FK_tbl_Inv_MeasurementUnit_ID_Dimension': null, 'FK_tbl_Inv_MeasurementUnit_ID_DimensionName': '',
-            'RevisionNo': null, 'RevisionDate': new Date(), 
+            'RevisionNo': null, 'RevisionDate': new Date(), 'ControlProcedureNo': null,
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -79,7 +79,7 @@
             $scope.tbl_Pro_CompositionMaster = {
                 'ID': 0, 'DocNo': null, 'DocDate': new Date(), 'CompositionName': '', 'ShelfLifeInMonths': 1,
                 'DimensionValue': 1, 'FK_tbl_Inv_MeasurementUnit_ID_Dimension': null, 'FK_tbl_Inv_MeasurementUnit_ID_DimensionName': '',
-                'RevisionNo': null, 'RevisionDate': new Date(), 
+                'RevisionNo': null, 'RevisionDate': new Date(), 'ControlProcedureNo': null,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };

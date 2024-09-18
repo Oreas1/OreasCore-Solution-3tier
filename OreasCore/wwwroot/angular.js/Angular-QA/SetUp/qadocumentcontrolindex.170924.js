@@ -19,8 +19,7 @@
 
         $scope.tbl_Qa_DocumentControl = {
             'ID': 0, 'DocumentNo': null, 'DocumentName': null, 'IssuedDate': new Date(), 'RevisionNo': 0,
-            'ControlProcedureNo': null, 'ControlProcedureName': null, 'StandardOperatingProcedureNo': null, 'StandardOperatingProcedureName': null, 
-            'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+            'ReportCodes': null, 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
         //for list model which will be coming as as data in pageddata
@@ -30,8 +29,7 @@
             //rededine to orignal values            
             $scope.tbl_Qa_DocumentControl = {
                 'ID': 0, 'DocumentNo': null, 'DocumentName': null, 'IssuedDate': new Date(), 'RevisionNo': 0,
-                'ControlProcedureNo': null, 'ControlProcedureName': null, 'StandardOperatingProcedureNo': null, 'StandardOperatingProcedureName': null,
-                'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+                'ReportCodes': null, 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };
 

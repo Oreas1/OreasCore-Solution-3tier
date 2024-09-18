@@ -2,7 +2,7 @@
     ViewBag.Title = "Composition";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-Production/Composition/compositionindex.030924.js"></script>
+    <script src="~/angular.js/Angular-Production/Composition/compositionindex.180924.js"></script>
 }
 <div ng-controller="CompositionMasterCtlr" class="container">
 
@@ -14,81 +14,88 @@
             <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
                 <MyAntiforgeryToken></MyAntiforgeryToken>
                 @Html.Hidden("tbl_Pro_CompositionMaster.ID", "{{tbl_Pro_CompositionMaster.ID}}")
-                <MyFieldSet legendtext="Entry Form">
+            <MyFieldSet legendtext="Entry Form">
 
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
+                        <input id="tbl_Pro_CompositionMaster.DocNo" name="tbl_Pro_CompositionMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Pro_CompositionMaster.DocNo" ng-model="tbl_Pro_CompositionMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
+                        <input id="tbl_Pro_CompositionMaster.DocDate" name="tbl_Pro_CompositionMaster.DocDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_CompositionMaster.DocDate}}" ng-model="tbl_Pro_CompositionMaster.DocDate" ng-disabled="ng_readOnly" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.DocDate" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Revision No</span>
+                        <input id="tbl_Pro_CompositionMaster.RevisionNo" name="tbl_Pro_CompositionMaster.RevisionNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Pro_CompositionMaster.RevisionNo" ng-model="tbl_Pro_CompositionMaster.RevisionNo" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Revision Date</span>
+                        <input id="tbl_Pro_CompositionMaster.RevisionDate" name="tbl_Pro_CompositionMaster.RevisionDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_CompositionMaster.RevisionDate}}" ng-model="tbl_Pro_CompositionMaster.RevisionDate" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Composition Name</span>
+                        <input type="text" id="tbl_Pro_CompositionMaster.CompositionName" name="tbl_Pro_CompositionMaster.CompositionName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Pro_CompositionMaster.CompositionName" ng-model="tbl_Pro_CompositionMaster.CompositionName" ng-disabled="ng_readOnly" minlength="1" maxlength="250" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.CompositionName" required="true" minlength="1" maxlength="250"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">ShelfLife In Months</span>
+                        <input id="tbl_Pro_CompositionMaster.ShelfLifeInMonths" name="tbl_Pro_CompositionMaster.ShelfLifeInMonths" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionMaster.ShelfLifeInMonths" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="1" step="1" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.ShelfLifeInMonths" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">BMR/Dimension Value</span>
+                        <input id="tbl_Pro_CompositionMaster.DimensionValue" name="tbl_Pro_CompositionMaster.DimensionValue" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionMaster.DimensionValue" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.DimensionValue" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">BMR/Dimension Unit</span>
+                        <select id="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" name="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.MeasurementUnit for x in MeasurementUnitList" data-ng-model="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Unit</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Procedure No</span>
+                        <input type="text" id="tbl_Pro_CompositionMaster.ControlProcedureNo" name="tbl_Pro_CompositionMaster.ControlProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="ControlProcedureNo" value="tbl_Pro_CompositionMaster.ControlProcedureNo" ng-model="tbl_Pro_CompositionMaster.ControlProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.ControlProcedureNo" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
                     <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Doc No</span>
-                            <input id="tbl_Pro_CompositionMaster.DocNo" name="tbl_Pro_CompositionMaster.DocNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Pro_CompositionMaster.DocNo" ng-model="tbl_Pro_CompositionMaster.DocNo" ng-disabled="ng_readOnly" readonly />
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.CreatedBy}}" ng-model="tbl_Pro_CompositionMaster.CreatedBy" disabled />
                         </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Doc Date</span>
-                            <input id="tbl_Pro_CompositionMaster.DocDate" name="tbl_Pro_CompositionMaster.DocDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_CompositionMaster.DocDate}}" ng-model="tbl_Pro_CompositionMaster.DocDate" ng-disabled="ng_readOnly" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.DocDate" required="true"></MyValidationSpan>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionMaster.CreatedDate" disabled />
                         </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Revision No</span>
-                            <input id="tbl_Pro_CompositionMaster.RevisionNo" name="tbl_Pro_CompositionMaster.RevisionNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="00001" value="tbl_Pro_CompositionMaster.RevisionNo" ng-model="tbl_Pro_CompositionMaster.RevisionNo" ng-disabled="ng_readOnly" readonly />
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.ModifiedBy}}" ng-model="tbl_Pro_CompositionMaster.ModifiedBy" disabled />
                         </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Revision Date</span>
-                            <input id="tbl_Pro_CompositionMaster.RevisionDate" name="tbl_Pro_CompositionMaster.RevisionDate" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_Pro_CompositionMaster.RevisionDate}}" ng-model="tbl_Pro_CompositionMaster.RevisionDate" ng-disabled="ng_readOnly" readonly />
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionMaster.ModifiedDate" disabled />
                         </div>
                     </div>
-
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Composition Name</span>
-                            <input type="text" id="tbl_Pro_CompositionMaster.CompositionName" name="tbl_Pro_CompositionMaster.CompositionName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Pro_CompositionMaster.CompositionName" ng-model="tbl_Pro_CompositionMaster.CompositionName" ng-disabled="ng_readOnly" minlength="1" maxlength="250" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.CompositionName" required="true" minlength="1" maxlength="250"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">ShelfLife In Months</span>
-                            <input id="tbl_Pro_CompositionMaster.ShelfLifeInMonths" name="tbl_Pro_CompositionMaster.ShelfLifeInMonths" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionMaster.ShelfLifeInMonths" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="1" step="1" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.ShelfLifeInMonths" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">BMR/Dimension Value</span>
-                            <input id="tbl_Pro_CompositionMaster.DimensionValue" name="tbl_Pro_CompositionMaster.DimensionValue" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Pro_CompositionMaster.DimensionValue" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.DimensionValue" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">BMR/Dimension Unit</span>
-                            <select id="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" name="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.MeasurementUnit for x in MeasurementUnitList" data-ng-model="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Unit</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension" required="true"></MyValidationSpan>
-                        </div>
-
-                    </div>
-
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
-                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
-                        </div>
-                    </div>
-
-                    <MyFieldSet legendtext="User" child="true">
-                        <div mycssclass="@MyCSSClassName.RowInForm">
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.CreatedBy}}" ng-model="tbl_Pro_CompositionMaster.CreatedBy" disabled />
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionMaster.CreatedDate" disabled />
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.ModifiedBy}}" ng-model="tbl_Pro_CompositionMaster.ModifiedBy" disabled />
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionMaster.ModifiedDate" disabled />
-                            </div>
-                        </div>
-                    </MyFieldSet>
                 </MyFieldSet>
+            </MyFieldSet>
             </form>
         </div>
         @*-----------------------------------this is data list view-----------------------------*@
@@ -110,6 +117,9 @@
                     <th>
                         Shelf Life
                     </th>
+                    <td>
+                        Control Procedure No
+                    </td>
                     <th>
                         Couplings
                     </th>
@@ -132,6 +142,9 @@
                         {{itm.ShelfLifeInMonths}} Month(s)
                     </td>
                     <td>
+                        {{itm.ControlProcedureNo}}
+                    </td>
+                    <td>
                         {{itm.NoOfCouplings}}
                     </td>
                     <td>
@@ -151,7 +164,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

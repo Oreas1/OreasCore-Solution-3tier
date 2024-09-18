@@ -24,6 +24,9 @@
                     <th>
                         Category
                     </th>
+                    <td>
+                        Control Procedure No
+                    </td>
                     <th>
                         Unit
                     </th>
@@ -46,6 +49,9 @@
                         {{itm.CategoryName}}
                     </td>
                     <td>
+                        {{itm.ControlProcedureNo}}
+                    </td>
+                    <td>
                         {{itm.MeasurementUnit}}
                     </td>
                     <td>
@@ -60,7 +66,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

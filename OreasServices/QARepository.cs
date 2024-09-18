@@ -44,10 +44,7 @@ namespace OreasServices
                           o.DocumentName,
                           IssuedDate = o.IssuedDate.ToString("dd-MMM-yyyy"),
                           o.RevisionNo,
-                          o.ControlProcedureNo,
-                          o.ControlProcedureName,
-                          o.StandardOperatingProcedureNo,
-                          o.StandardOperatingProcedureName,
+                          o.ReportCodes,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -59,9 +56,9 @@ namespace OreasServices
         {
             return new[]
             {
-                new { n = "by Document No", v = "byDocumentNo" }, new { n = "by Document Name", v = "byDocumentName" },
-                new { n = "by Control Pro No", v = "byControlProNo" }, new { n = "by Control Pro Name", v = "byControlProName" },
-                new { n = "by Standard Op Pro No", v = "byStandardOpProNo" }, new { n = "by Standard Op Pro Name", v = "byStandardOpProName" }
+                new { n = "by Document No", v = "byDocumentNo" }, 
+                new { n = "by Document Name", v = "byDocumentName" },
+                new { n = "by Report Codes", v = "byReportCodes" }
             }.ToList();
         }
         public async Task<PagedData<object>> LoadQaDocumentControl(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
@@ -76,13 +73,7 @@ namespace OreasServices
                                                        ||
                                                        FilterByText == "byDocumentName" && w.DocumentName.ToLower().Contains(FilterValueByText.ToLower())
                                                        ||
-                                                       FilterByText == "byControlProNo" && w.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
-                                                       ||
-                                                       FilterByText == "byControlProName" && w.ControlProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                                       ||
-                                                       FilterByText == "byStandardOpProNo" && w.StandardOperatingProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
-                                                       ||
-                                                       FilterByText == "byStandardOpProName" && w.StandardOperatingProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       FilterByText == "byReportCodes" && w.ReportCodes.ToLower().Contains(FilterValueByText.ToLower())
                                                      )
                                                .CountAsync();
 
@@ -98,13 +89,7 @@ namespace OreasServices
                                         ||
                                         FilterByText == "byDocumentName" && w.DocumentName.ToLower().Contains(FilterValueByText.ToLower())
                                         ||
-                                        FilterByText == "byControlProNo" && w.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
-                                        ||
-                                        FilterByText == "byControlProName" && w.ControlProcedureName.ToLower().Contains(FilterValueByText.ToLower())
-                                        ||
-                                        FilterByText == "byStandardOpProNo" && w.StandardOperatingProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
-                                        ||
-                                        FilterByText == "byStandardOpProName" && w.StandardOperatingProcedureName.ToLower().Contains(FilterValueByText.ToLower())
+                                        FilterByText == "byReportCodes" && w.ReportCodes.ToLower().Contains(FilterValueByText.ToLower())
                                        )
                                    .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
@@ -115,10 +100,7 @@ namespace OreasServices
                           o.DocumentName,
                           IssuedDate = o.IssuedDate.ToString("dd-MMM-yyyy"),
                           o.RevisionNo,
-                          o.ControlProcedureNo,
-                          o.ControlProcedureName,
-                          o.StandardOperatingProcedureNo,
-                          o.StandardOperatingProcedureName,
+                          o.ReportCodes,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -131,8 +113,15 @@ namespace OreasServices
         }
         public async Task<string> PostQaDocumentControl(tbl_Qa_DocumentControl tbl_Qa_DocumentControl, string operation = "", string userName = "")
         {
+            
+
             if (operation == "Save New")
             {
+                if (userName.ToLower() != "ovais") //------dont no insert ReportCodes if user is not ovais------//
+                {
+                    tbl_Qa_DocumentControl.ReportCodes = null;
+                }
+
                 tbl_Qa_DocumentControl.CreatedBy = userName;
                 tbl_Qa_DocumentControl.CreatedDate = DateTime.Now;
                 db.tbl_Qa_DocumentControls.Add(tbl_Qa_DocumentControl);
@@ -140,6 +129,10 @@ namespace OreasServices
             }
             else if (operation == "Save Update")
             {
+                if (userName.ToLower() != "ovais") //------dont no update ReportCodes if user is not ovais------//
+                {
+                    db.Entry(tbl_Qa_DocumentControl).Property(x => x.ReportCodes).IsModified = false;
+                }
                 tbl_Qa_DocumentControl.ModifiedBy = userName;
                 tbl_Qa_DocumentControl.ModifiedDate = DateTime.Now;
                 db.Entry(tbl_Qa_DocumentControl).State = EntityState.Modified;

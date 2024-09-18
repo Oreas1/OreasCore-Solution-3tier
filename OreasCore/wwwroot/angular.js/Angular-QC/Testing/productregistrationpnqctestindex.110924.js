@@ -41,7 +41,7 @@
 
         $scope.tbl_Inv_ProductRegistrationDetail = {
             'ID': 0, 'ProductName': null, 'ProductType': null, 'CategoryName': null, 'MeasurementUnit': null, 'ProductCode': null,
-            'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+            'ControlProcedureNo': null, 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
         //for list model which will be coming as as data in pageddata
@@ -51,7 +51,7 @@
             //rededine to orignal values
             $scope.tbl_Inv_ProductRegistrationDetail = {
                 'ID': 0, 'ProductName': null, 'ProductType': null, 'CategoryName': null, 'MeasurementUnit': null, 'ProductCode': null,
-                'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
+                'ControlProcedureNo': null, 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };
       

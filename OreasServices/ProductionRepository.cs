@@ -446,6 +446,7 @@ namespace OreasServices
                           o.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
                           FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.RevisionNo,
+                          o.ControlProcedureNo,
                           RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : null,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
@@ -507,6 +508,7 @@ namespace OreasServices
                           FK_tbl_Inv_MeasurementUnit_ID_DimensionName = o.tbl_Inv_MeasurementUnit.MeasurementUnit,
                           o.RevisionNo,
                           RevisionDate = o.RevisionDate.HasValue ? o.RevisionDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ControlProcedureNo,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -551,11 +553,11 @@ namespace OreasServices
                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
               ,@ID={3},@DocNo={4},@DocDate={5},@CompositionName={6},@ShelfLifeInMonths={7}
               ,@DimensionValue={8},@FK_tbl_Inv_MeasurementUnit_ID_Dimension={9}
-              ,@RevisionNo={10},@RevisionDate={11},@CreatedBy={12},@CreatedDate={13},@ModifiedBy={14},@ModifiedDate={15}",
+              ,@RevisionNo={10},@RevisionDate={11},@ControlProcedureNo={12},@CreatedBy={13},@CreatedDate={14},@ModifiedBy={15},@ModifiedDate={16}",
               CRUD_Type, CRUD_Msg, CRUD_ID,
               tbl_Pro_CompositionMaster.ID, tbl_Pro_CompositionMaster.DocNo, tbl_Pro_CompositionMaster.DocDate, tbl_Pro_CompositionMaster.CompositionName, tbl_Pro_CompositionMaster.ShelfLifeInMonths,
               tbl_Pro_CompositionMaster.DimensionValue, tbl_Pro_CompositionMaster.FK_tbl_Inv_MeasurementUnit_ID_Dimension,
-              tbl_Pro_CompositionMaster.RevisionNo, tbl_Pro_CompositionMaster.RevisionDate, 
+              tbl_Pro_CompositionMaster.RevisionNo, tbl_Pro_CompositionMaster.RevisionDate, tbl_Pro_CompositionMaster.ControlProcedureNo,
               tbl_Pro_CompositionMaster.CreatedBy, tbl_Pro_CompositionMaster.CreatedDate, tbl_Pro_CompositionMaster.ModifiedBy, tbl_Pro_CompositionMaster.ModifiedDate);
 
             if ((string)CRUD_Msg.Value == "Successful")

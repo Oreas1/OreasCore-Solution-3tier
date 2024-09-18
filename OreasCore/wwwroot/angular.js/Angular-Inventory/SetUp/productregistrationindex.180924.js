@@ -44,7 +44,7 @@
 
         $scope.tbl_Inv_ProductRegistrationMaster = {
             'ID': 0, 'FK_tbl_Inv_ProductClassification_ID': null, 'FK_tbl_Inv_ProductClassification_IDName': '',
-            'ProductName': null, 'Description': '',
+            'ProductName': null, 'Description': null, 'ControlProcedureNo': null,
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfUnits': 0
         };
 
@@ -55,7 +55,7 @@
             //rededine to orignal values
             $scope.tbl_Inv_ProductRegistrationMaster = {
                 'ID': 0, 'FK_tbl_Inv_ProductClassification_ID': null, 'FK_tbl_Inv_ProductClassification_IDName': '',
-                'ProductName': null, 'Description': '',
+                'ProductName': null, 'Description': null, 'ControlProcedureNo': null,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfUnits': 0
             };
         };

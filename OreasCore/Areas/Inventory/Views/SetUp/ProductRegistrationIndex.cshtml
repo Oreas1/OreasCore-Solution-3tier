@@ -14,55 +14,63 @@
             <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
                 <MyAntiforgeryToken></MyAntiforgeryToken>
                 @Html.Hidden("tbl_Inv_ProductRegistrationMaster.ID", "{{tbl_Inv_ProductRegistrationMaster.ID}}")
-                <MyFieldSet legendtext="Entry Form">
+            <MyFieldSet legendtext="Entry Form">
 
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Classification</span>
+                        <select id="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" name="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ClassName + ' [' + x.ID + ']' for x in ProductClassificationList" data-ng-model="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Product Classification</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Name</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationMaster.ProductName" name="tbl_Inv_ProductRegistrationMaster.ProductName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Name" value="tbl_Inv_ProductRegistrationMaster.ProductName" ng-model="tbl_Inv_ProductRegistrationMaster.ProductName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.ProductName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Description</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationMaster.Description" name="tbl_Inv_ProductRegistrationMaster.Description" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Description" value="tbl_Inv_ProductRegistrationMaster.Description" ng-model="tbl_Inv_ProductRegistrationMaster.Description" ng-disabled="ng_readOnly" minlength="1" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.Description" minlength="1" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Procedure No</span>
+                        <input type="text" id="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" name="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="ControlProcedureNo" value="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" ng-model="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+                <MyFieldSet legendtext="User" child="true">
                     <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Classification</span>
-                            <select id="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" name="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.ClassName + ' [' + x.ID + ']' for x in ProductClassificationList" data-ng-model="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Product Classification</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.FK_tbl_Inv_ProductClassification_ID" required="true"></MyValidationSpan>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.CreatedBy}}" ng-model="tbl_Inv_ProductRegistrationMaster.CreatedBy" disabled />
                         </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Product Name</span>
-                            <input type="text" id="tbl_Inv_ProductRegistrationMaster.ProductName" name="tbl_Inv_ProductRegistrationMaster.ProductName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Product Name" value="tbl_Inv_ProductRegistrationMaster.ProductName" ng-model="tbl_Inv_ProductRegistrationMaster.ProductName" ng-disabled="ng_readOnly" minlength="1" maxlength="50" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.ProductName" required="true" minlength="1" maxlength="50"></MyValidationSpan>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationMaster.CreatedDate" disabled />
                         </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Description</span>
-                            <input type="text" id="tbl_Inv_ProductRegistrationMaster.Description" name="tbl_Inv_ProductRegistrationMaster.Description" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Description" value="tbl_Inv_ProductRegistrationMaster.Description" ng-model="tbl_Inv_ProductRegistrationMaster.Description" ng-disabled="ng_readOnly" minlength="1" maxlength="50" />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.Description" minlength="1" maxlength="50"></MyValidationSpan>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.ModifiedBy}}" ng-model="tbl_Inv_ProductRegistrationMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationMaster.ModifiedDate" disabled />
                         </div>
                     </div>
-
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
-                            <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
-                        </div>
-                    </div>
-
-                    <MyFieldSet legendtext="User" child="true">
-                        <div mycssclass="@MyCSSClassName.RowInForm">
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.CreatedBy}}" ng-model="tbl_Inv_ProductRegistrationMaster.CreatedBy" disabled />
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationMaster.CreatedDate" disabled />
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.ModifiedBy}}" ng-model="tbl_Inv_ProductRegistrationMaster.ModifiedBy" disabled />
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                                <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Inv_ProductRegistrationMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Inv_ProductRegistrationMaster.ModifiedDate" disabled />
-                            </div>
-                        </div>
-                    </MyFieldSet>
                 </MyFieldSet>
+            </MyFieldSet>
             </form>
         </div>
         @*-----------------------------------this is data list view-----------------------------*@
@@ -79,6 +87,9 @@
                         Description
                     </th>
                     <th>
+                        Control Procedure No
+                    </th>
+                    <th>
                         # Units
                     </th>
                     <th></th>
@@ -92,6 +103,9 @@
                     </td>
                     <td style="font-size:xx-small;">
                         {{itm.Description}}
+                    </td>
+                    <td style="font-size:xx-small;">
+                        {{itm.ControlProcedureNo}}
                     </td>
                     <td>
                         {{itm.NoOfUnits}}
@@ -108,7 +122,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

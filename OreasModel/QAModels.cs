@@ -31,22 +31,10 @@ namespace OreasModel
         [Required]
         [Display(Name = "Revision No")]
         public int RevisionNo { get; set; }
-
+        
         [MaxLength(50)]
-        [Display(Name = "Control Procedure No")]
-        public string ControlProcedureNo { get; set; }
-
-        [MaxLength(50)]
-        [Display(Name = "Control Procedure Name")]
-        public string ControlProcedureName { get; set; }
-
-        [MaxLength(50)]
-        [Display(Name = "Standard Operating Procedure No")]
-        public string StandardOperatingProcedureNo { get; set; }
-
-        [MaxLength(50)]
-        [Display(Name = "Standard Operating Procedure Name")]
-        public string StandardOperatingProcedureName { get; set; }
+        [Display(Name = "Report Codes")]
+        public string ReportCodes { get; set; }
 
         [MaxLength(50)]
         public string CreatedBy { get; set; }

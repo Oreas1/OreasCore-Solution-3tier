@@ -1281,6 +1281,7 @@ namespace OreasServices
                           FK_tbl_Inv_ProductClassification_IDName = o.tbl_Inv_ProductClassification.ClassName,
                           o.ProductName,
                           o.Description,
+                          o.ControlProcedureNo,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -1293,7 +1294,8 @@ namespace OreasServices
         {
             return new[]
             {
-                new { n = "by Product Name", v = "byProductName" }, new { n = "by Product Code", v = "byProductCode" }
+                new { n = "by Product Name", v = "byProductName" }, new { n = "by Product Code", v = "byProductCode" },
+                new { n = "by Control Procedure No", v = "byControlProcedureNo" }
             }.ToList();
         }
         public async Task<PagedData<object>> LoadProductRegistrationMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
@@ -1307,6 +1309,8 @@ namespace OreasServices
                                                        FilterByText == "byProductName" && w.ProductName.ToLower().Contains(FilterValueByText.ToLower())
                                                        ||
                                                        FilterByText == "byProductCode" && w.tbl_Inv_ProductRegistrationDetails.Any(a => a.ProductCode.ToLower().Contains(FilterValueByText.ToLower()))
+                                                       ||
+                                                       FilterByText == "byControlProcedureNo" && w.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
                                                      )
                                                .CountAsync();
 
@@ -1322,6 +1326,8 @@ namespace OreasServices
                                         FilterByText == "byProductName" && w.ProductName.ToLower().Contains(FilterValueByText.ToLower())
                                         ||
                                         FilterByText == "byProductCode" && w.tbl_Inv_ProductRegistrationDetails.Any(a => a.ProductCode.ToLower().Contains(FilterValueByText.ToLower()))
+                                        ||
+                                        FilterByText == "byControlProcedureNo" && w.ControlProcedureNo.ToLower().Contains(FilterValueByText.ToLower())
                                       )
                                   .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
@@ -1332,6 +1338,7 @@ namespace OreasServices
                           FK_tbl_Inv_ProductClassification_IDName = o.tbl_Inv_ProductClassification.ClassName,
                           o.ProductName,
                           o.Description,
+                          o.ControlProcedureNo,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,

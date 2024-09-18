@@ -41,25 +41,10 @@
                 </div>
 
                 <div mycssclass="@MyCSSClassName.RowInForm">
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Pro No</span>
-                        <input type="text" id="tbl_Qa_DocumentControl.ControlProcedureNo" name="tbl_Qa_DocumentControl.ControlProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Control Procedure No...." value="tbl_Qa_DocumentControl.ControlProcedureNo" ng-model="tbl_Qa_DocumentControl.ControlProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.ControlProcedureNo" required="true"></MyValidationSpan>
-                    </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Pro Name</span>
-                        <input type="text" id="tbl_Qa_DocumentControl.ControlProcedureName" name="tbl_Qa_DocumentControl.ControlProcedureName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Control Procedure Name...." value="tbl_Qa_DocumentControl.ControlProcedureName" ng-model="tbl_Qa_DocumentControl.ControlProcedureName" ng-disabled="ng_readOnly" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.ControlProcedureName" required="true"></MyValidationSpan>
-                    </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Standard Opr Pro No</span>
-                        <input type="text" id="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" name="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Standard Operating Procedure No...." value="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" ng-model="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.StandardOperatingProcedureNo" required="true"></MyValidationSpan>
-                    </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Standard Opr Pro Name</span>
-                        <input type="text" id="tbl_Qa_DocumentControl.StandardOperatingProcedureName" name="tbl_Qa_DocumentControl.StandardOperatingProcedureName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="Standard Operating Procedure Name...." value="tbl_Qa_DocumentControl.StandardOperatingProcedureName" ng-model="tbl_Qa_DocumentControl.StandardOperatingProcedureName" ng-disabled="ng_readOnly" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.StandardOperatingProcedureName" required="true"></MyValidationSpan>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Report Codes</span>
+                        <input type="text" id="tbl_Qa_DocumentControl.ReportCodes" name="tbl_Qa_DocumentControl.ReportCodes" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="COA PN...." value="tbl_Qa_DocumentControl.ReportCodes" ng-model="tbl_Qa_DocumentControl.ReportCodes" ng-disabled="ng_readOnly" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_Qa_DocumentControl.ReportCodes" required="true"></MyValidationSpan>
                     </div>
                 </div>
 
@@ -98,7 +83,10 @@
             <table mycssclass="@MyCSSClassName.Table_Table">
                 <tr>
                     <th>
-                        Document 
+                        Document No
+                    </th>
+                    <th>
+                        Document Name
                     </th>
                     <th>
                         Issued Date
@@ -107,17 +95,16 @@
                         Revision No
                     </th>
                     <th>
-                        Control Procedure
-                    </th>
-                    <th>
-                        Standard Operating Procedure
+                        Report Codes
                     </th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="itm in pageddata.Data">
                     <td>
-                        No: {{itm.DocumentNo}}<br />
-                        Name: {{itm.DocumentName}}
+                        {{itm.DocumentNo}}
+                    </td>
+                    <td>
+                        {{itm.DocumentName}}
                     </td>
                     <td>
                         {{itm.IssuedDate}}
@@ -126,12 +113,7 @@
                         {{itm.RevisionNo}}
                     </td>
                     <td>
-                        No: {{itm.ControlProcedureNo}} <br />
-                        Name: {{itm.ControlProcedureName}}
-                    </td>
-                    <td>
-                        No: {{itm.StandardOperatingProcedureNo}} <br />
-                        Name: {{itm.StandardOperatingProcedureName}}
+                        {{itm.ReportCodes}}
                     </td>
                     <td>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
