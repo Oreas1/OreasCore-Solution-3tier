@@ -186,6 +186,26 @@ namespace OreasServices
                                   a.EntryName
                               }).Take(5).ToListAsync();
         }
+        public async Task<object> GetCostingIndirectExpenseListAsync(string FilterByText = null, string FilterValueByText = null)
+        {
+            if (string.IsNullOrEmpty(FilterByText))
+                return await (from a in db.tbl_Ac_CostingIndirectExpenseLists
+                              select new
+                              {
+                                  a.ID,
+                                  a.IndirectExpenseName
+                              }).ToListAsync();
+            else
+                return await (from a in db.tbl_Ac_CostingIndirectExpenseLists
+                                        .Where(w => string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byName" && w.IndirectExpenseName.ToLower().Contains(FilterValueByText.ToLower()))
+                              select new
+                              {
+                                  a.ID,
+                                  a.IndirectExpenseName
+                              }).Take(5).ToListAsync();
+        }
     }
     public class CurrencyAndCountryRepository : ICurrencyAndCountry
     {
@@ -1705,6 +1725,97 @@ namespace OreasServices
             }
             
   
+        }
+    }
+    public class CostingIndirectExpenseListRepository : ICostingIndirectExpenseList
+    {
+        private readonly OreasDbContext db;
+        public CostingIndirectExpenseListRepository(OreasDbContext oreasDbContext)
+        {
+            this.db = oreasDbContext;
+        }
+        public async Task<object> GetCostingIndirectExpenseList(int id)
+        {
+            var qry = from o in await db.tbl_Ac_CostingIndirectExpenseLists.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.IndirectExpenseName,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLCostingIndirectExpenseList()
+        {
+            return new[]
+            {
+                new { n = "by Expense Name", v = "byExpenseName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadCostingIndirectExpenseList(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Ac_CostingIndirectExpenseLists
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byExpenseName" && w.IndirectExpenseName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Ac_CostingIndirectExpenseLists
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byExpenseName" && w.IndirectExpenseName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.IndirectExpenseName,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostCostingIndirectExpenseList(tbl_Ac_CostingIndirectExpenseList tbl_Ac_CostingIndirectExpenseList, string operation = "", string userName = "")
+        {
+            if (operation == "Save New")
+            {
+                tbl_Ac_CostingIndirectExpenseList.CreatedBy = userName;
+                tbl_Ac_CostingIndirectExpenseList.CreatedDate = DateTime.Now;
+                db.tbl_Ac_CostingIndirectExpenseLists.Add(tbl_Ac_CostingIndirectExpenseList);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Ac_CostingIndirectExpenseList.ModifiedBy = userName;
+                tbl_Ac_CostingIndirectExpenseList.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Ac_CostingIndirectExpenseList).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Ac_CostingIndirectExpenseLists.Remove(db.tbl_Ac_CostingIndirectExpenseLists.Find(tbl_Ac_CostingIndirectExpenseList.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
         }
     }
     public class CustomerApprovedRateListRepository : ICustomerApprovedRateList
@@ -9405,7 +9516,7 @@ namespace OreasServices
         #endregion
 
     }
-
+      
     //---------------------Production------------------------//
     public class CompositionCostingRepository : ICompositionCosting
     {
@@ -9462,6 +9573,123 @@ namespace OreasServices
             pageddata.Data = qry;
 
             return pageddata;
+        }
+
+        #endregion
+
+        #region Composition IndirectExpense
+        public async Task<object> GetCompositionCostingIndirectExpense(int id)
+        {
+            var qry = from o in await db.tbl_Ac_CompositionCostingIndirectExpenses.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
+                          o.FK_tbl_Ac_CostingIndirectExpenseList_ID,
+                          FK_tbl_Ac_CostingIndirectExpenseList_IDName = o?.tbl_Ac_CostingIndirectExpenseList?.IndirectExpenseName ?? "",
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          FK_tbl_Inv_ProductRegistrationDetail_IDName = o?.tbl_Inv_ProductRegistrationDetail?.tbl_Inv_ProductRegistrationMaster?.ProductName ?? "",
+                          MeasurementUnit = o?.tbl_Inv_ProductRegistrationDetail?.tbl_Inv_MeasurementUnit.MeasurementUnit ?? "",
+                          o.Quantity,
+                          o.CustomRate,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLCompositionCostingIndirectExpense()
+        {
+            return new[]
+            {
+                new { n = "by Expense Name", v = "byExpenseName" }, new { n = "by Product Name", v = "byProductName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadCompositionCostingIndirectExpense(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Ac_CompositionCostingIndirectExpenses
+                                               .Where(w=> w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byExpenseName" && w.tbl_Ac_CostingIndirectExpenseList.IndirectExpenseName.ToLower().Contains(FilterValueByText.ToLower())
+                                                       ||
+                                                       FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Ac_CompositionCostingIndirectExpenses
+                                      .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                      .Where(w =>
+                                            string.IsNullOrEmpty(FilterValueByText)
+                                            ||
+                                            FilterByText == "byExpenseName" && w.tbl_Ac_CostingIndirectExpenseList.IndirectExpenseName.ToLower().Contains(FilterValueByText.ToLower())
+                                            ||
+                                            FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                          )
+                                      .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID,
+                          o.FK_tbl_Ac_CostingIndirectExpenseList_ID,
+                          FK_tbl_Ac_CostingIndirectExpenseList_IDName = o?.tbl_Ac_CostingIndirectExpenseList?.IndirectExpenseName ?? "",
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          FK_tbl_Inv_ProductRegistrationDetail_IDName = o?.tbl_Inv_ProductRegistrationDetail?.tbl_Inv_ProductRegistrationMaster?.ProductName ?? "",
+                          o.Quantity,
+                          o.CustomRate,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostCompositionCostingIndirectExpense(tbl_Ac_CompositionCostingIndirectExpense tbl_Ac_CompositionCostingIndirectExpense, string operation = "", string userName = "")
+        {
+            if (tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Ac_CostingIndirectExpenseList_ID > 0 && tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Inv_ProductRegistrationDetail_ID > 0)
+                return "Aborted! Expense & Product Both Cannot be Selected at a time";
+
+            if (tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Ac_CostingIndirectExpenseList_ID == null && tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Inv_ProductRegistrationDetail_ID == null)
+                return "Aborted! Select Expense Or Product";
+
+            if (!(tbl_Ac_CompositionCostingIndirectExpense.Quantity > 0))
+                return "Aborted! Invalid Quantity";
+
+            if (!(tbl_Ac_CompositionCostingIndirectExpense.CustomRate > 0) && tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Ac_CostingIndirectExpenseList_ID>0)
+                return "Aborted! Expense Rate Invalid";
+
+            if (operation == "Save New")
+            {
+                tbl_Ac_CompositionCostingIndirectExpense.CreatedBy = userName;
+                tbl_Ac_CompositionCostingIndirectExpense.CreatedDate = DateTime.Now;
+                db.tbl_Ac_CompositionCostingIndirectExpenses.Add(tbl_Ac_CompositionCostingIndirectExpense);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Ac_CompositionCostingIndirectExpense.ModifiedBy = userName;
+                tbl_Ac_CompositionCostingIndirectExpense.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Ac_CompositionCostingIndirectExpense).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Ac_CompositionCostingIndirectExpenses.Remove(db.tbl_Ac_CompositionCostingIndirectExpenses.Find(tbl_Ac_CompositionCostingIndirectExpense.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
         }
 
         #endregion
@@ -9700,8 +9928,8 @@ namespace OreasServices
             }
             ).SetFontSize(7).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
-            
-            
+
+
             pdftableDetailRaw.AddCell(new Cell(1, 10).Add(new Paragraph().Add("Raw Detail")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("S. No")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
@@ -9714,8 +9942,8 @@ namespace OreasServices
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Cust Rate")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(237, 226, 123)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("%")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-           
-           
+
+
             //--------------------------------10 column Packaging table ------------------------------//
             Table pdftableDetailPackaging = new Table(new float[] {
                         (float)(PageSize.A4.GetWidth()*0.05),//SNo
@@ -9823,7 +10051,7 @@ namespace OreasServices
                         FK_tbl_Pro_CompositionMaster_ID = (int)sqlReader["FK_tbl_Pro_CompositionMaster_ID"];
                         BatchSize = (double)sqlReader["BatchSize"];
                         SplitInto = (double)sqlReader["PrimarySplitInto"];
-                    }                    
+                    }
                 }
 
                 //----------raw detail
@@ -9848,8 +10076,8 @@ namespace OreasServices
                         SNo++;
                     }
 
-                    pdftableDetailRaw.AddCell(new Cell(1,8).Add(new Paragraph().Add("Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                    pdftableDetailRaw.AddCell(new Cell(1,2).Add(new Paragraph().Add(RawAmountTotal.ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableDetailRaw.AddCell(new Cell(1, 8).Add(new Paragraph().Add("Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableDetailRaw.AddCell(new Cell(1, 2).Add(new Paragraph().Add(RawAmountTotal.ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                 }
 
                 //----------Packaging detail
@@ -9865,7 +10093,7 @@ namespace OreasServices
                         pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Quantity"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Rate"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["RateFrom"].ToString())).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                        pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader.IsDBNull("RateDate") ? "": ((DateTime)sqlReader["RateDate"]).ToString("MMM-yy"))).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader.IsDBNull("RateDate") ? "" : ((DateTime)sqlReader["RateDate"]).ToString("MMM-yy"))).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["CustomeRate"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["PercentageOnRate"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Amount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
@@ -9901,9 +10129,9 @@ namespace OreasServices
                 {
                     while (sqlReader.Read())
                     {
-                        FormulaExpresion= sqlReader["FormulaExpression"].ToString();
+                        FormulaExpresion = sqlReader["FormulaExpression"].ToString();
 
-                        if (string.IsNullOrEmpty(FormulaExpresion)==false)
+                        if (string.IsNullOrEmpty(FormulaExpresion) == false)
                         {
                             FormulaFactorValue = 0;
 
@@ -9915,14 +10143,14 @@ namespace OreasServices
                             {
                                 FormulaExpresion = FormulaExpresion.Replace("c", TotalPerUnit.ToString(), StringComparison.OrdinalIgnoreCase);
                                 FormulaValue = Math.Round(AmountIntoWords.ExecuteMathExpression(FormulaExpresion), 3);
-                            }  
+                            }
                             pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
                             pdftableMaster.AddCell(new Cell(1, 3).Add(new Paragraph().Add(sqlReader["FormulaName"].ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                             pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Rs: " + FormulaValue.ToString() + "/-")).SetBold().SetBackgroundColor(new DeviceRgb(237, 226, 123)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
                             TotalPerUnit = FormulaValue;
                         }
-               
+
                     }
 
                 }

@@ -2,7 +2,7 @@
     ViewBag.Title = "Composition Costing";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-Accounts/Costing/compositioncostingindex.0.1.js"></script>
+    <script src="~/angular.js/Angular-Accounts/Costing/compositioncostingindex.190924.js"></script>
 }
 <div ng-controller="CompositionCostingMasterCtlr" class="container">
 
@@ -52,6 +52,9 @@
                             <button ng-click="DivHideShow('CompositionCostingDetailRawCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingDetailRawCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Raw Detail">Raw <span class="fa fa-leaf"></span></button>|
                             <button ng-click="DivHideShow('CompositionCostingDetailPackagingCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingDetailPackagingCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Packaging Detail"> Packaging <span class="fa fa-cubes"></span></button>
                         </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('CompositionCostingIndirectExpenseCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingIndirectExpenseCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Indirect Expense(s)">Indirect Exp(s) <span class="fa fa-money-bill-wave"></span></button>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -69,9 +72,14 @@
         </div>
 
         @*-----------------------------------this is search view-----------------------------*@
-        @await Html.PartialAsync("_Filter", "CompositionCostingMasterCtlr")
+        @await Html.PartialAsync("_Filter", "CompositionCostingMasterCtlr")        
     </div>
 
+    <div ng-controller="CompositionCostingIndirectExpenseCtlr">
+        <div id="CompositionCostingIndirectExpenseCtlr" style="display: none;">
+            @await Html.PartialAsync("CompositionCostingIndirectExpense")
+        </div>
+    </div>
     <div ng-controller="CompositionCostingDetailRawCtlr">
         <div id="CompositionCostingDetailRawCtlr" style="display: none;">
             @await Html.PartialAsync("CompositionCostingDetailRaw")
@@ -80,9 +88,11 @@
     <div ng-controller="CompositionCostingDetailPackagingCtlr">
         <div id="CompositionCostingDetailPackagingCtlr" style="display: none;">
             @await Html.PartialAsync("CompositionCostingDetailPackaging")
-        </div>        
+        </div>
     </div>
 
+    @*-----------------------------------this is Modal view-----------------------------*@
+    @await Html.PartialAsync("_ProductSearchModalGeneral")
 </div>
 
 

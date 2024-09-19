@@ -11,7 +11,7 @@ namespace OreasCore.Areas.Accounts.Controllers
 {
     [Area("Accounts")]
     public class CostingController : Controller
-    {
+    {       
 
         #region CompositionCosting
 
@@ -29,6 +29,16 @@ namespace OreasCore.Areas.Accounts.Controllers
                         Reports = null,
                         Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Costing"),
                         Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "CompositionCostingIndirectExpenseCtlr",
+                        WildCard = db2.GetWCLCompositionCostingIndirectExpense(),
+                        Reports = db2.GetRLCompositionDetail(),
+                        Privilege = null,
+                        Otherdata = new {
+                            CostingIndirectExpenseList = await db3.GetCostingIndirectExpenseListAsync(null,null)
+                        }
                     },
                     new Init_ViewSetupStructure()
                     {
@@ -77,6 +87,46 @@ namespace OreasCore.Areas.Accounts.Controllers
             return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
         }
 
+
+        #endregion
+
+        #region CompositionCostingIndirectExpense
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Costing", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingIndirectExpenseLoad([FromServices] ICompositionCosting db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadCompositionCostingIndirectExpense(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Costing", Operation = "CanPost")]
+        public async Task<string> CompositionCostingIndirectExpensePost([FromServices] ICompositionCosting db, [FromBody] tbl_Ac_CompositionCostingIndirectExpense tbl_Ac_CompositionCostingIndirectExpense, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostCompositionCostingIndirectExpense(tbl_Ac_CompositionCostingIndirectExpense, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Costing", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingIndirectExpenseGet([FromServices] ICompositionCosting db, int ID)
+        {
+            return Json(await db.GetCompositionCostingIndirectExpense(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
 
         #endregion
 

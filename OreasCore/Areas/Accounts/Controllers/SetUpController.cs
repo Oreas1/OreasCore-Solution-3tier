@@ -305,72 +305,7 @@ namespace OreasCore.Areas.Accounts.Controllers
             return Json(await db.Get(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
 
-        #endregion
-
-        #region CompositionCostingFactors
-
-        [MyAuthorization]
-        public async Task<IActionResult> GetInitializedCompositionCostingFactorsAsync([FromServices] IAuthorizationScheme db, [FromServices] ICompositionCostingFactors db2)
-        {
-            return Json(
-                new List<Init_ViewSetupStructure>()
-                {
-                    new Init_ViewSetupStructure()
-                    {
-                        Controller = "CompositionCostingFactorsIndexCtlr",
-                        WildCard = db2.GetWCL(),
-                        Reports = null,
-                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Composition Costing Factors"),
-                        Otherdata = null
-                    }
-                }
-                , new Newtonsoft.Json.JsonSerializerSettings()
-                );
-        }
-
-        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
-        public IActionResult CompositionCostingFactorsIndex()
-        {
-
-            return View();
-        }
-
-        [AjaxOnly]
-        public async Task<IActionResult> CompositionCostingFactorsLoad([FromServices] ICompositionCostingFactors db,
-            int CurrentPage = 1, int MasterID = 0,
-            string FilterByText = null, string FilterValueByText = null,
-            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
-            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
-            string FilterByLoad = null)
-        {
-            PagedData<object> pageddata =
-                await db.Load(CurrentPage, MasterID, FilterByText, FilterValueByText,
-                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
-                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
-                FilterByLoad);
-
-            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
-        }
-
-        [AjaxOnly]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanPost")]
-        public async Task<string> CompositionCostingFactorsPost([FromServices] ICompositionCostingFactors db, [FromBody] tbl_Ac_CompositionCostingFactors tbl_Ac_CompositionCostingFactors, string operation = "")
-        {
-            if (ModelState.IsValid)
-                return await db.Post(tbl_Ac_CompositionCostingFactors, operation, User.Identity.Name);
-            else
-                return CustomMessage.ModelValidationFailedMessage(ModelState);
-        }
-
-        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
-        public async Task<IActionResult> CompositionCostingFactorsGet([FromServices] ICompositionCostingFactors db, int ID)
-        {
-            return Json(await db.Get(ID), new Newtonsoft.Json.JsonSerializerSettings());
-        }
-
-        #endregion
+        #endregion        
 
         #region AcPolicyInventory
 
@@ -736,7 +671,137 @@ namespace OreasCore.Areas.Accounts.Controllers
 
         #endregion
 
+        #region CompositionCostingFactors
 
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedCompositionCostingFactorsAsync([FromServices] IAuthorizationScheme db, [FromServices] ICompositionCostingFactors db2)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "CompositionCostingFactorsIndexCtlr",
+                        WildCard = db2.GetWCL(),
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Composition Costing Factors"),
+                        Otherdata = null
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
 
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
+        public IActionResult CompositionCostingFactorsIndex()
+        {
+
+            return View();
+        }
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingFactorsLoad([FromServices] ICompositionCostingFactors db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.Load(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanPost")]
+        public async Task<string> CompositionCostingFactorsPost([FromServices] ICompositionCostingFactors db, [FromBody] tbl_Ac_CompositionCostingFactors tbl_Ac_CompositionCostingFactors, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.Post(tbl_Ac_CompositionCostingFactors, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingFactorsGet([FromServices] ICompositionCostingFactors db, int ID)
+        {
+            return Json(await db.Get(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        #region CostingIndirectExpenseList
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetInitializedCostingIndirectExpenseListAsync([FromServices] IAuthorizationScheme db, [FromServices] ICostingIndirectExpenseList db2)
+        {
+            return Json(
+                new List<Init_ViewSetupStructure>()
+                {
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "CostingIndirectExpenseListIndexCtlr",
+                        WildCard = db2.GetWCLCostingIndirectExpenseList(),
+                        Reports = null,
+                        Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Costing Indirect Expense List"),
+                        Otherdata = null
+                    }
+                }
+                , new Newtonsoft.Json.JsonSerializerSettings()
+                );
+        }
+
+        [MyAuthorization(FormName = "Costing Indirect Expense List", Operation = "CanView")]
+        public IActionResult CostingIndirectExpenseListIndex()
+        {
+            return View();
+        }
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Costing Indirect Expense List", Operation = "CanView")]
+        public async Task<IActionResult> CostingIndirectExpenseListLoad([FromServices] ICostingIndirectExpenseList db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadCostingIndirectExpenseList(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Costing Indirect Expense List", Operation = "CanPost")]
+        public async Task<string> CostingIndirectExpenseListPost([FromServices] ICostingIndirectExpenseList db, [FromBody] tbl_Ac_CostingIndirectExpenseList tbl_Ac_CostingIndirectExpenseList, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostCostingIndirectExpenseList(tbl_Ac_CostingIndirectExpenseList, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Costing Indirect Expense List", Operation = "CanView")]
+        public async Task<IActionResult> CostingIndirectExpenseListGet([FromServices] ICostingIndirectExpenseList db, int ID)
+        {
+            return Json(await db.GetCostingIndirectExpenseList(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
+
+        
     }
 }

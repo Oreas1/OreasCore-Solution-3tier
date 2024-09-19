@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -533,6 +534,70 @@ namespace OreasModel
         [Column(TypeName = "nvarchar(MAX)")]
         [Display(Name = "Formula Expression")]
         public string FormulaExpression { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+    }
+
+    [Table("tbl_Ac_CostingIndirectExpenseList")]
+    public class tbl_Ac_CostingIndirectExpenseList
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Indirect Expense Name")]
+        public string IndirectExpenseName { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_Ac_CompositionCostingIndirectExpense.tbl_Ac_CostingIndirectExpenseList))]
+        public virtual ICollection<tbl_Ac_CompositionCostingIndirectExpense> tbl_Ac_CompositionCostingIndirectExpenses { get; set; }
+
+    }
+
+    [Table("tbl_Ac_CompositionCostingIndirectExpense")]
+    public class tbl_Ac_CompositionCostingIndirectExpense
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+
+        [Required]
+        [ForeignKey(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster))]
+        public int FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID { get; set; }
+        public virtual tbl_Pro_CompositionDetail_Coupling_PackagingMaster tbl_Pro_CompositionDetail_Coupling_PackagingMaster { get; set; }
+
+        [ForeignKey(nameof(tbl_Ac_CostingIndirectExpenseList))]
+        public int? FK_tbl_Ac_CostingIndirectExpenseList_ID { get; set; }
+        public virtual tbl_Ac_CostingIndirectExpenseList tbl_Ac_CostingIndirectExpenseList { get; set; }
+
+        [ForeignKey(nameof(tbl_Inv_ProductRegistrationDetail))]
+        public int? FK_tbl_Inv_ProductRegistrationDetail_ID { get; set; }
+        public virtual tbl_Inv_ProductRegistrationDetail tbl_Inv_ProductRegistrationDetail { get; set; }
+
+        [Required]
+        public double Quantity { get; set; }
+
+        [Required]
+        [Display(Name = "Custom Rate")]
+        public double CustomRate { get; set; }
 
         [MaxLength(50)]
         public string CreatedBy { get; set; }

@@ -13554,18 +13554,34 @@ namespace OreasServices
 
                 ReportName.Value = rn + "2";
                 int SNo = 1; double TotalNetAmount = 0;
-
+                string Remarks = "";
                 using (DbDataReader sqlReader = command.ExecuteReader())
                 {
                     while (sqlReader.Read())
                     {
-                        pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(SNo.ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        Remarks = sqlReader["Remarks"]?.ToString() ?? "";
+
+
+                        if (Remarks.Length > 0)
+                        {
+                            pdftableDetail.AddCell(new Cell(2, 1).Add(new Paragraph().Add(SNo.ToString())).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        }
+                        else
+                        {
+                            pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(SNo.ToString())).SetTextAlignment(TextAlignment.CENTER).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        }
+                        
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Priority"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString() + (!sqlReader.IsDBNull("ManufacturerName") ? "\n" + sqlReader["ManufacturerName"].ToString() : ""))).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Quantity"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Rate"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["GSTPercentage"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                         pdftableDetail.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["NetAmount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                        if (Remarks.Length > 0)
+                        {
+                            pdftableDetail.AddCell(new Cell(1, 6).Add(new Paragraph().Add("Remarks: " + Remarks)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        }                        
 
                         SNo++;
                         TotalNetAmount += Convert.ToDouble(sqlReader["NetAmount"]);

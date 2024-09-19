@@ -513,6 +513,11 @@ namespace OreasModel
         [InverseProperty(nameof(tbl_Inv_StockTransferDetail.tbl_Inv_ProductRegistrationDetail))]
         public virtual ICollection<tbl_Inv_StockTransferDetail> tbl_Inv_StockTransferDetails { get; set; }
 
+        //----------------------------------------------------------------------------------//
+        [InverseProperty(nameof(tbl_Ac_CompositionCostingIndirectExpense.tbl_Inv_ProductRegistrationDetail))]
+        public virtual ICollection<tbl_Ac_CompositionCostingIndirectExpense> tbl_Ac_CompositionCostingIndirectExpenses { get; set; }
+
+
     }
 
     [Table("tbl_Inv_ProductRegistrationDetail_PNQcTest")]

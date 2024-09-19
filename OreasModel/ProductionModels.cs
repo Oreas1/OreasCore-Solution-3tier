@@ -398,6 +398,10 @@ namespace OreasModel
 
         [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR.tbl_Pro_CompositionDetail_Coupling_PackagingMaster))]
         public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPR> tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ProcessBPRs { get; set; }
+
+        [InverseProperty(nameof(tbl_Ac_CompositionCostingIndirectExpense.tbl_Pro_CompositionDetail_Coupling_PackagingMaster))]
+        public virtual ICollection<tbl_Ac_CompositionCostingIndirectExpense> tbl_Ac_CompositionCostingIndirectExpenses { get; set; }
+
     }
 
     [Table("tbl_Pro_CompositionDetail_Coupling_PackagingDetail")]

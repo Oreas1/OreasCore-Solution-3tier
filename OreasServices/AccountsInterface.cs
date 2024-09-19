@@ -17,6 +17,7 @@ namespace OreasServices
         Task<object> GetBankTransactionModeListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetCashTransactionModeListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetClosingTypeListAsync(string FilterByText = null, string FilterValueByText = null);
+        Task<object> GetCostingIndirectExpenseListAsync(string FilterByText = null, string FilterValueByText = null);
     }
     public interface ICurrencyAndCountry
     {
@@ -67,6 +68,13 @@ namespace OreasServices
         object GetWCL();
         Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<string> Post(tbl_Ac_CompositionCostingFactors tbl_Ac_CompositionCostingFactors, string operation = "", string userName = "");
+    }
+    public interface ICostingIndirectExpenseList
+    {
+        Task<object> GetCostingIndirectExpenseList(int id);
+        object GetWCLCostingIndirectExpenseList();
+        Task<PagedData<object>> LoadCostingIndirectExpenseList(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> PostCostingIndirectExpenseList(tbl_Ac_CostingIndirectExpenseList tbl_Ac_CostingIndirectExpenseList, string operation = "", string userName = "");
     }
     public interface ICustomerApprovedRateList
     {
@@ -285,21 +293,22 @@ namespace OreasServices
     //---------------------Production------------------------//
     public interface ICompositionCosting
     {
+        Task<object> GetCompositionCostingIndirectExpense(int id);
         Task<object> GetCompositionDetailPackaging(int id);
         Task<object> GetCompositionDetailRaw(int id);
+        Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
+        List<ReportCallingModel> GetRLCompositionDetail();
+        object GetWCLCompositionCostingIndirectExpense();
         object GetWCLCompositionDetailPackaging();
         object GetWCLCompositionDetailRaw();
         object GetWCLCompositionMaster();
+        Task<PagedData<object>> LoadCompositionCostingIndirectExpense(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<PagedData<object>> LoadCompositionDetailPackaging(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<PagedData<object>> LoadCompositionDetailRaw(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
         Task<PagedData<object>> LoadCompositionMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> PostCompositionCostingIndirectExpense(tbl_Ac_CompositionCostingIndirectExpense tbl_Ac_CompositionCostingIndirectExpense, string operation = "", string userName = "");
         Task<string> PostCompositionDetailPackaging(tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Items tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Items, string operation = "", string userName = "");
         Task<string> PostCompositionDetailRaw(tbl_Pro_CompositionDetail_RawDetail_Items tbl_Pro_CompositionDetail_RawDetail_Items, string operation = "", string userName = "");
-
-        #region Report     
-        List<ReportCallingModel> GetRLCompositionDetail();
-        Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
-        #endregion
     }
     public interface IBMRCosting
     {

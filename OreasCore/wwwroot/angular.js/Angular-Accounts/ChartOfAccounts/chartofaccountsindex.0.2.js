@@ -191,7 +191,8 @@
 
     //////////////////////////////end/////////////////////////
 
-    }).config(function ($httpProvider) {
+    })
+    .config(function ($httpProvider) {
         $httpProvider.interceptors.push(http_interceptor_loading);
     });
 
