@@ -18,7 +18,7 @@ MainModule
             $scope.AreaList = [];
             $scope.DashBoardList = [];
 
-            var successcallback = function (response) {                
+            var successcallback = function (response) { 
                 $scope.AreaList = Array.isArray(response.data.AuthorizedAreaList.Areas) ? response.data.AuthorizedAreaList.Areas : [];
                 $scope.DashBoardList = Array.isArray(response.data.AuthorizedAreaList.Dashboards) ? response.data.AuthorizedAreaList.Dashboards : [];
 

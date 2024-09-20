@@ -41,6 +41,12 @@
         };
 
         $scope.PostChangedKey = function () {
+            if ($scope.ChangedKey1 != $scope.ChangedKey2)
+            {
+                alert('Passwords do not match');
+                return;
+
+            }
             var successcallback = function (response) {
                 if (response.data === 'OK') {
                     alert('Sucessfully change Password');
@@ -53,9 +59,26 @@
 
             var errorcallback = function (error) { alert('Some thing went wrong'); console.log(error); };
             $http({
-                method: "POST", url: '/DashBoard/PostChangedKey', async: true, params: { ChangedKey: $scope.ChangedKey, UserId: $scope.CredentialsInfo.Id }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
+                method: "POST", url: '/DashBoard/PostChangedKey', async: true, params: { ChangedKey: $scope.ChangedKey1, UserId: $scope.CredentialsInfo.Id }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
             }).then(successcallback, errorcallback);
         };
+
+        $scope.ChangedKeyEye = function (id)
+        {         
+            var x = document.getElementById("ChangedKey"+id);
+            var y = document.getElementById("ChangedKey" + id + "Eye");
+
+            if (x.type === "password") {
+                x.type = "text"; 
+                y.classList.remove('fa-eye-slash');
+                y.classList.add('fa-eye');       
+ 
+            } else {
+                x.type = "password";
+                y.classList.remove('fa-eye');
+                y.classList.add('fa-eye-slash');      
+            }
+        }
 
     })
     .config(function ($httpProvider) {

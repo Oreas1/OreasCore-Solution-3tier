@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -48,52 +49,90 @@ namespace OreasCore.Areas.Identity.Controllers
         public async Task<IActionResult> LoginAsync([FromServices] SignInManager<ApplicationUser> signInManager, [FromServices] IAuthorizationScheme db,
             [FromBody] LoginModel loginModel = null)
         {
+            try
+            {
+                loginModel.returnUrl = Url.IsLocalUrl(loginModel.returnUrl) && !string.IsNullOrEmpty(loginModel.returnUrl) ? loginModel.returnUrl : Url.Content("~/");
 
-            loginModel.returnUrl = Url.IsLocalUrl(loginModel.returnUrl) && !string.IsNullOrEmpty(loginModel.returnUrl) ? loginModel.returnUrl : Url.Content("~/");
-
-            if (ModelState.IsValid || User.Identity.IsAuthenticated)
-            {              
-
-                ApplicationUser user = await signInManager.UserManager.FindByNameAsync(loginModel.UserName);
-
-                var result = await signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
-
-                if (result.Succeeded)
+                if (ModelState.IsValid || User.Identity.IsAuthenticated)
                 {
-                    _logger.LogInformation("User logged in.");
-                    var authorizedAreaList = await db.GetUserAuthorizatedAreaListAsync(loginModel.UserName);
-                    //------------cookie approach--------------//
-                    var AuthorizedWareHouses = await db.GetAspNetOreasAuthorizedStoreListAsync(loginModel.UserName);
 
-                    string serializedStoreList = JsonConvert.SerializeObject(AuthorizedWareHouses);
-                    HttpContext.Response.Cookies.Delete("AuthWareHouseList");
-
-                    var cookieOptions = new CookieOptions
+                    ApplicationUser user = await signInManager.UserManager.FindByNameAsync(loginModel.UserName);
+                    if (user == null) 
                     {
-                        Expires = DateTime.MaxValue
-                    };
+                        return new ContentResult
+                        {
+                            Content = $"User Name is Invalid \nPlease Provide valid User Name",
+                            StatusCode = StatusCodes.Status500InternalServerError
+                        };
+                    }
 
-                    HttpContext.Response.Cookies.Append("AuthWareHouseList", serializedStoreList, cookieOptions);
-                    //--------------xxxxxxxx--------------------------//
-                    return Json(new { redirectUrl = loginModel.returnUrl, AuthorizedAreaList= authorizedAreaList });
+                    var result = await signInManager.PasswordSignInAsync(user, loginModel.Password, loginModel.RememberMe, false);
+                  
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("User logged in.");
+                        var authorizedAreaList = await db.GetUserAuthorizatedAreaListAsync(loginModel.UserName);
+                        //------------cookie approach--------------//
+                        var AuthorizedWareHouses = await db.GetAspNetOreasAuthorizedStoreListAsync(loginModel.UserName);
+
+                        string serializedStoreList = JsonConvert.SerializeObject(AuthorizedWareHouses);
+                        HttpContext.Response.Cookies.Delete("AuthWareHouseList");
+
+                        var cookieOptions = new CookieOptions
+                        {
+                            Expires = DateTime.MaxValue
+                        };
+
+                        HttpContext.Response.Cookies.Append("AuthWareHouseList", serializedStoreList, cookieOptions);
+                        //--------------xxxxxxxx--------------------------//
+                        return Json(new { redirectUrl = loginModel.returnUrl, AuthorizedAreaList = authorizedAreaList });
+                    }
+                    if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToPage("./LoginWith2fa", new { ReturnUrl = loginModel.returnUrl, RememberMe = loginModel.RememberMe });
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToPage("./Lockout");
+                    }
+                    else
+                    {
+                        
+                        return new ContentResult
+                        {
+                            Content = $"Password is Invalid \nPlease Provide valid Password",
+                            StatusCode = StatusCodes.Status500InternalServerError
+                        };
+                    }
                 }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = loginModel.returnUrl, RememberMe = loginModel.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View();
-                }
+
+                return View();
             }
-   
-            return View();
+            catch(SqlException sqlE)
+            {
+                string responseMessage = "";
+
+                if(sqlE.Number == 4060)
+                    responseMessage = "We are currently experiencing some technical difficulties accessing our database.\n Please try again later or contact support if the issue persists.";
+
+                return new ContentResult
+                {
+                    Content = $"{responseMessage}",
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+            catch (Exception ex)
+            {
+
+                return new ContentResult
+                {
+                    Content = $"An error occurred: {ex.Message}",
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+
+
         }
 
         [AjaxOnly]
