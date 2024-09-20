@@ -373,6 +373,10 @@ namespace OreasModel
         [Required]
         public bool IsDiscontinue { get; set; }
 
+        [ForeignKey(nameof(tbl_Ac_CompositionCostingOverHeadFactorsMaster))]
+        public int? FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID { get; set; }
+        public virtual tbl_Ac_CompositionCostingOverHeadFactorsMaster tbl_Ac_CompositionCostingOverHeadFactorsMaster { get; set; }
+
         [MaxLength(50)]
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }

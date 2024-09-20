@@ -65,7 +65,7 @@ namespace OreasCore
             services.AddScoped<IFiscalYear, FiscalYearRepository>();
             services.AddScoped<IChartOfAccountsType, ChartOfAccountsTypeRepository>();
             services.AddScoped<IChartOfAccounts,ChartOfAccountsRepository>();
-            services.AddScoped<ICompositionCostingFactors, CompositionCostingFactorsRepository>();
+            services.AddScoped<ICompositionCostingOverHeadFactors, CompositionCostingOverHeadFactorsRepository>();
             services.AddScoped<ICostingIndirectExpenseList, CostingIndirectExpenseListRepository>();
             services.AddScoped<ICustomerApprovedRateList, CustomerApprovedRateListRepository>();
             services.AddScoped<IAcPolicyInventory, AcPolicyInventoryRepository>();

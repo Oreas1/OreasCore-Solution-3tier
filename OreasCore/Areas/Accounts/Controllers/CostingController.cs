@@ -28,7 +28,9 @@ namespace OreasCore.Areas.Accounts.Controllers
                         LoadByCard = null,
                         Reports = null,
                         Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Costing"),
-                        Otherdata = null
+                        Otherdata = new {
+                            CostingOverHeadFactorsList = await db3.GetCostingOverHeadFactorsListAsync(null,null)
+                        }
                     },
                     new Init_ViewSetupStructure()
                     {
@@ -85,6 +87,24 @@ namespace OreasCore.Areas.Accounts.Controllers
                 FilterByLoad);
 
             return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Costing", Operation = "CanPost")]
+        public async Task<string> CompositionCostingMasterPost([FromServices] ICompositionCosting db, [FromBody] tbl_Pro_CompositionDetail_Coupling_PackagingMaster tbl_Pro_CompositionDetail_Coupling_PackagingMaster, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostCompositionMaster(tbl_Pro_CompositionDetail_Coupling_PackagingMaster, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Costing", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingMasterGet([FromServices] ICompositionCosting db, int ID)
+        {
+            return Json(await db.GetCompositionMaster(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
 
 

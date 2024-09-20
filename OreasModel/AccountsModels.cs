@@ -476,7 +476,6 @@ namespace OreasModel
         public int FK_tbl_Ac_ChartOfAccounts_ID { get; set; }
         public virtual tbl_Ac_ChartOfAccounts tbl_Ac_ChartOfAccounts { get; set; }
 
-
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
@@ -520,11 +519,49 @@ namespace OreasModel
 
     }
 
-    [Table("tbl_Ac_CompositionCostingFactors")]
-    public class tbl_Ac_CompositionCostingFactors
+    [Table("tbl_Ac_CompositionCostingOverHeadFactorsMaster")]
+    public class tbl_Ac_CompositionCostingOverHeadFactorsMaster
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        [Display(Name = "Group Name")]
+        public string GroupName { get; set; }
+
+        [Required]
+        [Display(Name = "Is Default")]
+        public bool IsDefault { get; set; }
+
+        [MaxLength(50)]
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        [MaxLength(50)]
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        [InverseProperty(nameof(tbl_Ac_CompositionCostingOverHeadFactorsDetail.tbl_Ac_CompositionCostingOverHeadFactorsMaster))]
+        public virtual ICollection<tbl_Ac_CompositionCostingOverHeadFactorsDetail> tbl_Ac_CompositionCostingOverHeadFactorsDetails { get; set; }
+
+        [InverseProperty(nameof(tbl_Pro_CompositionDetail_Coupling_PackagingMaster.tbl_Ac_CompositionCostingOverHeadFactorsMaster))]
+        public virtual ICollection<tbl_Pro_CompositionDetail_Coupling_PackagingMaster> tbl_Pro_CompositionDetail_Coupling_PackagingMasters { get; set; }
+
+    }
+
+    [Table("tbl_Ac_CompositionCostingOverHeadFactorsDetail")]
+    public class tbl_Ac_CompositionCostingOverHeadFactorsDetail
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(tbl_Ac_CompositionCostingOverHeadFactorsMaster))]
+        public int FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID { get; set; }
+        public virtual tbl_Ac_CompositionCostingOverHeadFactorsMaster tbl_Ac_CompositionCostingOverHeadFactorsMaster { get; set; }
 
         [Required]
         [Display(Name = "Formula Name")]

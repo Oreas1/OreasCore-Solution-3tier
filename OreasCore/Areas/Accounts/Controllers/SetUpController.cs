@@ -669,22 +669,31 @@ namespace OreasCore.Areas.Accounts.Controllers
 
         #endregion
 
-        #endregion
+        #endregion        
 
-        #region CompositionCostingFactors
+        #region CompositionCostingOverHeadFactors
 
         [MyAuthorization]
-        public async Task<IActionResult> GetInitializedCompositionCostingFactorsAsync([FromServices] IAuthorizationScheme db, [FromServices] ICompositionCostingFactors db2)
+        public async Task<IActionResult> GetInitializedCompositionCostingOverHeadFactorsAsync([FromServices] IAuthorizationScheme db, [FromServices] ICompositionCostingOverHeadFactors db2, [FromServices] IInventoryList db3)
         {
             return Json(
                 new List<Init_ViewSetupStructure>()
                 {
                     new Init_ViewSetupStructure()
                     {
-                        Controller = "CompositionCostingFactorsIndexCtlr",
-                        WildCard = db2.GetWCL(),
+                        Controller = "CompositionCostingOverHeadFactorsMasterCtlr",
+                        WildCard = db2.GetWCLCompositionCostingOverHeadFactorsMaster(),
+                        LoadByCard = null,
                         Reports = null,
                         Privilege = await db.GetUserAuthorizatedOnOperationAsync("Accounts", User.Identity.Name, "Composition Costing Factors"),
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "CompositionCostingOverHeadFactorsDetailCtlr",
+                        WildCard = db2.GetWCLCompositionCostingOverHeadFactorsDetail(),
+                        Reports = null,
+                        Privilege = null,
                         Otherdata = null
                     }
                 }
@@ -693,15 +702,16 @@ namespace OreasCore.Areas.Accounts.Controllers
         }
 
         [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
-        public IActionResult CompositionCostingFactorsIndex()
+        public IActionResult CompositionCostingOverHeadFactorsIndex()
         {
-
             return View();
         }
 
+        #region Master
+
         [AjaxOnly]
         [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
-        public async Task<IActionResult> CompositionCostingFactorsLoad([FromServices] ICompositionCostingFactors db,
+        public async Task<IActionResult> CompositionCostingOverHeadFactorsMasterLoad([FromServices] ICompositionCostingOverHeadFactors db,
             int CurrentPage = 1, int MasterID = 0,
             string FilterByText = null, string FilterValueByText = null,
             string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
@@ -709,7 +719,7 @@ namespace OreasCore.Areas.Accounts.Controllers
             string FilterByLoad = null)
         {
             PagedData<object> pageddata =
-                await db.Load(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                await db.LoadCompositionCostingOverHeadFactorsMaster(CurrentPage, MasterID, FilterByText, FilterValueByText,
                 FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
                 FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
                 FilterByLoad);
@@ -721,19 +731,61 @@ namespace OreasCore.Areas.Accounts.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanPost")]
-        public async Task<string> CompositionCostingFactorsPost([FromServices] ICompositionCostingFactors db, [FromBody] tbl_Ac_CompositionCostingFactors tbl_Ac_CompositionCostingFactors, string operation = "")
+        public async Task<string> CompositionCostingOverHeadFactorsMasterPost([FromServices] ICompositionCostingOverHeadFactors db, [FromBody] tbl_Ac_CompositionCostingOverHeadFactorsMaster tbl_Ac_CompositionCostingOverHeadFactorsMaster, string operation = "")
         {
             if (ModelState.IsValid)
-                return await db.Post(tbl_Ac_CompositionCostingFactors, operation, User.Identity.Name);
+                return await db.PostCompositionCostingOverHeadFactorsMaster(tbl_Ac_CompositionCostingOverHeadFactorsMaster, operation, User.Identity.Name);
             else
                 return CustomMessage.ModelValidationFailedMessage(ModelState);
         }
 
         [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
-        public async Task<IActionResult> CompositionCostingFactorsGet([FromServices] ICompositionCostingFactors db, int ID)
+        public async Task<IActionResult> CompositionCostingOverHeadFactorsMasterGet([FromServices] ICompositionCostingOverHeadFactors db, int ID)
         {
-            return Json(await db.Get(ID), new Newtonsoft.Json.JsonSerializerSettings());
+            return Json(await db.GetCompositionCostingOverHeadFactorsMaster(ID), new Newtonsoft.Json.JsonSerializerSettings());
         }
+
+        #endregion
+
+        #region Detail
+
+        [AjaxOnly]
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingOverHeadFactorsDetailLoad([FromServices] ICompositionCostingOverHeadFactors db,
+            int CurrentPage = 1, int MasterID = 0,
+            string FilterByText = null, string FilterValueByText = null,
+            string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+            string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+            string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadCompositionCostingOverHeadFactorsDetail(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanPost")]
+        public async Task<string> CompositionCostingOverHeadFactorsDetailPost([FromServices] ICompositionCostingOverHeadFactors db, [FromBody] tbl_Ac_CompositionCostingOverHeadFactorsDetail tbl_Ac_CompositionCostingOverHeadFactorsDetail, string operation = "")
+        {
+            if (ModelState.IsValid)
+                return await db.PostCompositionCostingOverHeadFactorsDetail(tbl_Ac_CompositionCostingOverHeadFactorsDetail, operation, User.Identity.Name);
+            else
+                return CustomMessage.ModelValidationFailedMessage(ModelState);
+        }
+
+        [MyAuthorization(FormName = "Composition Costing Factors", Operation = "CanView")]
+        public async Task<IActionResult> CompositionCostingOverHeadFactorsDetailGet([FromServices] ICompositionCostingOverHeadFactors db, int ID)
+        {
+            return Json(await db.GetCompositionCostingOverHeadFactorsDetail(ID), new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        #endregion
 
         #endregion
 

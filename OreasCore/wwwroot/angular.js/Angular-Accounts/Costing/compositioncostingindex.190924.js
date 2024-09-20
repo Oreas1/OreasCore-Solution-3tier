@@ -16,8 +16,8 @@
         //////////////////////////////entry panel/////////////////////////
         init_Operations($scope, $http,
             '/Accounts/Costing/CompositionCostingMasterLoad', //--v_Load
-            '', // getrow
-            '' // PostRow
+            '/Accounts/Costing/CompositionCostingMasterGet', // getrow
+            '/Accounts/Costing/CompositionCostingMasterPost' // PostRow
         );
 
         init_ProductSearchModalGeneral($scope, $http);
@@ -27,6 +27,12 @@
             if (data.find(o => o.Controller === 'CompositionCostingMasterCtlr') != undefined) {
                 $scope.Privilege = data.find(o => o.Controller === 'CompositionCostingMasterCtlr').Privilege;
                 init_Filter($scope, data.find(o => o.Controller === 'CompositionCostingMasterCtlr').WildCard, null, null, null);
+                if (data.find(o => o.Controller === 'CompositionCostingMasterCtlr').Otherdata === null) {
+                    $scope.CostingOverHeadFactorsList = []; 
+                }
+                else {
+                    $scope.CostingOverHeadFactorsList = data.find(o => o.Controller === 'CompositionCostingMasterCtlr').Otherdata.CostingOverHeadFactorsList;
+                }
                 $scope.pageNavigation('first');
             }
             if (data.find(o => o.Controller === 'CompositionCostingIndirectExpenseCtlr') != undefined) {
@@ -41,9 +47,14 @@
         }; 
 
         $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster = {
-            'ID': 0, 'BatchSize': 0, 'SemiProduct': '', 'SemiProductUnit': '', 'PrimaryProduct': '', 'SecondaryProduct': '',
-            'PackagingName': '', 'FK_tbl_Pro_CompositionMaster_ID': 0
+            'ID': 0, 'FK_tbl_Pro_CompositionDetail_Coupling_ID': null,
+            'FK_tbl_Inv_ProductRegistrationDetail_ID_Primary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName': '',
+            'FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName': '',
+            'PackagingName': '', 'IsDiscontinue': false, 
+            'FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID': null, 'FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_IDName': '',
+            'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
+
 
         //for list model which will be coming as as data in pageddata
         $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMasters = [$scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster];
@@ -51,9 +62,20 @@
         $scope.clearEntryPanel = function () {
             //rededine to orignal values
             $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster = {
-                'ID': 0, 'BatchSize': 0, 'SemiProduct': '', 'SemiProductUnit': '', 'PrimaryProduct': '', 'SecondaryProduct': '',
-                'PackagingName': '', 'FK_tbl_Pro_CompositionMaster_ID': 0
+                'ID': 0, 'FK_tbl_Pro_CompositionDetail_Coupling_ID': null,
+                'FK_tbl_Inv_ProductRegistrationDetail_ID_Primary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName': '',
+                'FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary': null, 'FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName': '',
+                'PackagingName': '', 'IsDiscontinue': false,
+                'FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID': null, 'FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_IDName': '',
+                'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
+
+        };
+
+        $scope.postRowParam = function () { return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster }; };
+
+        $scope.GetRowResponse = function (data, operation) {
+            $scope.tbl_Pro_CompositionDetail_Coupling_PackagingMaster = data;
         };
       
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };

@@ -206,6 +206,26 @@ namespace OreasServices
                                   a.IndirectExpenseName
                               }).Take(5).ToListAsync();
         }
+        public async Task<object> GetCostingOverHeadFactorsListAsync(string FilterByText = null, string FilterValueByText = null)
+        {
+            if (string.IsNullOrEmpty(FilterByText))
+                return await (from a in db.tbl_Ac_CompositionCostingOverHeadFactorsMasters
+                              select new
+                              {
+                                  a.ID,
+                                  a.GroupName
+                              }).ToListAsync();
+            else
+                return await (from a in db.tbl_Ac_CompositionCostingOverHeadFactorsMasters
+                                        .Where(w => string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byName" && w.GroupName.ToLower().Contains(FilterValueByText.ToLower()))
+                              select new
+                              {
+                                  a.ID,
+                                  a.GroupName
+                              }).Take(5).ToListAsync();
+        }
     }
     public class CurrencyAndCountryRepository : ICurrencyAndCountry
     {
@@ -1603,19 +1623,114 @@ namespace OreasServices
         #endregion
 
     }
-    public class CompositionCostingFactorsRepository : ICompositionCostingFactors
+    public class CompositionCostingOverHeadFactorsRepository : ICompositionCostingOverHeadFactors
     {
         private readonly OreasDbContext db;
-        public CompositionCostingFactorsRepository(OreasDbContext oreasDbContext)
+        public CompositionCostingOverHeadFactorsRepository(OreasDbContext oreasDbContext)
         {
             this.db = oreasDbContext;
         }
-        public async Task<object> Get(int id)
+
+        #region Master
+        public async Task<object> GetCompositionCostingOverHeadFactorsMaster(int id)
         {
-            var qry = from o in await db.tbl_Ac_CompositionCostingFactorss.Where(w => w.ID == id).ToListAsync()
+            var qry = from o in await db.tbl_Ac_CompositionCostingOverHeadFactorsMasters.Where(w => w.ID == id).ToListAsync()
                       select new
                       {
                           o.ID,
+                          o.GroupName,
+                          o.IsDefault,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            return qry.FirstOrDefault();
+        }
+        public object GetWCLCompositionCostingOverHeadFactorsMaster()
+        {
+            return new[]
+            {
+                new { n = "by Group Name", v = "byGroupName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadCompositionCostingOverHeadFactorsMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string IsFor = "")
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Ac_CompositionCostingOverHeadFactorsMasters
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byGroupName" && w.GroupName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Ac_CompositionCostingOverHeadFactorsMasters
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byGroupName" && w.GroupName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.GroupName,
+                          o.IsDefault,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+        public async Task<string> PostCompositionCostingOverHeadFactorsMaster(tbl_Ac_CompositionCostingOverHeadFactorsMaster tbl_Ac_CompositionCostingOverHeadFactorsMaster, string operation = "", string userName = "")
+        {
+
+            if (operation == "Save New")
+            {
+                tbl_Ac_CompositionCostingOverHeadFactorsMaster.CreatedBy = userName;
+                tbl_Ac_CompositionCostingOverHeadFactorsMaster.CreatedDate = DateTime.Now;
+                db.tbl_Ac_CompositionCostingOverHeadFactorsMasters.Add(tbl_Ac_CompositionCostingOverHeadFactorsMaster);
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Update")
+            {
+                tbl_Ac_CompositionCostingOverHeadFactorsMaster.ModifiedBy = userName;
+                tbl_Ac_CompositionCostingOverHeadFactorsMaster.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Ac_CompositionCostingOverHeadFactorsMaster).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+            }
+            else if (operation == "Save Delete")
+            {
+                db.tbl_Ac_CompositionCostingOverHeadFactorsMasters.Remove(db.tbl_Ac_CompositionCostingOverHeadFactorsMasters.Find(tbl_Ac_CompositionCostingOverHeadFactorsMaster.ID));
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+
+
+        #endregion
+
+        #region Detail
+        public async Task<object> GetCompositionCostingOverHeadFactorsDetail(int id)
+        {
+            var qry = from o in await db.tbl_Ac_CompositionCostingOverHeadFactorsDetails.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID,
                           o.FormulaName,
                           o.FormulaExpression,
                           o.CreatedBy,
@@ -1626,18 +1741,19 @@ namespace OreasServices
 
             return qry.FirstOrDefault();
         }
-        public object GetWCL()
+        public object GetWCLCompositionCostingOverHeadFactorsDetail()
         {
             return new[]
             {
                 new { n = "by Formula Name", v = "byFormulaName" }
             }.ToList();
         }
-        public async Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        public async Task<PagedData<object>> LoadCompositionCostingOverHeadFactorsDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
         {
             PagedData<object> pageddata = new PagedData<object>();
 
-            int NoOfRecords = await db.tbl_Ac_CompositionCostingFactorss
+            int NoOfRecords = await db.tbl_Ac_CompositionCostingOverHeadFactorsDetails
+                                               .Where(w => w.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID == MasterID)
                                                .Where(w =>
                                                        string.IsNullOrEmpty(FilterValueByText)
                                                        ||
@@ -1650,7 +1766,8 @@ namespace OreasServices
 
             pageddata.CurrentPage = CurrentPage;
 
-            var qry = from o in await db.tbl_Ac_CompositionCostingFactorss
+            var qry = from o in await db.tbl_Ac_CompositionCostingOverHeadFactorsDetails
+                                  .Where(w => w.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID == MasterID)
                                   .Where(w =>
                                         string.IsNullOrEmpty(FilterValueByText)
                                         ||
@@ -1661,6 +1778,7 @@ namespace OreasServices
                       select new
                       {
                           o.ID,
+                          o.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID,
                           o.FormulaName,
                           o.FormulaExpression,
                           o.CreatedBy,
@@ -1676,42 +1794,41 @@ namespace OreasServices
 
             return pageddata;
         }
-        public async Task<string> Post(tbl_Ac_CompositionCostingFactors tbl_Ac_CompositionCostingFactors, string operation = "", string userName = "")
+        public async Task<string> PostCompositionCostingOverHeadFactorsDetail(tbl_Ac_CompositionCostingOverHeadFactorsDetail tbl_Ac_CompositionCostingOverHeadFactorsDetail, string operation = "", string userName = "")
         {
-            
             if (operation == "Save New")
             {
-                if (ValidExpression(tbl_Ac_CompositionCostingFactors.FormulaExpression) == false)
+                if (ValidExpression(tbl_Ac_CompositionCostingOverHeadFactorsDetail.FormulaExpression) == false)
                     return "Invalid Expression";
 
-                tbl_Ac_CompositionCostingFactors.CreatedBy = userName;
-                tbl_Ac_CompositionCostingFactors.CreatedDate = DateTime.Now;
-                db.tbl_Ac_CompositionCostingFactorss.Add(tbl_Ac_CompositionCostingFactors);
+                tbl_Ac_CompositionCostingOverHeadFactorsDetail.CreatedBy = userName;
+                tbl_Ac_CompositionCostingOverHeadFactorsDetail.CreatedDate = DateTime.Now;
+                db.tbl_Ac_CompositionCostingOverHeadFactorsDetails.Add(tbl_Ac_CompositionCostingOverHeadFactorsDetail);
                 await db.SaveChangesAsync();
             }
             else if (operation == "Save Update")
             {
-                if (ValidExpression(tbl_Ac_CompositionCostingFactors.FormulaExpression) == false)
+                if (ValidExpression(tbl_Ac_CompositionCostingOverHeadFactorsDetail.FormulaExpression) == false)
                     return "Invalid Expression";
 
-                tbl_Ac_CompositionCostingFactors.ModifiedBy = userName;
-                tbl_Ac_CompositionCostingFactors.ModifiedDate = DateTime.Now;
-                db.Entry(tbl_Ac_CompositionCostingFactors).State = EntityState.Modified;
+                tbl_Ac_CompositionCostingOverHeadFactorsDetail.ModifiedBy = userName;
+                tbl_Ac_CompositionCostingOverHeadFactorsDetail.ModifiedDate = DateTime.Now;
+                db.Entry(tbl_Ac_CompositionCostingOverHeadFactorsDetail).State = EntityState.Modified;
                 await db.SaveChangesAsync();
             }
             else if (operation == "Save Delete")
             {
-                db.tbl_Ac_CompositionCostingFactorss.Remove(db.tbl_Ac_CompositionCostingFactorss.Find(tbl_Ac_CompositionCostingFactors.ID));
+                db.tbl_Ac_CompositionCostingOverHeadFactorsDetails.Remove(db.tbl_Ac_CompositionCostingOverHeadFactorsDetails.Find(tbl_Ac_CompositionCostingOverHeadFactorsDetail.ID));
                 await db.SaveChangesAsync();
             }
             return "OK";
-        }
 
+        }
         public bool ValidExpression(string expression)
         {
             try
             {
-                expression = expression.Replace("c","1");
+                expression = expression.Replace("c", "1");
                 expression = expression.Replace("C", "1");
 
                 DataTable table = new DataTable();
@@ -1723,9 +1840,11 @@ namespace OreasServices
             {
                 return false;
             }
-            
-  
+
+
         }
+        #endregion        
+
     }
     public class CostingIndirectExpenseListRepository : ICostingIndirectExpenseList
     {
@@ -9516,7 +9635,7 @@ namespace OreasServices
         #endregion
 
     }
-      
+
     //---------------------Production------------------------//
     public class CompositionCostingRepository : ICompositionCosting
     {
@@ -9527,6 +9646,31 @@ namespace OreasServices
         }
 
         #region Composition Master
+        public async Task<object> GetCompositionMaster(int id)
+        {
+            var qry = from o in await db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters.Where(w => w.ID == id).ToListAsync()
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Primary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName = " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Primary.Split_Into.ToString() + "'s " + o.tbl_Inv_ProductRegistrationDetail_Primary.Description,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
+                          o.PackagingName,
+                          o.IsDiscontinue,
+                          o.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID,
+                          FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_IDName = o?.tbl_Ac_CompositionCostingOverHeadFactorsMaster?.GroupName ?? "",
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          SemiProduct = o.tbl_Pro_CompositionDetail_Coupling.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName,
+                          SemiProductUnit = o.tbl_Pro_CompositionDetail_Coupling.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit
+                      };
+
+            return qry.FirstOrDefault();
+        }
         public object GetWCLCompositionMaster()
         {
             return new[]
@@ -9556,25 +9700,41 @@ namespace OreasServices
                                                    FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
                                                )
                                         .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
                       select new
                       {
                           o.ID,
+                          o.FK_tbl_Pro_CompositionDetail_Coupling_ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Primary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName = o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "]" + o.tbl_Inv_ProductRegistrationDetail_Primary.Split_Into.ToString() + "'s",
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary,
+                          FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary > 0 ? o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "]" : "",
+                          o.PackagingName,
+                          o.IsDiscontinue,
+                          o.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID,
+                          FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_IDName = o?.tbl_Ac_CompositionCostingOverHeadFactorsMaster?.GroupName ?? "",
                           o.tbl_Pro_CompositionDetail_Coupling.BatchSize,
                           SemiProduct = o.tbl_Pro_CompositionDetail_Coupling.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName,
                           SemiProductUnit = o.tbl_Pro_CompositionDetail_Coupling.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit,
-                          PrimaryProduct = o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Primary.tbl_Inv_MeasurementUnit.MeasurementUnit + "]",
-                          SecondaryProduct = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary > 0 ? o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_ProductRegistrationMaster.ProductName + " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "]" : "",
-                          o.PackagingName,
-                          o.tbl_Pro_CompositionDetail_Coupling.FK_tbl_Pro_CompositionMaster_ID
-
+                          o.tbl_Pro_CompositionDetail_Coupling.FK_tbl_Pro_CompositionMaster_ID,
                       };
 
             pageddata.Data = qry;
 
             return pageddata;
         }
-
+        public async Task<string> PostCompositionMaster(tbl_Pro_CompositionDetail_Coupling_PackagingMaster tbl_Pro_CompositionDetail_Coupling_PackagingMaster, string operation = "", string userName = "")
+        {
+            if (operation == "Save Update")
+            {
+                //tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedBy = userName;
+                //tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedDate = DateTime.Now;
+                //db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster).State = EntityState.Modified;
+                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster).Property(x => x.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID).IsModified = true;
+                await db.SaveChangesAsync();
+            }
+            return "OK";
+        }
+        
         #endregion
 
         #region Composition IndirectExpense
@@ -9611,7 +9771,7 @@ namespace OreasServices
             PagedData<object> pageddata = new PagedData<object>();
 
             int NoOfRecords = await db.tbl_Ac_CompositionCostingIndirectExpenses
-                                               .Where(w=> w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
+                                               .Where(w => w.FK_tbl_Pro_CompositionDetail_Coupling_PackagingMaster_ID == MasterID)
                                                .Where(w =>
                                                        string.IsNullOrEmpty(FilterValueByText)
                                                        ||
@@ -9667,7 +9827,7 @@ namespace OreasServices
             if (!(tbl_Ac_CompositionCostingIndirectExpense.Quantity > 0))
                 return "Aborted! Invalid Quantity";
 
-            if (!(tbl_Ac_CompositionCostingIndirectExpense.CustomRate > 0) && tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Ac_CostingIndirectExpenseList_ID>0)
+            if (!(tbl_Ac_CompositionCostingIndirectExpense.CustomRate > 0) && tbl_Ac_CompositionCostingIndirectExpense.FK_tbl_Ac_CostingIndirectExpenseList_ID > 0)
                 return "Aborted! Expense Rate Invalid";
 
             if (operation == "Save New")
@@ -9928,9 +10088,7 @@ namespace OreasServices
             }
             ).SetFontSize(7).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
-
-
-            pdftableDetailRaw.AddCell(new Cell(1, 10).Add(new Paragraph().Add("Raw Detail")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailRaw.AddCell(new Cell(1, 10).Add(new Paragraph().Add("Raw Detail")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(235, 176, 113)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("S. No")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Formula Type")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
@@ -9941,8 +10099,7 @@ namespace OreasServices
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Date")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(106, 127, 196)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Cust Rate")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(237, 226, 123)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("%")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-            pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-
+            pdftableDetailRaw.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBackgroundColor(new DeviceRgb(106, 127, 196)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
             //--------------------------------10 column Packaging table ------------------------------//
             Table pdftableDetailPackaging = new Table(new float[] {
@@ -9959,7 +10116,7 @@ namespace OreasServices
             }
             ).SetFontSize(7).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
-            pdftableDetailPackaging.AddCell(new Cell(1, 10).Add(new Paragraph().Add("Packaging Detail")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailPackaging.AddCell(new Cell(1, 10).Add(new Paragraph().Add("Packaging Detail")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(235, 176, 113)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
             pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("S. No")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("Formula Type")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
@@ -9970,9 +10127,29 @@ namespace OreasServices
             pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("Date")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(106, 127, 196)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("Cust Rate")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(237, 226, 123)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("%")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-            pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailPackaging.AddCell(new Cell().Add(new Paragraph().Add("Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBackgroundColor(new DeviceRgb(106, 127, 196)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
+            //--------------------------------6 column Packaging table ------------------------------//
+            Table pdftableDetailIndirectExpense = new Table(new float[] {
+                        (float)(PageSize.A4.GetWidth()*0.05),//SNo
+                        (float)(PageSize.A4.GetWidth()*0.30),//Expense
+                        (float)(PageSize.A4.GetWidth()*0.35),//ProductName
+                        (float)(PageSize.A4.GetWidth()*0.10),//Quantity
+                        (float)(PageSize.A4.GetWidth()*0.10),//Rate
+                        (float)(PageSize.A4.GetWidth()*0.10)//Amount          
+            }
+            ).SetFontSize(7).SetFixedLayout().SetBorder(Border.NO_BORDER);
 
+            pdftableDetailIndirectExpense.AddCell(new Cell(1, 6).Add(new Paragraph().Add("Indirect Expense Detail")).SetTextAlignment(TextAlignment.CENTER).SetBackgroundColor(new DeviceRgb(235, 176, 113)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+            pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add("S. No")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add("Indirect Expense")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add("Indirect Product")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add("Quantity")).SetTextAlignment(TextAlignment.RIGHT).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add("Rate")).SetTextAlignment(TextAlignment.RIGHT).SetBackgroundColor(new DeviceRgb(106, 127, 196)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add("Amount")).SetTextAlignment(TextAlignment.RIGHT).SetBackgroundColor(new DeviceRgb(106, 127, 196)).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+            //---------------------------xxxxxxxxxxxxx---------------------------//
             using (var command = db.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = "EXECUTE [dbo].[Report_Ac_Costing] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
@@ -10106,16 +10283,39 @@ namespace OreasServices
                     pdftableDetailPackaging.AddCell(new Cell(1, 2).Add(new Paragraph().Add(PackagingAmountTotal.ToString()).SetTextAlignment(TextAlignment.RIGHT)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                 }
 
+                //----------Indirect Expense detail
+                ReportName.Value = rn + "4"; MasterID.Value = id;
+                SNo = 1; double IndirectExpenseAmount = 0;
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    while (sqlReader.Read())
+                    {
+                        pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add(SNo.ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["IndirectExpenseName"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["ProductName"].ToString())).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Quantity"].ToString() + " " + sqlReader["MeasurementUnit"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Rate"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                        pdftableDetailIndirectExpense.AddCell(new Cell().Add(new Paragraph().Add(sqlReader["Amount"].ToString())).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+                        IndirectExpenseAmount += (double)sqlReader["Amount"];
+                        SNo++;
+                    }
+
+                    pdftableDetailIndirectExpense.AddCell(new Cell(1, 5).Add(new Paragraph().Add("Total")).SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                    pdftableDetailIndirectExpense.AddCell(new Cell(1, 1).Add(new Paragraph().Add(IndirectExpenseAmount.ToString()).SetTextAlignment(TextAlignment.RIGHT)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                }
+
 
                 //----------Factors detail
-                ReportName.Value = rn + "4"; double TotalPerUnit = 0; string FormulaExpresion = ""; double FormulaValue = 0;
+                ReportName.Value = rn + "5"; MasterID.Value = id;
+                double TotalPerUnit = 0; string FormulaExpresion = ""; double FormulaValue = 0;
 
                 //----------Row 3 coninute last cell-------//
                 pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add("Total Amount")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add((RawAmountTotal + PackagingAmountTotal).ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+                pdftableMaster.AddCell(new Cell().Add(new Paragraph().Add((RawAmountTotal + PackagingAmountTotal + IndirectExpenseAmount).ToString())).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
 
-                double MaterialPerUnit = Math.Round(((RawAmountTotal + PackagingAmountTotal) / BatchSize * SplitInto), 3);
+                double MaterialPerUnit = Math.Round(((RawAmountTotal + PackagingAmountTotal + IndirectExpenseAmount) / BatchSize * SplitInto), 3);
                 double ValueFactor = (1 / BatchSize) * SplitInto;
 
                 pdftableMaster.AddCell(new Cell(1, 4).Add(new Paragraph().Add(" ")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
@@ -10161,6 +10361,7 @@ namespace OreasServices
             page.InsertContent(pdftableMaster);
             page.InsertContent(pdftableDetailRaw);
             page.InsertContent(pdftableDetailPackaging);
+            page.InsertContent(pdftableDetailIndirectExpense);
 
             return page.FinishToGetBytes();
         }

@@ -9,7 +9,65 @@
     <div id="CompositionCostingMasterCtlr">
         <MyViewName>Composition Costing</MyViewName>
         @*-----------------------------------this is entry panel-----------------------------*@
-        <MyAntiforgeryToken></MyAntiforgeryToken>
+        <MyButton operation="@MyButtonOperation.Add"></MyButton>
+        <div ng-hide="ng_entryPanelHide">
+            <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate="">
+                <MyAntiforgeryToken></MyAntiforgeryToken>
+                @Html.Hidden("tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ID", "{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ID}}")
+                @Html.Hidden("tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Pro_CompositionDetail_Coupling_ID", "{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Pro_CompositionDetail_Coupling_ID}}")
+
+            <MyFieldSet legendtext="Entry Form">
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Packaging Name</span>
+                        <input type="text" id="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.PackagingName" name="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.PackagingName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.PackagingName" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.PackagingName" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Semi Finished Product [{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.SemiProductUnit}}]</span>
+                        <input type="text" id="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.SemiProduct" name="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.SemiProduct" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.SemiProduct" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.SemiProduct" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Primary Finished Product</span>
+                        <input type="text" id="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName" name="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName" ng-disabled="ng_readOnly" readonly />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Costing OverHead Group</span>
+                        <select id="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID" name="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="x.ID as x.GroupName for x in CostingOverHeadFactorsList" data-ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID" ng-disabled="ng_readOnly">
+                            <option value="">Select Group Name</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="{{ng_entryPanelSubmitBtnText}}" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+                <MyFieldSet legendtext="User" child="true">
+                    <div mycssclass="@MyCSSClassName.RowInForm">
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.CreatedBy}}" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.CreatedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.CreatedDate" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedBy}}" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedBy" disabled />
+                        </div>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
+                            <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedDate" disabled />
+                        </div>
+                    </div>
+                </MyFieldSet>
+
+            </MyFieldSet>
+            </form>
+        </div>
         @*-----------------------------------this is data list view-----------------------------*@
         <div mycssclass="@MyCSSClassName.Table_Div">
             <table mycssclass="@MyCSSClassName.Table_Table">
@@ -29,6 +87,9 @@
                     <th>
                         Packaging Name
                     </th>
+                    <th>
+                        Over Head Group
+                    </th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="itm in pageddata.Data">
@@ -39,15 +100,21 @@
                         {{itm.BatchSize}} {{itm.SemiProductUnit}}
                     </td>
                     <td>
-                        {{itm.PrimaryProduct}}
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_ID_PrimaryName}}
                     </td>
                     <td>
-                        {{itm.SecondaryProduct}}
+                        {{itm.FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName}}
                     </td>
                     <td>
                         {{itm.PackagingName}}
                     </td>
                     <td>
+                        {{itm.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_IDName}}
+                    </td>
+                    <td>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>
+                        </div>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                             <button ng-click="DivHideShow('CompositionCostingDetailRawCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingDetailRawCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Raw Detail">Raw <span class="fa fa-leaf"></span></button>|
                             <button ng-click="DivHideShow('CompositionCostingDetailPackagingCtlr',itm,'CompositionCostingMasterCtlr','CompositionCostingDetailPackagingCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Packaging Detail"> Packaging <span class="fa fa-cubes"></span></button>
@@ -58,7 +125,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
@@ -70,11 +137,9 @@
                 </tr>
             </table>
         </div>
-
         @*-----------------------------------this is search view-----------------------------*@
-        @await Html.PartialAsync("_Filter", "CompositionCostingMasterCtlr")        
+        @await Html.PartialAsync("_Filter", "CompositionCostingMasterCtlr")
     </div>
-
     <div ng-controller="CompositionCostingIndirectExpenseCtlr">
         <div id="CompositionCostingIndirectExpenseCtlr" style="display: none;">
             @await Html.PartialAsync("CompositionCostingIndirectExpense")

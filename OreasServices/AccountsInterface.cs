@@ -18,6 +18,7 @@ namespace OreasServices
         Task<object> GetCashTransactionModeListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetClosingTypeListAsync(string FilterByText = null, string FilterValueByText = null);
         Task<object> GetCostingIndirectExpenseListAsync(string FilterByText = null, string FilterValueByText = null);
+        Task<object> GetCostingOverHeadFactorsListAsync(string FilterByText = null, string FilterValueByText = null);
     }
     public interface ICurrencyAndCountry
     {
@@ -62,12 +63,17 @@ namespace OreasServices
         Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
         #endregion
     }
-    public interface ICompositionCostingFactors
+    public interface ICompositionCostingOverHeadFactors
     {
-        Task<object> Get(int id);
-        object GetWCL();
-        Task<PagedData<object>> Load(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
-        Task<string> Post(tbl_Ac_CompositionCostingFactors tbl_Ac_CompositionCostingFactors, string operation = "", string userName = "");
+        Task<object> GetCompositionCostingOverHeadFactorsDetail(int id);
+        Task<object> GetCompositionCostingOverHeadFactorsMaster(int id);
+        object GetWCLCompositionCostingOverHeadFactorsDetail();
+        object GetWCLCompositionCostingOverHeadFactorsMaster();
+        Task<PagedData<object>> LoadCompositionCostingOverHeadFactorsDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<PagedData<object>> LoadCompositionCostingOverHeadFactorsMaster(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null, string IsFor = "");
+        Task<string> PostCompositionCostingOverHeadFactorsDetail(tbl_Ac_CompositionCostingOverHeadFactorsDetail tbl_Ac_CompositionCostingOverHeadFactorsDetail, string operation = "", string userName = "");
+        Task<string> PostCompositionCostingOverHeadFactorsMaster(tbl_Ac_CompositionCostingOverHeadFactorsMaster tbl_Ac_CompositionCostingOverHeadFactorsMaster, string operation = "", string userName = "");
+        bool ValidExpression(string expression);
     }
     public interface ICostingIndirectExpenseList
     {
@@ -296,6 +302,7 @@ namespace OreasServices
         Task<object> GetCompositionCostingIndirectExpense(int id);
         Task<object> GetCompositionDetailPackaging(int id);
         Task<object> GetCompositionDetailRaw(int id);
+        Task<object> GetCompositionMaster(int id);
         Task<byte[]> GetPDFFileAsync(string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", int GroupID = 0, string userName = "");
         List<ReportCallingModel> GetRLCompositionDetail();
         object GetWCLCompositionCostingIndirectExpense();
@@ -309,6 +316,7 @@ namespace OreasServices
         Task<string> PostCompositionCostingIndirectExpense(tbl_Ac_CompositionCostingIndirectExpense tbl_Ac_CompositionCostingIndirectExpense, string operation = "", string userName = "");
         Task<string> PostCompositionDetailPackaging(tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Items tbl_Pro_CompositionDetail_Coupling_PackagingDetail_Items, string operation = "", string userName = "");
         Task<string> PostCompositionDetailRaw(tbl_Pro_CompositionDetail_RawDetail_Items tbl_Pro_CompositionDetail_RawDetail_Items, string operation = "", string userName = "");
+        Task<string> PostCompositionMaster(tbl_Pro_CompositionDetail_Coupling_PackagingMaster tbl_Pro_CompositionDetail_Coupling_PackagingMaster, string operation = "", string userName = "");
     }
     public interface IBMRCosting
     {

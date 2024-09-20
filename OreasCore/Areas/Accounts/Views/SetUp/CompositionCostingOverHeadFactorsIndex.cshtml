@@ -1,32 +1,32 @@
 ﻿@{
-    ViewBag.Title = "Composition Costing Factors";
+    ViewBag.Title = "Costing OverHead Factors";
 }
 @section Scripts {
-
-    <script src="~/angular.js/Angular-Accounts/SetUp/compositioncostingfactorsindex.0.1.js"></script>
+    <script src="~/angular.js/Angular-Accounts/SetUp/compositioncostingoverheadfactorsindex.200924.js"></script>
 }
-<div ng-controller="CompositionCostingFactorsIndexCtlr" class="container">
-    <div id="CompositionCostingFactorsIndexCtlr">
-        <MyViewName>Composition Costing Factors</MyViewName>
+<div ng-controller="CompositionCostingOverHeadFactorsMasterCtlr" class="container">
+
+    <div id="CompositionCostingOverHeadFactorsMasterCtlr">
+        <MyViewName>Costing OverHead Factors</MyViewName>
         @*-----------------------------------this is entry panel-----------------------------*@
         <MyButton operation="@MyButtonOperation.Add"></MyButton>
         <div ng-hide="ng_entryPanelHide">
             <form name="myform" role="form" ng-submit="PostRow(); myform.$setPristine();" novalidate>
-
                 <MyAntiforgeryToken></MyAntiforgeryToken>
-                @Html.Hidden("tbl_Ac_CompositionCostingFactors.ID", "{{tbl_Ac_CompositionCostingFactors.ID}}")
-
+                @Html.Hidden("tbl_Ac_CompositionCostingFactorsMaster.ID", "{{tbl_Ac_CompositionCostingFactorsMaster.ID}}")
                 <MyFieldSet legendtext="Entry Form">
+
                     <div mycssclass="@MyCSSClassName.RowInForm">
                         <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">FormulaName</span>
-                            <input type="text" id="tbl_Ac_CompositionCostingFactors.FormulaName" name="tbl_Ac_CompositionCostingFactors.FormulaName" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="FormulaName" value="tbl_Ac_CompositionCostingFactors.FormulaName" ng-model="tbl_Ac_CompositionCostingFactors.FormulaName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CompositionCostingFactors.FormulaName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Group Name</span>
+                            <input id="tbl_Ac_CompositionCostingFactorsMaster.GroupName" name="tbl_Ac_CompositionCostingFactorsMaster.GroupName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_Ac_CompositionCostingFactorsMaster.GroupName" ng-model="tbl_Ac_CompositionCostingFactorsMaster.GroupName" ng-disabled="ng_readOnly" minlength="3" maxlength="50" required />
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CompositionCostingFactorsMaster.GroupName" required="true" minlength="3" maxlength="50"></MyValidationSpan>
                         </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup8">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Expression Allowed + - * / () C</span>
-                            <input type="text" id="tbl_Ac_CompositionCostingFactors.FormulaExpression" name="tbl_Ac_CompositionCostingFactors.FormulaExpression" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="(C*0.05)+C" value="tbl_Ac_CompositionCostingFactors.FormulaExpression" ng-model="tbl_Ac_CompositionCostingFactors.FormulaExpression" ng-disabled="ng_readOnly" minlength="2" required />
-                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CompositionCostingFactors.FormulaExpression" required="true" minlength="2"></MyValidationSpan>
+                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
+                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Default</span>
+                            <select id="tbl_Ac_CompositionCostingFactorsMaster.IsDefault" name="tbl_Ac_CompositionCostingFactorsMaster.IsDefault" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Ac_CompositionCostingFactorsMaster.IsDefault" ng-disabled="ng_readOnly" required>
+                            </select>
+                            <MyValidationSpan formname="myform" fieldname="tbl_Ac_CompositionCostingFactorsMaster.IsDefault" required="true"></MyValidationSpan>
                         </div>
                     </div>
 
@@ -40,50 +40,52 @@
                         <div mycssclass="@MyCSSClassName.RowInForm">
                             <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                 <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created by</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactors.CreatedBy}}" ng-model="tbl_Ac_CompositionCostingFactors.CreatedBy" disabled />
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactorsMaster.CreatedBy}}" ng-model="tbl_Ac_CompositionCostingFactorsMaster.CreatedBy" disabled />
                             </div>
                             <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                 <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Created Date</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactors.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CompositionCostingFactors.CreatedDate" disabled />
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactorsMaster.CreatedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CompositionCostingFactorsMaster.CreatedDate" disabled />
                             </div>
                             <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                 <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified by</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactors.ModifiedBy}}" ng-model="tbl_Ac_CompositionCostingFactors.ModifiedBy" disabled />
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactorsMaster.ModifiedBy}}" ng-model="tbl_Ac_CompositionCostingFactorsMaster.ModifiedBy" disabled />
                             </div>
                             <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                 <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Modified Date</span>
-                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactors.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CompositionCostingFactors.ModifiedDate" disabled />
+                                <input type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="{{tbl_Ac_CompositionCostingFactorsMaster.ModifiedDate | date :  'dd-MMM-yyyy HH:mm:ss a'}}" ng-model="tbl_Ac_CompositionCostingFactorsMaster.ModifiedDate" disabled />
                             </div>
                         </div>
                     </MyFieldSet>
                 </MyFieldSet>
             </form>
         </div>
-
         @*-----------------------------------this is data list view-----------------------------*@
         <div mycssclass="@MyCSSClassName.Table_Div">
             <table mycssclass="@MyCSSClassName.Table_Table">
                 <tr>
                     <th>
-                        Formula Name
+                        Group Name
                     </th>
                     <th>
-                        Formula Expression
+                        Default
                     </th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="itm in pageddata.Data">
                     <td>
-                        {{itm.FormulaName}}
+                        {{itm.GroupName}}
                     </td>
                     <td>
-                        {{itm.FormulaExpression}}
+                        {{itm.IsDefault ? 'Yes' : 'No' }}
                     </td>
                     <td>
                         <div mycssclass="@MyCSSClassName.Table_OptColDiv">
                             <MyButton operation="@MyButtonOperation.View" ng-click="GetRow(itm.ID,'View')"></MyButton>|
                             <MyButton operation="@MyButtonOperation.Edit" ng-click="GetRow(itm.ID,'Edit')"></MyButton>|
                             <MyButton operation="@MyButtonOperation.Delete" ng-click="GetRow(itm.ID,'Delete')"></MyButton>
+                        </div>
+                        <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                            <button ng-click="DivHideShow('CompositionCostingOverHeadFactorsDetailCtlr',itm,'CompositionCostingOverHeadFactorsMasterCtlr','CompositionCostingOverHeadFactorsDetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Formula">Formula(s) <span class="fa fa-calculator"></span></button>
                         </div>
                     </td>
                 </tr>
@@ -100,15 +102,19 @@
                 </tr>
             </table>
         </div>
+
         @*-----------------------------------this is search view-----------------------------*@
-        @await Html.PartialAsync("_Filter", "CompositionCostingFactorsIndexCtlr")
-        <br />
-        <input type="button" class="btn btn-outline-primary btn-sm" ng-init="cautionhide=true" value="Cautions" ng-click="cautionhide ? cautionhide=false: cautionhide=true;" />
-        <div style="font-size:x-small;" ng-hide="cautionhide">
-            <p>1. C stands for Cost per unit</p>
-            <p>2. Only Numbers (e.g 5000) stands for value amount which is added as factor in cost</p>
+        @await Html.PartialAsync("_Filter", "CompositionCostingOverHeadFactorsMasterCtlr")
+    </div>
+
+
+    <div ng-controller="CompositionCostingOverHeadFactorsDetailCtlr">
+        <div id="CompositionCostingOverHeadFactorsDetailCtlr" style="display: none;">
+            @await Html.PartialAsync("CompositionCostingOverHeadFactorsDetail")
         </div>
     </div>
+
+        
 </div>
 
 

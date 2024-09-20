@@ -264,7 +264,8 @@ namespace OreasServices
         public DbSet<tbl_Ac_FiscalYear_ClosingDetail> tbl_Ac_FiscalYear_ClosingDetails { get; set; }
         public DbSet<tbl_Ac_ChartOfAccounts_Type> tbl_Ac_ChartOfAccounts_Types { get; set; }
         public DbSet<tbl_Ac_ChartOfAccounts> tbl_Ac_ChartOfAccountss { get; set; }
-        public DbSet<tbl_Ac_CompositionCostingFactors> tbl_Ac_CompositionCostingFactorss { get; set; }
+        public DbSet<tbl_Ac_CompositionCostingOverHeadFactorsMaster> tbl_Ac_CompositionCostingOverHeadFactorsMasters { get; set; }
+        public DbSet<tbl_Ac_CompositionCostingOverHeadFactorsDetail> tbl_Ac_CompositionCostingOverHeadFactorsDetails { get; set; }
         public DbSet<tbl_Ac_CostingIndirectExpenseList> tbl_Ac_CostingIndirectExpenseLists { get; set; }
         public DbSet<tbl_Ac_CompositionCostingIndirectExpense> tbl_Ac_CompositionCostingIndirectExpenses { get; set; }
         public DbSet<tbl_Ac_CustomerApprovedRateList> tbl_Ac_CustomerApprovedRateLists { get; set; }

@@ -899,6 +899,7 @@ namespace OreasServices
                           FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
                           o.PackagingName,
                           o.IsDiscontinue,
+                          o.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -956,6 +957,7 @@ namespace OreasServices
                           FK_tbl_Inv_ProductRegistrationDetail_ID_SecondaryName = o.FK_tbl_Inv_ProductRegistrationDetail_ID_Secondary.HasValue ? " [" + o.tbl_Inv_ProductRegistrationDetail_Secondary.tbl_Inv_MeasurementUnit.MeasurementUnit + "] x " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Split_Into.ToString() + " " + o.tbl_Inv_ProductRegistrationDetail_Secondary.Description : "",
                           o.PackagingName,
                           o.IsDiscontinue,
+                          o.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -971,6 +973,15 @@ namespace OreasServices
         {
             if (operation == "Save New")
             {
+                var OverHead = await db.tbl_Ac_CompositionCostingOverHeadFactorsMasters.Where(w => w.IsDefault == true).FirstOrDefaultAsync();
+                
+                if (OverHead != null)
+                {
+                    tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID = OverHead.ID;
+                }
+                else
+                    tbl_Pro_CompositionDetail_Coupling_PackagingMaster.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID = null;
+
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster.CreatedBy = userName;
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster.CreatedDate = DateTime.Now;
                 db.tbl_Pro_CompositionDetail_Coupling_PackagingMasters.Add(tbl_Pro_CompositionDetail_Coupling_PackagingMaster);
@@ -978,9 +989,11 @@ namespace OreasServices
             }
             else if (operation == "Save Update")
             {
+
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedBy = userName;
                 tbl_Pro_CompositionDetail_Coupling_PackagingMaster.ModifiedDate = DateTime.Now;
                 db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster).State = EntityState.Modified;
+                db.Entry(tbl_Pro_CompositionDetail_Coupling_PackagingMaster).Property(x => x.FK_tbl_Ac_CompositionCostingOverHeadFactorsMaster_ID).IsModified = false;
                 await db.SaveChangesAsync();
 
             }
