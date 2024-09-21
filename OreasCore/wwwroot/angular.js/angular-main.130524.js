@@ -1026,7 +1026,7 @@ var http_interceptor_loading = function ($q) {
         },
         responseError: function (response) {
             //Check different response status and do the necessary actions 400, 401, 403,401, or 500 eror [response error started...] 
-
+            alert(response.data);
             console.log('Interceptor response error', response);
             if (typeof response.headers !== undefined) {
                 //exceptionAjax(response);

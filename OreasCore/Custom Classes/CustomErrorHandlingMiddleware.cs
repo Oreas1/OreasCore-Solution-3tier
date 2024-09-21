@@ -21,8 +21,17 @@ namespace OreasCore
             }
             catch (SqlException sqlE)
             {
-                // await this.result(context, "There is some thing went wrong in DB, Please contact Technical Team to troubleshoot");
-                await this.result(context, sqlE.InnerException != null ? sqlE.InnerException.Message : sqlE.Message ?? "There is some technical difficulty found, Please Contact Technical Team to troubleshoot");
+                if (sqlE.Number == 4060)
+                {
+                    await this.result(context, "We are currently experiencing some technical difficulties accessing our database.\nPlease try again later or contact support if the issue persists.");
+                    return;
+                }
+                else
+                {
+                    await this.result(context, "There is some thing went wrong in DB, Please contact Technical Team to troubleshoot");
+                    return;
+                }
+                
             }
             catch (Exception e)
             {
@@ -42,13 +51,16 @@ namespace OreasCore
             if (!isAjaxCall)
             {
 
-                //await context.Response.WriteAsync("sss");
+                ExceptioMessage = ExceptioMessage.Replace("\n", "<br/>"); /// ager line change hai tou ose html main line break karain
+                ExceptioMessage = Uri.EscapeDataString(ExceptioMessage); /// phir wo url k through hoga error page k so ose uri format main kar dia
 
+                context.Response.ContentType = "text/html";
                 context.Response.Redirect("/Home/Error?Msg=" + ExceptioMessage);
 
             }
             else
             {
+                //context.Response.ContentType = "application/json";
                 await context.Response.WriteAsync(ExceptioMessage);
             }
         }

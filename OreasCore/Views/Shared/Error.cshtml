@@ -7,7 +7,7 @@
 <h2 class="text-danger">A Problem occurred while processing your request.</h2>
 
 <h3 class="text-danger">Problem Message:</h3>
-<h4 class="text-danger">@Context.Request.Query["msg"].ToString() </h4>
+<h4 class="text-danger">@Html.Raw(Context.Request.Query["msg"].ToString())</h4>
 
 @*@if (Model.ShowRequestId)
 {
