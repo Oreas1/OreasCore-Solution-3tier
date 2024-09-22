@@ -15,9 +15,8 @@
         $scope.IsFor = '';
         $scope.ActivatedSidePanel = null;
         $scope.SidePenalLoad = function (IsFor, ActivateSidePanel) {
-  
             if ($scope.ActivatedSidePanel != null)
-                $("#" + $scope.ActivatedSidePanel).hide();
+                $("#" + $scope.ActivatedSidePanel).hide();  
 
             $scope.ActivatedSidePanel = ActivateSidePanel;
             $scope.IsFor = IsFor;            
@@ -28,7 +27,7 @@
         $scope.ClosePanel = function (ClosingSidePanel)
         {
             $("#" + ClosingSidePanel).hide();
-        };
+        };    
 
         init_ViewSetup($scope, $http, '/DashBoard/GetInitializedManagementDashBoard');
         $scope.init_ViewSetup_Response = function (data) {
@@ -38,6 +37,12 @@
 
                 $scope.Init_OrderNoteChart($scope.data.OrderNote);
                 $scope.Init_PayableReceivableChart($scope.data.INV.Payables_Supplier, $scope.data.INV.Receivables_Customer);
+            }
+            if (data.find(o => o.Controller === 'ManagementPOCtlr') != undefined) {
+                $scope.$broadcast('init_ManagementPOCtlr', data.find(o => o.Controller === 'ManagementPOCtlr'));
+            }
+            if (data.find(o => o.Controller === 'ManagementPODetailCtlr') != undefined) {
+                $scope.$broadcast('init_ManagementPODetailCtlr', data.find(o => o.Controller === 'ManagementPODetailCtlr'));
             }
             if (data.find(o => o.Controller === 'ManagementBankDocCtlr') != undefined) {
                 $scope.$broadcast('init_ManagementBankDocCtlr', data.find(o => o.Controller === 'ManagementBankDocCtlr'));
@@ -147,6 +152,85 @@
 
         // Check idle time every second
         $interval($scope.checkIdleTime, 1000);
+
+    })
+    .controller("ManagementPOCtlr", function ($scope, $http) {
+
+        $scope.$on('ManagementPOCtlr', function (e, itm) {
+            $scope.FilterByText = null;
+            $scope.FilterValueByText = '';
+            $scope.pageNavigation('first');
+        });
+
+        $scope.$on('init_ManagementPOCtlr', function (e, itm) {
+            init_Filter($scope, itm.WildCard, null, null, null);
+        });
+
+        init_Operations($scope, $http,
+            '/DashBoard/PurchaseOrderLoad', //--v_Load
+            '', // getrow
+            '' // PostRow
+        );
+
+        $scope.pageNavigatorParam = function () { return { IsFor: $scope.IsFor }; };
+
+        $scope.GetpageNavigationResponse = function (data) {
+            $scope.pageddata = data.pageddata;
+            $scope.data.Pen.POPendingLocal = data.pageddata.otherdata.POPendingSupervisedLocal;
+            $scope.data.Pen.POPendingImport = data.pageddata.otherdata.POPendingSupervisedImport;
+        };
+
+        $scope.Supervised = function (id) {
+
+            var successcallback = function (response) {
+                if (response.data === 'OK') {
+                    $scope.pageNavigation('Load');
+                }
+                else {
+                    alert(response.data);
+                }
+            };
+            var errorcallback = function (error) {
+                alert('Some thing went Wrong, Contact Administrator');
+                console.log('Post error', error);
+            };
+
+            $http({
+                method: "POST", url: '/DashBoard/PurchaseOrderSupervised', async: true, params: { ID: id }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
+            }).then(successcallback, errorcallback);
+        };
+
+    })
+    .controller("ManagementPODetailCtlr", function ($scope, $http) {
+
+        $scope.$on('ManagementPODetailCtlr', function (e, itm) {
+            //--------set activatedsidepanel as chil becasue jab side panel se user dosra form open karay tou ye hide hosaky SidePenalLoad()
+            $scope.$parent.$parent.ActivatedSidePanel = 'ManagementPODetailCtlr';
+
+            $scope.MasterObject = itm;
+            $scope.FilterByText = null;
+            $scope.FilterValueByText = '';
+            $scope.pageNavigation('first');  
+            
+        });
+
+        $scope.$on('init_ManagementPODetailCtlr', function (e, itm) {
+            init_Filter($scope, itm.WildCard, null, null, null);
+
+        });
+
+        init_Operations($scope, $http,
+            '/DashBoard/PurchaseOrderDetailLoad', //--v_Load
+            '', // getrow
+            '' // PostRow
+        );
+
+        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
+
+        $scope.GetpageNavigationResponse = function (data) {
+            $scope.pageddata = data.pageddata;
+
+        };
 
     })
     .controller("ManagementBankDocCtlr", function ($scope, $http) {
@@ -392,6 +476,7 @@
     .controller("ManagementPNDetailCtlr", function ($scope, $http) {
 
         $scope.$on('ManagementPNDetailCtlr', function (e, itm) {   
+            $scope.$parent.$parent.ActivatedSidePanel = 'ManagementPNDetailCtlr';
             $scope.MasterObject = itm;
             $scope.FilterByText = null;
             $scope.FilterValueByText = '';

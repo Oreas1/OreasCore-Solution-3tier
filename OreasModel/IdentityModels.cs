@@ -80,6 +80,12 @@ namespace OreasModel
         public bool AcSalesReturnNoteInvoiceAutoSupervised { get; set; }
 
         [Required]
+        public bool PurchaseOrderLocalAutoSupervised { get; set; }
+
+        [Required]
+        public bool PurchaseOrderImportAutoSupervised { get; set; }
+
+        [Required]
         public string LetterHead_PaperSize { get; set; }
 
         [Required]

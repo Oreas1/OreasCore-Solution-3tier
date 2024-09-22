@@ -225,7 +225,9 @@
                     {{itm.ReceivedQty}}
                 </td>
                 <td>
-                    {{itm.ClosedTrue_OpenFalse? 'Closed' : 'Open'}}
+                    <span>PO Status <i ng-class="itm.ClosedTrue_OpenFalse === true ? 'fa fa-lock' : 'fa fa-lock-open'" ng-style="{'color': itm.ClosedTrue_OpenFalse === true ? 'Green' : 'Red', 'font-size': 'large'}"></i> </span>
+                    <br />
+                    <span>Supervised  <i class="fa fa-lightbulb" ng-style="{'color': itm.IsSupervised === true ? 'Green' : 'Red', 'font-size': 'large'}"></i> </span>
                 </td>
                 <td>
                     {{itm.Performance_Time? 'Yes' : 'No'}}-{{itm.Performance_Quantity? 'Yes' : 'No'}}-{{itm.Performance_Quality? 'Yes' : 'No'}}

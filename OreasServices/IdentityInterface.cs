@@ -129,6 +129,19 @@ namespace OreasServices
     {
         Task<object> GetDashBoardData(string userName = "");
 
+        #region PurchaseOrder
+        object GetWCLPurchaseOrder();
+        Task<PagedData<object>> LoadPurchaseOrder(int CurrentPage = 1, string IsFor = "", string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+        Task<string> SupervisedPurchaseOrder(int ID, string userName = "");
+
+        #region PurchaseOrderDetail
+        object GetWCLPurchaseOrderDetail();
+        Task<PagedData<object>> LoadPurchaseOrderDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null);
+
+        #endregion
+
+        #endregion
+
         #region Bank Doc
         object GetWCLBankDocument();
         object GetWCLDRBankDocument();
@@ -169,7 +182,6 @@ namespace OreasServices
         #endregion
 
         #endregion
-
 
         #region PurchaseReturnNote
         object GetWCLPurchaseReturnNote();

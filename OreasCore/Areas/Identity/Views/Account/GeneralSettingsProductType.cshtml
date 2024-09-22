@@ -23,28 +23,38 @@
                     </div>
                 </div>
                 <div mycssclass="@MyCSSClassName.RowInForm">
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Auto Insert PO Rate On Purchase Invoice</span>
                         <select id="tbl_Inv_ProductType.PurchaseNoteDetailRateAutoInsertFromPO" name="tbl_Inv_ProductType.PurchaseNoteDetailRateAutoInsertFromPO" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Inv_ProductType.PurchaseNoteDetailRateAutoInsertFromPO" ng-disabled="ng_readOnly" required>
                             <option value="">Select Action</option>
                         </select>
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.PurchaseNoteDetailRateAutoInsertFromPO" required="true"></MyValidationSpan>
                     </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Allow Purchase With Out PO</span>
                         <select id="tbl_Inv_ProductType.PurchaseNoteDetailWithOutPOAllowed" name="tbl_Inv_ProductType.PurchaseNoteDetailWithOutPOAllowed" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Inv_ProductType.PurchaseNoteDetailWithOutPOAllowed" ng-disabled="ng_readOnly" required>
                             <option value="">Select Action</option>
                         </select>
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.PurchaseNoteDetailWithOutPOAllowed" required="true"></MyValidationSpan>
                     </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">NonSupervised PO Allowed In Purchase Note Detail</span>
+                        <select id="tbl_Inv_ProductType.NonSupervisedPOAllowedInPurchaseNoteDetail" name="tbl_Inv_ProductType.NonSupervisedPOAllowedInPurchaseNoteDetail" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Inv_ProductType.NonSupervisedPOAllowedInPurchaseNoteDetail" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.NonSupervisedPOAllowedInPurchaseNoteDetail" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Auto Insert ON Rate On Sales Invoice</span>
                         <select id="tbl_Inv_ProductType.SalesNoteDetailRateAutoInsertFromON" name="tbl_Inv_ProductType.SalesNoteDetailRateAutoInsertFromON" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Inv_ProductType.SalesNoteDetailRateAutoInsertFromON" ng-disabled="ng_readOnly" required>
                             <option value="">Select Action</option>
                         </select>
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductType.SalesNoteDetailRateAutoInsertFromON" required="true"></MyValidationSpan>
                     </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Allow Sales With Out ON</span>
                         <select id="tbl_Inv_ProductType.SalesNoteDetailWithOutONAllowed" name="tbl_Inv_ProductType.SalesNoteDetailWithOutONAllowed" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="tbl_Inv_ProductType.SalesNoteDetailWithOutONAllowed" ng-disabled="ng_readOnly" required>
                             <option value="">Select Action</option>
@@ -112,6 +122,8 @@
                     Auto PO Rate: {{itm.PurchaseNoteDetailRateAutoInsertFromPO ? 'Yes' : 'No'}}
                     <br />
                     Purchase With Out PO: {{itm.PurchaseNoteDetailWithOutPOAllowed ? 'Yes' : 'No'}}
+                    <br />
+                    NonSupervised PO In Purchase: {{itm.NonSupervisedPOAllowedInPurchaseNoteDetail ? 'Yes' : 'No'}}
                 </td>
                 <td>
                     Auto ON Rate: {{itm.SalesNoteDetailRateAutoInsertFromON ? 'Yes' : 'No'}}

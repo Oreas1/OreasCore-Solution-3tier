@@ -3,7 +3,7 @@
 }
 @section Scripts {
 
-    <script src="~/angular.js/dashboardmanagement.060824.js"></script>
+    <script src="~/angular.js/dashboardmanagement.220924.js"></script>
     <script src="~/lib/Chart.js/chart.umd.js"></script>
 
 }
@@ -69,6 +69,20 @@
     <div class="row gy-2 mt-2">
         <div class="col-sm-3 col-md-3 col-lg-2">
             <div class="list-group" style="width:100%">
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Local','ManagementPOCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-shopping-cart"></i> PO Local</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.POPendingLocal}}</span>
+                </a>
+                <a class="list-group-item d-flex justify-content-between align-items-start" href="#Supervised" ng-click="SidePenalLoad('Import','ManagementPOCtlr');" style="background-color:darkgray;">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold"><i class="fa fa-shopping-cart"></i> PO Import</div>
+                        Supervised
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{data.Pen.POPendingImport}}</span>
+                </a>
                 <a class="list-group-item d-flex justify-content-between align-items-start" href="/Inventory/Orders/PurchaseRequestBidsIndex" target="_self" style="background-color:lightgray;">
                     <div class="ms-2 me-auto">
                         <div class="fw-bold"><i class="fa fa-shopping-cart"></i> Purchase Bits</div>
@@ -179,6 +193,16 @@
         </div>
         <div class="col-sm-9 col-md-9 col-lg-10">
             <div id="Supervised" class="row">
+                <div ng-controller="ManagementPOCtlr">
+                    <div id="ManagementPOCtlr" style="display: none;">
+                        @await Html.PartialAsync("ManagementPO")
+                    </div>
+                    <div ng-controller="ManagementPODetailCtlr">
+                        <div id="ManagementPODetailCtlr" style="display: none;">
+                            @await Html.PartialAsync("ManagementPODetail")
+                        </div>
+                    </div>
+                </div>
                 <div ng-controller="ManagementBankDocCtlr">
                     <div id="ManagementBankDocCtlr" style="display: none;">
                         @await Html.PartialAsync("ManagementBankDoc")

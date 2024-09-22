@@ -2,7 +2,7 @@
     ViewBag.Title = "General Settings";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-Identity/generalsettings.0.1.js"></script>
+    <script src="~/angular.js/Angular-Identity/generalsettings.220924.js"></script>
 }
 <div ng-controller="GeneralSettingsIndexCtlr" class="container">
     <div id="GeneralSettingsIndexCtlr">
@@ -12,113 +12,130 @@
                 <MyAntiforgeryToken></MyAntiforgeryToken>
                 @Html.Hidden("AspNetOreasGeneralSettings.ID", "{{AspNetOreasGeneralSettings.ID}}")
 
-                <MyFieldSet legendtext="General Settings">
+            <MyFieldSet legendtext="General Settings">
 
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
-                            <button type="button" class="btn btn-primary" ng-click="DivHideShow('GeneralSettingsProductTypeCtlr',AspNetOreasGeneralSettings,'GeneralSettingsIndexCtlr','GeneralSettingsProductTypeCtlr', null);" title="Goto Purchase Sales Setting">Purchase & Sales Setting Product Type Wise <span class="fa fa-info-circle"></span></button>
-                        </div>                        
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                        <button type="button" class="btn btn-primary" ng-click="DivHideShow('GeneralSettingsProductTypeCtlr',AspNetOreasGeneralSettings,'GeneralSettingsIndexCtlr','GeneralSettingsProductTypeCtlr', null);" title="Goto Purchase Sales Setting">Purchase & Sales Setting Product Type Wise <span class="fa fa-info-circle"></span></button>
                     </div>
+                </div>
 
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Auto Rate OrderNote From Customer Rate List</span>
-                            <select id="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" name="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Auto Rate SalesNote From Customer Rate List</span>
-                            <select id="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" name="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" required="true"></MyValidationSpan>
-                        </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Auto Rate OrderNote From Customer Rate List</span>
+                        <select id="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" name="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.OrderNoteRateAutoFromCRL" required="true"></MyValidationSpan>
                     </div>
-
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Bank Voucher Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" name="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Cash Voucher Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" name="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Journal Voucher Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" name="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Auto Rate SalesNote From Customer Rate List</span>
+                        <select id="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" name="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.SalesNoteDetailRateAutoInsertFromCRL" required="true"></MyValidationSpan>
                     </div>
+                </div>
 
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Purchase Invoice Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Purchase Return Invoice Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sales Invoice Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sales Return Invoice Auto Supervised</span>
-                            <select id="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Action</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
-                        </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Bank Voucher Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" name="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcBankVoucherAutoSupervised" required="true"></MyValidationSpan>
                     </div>
-
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Letter Head Paper Size</span>
-                            <select id="AspNetOreasGeneralSettings.LetterHead_PaperSize" name="AspNetOreasGeneralSettings.LetterHead_PaperSize" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Letter', v: 'Letter' }, { n: 'A4', v: 'A4' }]" data-ng-model="AspNetOreasGeneralSettings.LetterHead_PaperSize" ng-disabled="ng_readOnly" required>
-                                <option value="">Select Paper Size</option>
-                            </select>
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.LetterHead_PaperSize" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Letter Head Header Height (30-400)</span>
-                            <input id="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" name="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" ng-disabled="ng_readOnly" min="30" max="400" required />
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" required="true"></MyValidationSpan>
-                        </div>
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                            <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Letter Head Header Footer (30-400)</span>
-                            <input id="AspNetOreasGeneralSettings.LetterHead_FooterHeight" name="AspNetOreasGeneralSettings.LetterHead_FooterHeight" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="AspNetOreasGeneralSettings.LetterHead_FooterHeight" ng-disabled="ng_readOnly" min="30" max="400" required />
-                            <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.LetterHead_FooterHeight" required="true"></MyValidationSpan>
-                        </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Cash Voucher Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" name="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcCashVoucherAutoSupervised" required="true"></MyValidationSpan>
                     </div>
-
-                    <div mycssclass="@MyCSSClassName.RowInForm">
-                        <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
-                            <input type="submit" value="Save Update" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
-                        </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Ac Journal Voucher Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" name="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcJournalVoucherAutoSupervised" required="true"></MyValidationSpan>
                     </div>
+                </div>
 
-                </MyFieldSet>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Purchase Invoice Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcPurchaseNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Purchase Return Invoice Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcPurchaseReturnNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sales Invoice Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcSalesNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Sales Return Invoice Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" name="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.AcSalesReturnNoteInvoiceAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">PO Local Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.PurchaseOrderLocalAutoSupervised" name="AspNetOreasGeneralSettings.PurchaseOrderLocalAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.PurchaseOrderLocalAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.PurchaseOrderLocalAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">PO Import Auto Supervised</span>
+                        <select id="AspNetOreasGeneralSettings.PurchaseOrderImportAutoSupervised" name="AspNetOreasGeneralSettings.PurchaseOrderImportAutoSupervised" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.PurchaseOrderImportAutoSupervised" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.PurchaseOrderImportAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Letter Head Paper Size</span>
+                        <select id="AspNetOreasGeneralSettings.LetterHead_PaperSize" name="AspNetOreasGeneralSettings.LetterHead_PaperSize" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Letter', v: 'Letter' }, { n: 'A4', v: 'A4' }]" data-ng-model="AspNetOreasGeneralSettings.LetterHead_PaperSize" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Paper Size</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.LetterHead_PaperSize" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Letter Head Header Height (30-400)</span>
+                        <input id="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" name="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" ng-disabled="ng_readOnly" min="30" max="400" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.LetterHead_HeaderHeight" required="true"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Letter Head Header Footer (30-400)</span>
+                        <input id="AspNetOreasGeneralSettings.LetterHead_FooterHeight" name="AspNetOreasGeneralSettings.LetterHead_FooterHeight" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="AspNetOreasGeneralSettings.LetterHead_FooterHeight" ng-disabled="ng_readOnly" min="30" max="400" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.LetterHead_FooterHeight" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit">
+                        <input type="submit" value="Save Update" mycssclass="@MyCSSClassName.RowInForm_FormGroupSubmit_btn" ng-disabled="myform.$invalid || ng_DisabledBtnAll" />
+                    </div>
+                </div>
+
+            </MyFieldSet>
 
             </form>
 

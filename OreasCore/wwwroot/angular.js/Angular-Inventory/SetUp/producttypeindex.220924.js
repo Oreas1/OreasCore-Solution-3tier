@@ -39,7 +39,7 @@
 
         $scope.tbl_Inv_ProductType = {
             'ID': 0, 'ProductType': '', 'Prefix': '', 'FK_tbl_Qc_ActionType_ID_PurchaseNote': null, 'FK_tbl_Qc_ActionType_ID_PurchaseNoteName': '',
-            'PurchaseNoteDetailRateAutoInsertFromPO': false, 'PurchaseNoteDetailWithOutPOAllowed': true,
+            'PurchaseNoteDetailRateAutoInsertFromPO': false, 'PurchaseNoteDetailWithOutPOAllowed': true, 'NonSupervisedPOAllowedInPurchaseNoteDetail': true,
             'SalesNoteDetailRateAutoInsertFromON': false, 'SalesNoteDetailWithOutONAllowed': true,
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfCategories': 0
         };
@@ -51,7 +51,7 @@
             //rededine to orignal values
             $scope.tbl_Inv_ProductType = {
                 'ID': 0, 'ProductType': '', 'Prefix': '', 'FK_tbl_Qc_ActionType_ID_PurchaseNote': null, 'FK_tbl_Qc_ActionType_ID_PurchaseNoteName': '',
-                'PurchaseNoteDetailRateAutoInsertFromPO': false, 'PurchaseNoteDetailWithOutPOAllowed': true,
+                'PurchaseNoteDetailRateAutoInsertFromPO': false, 'PurchaseNoteDetailWithOutPOAllowed': true, 'NonSupervisedPOAllowedInPurchaseNoteDetail': true,
                 'SalesNoteDetailRateAutoInsertFromON': false, 'SalesNoteDetailWithOutONAllowed': true,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfCategories': 0
             };

@@ -156,6 +156,24 @@ namespace OreasCore.Controllers
                     },
                     new Init_ViewSetupStructure()
                     {
+                        Controller = "ManagementPOCtlr",
+                        WildCard = db2.GetWCLPurchaseOrder(),
+                        WildCardDateRange = null,
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
+                        Controller = "ManagementPODetailCtlr",
+                        WildCard = db2.GetWCLPurchaseOrderDetail(),
+                        WildCardDateRange = null,
+                        Reports = null,
+                        Privilege = null,
+                        Otherdata = null
+                    },
+                    new Init_ViewSetupStructure()
+                    {
                         Controller = "ManagementBankDocCtlr",
                         WildCard = db2.GetWCLBankDocument(),
                         WildCardDateRange = db2.GetWCLDRBankDocument(),
@@ -261,9 +279,61 @@ namespace OreasCore.Controllers
                 return RedirectToAction("Home", "AccessDenied");
             }
         }
-        
+
+        #region PurchaseOrder  
+
+        [AjaxOnly]
+        [MyAuthorization]
+        public async Task<IActionResult> PurchaseOrderLoad([FromServices] IManagementDashBoard db,
+        int CurrentPage = 1, string IsFor = "",
+        string FilterByText = null, string FilterValueByText = null,
+        string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+        string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+        string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadPurchaseOrder(CurrentPage, IsFor, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+
+        [AjaxOnly]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [MyAuthorization]
+        public async Task<string> PurchaseOrderSupervised([FromServices] IManagementDashBoard db, int ID = 0)
+        {
+            return await db.SupervisedPurchaseOrder(ID, User.Identity.Name);
+        }
+
+        #endregion
+
+        #region PurchaseOrderDetail  
+
+        [AjaxOnly]
+        [MyAuthorization]
+        public async Task<IActionResult> PurchaseOrderDetailLoad([FromServices] IManagementDashBoard db,
+        int CurrentPage = 1, int MasterID = 0,
+        string FilterByText = null, string FilterValueByText = null,
+        string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0,
+        string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null,
+        string FilterByLoad = null)
+        {
+            PagedData<object> pageddata =
+                await db.LoadPurchaseOrderDetail(CurrentPage, MasterID, FilterByText, FilterValueByText,
+                FilterByNumberRange, FilterValueByNumberRangeFrom, FilterValueByNumberRangeTill,
+                FilterByDateRange, FilterValueByDateRangeFrom, FilterValueByDateRangeTill,
+                FilterByLoad);
+
+            return Json(new { pageddata }, new Newtonsoft.Json.JsonSerializerSettings());
+        }
+        #endregion
+
         #region Bank Doc   
-        
+
         [AjaxOnly]
         [MyAuthorization]
         public async Task<IActionResult> BankDocumentLoad([FromServices] IManagementDashBoard db,
@@ -550,6 +620,14 @@ namespace OreasCore.Controllers
 
         #endregion
 
+        #region Report
+
+        [MyAuthorization]
+        public async Task<IActionResult> GetPurchaseOrderReport([FromServices] IPurchaseOrder db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
+        {
+            return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), rn.ToLower().Contains("excel") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf");
+        }
+
         [MyAuthorization]
         public async Task<IActionResult> GetChartOfAccountsReport([FromServices] IChartOfAccounts db, string rn = null, int id = 0, int SerialNoFrom = 0, int SerialNoTill = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string OrderBy = "", int GroupID = 0)
         {
@@ -604,7 +682,7 @@ namespace OreasCore.Controllers
             return File(await db.GetPDFFileAsync(rn, id, SerialNoFrom, SerialNoTill, datefrom, datetill, SeekBy, GroupBy, OrderBy, "", GroupID, User.Identity.Name), rn.ToLower().Contains("excel") ? "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : "application/pdf");
         }
 
-
+        #endregion
 
         #endregion
 

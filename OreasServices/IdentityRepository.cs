@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 
 namespace OreasServices
 {
-
     public class IdentityListRepository : IIdentityList
     {
         private readonly OreasDbContext db;
@@ -1305,6 +1304,8 @@ namespace OreasServices
                           o.AcPurchaseReturnNoteInvoiceAutoSupervised,
                           o.AcSalesNoteInvoiceAutoSupervised,
                           o.AcSalesReturnNoteInvoiceAutoSupervised,
+                          o.PurchaseOrderLocalAutoSupervised,
+                          o.PurchaseOrderImportAutoSupervised,
                           o.LetterHead_PaperSize,
                           o.LetterHead_HeaderHeight,
                           o.LetterHead_FooterHeight
@@ -1354,6 +1355,7 @@ namespace OreasServices
                           o.PurchaseNoteDetailWithOutPOAllowed,
                           o.SalesNoteDetailRateAutoInsertFromON,
                           o.SalesNoteDetailWithOutONAllowed,
+                          o.NonSupervisedPOAllowedInPurchaseNoteDetail,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -1403,6 +1405,7 @@ namespace OreasServices
                           FK_tbl_Qc_ActionType_ID_PurchaseNoteName = o.tbl_Qc_ActionType.ActionName,
                           o.PurchaseNoteDetailRateAutoInsertFromPO,
                           o.PurchaseNoteDetailWithOutPOAllowed,
+                          o.NonSupervisedPOAllowedInPurchaseNoteDetail,
                           o.SalesNoteDetailRateAutoInsertFromON,
                           o.SalesNoteDetailWithOutONAllowed,
                           o.CreatedBy,
@@ -1411,9 +1414,6 @@ namespace OreasServices
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           NoOfCategories = o.tbl_Inv_ProductType_Categorys.Count()
                       };
-
-
-
 
             pageddata.Data = qry;
 
@@ -1435,8 +1435,10 @@ namespace OreasServices
                 db.Entry(tbl_Inv_ProductType).Property(x => x.FK_tbl_Qc_ActionType_ID_PurchaseNote).IsModified = false;
                 db.Entry(tbl_Inv_ProductType).Property(x => x.PurchaseNoteDetailWithOutPOAllowed).IsModified = true;
                 db.Entry(tbl_Inv_ProductType).Property(x => x.PurchaseNoteDetailRateAutoInsertFromPO).IsModified = true;
+                db.Entry(tbl_Inv_ProductType).Property(x => x.NonSupervisedPOAllowedInPurchaseNoteDetail).IsModified = true;
                 db.Entry(tbl_Inv_ProductType).Property(x => x.SalesNoteDetailWithOutONAllowed).IsModified = true;
                 db.Entry(tbl_Inv_ProductType).Property(x => x.SalesNoteDetailRateAutoInsertFromON).IsModified = true;
+                
                 await db.SaveChangesAsync();
             }
             else if (operation == "Save Delete")
@@ -1767,7 +1769,8 @@ namespace OreasServices
         public async Task<object> GetDashBoardData(string userName = "")
         {
             double Sales_L6M = 0; double SalesReturn_L6M = 0; double Purchase_L6M = 0; double PurchaseReturn_L6M = 0; double Payables_Supplier = 0; double Receivables_Customer = 0;
-            int PendingBits = 0; int BPVPendingSupervised = 0; int BRVPendingSupervised = 0; int CPVPendingSupervised = 0; int CRVPendingSupervised = 0; int JVPendingSupervised = 0; int JV2PendingSupervised = 0;
+            int PendingBits = 0; int POPendingLocal = 0; int POPendingImport = 0;
+            int BPVPendingSupervised = 0; int BRVPendingSupervised = 0; int CPVPendingSupervised = 0; int CRVPendingSupervised = 0; int JVPendingSupervised = 0; int JV2PendingSupervised = 0;
             int PNPendingSupervised = 0; int PRNPendingSupervised = 0; int SNPendingSupervised = 0; int SRNPendingSupervised = 0;
             int PNPendingProcessed = 0; int PRNPendingProcessed = 0; int SNPendingProcessed = 0; int SRNPendingProcessed = 0;
             int ON_NoOfProd = 0; double ON_TotalOrderQty = 0; double ON_TotalMfgQty = 0; double ON_TotalSoldQty = 0;
@@ -1796,6 +1799,8 @@ namespace OreasServices
                         Receivables_Customer = (double)sqlReader["Receivables_Customer"];
 
                         PendingBits = (int)sqlReader["PendingBits"];
+                        POPendingLocal = (int)sqlReader["POPendingLocal"];
+                        POPendingImport = (int)sqlReader["POPendingImport"];
 
                         BPVPendingSupervised = (int)sqlReader["BPVPendingSupervised"];
                         BRVPendingSupervised = (int)sqlReader["BRVPendingSupervised"];
@@ -1832,11 +1837,199 @@ namespace OreasServices
             return new
             {
                 INV = new { Sales_L6M, SalesReturn_L6M, Purchase_L6M, PurchaseReturn_L6M, Payables_Supplier, Receivables_Customer },
-                Pen = new { PendingBits, BPVPendingSupervised, BRVPendingSupervised, CPVPendingSupervised, CRVPendingSupervised, JVPendingSupervised, JV2PendingSupervised, PNPendingSupervised, PNPendingProcessed, PRNPendingSupervised, PRNPendingProcessed, SNPendingSupervised, SNPendingProcessed, SRNPendingSupervised, SRNPendingProcessed },
+                Pen = new { PendingBits, POPendingLocal, POPendingImport, BPVPendingSupervised, BRVPendingSupervised, CPVPendingSupervised, CRVPendingSupervised, JVPendingSupervised, JV2PendingSupervised, PNPendingSupervised, PNPendingProcessed, PRNPendingSupervised, PRNPendingProcessed, SNPendingSupervised, SNPendingProcessed, SRNPendingSupervised, SRNPendingProcessed },
                 OrderNote = new { ON_NoOfProd, ON_TotalOrderQty, ON_TotalMfgQty, ON_TotalSoldQty },
                 Bottom = new { Bank, Cash, Inventory, Expense, Production_Month, Production_Yesterday }
             };
         }
+
+        #region PurchaseOrder
+        public object GetWCLPurchaseOrder()
+        {
+            return new[]
+            {
+                new { n = "by PO No", v = "byPONo" }, new { n = "by Supplier Name", v = "bySupplierName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadPurchaseOrder(int CurrentPage = 1, string IsFor = "", string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            var q = from o in db.tbl_Inv_PurchaseOrderMasters.Where(w => IsFor == "Local" && w.LocalTrue_ImportFalse == true && !w.IsSupervisedAll || IsFor == "Import" && w.LocalTrue_ImportFalse == false && !w.IsSupervisedAll)
+                    join coa in db.tbl_Ac_ChartOfAccountss on o.FK_tbl_Ac_ChartOfAccounts_ID equals coa.ID
+                    where (string.IsNullOrEmpty(FilterValueByText)
+                            || FilterByText == "byPONo" && o.PONo.ToString() == FilterValueByText
+                            || FilterByText == "bySupplierName" && coa.AccountName.ToLower().Contains(FilterValueByText.ToLower())
+                            )
+                    orderby o.PONo
+                    select (o);
+
+            int NoOfRecords = await q.CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+            if (pageddata.TotalPages > 0 && CurrentPage > pageddata.TotalPages)
+            {
+                pageddata.CurrentPage = pageddata.TotalPages;
+                CurrentPage = pageddata.TotalPages;
+            }
+            else
+                pageddata.CurrentPage = CurrentPage;
+
+            var q2 = from o in await db.tbl_Inv_PurchaseOrderMasters.Where(w => IsFor == "Local" && w.LocalTrue_ImportFalse == true && !w.IsSupervisedAll || IsFor == "Import" && w.LocalTrue_ImportFalse == false && !w.IsSupervisedAll)
+                                       .OrderBy(o => o.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+                     join coa in db.tbl_Ac_ChartOfAccountss on o.FK_tbl_Ac_ChartOfAccounts_ID equals coa.ID
+                     where (string.IsNullOrEmpty(FilterValueByText)
+                            || FilterByText == "byInvoiceNo" && o.PONo.ToString() == FilterValueByText
+                            || FilterByText == "bySupplierName" && coa.AccountName.ToLower().Contains(FilterValueByText.ToLower())
+                            )
+                     orderby o.PONo
+                     select new
+                     {
+                         o.ID,
+                         o.PONo,
+                         PODate = o.PODate.ToString("dd-MMM-yy"),
+                         coa.AccountName,
+                         o.Remarks,
+                         TotalNetAmount = o.tbl_Inv_PurchaseOrderDetails.Sum(o=> o.NetAmount),
+                         o.FK_tbl_Inv_PurchaseOrderTermsConditions_ID,
+                         FK_tbl_Inv_PurchaseOrderTermsConditions_IDName = o?.tbl_Inv_PurchaseOrderTermsConditions?.TCName ?? "",
+                         FK_tbl_Inv_PurchaseOrder_Supplier_IDName = o?.tbl_Inv_PurchaseOrder_Supplier?.SupplierName ?? "",
+                         FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName = o?.tbl_Inv_PurchaseOrder_Manufacturer?.ManufacturerName ?? "",
+                         FK_tbl_Inv_PurchaseOrder_Indenter_IDName = o?.tbl_Inv_PurchaseOrder_Indenter?.IndenterName ?? "",
+                         IndentDate = o.IndentDate.HasValue ? o.IndentDate.Value.ToString("dd-MMM-yyyy") : "",
+                         FK_tbl_Inv_PurchaseOrder_ImportTerms_IDName = o?.tbl_Inv_PurchaseOrder_ImportTerms?.TermName ?? "",
+                         FK_tbl_Ac_CurrencyAndCountry_ID_CurrencyName = o?.tbl_Ac_CurrencyAndCountry_Currency?.CurrencyCode ?? "",
+                         FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOriginName = o?.tbl_Ac_CurrencyAndCountry_CountryOfOrigin?.CountryName ?? "",
+                     };
+
+            pageddata.Data = q2;
+
+            int NoOfPendingSupervisedLocal = await db.tbl_Inv_PurchaseOrderMasters.Where(w => !w.IsSupervisedAll && w.LocalTrue_ImportFalse == true).CountAsync();
+            int NoOfPendingSupervisedImport = await db.tbl_Inv_PurchaseOrderMasters.Where(w => !w.IsSupervisedAll && w.LocalTrue_ImportFalse == false).CountAsync();
+
+            pageddata.otherdata = new { POPendingSupervisedLocal = NoOfPendingSupervisedLocal, POPendingSupervisedImport = NoOfPendingSupervisedImport };
+
+            return pageddata;
+        }
+        public async Task<string> SupervisedPurchaseOrder(int ID, string userName = "")
+        {
+            var PODList = await db.tbl_Inv_PurchaseOrderDetails.Where(w => w.FK_tbl_Inv_PurchaseOrderMaster_ID == ID).ToListAsync();
+
+            SqlParameter CRUD_Type = new SqlParameter("@CRUD_Type", SqlDbType.VarChar) { Direction = ParameterDirection.Input, Size = 50 };
+            SqlParameter CRUD_Msg = new SqlParameter("@CRUD_Msg", SqlDbType.VarChar) { Direction = ParameterDirection.Output, Size = 100, Value = "Failed" };
+            SqlParameter CRUD_ID = new SqlParameter("@CRUD_ID", SqlDbType.Int) { Direction = ParameterDirection.Output };
+
+            foreach (var tbl_Inv_PurchaseOrderDetail in PODList)
+            {
+                CRUD_Type.Value = "Supervised";
+                CRUD_Msg.Value = "";
+                CRUD_ID.Value = 0;
+
+                await db.Database.ExecuteSqlRawAsync(@"EXECUTE [dbo].[OP_Inv_PurchaseOrderDetail] 
+                @CRUD_Type={0},@CRUD_Msg={1} OUTPUT,@CRUD_ID={2} OUTPUT
+                ,@ID={3},@FK_tbl_Inv_PurchaseOrderMaster_ID={4}
+                ,@FK_tbl_Inv_ProductRegistrationDetail_ID={5},@FK_AspNetOreasPriority_ID={6}
+                ,@Quantity={7},@Rate={8},@GSTPercentage={9},@DiscountAmount={10}
+                ,@WHTPercentage={11},@NetAmount={12},@FK_tbl_Inv_PurchaseOrder_Manufacturer_ID={13}
+                ,@Remarks={14},@ReceivedQty={15},@ClosedTrue_OpenFalse={16}
+                ,@Performance_Time={17},@Performance_Quantity={18},@Performance_Quality={19}
+                ,@FK_tbl_Inv_PurchaseRequestDetail_ID={20},@FK_tbl_Inv_MeasurementUnit_ID_Supplier={21}
+                ,@QuantityAsPerSupplierUnit={22},@UnitFactorToConvertInLocalUnit={23}
+                ,@Packaging={24},@BatchNo={25},@MfgDate={26},@ExpiryDate={27}
+                ,@CreatedBy={28},@CreatedDate={29},@ModifiedBy={30},@ModifiedDate={31}",
+                CRUD_Type, CRUD_Msg, CRUD_ID,
+                tbl_Inv_PurchaseOrderDetail.ID, tbl_Inv_PurchaseOrderDetail.FK_tbl_Inv_PurchaseOrderMaster_ID, tbl_Inv_PurchaseOrderDetail.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                tbl_Inv_PurchaseOrderDetail.FK_AspNetOreasPriority_ID, tbl_Inv_PurchaseOrderDetail.Quantity, tbl_Inv_PurchaseOrderDetail.Rate, tbl_Inv_PurchaseOrderDetail.GSTPercentage, tbl_Inv_PurchaseOrderDetail.DiscountAmount, tbl_Inv_PurchaseOrderDetail.WHTPercentage,
+                tbl_Inv_PurchaseOrderDetail.NetAmount, tbl_Inv_PurchaseOrderDetail.FK_tbl_Inv_PurchaseOrder_Manufacturer_ID, tbl_Inv_PurchaseOrderDetail.Remarks, tbl_Inv_PurchaseOrderDetail.ReceivedQty, tbl_Inv_PurchaseOrderDetail.ClosedTrue_OpenFalse,
+                tbl_Inv_PurchaseOrderDetail.Performance_Time, tbl_Inv_PurchaseOrderDetail.Performance_Quantity, tbl_Inv_PurchaseOrderDetail.Performance_Quality,
+                tbl_Inv_PurchaseOrderDetail.FK_tbl_Inv_PurchaseRequestDetail_ID, tbl_Inv_PurchaseOrderDetail.FK_tbl_Inv_MeasurementUnit_ID_Supplier,
+                tbl_Inv_PurchaseOrderDetail.QuantityAsPerSupplierUnit, tbl_Inv_PurchaseOrderDetail.UnitFactorToConvertInLocalUnit,
+                tbl_Inv_PurchaseOrderDetail.Packaging, tbl_Inv_PurchaseOrderDetail.BatchNo, tbl_Inv_PurchaseOrderDetail.MfgDate, tbl_Inv_PurchaseOrderDetail.ExpiryDate,
+                tbl_Inv_PurchaseOrderDetail.CreatedBy, tbl_Inv_PurchaseOrderDetail.CreatedDate, tbl_Inv_PurchaseOrderDetail.ModifiedBy, tbl_Inv_PurchaseOrderDetail.ModifiedDate);
+
+                if ((string)CRUD_Msg.Value == "Successful")
+                    continue;
+                else
+                    break;
+            }
+
+
+            if ((string)CRUD_Msg.Value == "Successful")
+                return "OK";
+            else
+                return (string)CRUD_Msg.Value;
+
+        }
+
+        #region PurchaseOrderDetail
+        public object GetWCLPurchaseOrderDetail()
+        {
+            return new[]
+            {
+                new { n = "by Product Name", v = "byProductName" }
+            }.ToList();
+        }
+        public async Task<PagedData<object>> LoadPurchaseOrderDetail(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
+        {
+            PagedData<object> pageddata = new PagedData<object>();
+
+            int NoOfRecords = await db.tbl_Inv_PurchaseOrderDetails
+                                               .Where(w => w.FK_tbl_Inv_PurchaseOrderMaster_ID == MasterID)
+                                               .Where(w =>
+                                                       string.IsNullOrEmpty(FilterValueByText)
+                                                       ||
+                                                       FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                                     )
+                                               .CountAsync();
+
+            pageddata.TotalPages = Convert.ToInt32(Math.Ceiling((double)NoOfRecords / pageddata.PageSize));
+
+
+            pageddata.CurrentPage = CurrentPage;
+
+            var qry = from o in await db.tbl_Inv_PurchaseOrderDetails
+                                  .Where(w => w.FK_tbl_Inv_PurchaseOrderMaster_ID == MasterID)
+                                  .Where(w =>
+                                        string.IsNullOrEmpty(FilterValueByText)
+                                        ||
+                                        FilterByText == "byProductName" && w.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName.ToLower().Contains(FilterValueByText.ToLower())
+                                      )
+                                  .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
+
+                      select new
+                      {
+                          o.ID,
+                          o.FK_tbl_Inv_PurchaseOrderMaster_ID,
+                          o.FK_tbl_Inv_ProductRegistrationDetail_ID,
+                          FK_tbl_Inv_ProductRegistrationDetail_IDName = o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_ProductRegistrationMaster.ProductName,
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.MeasurementUnit,
+                          o.Quantity,
+                          o.Rate,
+                          o.GSTPercentage,
+                          o.DiscountAmount,
+                          o.WHTPercentage,
+                          o.NetAmount,
+                          o.Remarks,
+                          o.CreatedBy,
+                          CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.ModifiedBy,
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          ReceivedQty = o.tbl_Inv_PurchaseNoteDetails.Sum(s=> s.Quantity),
+                          o.Packaging,
+                          o.BatchNo,
+                          MfgDate = o.MfgDate.HasValue ? o.MfgDate.Value.ToString("dd-MMM-yyyy") : "",
+                          ExpiryDate = o.ExpiryDate.HasValue ? o.ExpiryDate.Value.ToString("dd-MMM-yyyy") : ""
+                      };
+
+            pageddata.Data = qry;
+
+            return pageddata;
+        }
+
+        #endregion        
+
+        #endregion
 
         #region Bank Doc
         public object GetWCLBankDocument()
@@ -2517,8 +2710,6 @@ namespace OreasServices
         #endregion        
 
         #endregion
-
-
 
         #region PurchaseReturnNote
         public object GetWCLPurchaseReturnNote()

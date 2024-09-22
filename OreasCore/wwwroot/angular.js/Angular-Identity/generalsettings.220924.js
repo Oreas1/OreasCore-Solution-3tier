@@ -30,6 +30,7 @@
             'AcBankVoucherAutoSupervised': false, 'AcCashVoucherAutoSupervised': false, 'AcJournalVoucherAutoSupervised': false,
             'AcPurchaseNoteInvoiceAutoSupervised': false, 'AcPurchaseReturnNoteInvoiceAutoSupervised': false,
             'AcSalesNoteInvoiceAutoSupervised': false, 'AcSalesReturnNoteInvoiceAutoSupervised': false,
+            'PurchaseOrderLocalAutoSupervised': false, 'PurchaseOrderImportAutoSupervised': false,
             'LetterHead_PaperSize': 'A4', 'LetterHead_HeaderHeight': 100, 'LetterHead_FooterHeight': 70
         };
 
@@ -87,7 +88,7 @@
         $scope.tbl_Inv_ProductType = {
             'ID': 0, 'ProductType': '', 'Prefix': '', 'FK_tbl_Qc_ActionType_ID_PurchaseNote': null, 'FK_tbl_Qc_ActionType_ID_PurchaseNoteName': '',
             'PurchaseNoteDetailRateAutoInsertFromPO': false, 'PurchaseNoteDetailWithOutPOAllowed': true,
-            'SalesNoteDetailRateAutoInsertFromON': false, 'SalesNoteDetailWithOutONAllowed': true,
+            'SalesNoteDetailRateAutoInsertFromON': false, 'SalesNoteDetailWithOutONAllowed': true, 'NonSupervisedPOAllowedInPurchaseNoteDetail': true,
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfCategories': 0
         };
 
@@ -99,7 +100,7 @@
             $scope.tbl_Inv_ProductType = {
                 'ID': 0, 'ProductType': '', 'Prefix': '', 'FK_tbl_Qc_ActionType_ID_PurchaseNote': null, 'FK_tbl_Qc_ActionType_ID_PurchaseNoteName': '',
                 'PurchaseNoteDetailRateAutoInsertFromPO': false, 'PurchaseNoteDetailWithOutPOAllowed': true,
-                'SalesNoteDetailRateAutoInsertFromON': false, 'SalesNoteDetailWithOutONAllowed': true,
+                'SalesNoteDetailRateAutoInsertFromON': false, 'SalesNoteDetailWithOutONAllowed': true, 'NonSupervisedPOAllowedInPurchaseNoteDetail': true,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfCategories': 0
             };
         };

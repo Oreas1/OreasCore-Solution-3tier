@@ -116,6 +116,8 @@ namespace OreasModel
         [Required]
         public bool PurchaseNoteDetailWithOutPOAllowed { get; set; }
 
+        [Required]
+        public bool NonSupervisedPOAllowedInPurchaseNoteDetail { get; set; }
 
         [Required]
         public bool SalesNoteDetailRateAutoInsertFromON { get; set; }
@@ -2242,6 +2244,9 @@ namespace OreasModel
         public virtual tbl_Inv_InternationalCommercialTerm tbl_Inv_InternationalCommercialTerm { get; set; }
 
         //------------------xxxxxxxxxxx--------------------//
+        [Required]
+        public bool IsSupervisedAll { get; set; }
+
         [MaxLength(50)]
         [Display(Name = "Created By")]
         public string CreatedBy { get; set; }
@@ -2357,6 +2362,8 @@ namespace OreasModel
         public DateTime? ExpiryDate { get; set; }
 
         //-----------------------------xxxxxx----------------------//
+        [Required]
+        public bool IsSupervised { get; set; }
 
         [MaxLength(50)]
         [Display(Name = "Created By")]

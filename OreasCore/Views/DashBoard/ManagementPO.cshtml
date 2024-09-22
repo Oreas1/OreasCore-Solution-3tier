@@ -1,0 +1,151 @@
+﻿<MyViewName>Purchase Order For {{IsFor}} <button class="btn btn-danger" ng-click="ClosePanel('ManagementPOCtlr');"><i class="fa fa-multiply"></i></button></MyViewName>
+
+<div>
+    @*-----------------------------------this is data list view-----------------------------*@
+    <div mycssclass="@MyCSSClassName.Table_Div" ng-hide="IsFor === 'Import'">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    PO #
+                </th>
+                <th>
+                    PONo Date
+                </th>
+                <th>
+                    Supplier Name
+                </th>
+                <th>
+                    Remarks
+                </th>
+                <th>
+                    Total Net Amount
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    <b>#{{itm.PONo}}</b>
+                </td>
+                <td>
+                    {{itm.PODate}}
+                </td>
+                <td>
+                    <b>{{itm.AccountName}}</b>
+                </td>
+                <td>
+                    {{itm.Remarks}}
+                </td>
+                <td>
+                    {{itm.TotalNetAmount}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="DivHideShow('ManagementPODetailCtlr',itm,'ManagementPOCtlr','ManagementPODetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <a href="/DashBoard/GetPurchaseOrderReport?rn=Current PO Vendor Copy&id={{itm.ID}}" target="_blank" class="btn btn-primary">Report</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div mycssclass="@MyCSSClassName.Table_Div" ng-hide="IsFor === 'Local'">
+        <table mycssclass="@MyCSSClassName.Table_Table">
+            <tr>
+                <th>
+                    PO #
+                    <br />
+                    PONo Date
+                </th>
+                <th>
+                    Import Term
+                    <br />
+                    Local A/c
+                </th>
+                <th>
+                    Manufacturer
+                    <br />
+                    Supplier
+                </th>
+                <th>
+                    Indenter
+                    <br />
+                    Indent Date
+                </th>
+                <th>
+                    Currency
+                    <br />
+                    Country
+                </th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="itm in pageddata.Data">
+                <td>
+                    <b>#{{itm.PONo}}</b>
+                    <br />
+                    {{itm.PODate}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_PurchaseOrder_ImportTerms_IDName}}
+                    <br />
+                    {{itm.AccountName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName}}
+                    <br />
+                    {{itm.FK_tbl_Inv_PurchaseOrder_Supplier_IDName}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Inv_PurchaseOrder_Indenter_IDName}}
+                    <br />
+                    {{itm.IndentDate}}
+                </td>
+                <td>
+                    {{itm.FK_tbl_Ac_CurrencyAndCountry_ID_CurrencyName}}
+                    <br />
+                    {{itm.FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOriginName}}
+                </td>
+                <td>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button ng-click="DivHideShow('ManagementPODetailCtlr',itm,'ManagementPOCtlr','ManagementPODetailCtlr', null);" mycssclass="@MyCSSClassName.Table_OperationBtn" title="Goto Detail">Detail <span class="fa fa-info-circle"></span></button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv">
+                        <button type="button" class="btn btn-sm" ng-click="Supervised(itm.ID)">Supervised</button>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.Table_OptColDiv" ng-hide="IsFor === 'Import'">
+                        <a href="/DashBoard/GetPurchaseOrderReport?rn=Current PO Vendor Copy&id={{itm.ID}}" target="_blank" class="btn btn-primary">Report</a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div mycssclass="@MyCSSClassName.Table_NavDiv">
+                        <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
+                        <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>
+                        <MyButton operation="@MyButtonOperation.RecordNo" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP">{{pageddata.CurrentPage}} of {{pageddata.TotalPages}}</MyButton>
+                        <MyButton operation="@MyButtonOperation.next" ng-click="pageNavigation('next')" ng-disabled="ng_DisabledBtnPageN"></MyButton>
+                        <MyButton operation="@MyButtonOperation.last" ng-click="pageNavigation('last')" ng-disabled="ng_DisabledBtnPageL"></MyButton>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    @*-----------------------------------this is search view-----------------------------*@
+    @await Html.PartialAsync("_Filter", "ManagementPOCtlr")
+</div>

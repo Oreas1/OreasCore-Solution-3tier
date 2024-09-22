@@ -697,6 +697,7 @@ namespace OreasServices
                           FK_tbl_Qc_ActionType_ID_PurchaseNoteName = o.tbl_Qc_ActionType.ActionName,
                           o.PurchaseNoteDetailRateAutoInsertFromPO,
                           o.PurchaseNoteDetailWithOutPOAllowed,
+                          o.NonSupervisedPOAllowedInPurchaseNoteDetail,
                           o.SalesNoteDetailRateAutoInsertFromON,
                           o.SalesNoteDetailWithOutONAllowed,
                           o.CreatedBy,
@@ -752,6 +753,7 @@ namespace OreasServices
                           FK_tbl_Qc_ActionType_ID_PurchaseNoteName = o.tbl_Qc_ActionType.ActionName,
                           o.PurchaseNoteDetailRateAutoInsertFromPO,
                           o.PurchaseNoteDetailWithOutPOAllowed,
+                          o.NonSupervisedPOAllowedInPurchaseNoteDetail,
                           o.SalesNoteDetailRateAutoInsertFromON,
                           o.SalesNoteDetailWithOutONAllowed,
                           o.CreatedBy,
@@ -760,9 +762,6 @@ namespace OreasServices
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           NoOfCategories = o.tbl_Inv_ProductType_Categorys.Count()
                       };
-
-
-
 
             pageddata.Data = qry;
 
@@ -12537,6 +12536,7 @@ namespace OreasServices
                           o.FK_tbl_Inv_PurchaseOrderTermsConditions_ID,
                           FK_tbl_Inv_PurchaseOrderTermsConditions_IDName = o?.tbl_Inv_PurchaseOrderTermsConditions?.TCName ?? "",
                           o.LocalTrue_ImportFalse,
+                          o.IsSupervisedAll,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -12580,6 +12580,7 @@ namespace OreasServices
                           FK_tbl_Inv_TransportType_IDName = o?.tbl_Inv_TransportType?.TypeName ?? "",
                           o.FK_tbl_Inv_InternationalCommercialTerm_ID,
                           FK_tbl_Inv_InternationalCommercialTerm_IDName = o?.tbl_Inv_InternationalCommercialTerm?.IncotermName ?? "",
+                          o.IsSupervisedAll,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -12681,6 +12682,7 @@ namespace OreasServices
                           o.FK_tbl_Inv_PurchaseOrderTermsConditions_ID,
                           FK_tbl_Inv_PurchaseOrderTermsConditions_IDName = o?.tbl_Inv_PurchaseOrderTermsConditions?.TCName ?? "",
                           o.LocalTrue_ImportFalse,
+                          o.IsSupervisedAll,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -12792,6 +12794,7 @@ namespace OreasServices
                           FK_tbl_Inv_TransportType_IDName = o?.tbl_Inv_TransportType?.TypeName ?? "",
                           o.FK_tbl_Inv_InternationalCommercialTerm_ID,
                           FK_tbl_Inv_InternationalCommercialTerm_IDName = o.FK_tbl_Inv_InternationalCommercialTerm_ID.HasValue ?  o.tbl_Inv_InternationalCommercialTerm.IncotermName + " ["+ o.tbl_Inv_InternationalCommercialTerm.Abbreviation + "]" : "",
+                          o.IsSupervisedAll,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -12886,6 +12889,7 @@ namespace OreasServices
                           o.Performance_Time,
                           o.Performance_Quantity,
                           o.Performance_Quality,
+                          o.IsSupervised,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -12928,6 +12932,7 @@ namespace OreasServices
                           o.BatchNo,
                           MfgDate = o.MfgDate.HasValue ? o.MfgDate.Value.ToString("dd-MMM-yyyy") : "",
                           ExpiryDate = o.ExpiryDate.HasValue ? o.ExpiryDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.IsSupervised,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -13014,6 +13019,7 @@ namespace OreasServices
                           o.Performance_Time,
                           o.Performance_Quantity,
                           o.Performance_Quality,
+                          o.IsSupervised,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
@@ -13100,6 +13106,7 @@ namespace OreasServices
                           o.BatchNo,
                           MfgDate = o.MfgDate.HasValue ? o.MfgDate.Value.ToString("dd-MMM-yyyy") : "",
                           ExpiryDate = o.ExpiryDate.HasValue ? o.ExpiryDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.IsSupervised,
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
