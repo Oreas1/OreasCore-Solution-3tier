@@ -33,9 +33,9 @@
                         <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATBulkManualMaster.FK_tbl_WPT_ATInOutMode_ID" required="true"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
-                        <input id="tbl_WPT_ATBulkManualMaster.Remarks" name="tbl_WPT_ATBulkManualMaster.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_ATBulkManualMaster.Remarks" ng-model="tbl_WPT_ATBulkManualMaster.Remarks" ng-disabled="ng_readOnly" minlength="3" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATBulkManualMaster.Remarks" minlength="3" maxlength="50"></MyValidationSpan>
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Reason</span>
+                        <input id="tbl_WPT_ATBulkManualMaster.Reason" name="tbl_WPT_ATBulkManualMaster.Reason" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_ATBulkManualMaster.Reason" ng-model="tbl_WPT_ATBulkManualMaster.Reason" ng-disabled="ng_readOnly" minlength="3" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="tbl_WPT_ATBulkManualMaster.Reason" minlength="3" maxlength="50"></MyValidationSpan>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                         AT Mode
                     </th>
                     <th>
-                        Remarks
+                        Reason
                     </th>
                     <th>
                         Total Employees
@@ -100,7 +100,7 @@
                         <b>{{itm.FK_tbl_WPT_ATInOutMode_IDName}}</b>
                     </td>
                     <td>
-                        {{itm.Remarks}}
+                        {{itm.Reason}}
                     </td>
                     <td>
                         {{itm.TotalEmployees}}

@@ -79,6 +79,7 @@ function init_Operations ($scope, $http, pageNavigationURL, v_GetRowURL, v_PostR
     $scope.ng_DisabledBtnPageP = true;
     $scope.ng_DisabledBtnPageF = true;
     $scope.AddBulk = false;
+    $scope.IsPosting = false;
 
     //----------------------------------------Paging functions----------------------------------------//
 
@@ -248,7 +249,11 @@ function init_Operations ($scope, $http, pageNavigationURL, v_GetRowURL, v_PostR
     if (typeof v_PostRowURL !== undefined && v_PostRowURL !== '' && v_PostRowURL !== null) {
 
         $scope.PostRow = function (pageNavigationBy) {       
-            
+            if ($scope.IsPosting)
+            {
+                alert('Aborted! Already one Request is in progress, therefore multiple submissions not allowed.');
+                return;
+            };
 
             let para = $scope.postRowParam();           
 
@@ -261,7 +266,7 @@ function init_Operations ($scope, $http, pageNavigationURL, v_GetRowURL, v_PostR
             }
 
             var successcallback = function (response) {
-
+                $scope.IsPosting = false;
                 if (typeof $scope.PostRowResponse === "function") {
                     $scope.PostRowResponse(response.data);
                 }
@@ -288,6 +293,7 @@ function init_Operations ($scope, $http, pageNavigationURL, v_GetRowURL, v_PostR
                 
             };
             var errorcallback = function (error) {
+                $scope.IsPosting = false;
                 if ($scope.ng_entryPanelSubmitBtnText === 'Save Delete')
                     $scope.ng_readOnly = true;
                 console.log('Post error', error);
@@ -295,6 +301,7 @@ function init_Operations ($scope, $http, pageNavigationURL, v_GetRowURL, v_PostR
             };
             
             if (confirm("Are you sure! you want to " + $scope.ng_entryPanelSubmitBtnText) === true) {
+                $scope.IsPosting = true;
                 $http({
                     method: "POST", url: v_PostRowURL, async: true, params: para.params, data: para.data, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
                 }).then(successcallback, errorcallback);
