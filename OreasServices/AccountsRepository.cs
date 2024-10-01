@@ -24,6 +24,10 @@ using LicenseContext = OfficeOpenXml.LicenseContext;
 using Border = iText.Layout.Borders.Border;
 using iText.IO.Font.Cmap;
 using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas;
+using SkiaSharp;
+using iText.IO.Image;
+using static iText.Kernel.Pdf.Colorspace.PdfShading;
 
 namespace OreasServices
 {    
@@ -1493,6 +1497,26 @@ namespace OreasServices
             pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Total_1To30.ToString())).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(TotalBalance.ToString())).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBackgroundColor(new DeviceRgb(176, 196, 222)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
+
+            //------------------Adding Pie Chart--------------------//
+            PieDataStructure[] pieData = new PieDataStructure[]
+            {
+                new PieDataStructure(){ SKColor= new SKColor(255, 0, 0), Value=(float)Total_91ToEnd, Label="91->>"},
+                new PieDataStructure(){ SKColor= SKColors.OrangeRed, Value=(float)Total_61To90, Label="61-90"},
+                new PieDataStructure(){ SKColor= SKColors.DeepPink, Value=(float)Total_31To60, Label="31-60"},
+                new PieDataStructure(){ SKColor= SKColors.SteelBlue, Value=(float)Total_1To30, Label="01-30"}
+            };
+            byte[] chartImage = GetPieChart.GetImageBytes(pieData);
+
+            Image img = new Image(ImageDataFactory.Create(chartImage));
+            img.SetWidth(150).SetHeight(150);
+
+            Cell cell = new Cell(1, 4).Add(img).SetPadding(0).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true);
+
+            pdftableMain.AddCell(cell);
+            pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add("")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            //---------------------xxxxxxxxxxx--------------------//
+
             page.InsertContent(new Cell().Add(pdftableMain).SetBorder(Border.NO_BORDER));
             return page.FinishToGetBytes();
         }
@@ -1604,9 +1628,7 @@ namespace OreasServices
 
                         SNo++;
                     }
-
                 }
-
             }
 
             pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add("Total")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
@@ -1615,6 +1637,25 @@ namespace OreasServices
             pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Total_31To60.ToString())).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(Total_1To30.ToString())).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableMain.AddCell(new Cell().Add(new Paragraph().Add(TotalBalance.ToString())).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBackgroundColor(new DeviceRgb(176, 196, 222)).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+
+            //------------------Adding Pie Chart--------------------//
+            PieDataStructure[] pieData = new PieDataStructure[] 
+            {
+                new PieDataStructure(){ SKColor= new SKColor(255, 0, 0), Value=(float)Total_91ToEnd, Label="91->>"},
+                new PieDataStructure(){ SKColor= SKColors.OrangeRed, Value=(float)Total_61To90, Label="61-90"},
+                new PieDataStructure(){ SKColor= SKColors.DeepPink, Value=(float)Total_31To60, Label="31-60"},
+                new PieDataStructure(){ SKColor= SKColors.SteelBlue, Value=(float)Total_1To30, Label="01-30"}
+            };
+            byte[] chartImage = GetPieChart.GetImageBytes(pieData);
+
+            Image img = new Image(ImageDataFactory.Create(chartImage));
+            img.SetWidth(150).SetHeight(150); 
+
+            Cell cell = new Cell(1, 4).Add(img).SetPadding(0).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true);
+
+            pdftableMain.AddCell(cell);
+            pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add("")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            //---------------------xxxxxxxxxxx--------------------//
 
             page.InsertContent(new Cell().Add(pdftableMain).SetBorder(Border.NO_BORDER));
             return page.FinishToGetBytes();
@@ -3586,7 +3627,6 @@ namespace OreasServices
                 }
             };
         }
-
         public List<ReportCallingModel> GetRLBankPaymentMasterDocument()
         {
             return new List<ReportCallingModel>() {
@@ -3768,9 +3808,9 @@ namespace OreasServices
                                 
                 pdftableDetail.AddCell(new Cell(1, 4).Add(new Paragraph().Add(AmountIntoWords.ConvertToWords((long)TotalAmount))).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
                 pdftableDetail.AddCell(new Cell(1, 2).Add(new Paragraph().Add(string.Format("{0:n0}", TotalAmount))).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-                
 
                 page.InsertContent(pdftableDetail);
+
 
                 /////////////------------------------------Signature Footer table------------------------------////////////////
                 Table pdftableSignature = new Table(new float[] {
@@ -4085,7 +4125,7 @@ namespace OreasServices
             page.InsertContent(new Cell().Add(pdftableMain).SetBorder(Border.NO_BORDER));
             return page.FinishToGetBytes();
         }
-        
+       
         #endregion
     }
     public class CashDocumentRepository : ICashDocument

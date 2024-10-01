@@ -13,8 +13,10 @@ using iText.Layout.Properties;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using OreasServices;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Data.Common;
 using System.IO;
@@ -368,5 +370,115 @@ namespace OreasModel
             }
 
         }
+    }
+
+    public static class GetPieChart
+    {
+
+        public static byte[] GetImageBytes(PieDataStructure[] pieData)
+        {
+            int NoOfRecords = pieData.Length;
+
+            using (var surface = SKSurface.Create(new SKImageInfo(260, 260 + (NoOfRecords*10) + 30)))
+            {
+                var canvas = surface.Canvas;
+
+                // Clear the canvas
+                canvas.Clear(SKColors.White);
+
+                // Define a smaller rectangle for the pie chart
+                float offset = 30; // Offset to center the pie chart within the canvas
+                float width = 200; // Width of the pie chart (adjust this for size)
+                float height = 200; // Height of the pie chart (adjust this for size)
+                var pieRect = new SKRect(offset, offset, offset + width, offset + height);
+
+                // Draw your pie chart here
+                var paint = new SKPaint
+                {
+                    Style = SKPaintStyle.Fill,
+                    IsAntialias = true
+                };
+
+                float total = pieData.Sum(s=> s.Value);
+                // Initialize the start angle
+                float startAngle = 0;
+
+                foreach (var piedata1 in pieData)
+                {
+                    // Calculate the sweep angle based on the value's percentage of the total
+                    float sweepAngle = (piedata1.Value / total) * 360;
+
+                    // Set the color for the current slice
+                    paint.Color = piedata1.SKColor; // Use modulus to cycle through colors
+
+                    // Draw the slice
+                    canvas.DrawArc(pieRect, startAngle, sweepAngle, true, paint);
+
+                    ////-------------------Labels--------------//
+                    //// Calculate label position
+                    //float labelAngle = startAngle + (sweepAngle / 2);
+                    //float radius = Math.Max(width, height) / 2; // Use the larger dimension for the radius
+                    //                                            // Adjust the offset to move the labels outwards
+                    //float labelOffset = 0; // Distance from the edge of the pie chart
+                    //float labelX = (float)(offset + width / 2 + (radius + labelOffset) * Math.Cos(labelAngle * Math.PI / 180));
+                    //float labelY = (float)(offset + height / 2 + (radius + labelOffset) * Math.Sin(labelAngle * Math.PI / 180));
+                    //// Draw the label
+                    //var textPaint = new SKPaint
+                    //{
+                    //    Color = SKColors.Black,
+                    //    TextSize = 14,
+                    //    IsAntialias = true
+                    //};
+                    //canvas.DrawText(piedata1.Label, labelX, labelY, textPaint);
+
+                    // Update the start angle for the next slice
+                    startAngle += sweepAngle;
+                }
+
+                //----------------Labes in List after Pie-------------------------//
+
+
+                // Starting Y position for labels, below the pie chart
+                float labelStartY = offset + height + 10; // 10 pixels below the pie chart
+
+                int i = 1;
+                foreach (var piedata1 in pieData)
+                {
+                    var txtPaint = new SKPaint
+                    {
+                        Color = piedata1.SKColor,
+                        TextSize = 18,
+                        IsAntialias = true,
+                        Typeface = SKTypeface.FromFamilyName("Arial", SKFontStyle.Bold) // Set the font to bold
+                    };
+                    // Draw each label in a vertical list
+                    float labelX = offset + 10; // 10 pixels from the left
+                    float labelY = labelStartY + (i * 20); // 20 pixels between labels
+                    canvas.DrawText(piedata1.Label + ": [" + piedata1.Value + "]", labelX, labelY, txtPaint);
+                    i++;
+                }
+
+
+                // Get the image as a byte array
+                using (var image = surface.Snapshot())
+                using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+                {
+                    return data.ToArray();
+                }
+            }
+        }
+
+    }
+
+    public class PieDataStructure
+    {
+        [Required]
+        public SKColor SKColor { get; set; }
+
+        [Required]
+        public float Value { get; set; }
+
+        [Required]
+        public string Label { get; set; }
     }
 }

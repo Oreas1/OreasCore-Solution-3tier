@@ -14157,7 +14157,8 @@ namespace OreasServices
         {
             return new[]
             {
-                new { n = "by Employee Name", v = "byEmployeeName" }, new { n = "by ATNo", v = "byATNo" }
+                new { n = "by Employee Name", v = "byEmployeeName" }, new { n = "by ATNo", v = "byATNo" },
+                new { n = "by Present <", v = "byPresent<" }
             }.ToList();
         }
         public async Task<PagedData<object>> LoadPayRunMasterDetailEmployee(int CurrentPage = 1, int MasterID = 0, string FilterByText = null, string FilterValueByText = null, string FilterByNumberRange = null, int FilterValueByNumberRangeFrom = 0, int FilterValueByNumberRangeTill = 0, string FilterByDateRange = null, DateTime? FilterValueByDateRangeFrom = null, DateTime? FilterValueByDateRangeTill = null, string FilterByLoad = null)
@@ -14172,6 +14173,8 @@ namespace OreasServices
                                                        FilterByText == "byEmployeeName" && w.tbl_WPT_Employee.EmployeeName.ToLower().Contains(FilterValueByText.ToLower())
                                                        ||
                                                        FilterByText == "byATNo" && w.tbl_WPT_Employee.ATEnrollmentNo_Default.ToLower() == FilterValueByText.ToLower()
+                                                       ||
+                                                       FilterByText == "byPresent<" && w.tbl_WPT_PayRunDetail_EmpDetail_ATs.Count(a=> a.Present == true) < Convert.ToInt32(FilterValueByText)
                                                      )
                                                .CountAsync();
 
@@ -14188,6 +14191,8 @@ namespace OreasServices
                                         FilterByText == "byEmployeeName" && w.tbl_WPT_Employee.EmployeeName.ToLower().Contains(FilterValueByText.ToLower())
                                         ||
                                         FilterByText == "byATNo" && w.tbl_WPT_Employee.ATEnrollmentNo_Default.ToLower() == FilterValueByText.ToLower()
+                                        ||
+                                        FilterByText == "byPresent<" && w.tbl_WPT_PayRunDetail_EmpDetail_ATs.Count(a => a.Present == true) < Convert.ToInt32(FilterValueByText)
                                       )
                                   .OrderByDescending(i => i.ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
 
