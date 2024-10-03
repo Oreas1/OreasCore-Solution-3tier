@@ -4,13 +4,12 @@
             if (typeof v !== 'undefined' && v !== '' && v !== null) {
                 $scope.$broadcast(v, itm);
             }
-            if (typeof scope !== 'undefined' && scope !== '' && scope !== null && typeof scope.$parent.pageNavigation === 'function')
-            {            
-               scope.$parent.pageNavigation('Load');
+            if (typeof scope !== 'undefined' && scope !== '' && scope !== null && typeof scope.$parent.pageNavigation === 'function') {
+                scope.$parent.pageNavigation('Load');
             }
-            
+
             $("#" + div_hide).hide('slow');
-            $("#" + div_show).show('slow');   
+            $("#" + div_show).show('slow');
         };
         //////////////////////////////entry panel/////////////////////////
         init_Operations($scope, $http,
@@ -112,63 +111,87 @@
             return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_PD_RequestMaster };
         };
 
-        $scope.GetRowResponse = function (data, operation) {    
+        $scope.GetRowResponse = function (data, operation) {
             $scope.ImageUploadingProgress = '';
             $scope.tbl_PD_RequestMaster = data;
             $scope.tbl_PD_RequestMaster.DocDate = new Date(data.DocDate);
-           
+
         };
-      
+
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
 
-   
+
 
         $scope.LoadFileData = function (files) {
             $scope.ng_DisabledBtnAll = true;
+
             $scope.ImageUploadingProgress = 'Image is capturing! Please Wait';
             $scope.tbl_PD_RequestMaster.SampleProductPhoto = '';
-            $scope.$digest();     
+            $scope.UploadProgressValue = 0;  // Initialize progress to 0
+            $scope.$digest();
 
             const file = files[0];
-       
+
             if (file) {
                 const filesizeKB = Math.round(file.size / 1024);
                 if (filesizeKB > 100) {
+                    $scope.ng_DisabledBtnAll = false;
+                    $scope.ImageUploadingProgress = 'Image is capturing terminated';
                     alert('Maximum 100KBs file size is allowed but uploaded file is size is: ' + filesizeKB + 'KBs');
+                    $scope.$apply(); // ye es liye kiya hai alert ki waja se ye  $scope.ng_DisabledBtnAll = false; code work nahi karta tou zabardasti apply karwa k run kiya hai
                     return;
                 }
-                
+
                 const reader = new FileReader();
-                
-                reader.onload = function (e) {                   
+
+                // Handle the progress event to show the uploading progress
+                reader.onprogress = function (e) {
+                    if (e.lengthComputable) {
+                        const percentLoaded = Math.round((e.loaded / e.total) * 100);
+                        $scope.UploadProgressValue = percentLoaded;
+                        $scope.ImageUploadingProgress = 'Uploading: ' + percentLoaded + '%';
+                        $scope.$digest(); // Update the UI
+                    }
+                };
+
+                reader.onload = function (e) {
 
                     const base64String = e.target.result.split(',')[1];
 
                     $scope.tbl_PD_RequestMaster.SampleProductPhoto = base64String;
                     $scope.ng_DisabledBtnAll = false;
                     $scope.ImageUploadingProgress = 'Image is captured Sucessfully Please save the record';
-                    $scope.$digest(); 
+                    $scope.$digest();
+                    console.log('o', $scope.ng_DisabledBtnAll);
                 };
-                reader.readAsDataURL(file); 
+
+                reader.onerror = function () {
+                    $scope.ImageUploadingProgress = 'Error uploading image!';
+                    $scope.ng_DisabledBtnAll = false;
+                    $scope.$digest();
+                };
+
+                reader.readAsDataURL(file);
+
             }
         };
 
-       
-       
+
+
     })
     .controller("RequestDetailTRCtlr", function ($scope, $http) {
         $scope.MasterObject = {};
         $scope.$on('RequestDetailTRCtlr', function (e, itm) {
             $scope.MasterObject = itm;
-            $scope.pageNavigation('first');         
+            $scope.pageNavigation('first');
             $scope.rptID = itm.ID;
         });
 
         $scope.$on('init_RequestDetailTRCtlr', function (e, itm) {
-            init_Filter($scope, itm.WildCard, null, null, itm.LoadByCard); 
+            init_Filter($scope, itm.WildCard, null, null, itm.LoadByCard);
         });
 
-       init_Operations($scope, $http,
+        init_Operations($scope, $http,
             '/PD/Request/RequestDetailTRLoad', //--v_Load
             '/PD/Request/RequestDetailTRGet', // getrow
             '/PD/Request/RequestDetailTRPost' // PostRow
@@ -183,7 +206,7 @@
         //for list model which will be coming as as data in pageddata
         $scope.tbl_PD_RequestDetailTRs = [$scope.tbl_PD_RequestDetailTR];
 
-        $scope.clearEntryPanel = function () {           
+        $scope.clearEntryPanel = function () {
             //rededine to orignal values
             $scope.tbl_PD_RequestDetailTR = {
                 'ID': 0, 'FK_tbl_PD_RequestMaster_ID': $scope.MasterObject.ID, 'DocNo': null, 'DocDate': new Date(),
@@ -200,8 +223,8 @@
             $scope.tbl_PD_RequestDetailTR.MfgDate = new Date(data.MfgDate);
         };
 
-        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };  
-       
+        $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };
+
         $scope.EditStatus = function (itm) {
             if ((itm.TrialStatus === null) && (!$scope.Privilege.CanAdd || !$scope.Privilege.CanEdit)) {
                 alert('Dont have privilege to add TrialStatus');
@@ -211,11 +234,11 @@
                 alert('Dont have privilege to change TrialStatus');
                 return;
             }
-            else {                
+            else {
                 $scope.GetRow(itm.ID, 'Edit');
                 $scope.StatusOperation = true;
             }
-                
+
         };
 
     })
@@ -236,7 +259,7 @@
             '/PD/Request/RequestDetailTRProcedureLoad', //--v_Load
             '/PD/Request/RequestDetailTRProcedureGet', // getrow
             '/PD/Request/RequestDetailTRProcedurePost' // PostRow
-        );        
+        );
 
         $scope.tbl_PD_RequestDetailTR_Procedure = {
             'ID': 0, 'FK_tbl_PD_RequestDetailTR_ID': $scope.MasterObject.ID,
@@ -275,7 +298,7 @@
 
         $scope.$on('init_RequestDetailTRCFPCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
-            init_Report($scope, itm.Reports, '/PD/Request/GetPDRequestReport'); 
+            init_Report($scope, itm.Reports, '/PD/Request/GetPDRequestReport');
         });
 
         init_Operations($scope, $http,
@@ -329,12 +352,12 @@
         $scope.$on('RequestDetailTRCFPItemCtlr', function (e, itm) {
             $scope.MasterObject = itm;
             $scope.pageNavigation('first');
-            
+
         });
 
         $scope.$on('init_RequestDetailTRCFPItemCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
-            
+
         });
 
         init_Operations($scope, $http,
@@ -344,14 +367,12 @@
         );
 
         $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
-            if (item.ID > 0)
-            {
+            if (item.ID > 0) {
                 $scope.tbl_PD_RequestDetailTR_CFP_Item.FK_tbl_Inv_ProductRegistrationDetail_ID = item.ID;
                 $scope.tbl_PD_RequestDetailTR_CFP_Item.FK_tbl_Inv_ProductRegistrationDetail_IDName = item.ProductName;
                 $scope.tbl_PD_RequestDetailTR_CFP_Item.MeasurementUnit = item.MeasurementUnit;
             }
-            else
-            {
+            else {
                 $scope.tbl_PD_RequestDetailTR_CFP_Item.FK_tbl_Inv_ProductRegistrationDetail_ID = null;
                 $scope.tbl_PD_RequestDetailTR_CFP_Item.FK_tbl_Inv_ProductRegistrationDetail_IDName = null;
                 $scope.tbl_PD_RequestDetailTR_CFP_Item.MeasurementUnit = null;
