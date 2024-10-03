@@ -74,9 +74,8 @@
         //-------------------------Product Image------------------------//
         $scope.LoadFileDataImg = function (files) {
             $scope.ng_DisabledBtnAll = true;
-
             $scope.ImageUploadingProgress = 'Image is capturing! Please Wait';
-            $scope.tbl_Inv_ProductRegistrationMaster.ProductPhoto = '';
+            //$scope.tbl_Inv_ProductRegistrationMaster.ProductPhoto = '';
             $scope.UploadProgressValue = 0;  // Initialize progress to 0
             $scope.$digest();
 
@@ -117,7 +116,6 @@
                 reader.onload = function (e) {
 
                     const base64String = e.target.result.split(',')[1];
-
                     $scope.tbl_Inv_ProductRegistrationMaster.ProductPhoto = base64String;
                     $scope.ng_DisabledBtnAll = false;
                     $scope.ImageUploadingProgress = 'Image is captured Sucessfully Please save the record';
