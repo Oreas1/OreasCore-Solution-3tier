@@ -2,7 +2,7 @@
     ViewBag.Title = "Product Registration";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-Inventory/SetUp/productregistrationindex.180924.js"></script>
+    <script src="~/angular.js/Angular-Inventory/SetUp/productregistrationindex.031024.js"></script>
 }
 <div ng-controller="ProductRegistrationMasterCtlr" class="container">
 
@@ -39,8 +39,27 @@
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Control Procedure No</span>
-                        <input type="text" id="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" name="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="ControlProcedureNo" value="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" ng-model="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
+                        <input type="text" id="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" name="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="AM-PM-2356...." value="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" ng-model="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" ng-disabled="ng_readOnly" maxlength="50" />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_ProductRegistrationMaster.ControlProcedureNo" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">
+                        <input type="file" id="ProductPhoto" name="ProductPhoto" onchange="angular.element(this).scope().LoadFileDataImg(this.files);" accept="image/*" class="btn btn-block" ng-disabled="ng_readOnly" />
+                        </span>
+                        <img style="border:ridge;" data-ng-src="data:image/jpeg;base64,{{tbl_Inv_ProductRegistrationMaster.ProductPhoto.length > 0 ? tbl_Inv_ProductRegistrationMaster.ProductPhoto : ''}}" width="100" height="100" />
+                        <input type="button" value="Remove Image" ng-click="RemoveImg();" class="btn btn-danger btn-sm" ng-hide="!(tbl_Inv_ProductRegistrationMaster.ProductPhoto.length > 0)" />
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">{{ImageUploadingProgress}}</span>
+
+                        <div style="margin-top: 10px;" ng-if="UploadProgressValue > 0 && UploadProgressValue < 100">
+                            <div style="width: 100%; background-color: #f3f3f3; border-radius: 5px;">
+                                <div style="width: {{UploadProgressValue}}%; height: 20px; background-color: green; border-radius: 5px;">
+                                    {{UploadProgressValue}}%
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -87,6 +106,9 @@
                         Description
                     </th>
                     <th>
+                        Image
+                    </th>
+                    <th>
                         Control Procedure No
                     </th>
                     <th>
@@ -103,6 +125,9 @@
                     </td>
                     <td style="font-size:xx-small;">
                         {{itm.Description}}
+                    </td>
+                    <td>
+                        {{itm.ProductPhoto}}
                     </td>
                     <td style="font-size:xx-small;">
                         {{itm.ControlProcedureNo}}
@@ -122,7 +147,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div mycssclass="@MyCSSClassName.Table_NavDiv">
                             <MyButton operation="@MyButtonOperation.first" ng-click="pageNavigation('first')" ng-disabled="ng_DisabledBtnPageF"></MyButton>
                             <MyButton operation="@MyButtonOperation.back" ng-click="pageNavigation('back')" ng-disabled="ng_DisabledBtnPageP"></MyButton>

@@ -328,6 +328,9 @@ namespace OreasModel
         [Display(Name = "Control Procedure No")]
         public string ControlProcedureNo { get; set; }
 
+        [Display(Name = "Product Photo")]
+        public string ProductPhoto { get; set; }
+
         [MaxLength(50)]
         public string CreatedBy { get; set; }
 

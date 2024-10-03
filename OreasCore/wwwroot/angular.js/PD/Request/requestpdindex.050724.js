@@ -162,7 +162,6 @@
                     $scope.ng_DisabledBtnAll = false;
                     $scope.ImageUploadingProgress = 'Image is captured Sucessfully Please save the record';
                     $scope.$digest();
-                    console.log('o', $scope.ng_DisabledBtnAll);
                 };
 
                 reader.onerror = function () {

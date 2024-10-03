@@ -58,6 +58,7 @@
                 'ProductName': null, 'Description': null, 'ControlProcedureNo': null,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 'NoOfUnits': 0
             };
+            document.getElementById('ProductPhoto').value = '';
         };
 
         $scope.postRowParam = function () {
@@ -69,6 +70,77 @@
         };
       
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
+
+        //-------------------------Product Image------------------------//
+        $scope.LoadFileDataImg = function (files) {
+            $scope.ng_DisabledBtnAll = true;
+
+            $scope.ImageUploadingProgress = 'Image is capturing! Please Wait';
+            $scope.tbl_Inv_ProductRegistrationMaster.ProductPhoto = '';
+            $scope.UploadProgressValue = 0;  // Initialize progress to 0
+            $scope.$digest();
+
+            // Check if a file is selected or if the user canceled the dialog
+            if (!files || files.length === 0) {
+                // User canceled the file dialog
+                $scope.ng_DisabledBtnAll = false;
+                $scope.ImageUploadingProgress = 'No file selected.';
+                $scope.$digest();
+                return;
+            }
+
+            const file = files[0];
+
+            if (file) {
+                const filesizeKB = Math.round(file.size / 1024);
+                if (filesizeKB > 100) {
+                    $scope.ng_DisabledBtnAll = false;
+                    $scope.ImageUploadingProgress = 'Image is capturing terminated';
+                    document.getElementById('ProductPhoto').value = '';
+                    alert('Maximum 100KBs file size is allowed but uploaded file is size is: ' + filesizeKB + 'KBs');
+                    $scope.$apply(); // ye es liye kiya hai alert ki waja se ye  $scope.ng_DisabledBtnAll = false; code work nahi karta tou zabardasti apply karwa k run kiya hai
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                // Handle the progress event to show the uploading progress
+                reader.onprogress = function (e) {
+                    if (e.lengthComputable) {
+                        const percentLoaded = Math.round((e.loaded / e.total) * 100);
+                        $scope.UploadProgressValue = percentLoaded;
+                        $scope.ImageUploadingProgress = 'Uploading: ' + percentLoaded + '%';
+                        $scope.$digest(); // Update the UI
+                    }
+                };
+
+                reader.onload = function (e) {
+
+                    const base64String = e.target.result.split(',')[1];
+
+                    $scope.tbl_Inv_ProductRegistrationMaster.ProductPhoto = base64String;
+                    $scope.ng_DisabledBtnAll = false;
+                    $scope.ImageUploadingProgress = 'Image is captured Sucessfully Please save the record';
+                    $scope.$digest();
+                };
+
+                reader.onerror = function () {
+                    $scope.ImageUploadingProgress = 'Error uploading image!';
+                    $scope.ng_DisabledBtnAll = false;
+                    document.getElementById('ProductPhoto').value = '';
+                    $scope.$digest();
+                };
+
+                reader.readAsDataURL(file);
+            }
+        };
+
+        $scope.RemoveImg = function ()
+        {
+            $scope.tbl_Inv_ProductRegistrationMaster.ProductPhoto = null;
+            document.getElementById('ProductPhoto').value = '';
+            $scope.ImageUploadingProgress = 'Image is Remove! Please Save Record Now';
+        };
 
         //-----------------------Excel Upload----------------------//
         $scope.LoadFileData = function (files) {
