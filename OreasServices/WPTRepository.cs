@@ -14901,6 +14901,10 @@ namespace OreasServices
             {
                 return await Task.Run(() => PayRunSalarySlipIndividual(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, rn, GroupID, userName));
             }
+            else if (rn == "PayRun Salary Slip Individual Unknown")
+            {
+                return await Task.Run(() => PayRunSalarySlipIndividualUnknown(id, datefrom, datetill, SeekBy, GroupBy, Orderby, uri, "PayRun Salary Slip Individual", GroupID, userName));
+            }
             return Encoding.ASCII.GetBytes("Wrong Parameters");
         }
         private async Task<byte[]> PayRunSalarySlipIndividual(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
@@ -15124,6 +15128,228 @@ namespace OreasServices
 
 
             
+        }
+        private async Task<byte[]> PayRunSalarySlipIndividualUnknown(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
+        {
+            ITPage page = new ITPage(PageSize.A4, 20f, 20f, 20f, 30f, null, true, false, false);
+
+            /////////////------------------------------table for Detail 8------------------------------////////////////
+            Table pdftableMain = new Table(8).UseAllAvailableWidth().SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER).SetKeepTogether(true);
+
+            Table pdftableSub = new Table(4).SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER);
+
+
+            var Earnings = new List<(string, string, double)>();
+            var Deductions = new List<(string, string, double)>();
+
+            string ATNo = "", EmpName = "", Department = "", Designation = "", A = "", AP = "", HS = "", HSP = "", PL = "", WD = "", OT = "", LeaveBalance = "", LoanBalance = "";
+            double Wage = 0, BasicWage = 0;
+            DateTime StartDate = DateTime.Now, EndDate = DateTime.Now;
+
+            using (var command = db.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "EXECUTE [dbo].[Report_WPT_PayRunDetail] @ReportName,@DateFrom,@DateTill,@MasterID,@SeekBy,@GroupBy,@OrderBy,@GroupID,@UserName ";
+                command.CommandType = CommandType.Text;
+
+                var ReportName = command.CreateParameter();
+                ReportName.ParameterName = "@ReportName"; ReportName.DbType = DbType.String; ReportName.Value = rn;
+                command.Parameters.Add(ReportName);
+
+                var DateFrom = command.CreateParameter();
+                DateFrom.ParameterName = "@DateFrom"; DateFrom.DbType = DbType.DateTime; DateFrom.Value = datefrom.HasValue ? datefrom.Value : DateTime.Now;
+                command.Parameters.Add(DateFrom);
+
+                var DateTill = command.CreateParameter();
+                DateTill.ParameterName = "@DateTill"; DateTill.DbType = DbType.DateTime; DateTill.Value = datetill.HasValue ? datetill.Value : DateTime.Now;
+                command.Parameters.Add(DateTill);
+
+                var MasterID = command.CreateParameter();
+                MasterID.ParameterName = "@MasterID"; MasterID.DbType = DbType.Int32; MasterID.Value = id;
+                command.Parameters.Add(MasterID);
+
+                var seekBy = command.CreateParameter();
+                seekBy.ParameterName = "@SeekBy"; seekBy.DbType = DbType.String; seekBy.Value = SeekBy; seekBy.Value = SeekBy ?? "";
+                command.Parameters.Add(seekBy);
+
+                var groupBy = command.CreateParameter();
+                groupBy.ParameterName = "@GroupBy"; groupBy.DbType = DbType.String; groupBy.Value = GroupBy ?? "";
+                command.Parameters.Add(groupBy);
+
+                var orderBy = command.CreateParameter();
+                orderBy.ParameterName = "@OrderBy"; orderBy.DbType = DbType.String; orderBy.Value = Orderby ?? "";
+                command.Parameters.Add(orderBy);
+
+                var groupID = command.CreateParameter();
+                groupID.ParameterName = "@GroupID"; groupID.DbType = DbType.Int32; groupID.Value = GroupID;
+                command.Parameters.Add(groupID);
+
+                var UserName = command.CreateParameter();
+                UserName.ParameterName = "@UserName"; UserName.DbType = DbType.String; UserName.Value = userName;
+                command.Parameters.Add(UserName);
+
+                int EmpID = 0;
+
+                if (command.Connection.State == ConnectionState.Closed)
+                    await command.Connection.OpenAsync();
+
+                using (DbDataReader sqlReader = command.ExecuteReader())
+                {
+                    while (sqlReader.Read())
+                    {
+
+                        if (EmpID != (int)sqlReader["FK_tbl_WPT_Employee_ID"])
+                        {
+
+                            EmpID = (int)sqlReader["FK_tbl_WPT_Employee_ID"];
+
+                            ATNo = sqlReader["ATEnrollmentNo_Default"].ToString();
+                            EmpName = sqlReader["EmployeeName"].ToString();
+                            Department = sqlReader["DepartmentName"].ToString();
+                            Designation = sqlReader["Designation"].ToString();
+                            A = sqlReader["A"].ToString();
+                            AP = sqlReader["AP"].ToString();
+                            HS = sqlReader["HS"].ToString();
+                            HSP = sqlReader["HSP"].ToString();
+                            PL = sqlReader["PL"].ToString();
+                            WD = sqlReader["WD"].ToString();
+                            OT = sqlReader["OT"].ToString();
+                            Wage = Convert.ToDouble(sqlReader["Wage"]);
+                            BasicWage = Convert.ToDouble(sqlReader["BasicWage"]);
+                            LeaveBalance = sqlReader["LeaveBalance"].ToString();
+                            LoanBalance = sqlReader["LoanBalance"].ToString();
+                            StartDate = (DateTime)sqlReader["StartDate"];
+                            EndDate = (DateTime)sqlReader["EndDate"];
+
+                            Earnings.Clear();
+                            if (Convert.ToDouble(sqlReader["Debit"]) > 0)
+                                Earnings.Add((sqlReader["WageID"].ToString(), sqlReader["HeadWage"].ToString(), (double)sqlReader["Debit"]));
+
+                            Deductions.Clear();
+                            if (Convert.ToDouble(sqlReader["Credit"]) > 0)
+                                Deductions.Add((sqlReader["WageID"].ToString(), sqlReader["HeadWage"].ToString(), (double)sqlReader["Credit"]));
+
+                        }
+                        else
+                        {
+
+                            if (!Earnings.Exists(f => f.Item1 == sqlReader["WageID"].ToString()) && Convert.ToDouble(sqlReader["Debit"]) > 0)
+                                Earnings.Add((sqlReader["WageID"].ToString(), sqlReader["HeadWage"].ToString(), (double)sqlReader["Debit"]));
+
+                            if (!Deductions.Exists(f => f.Item1 == sqlReader["WageID"].ToString()) && Convert.ToDouble(sqlReader["Credit"]) > 0)
+                                Deductions.Add((sqlReader["WageID"].ToString(), sqlReader["HeadWage"].ToString(), (double)sqlReader["Credit"]));
+
+                        }
+
+
+
+                    }
+
+                    //-----------------------------last row---------------------------------------------//
+                    if (EmpID > 0)
+                    {
+                        pdftableMain = new Table(8).UseAllAvailableWidth().SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER).SetKeepTogether(true);
+
+                        //-------------row 1----------------//
+                        pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add("SALARY SLIP FOR THE MONTH OF ").Add(EndDate.ToString("MMMM-yyyy"))).SetBackgroundColor(new DeviceRgb(0, 136, 204)).SetFontColor(new DeviceRgb(255, 255, 255)).SetBold().SetTextAlignment(TextAlignment.CENTER).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add("------xxx------")).SetBackgroundColor(new DeviceRgb(102, 153, 255)).SetFontColor(new DeviceRgb(255, 255, 255)).SetBold().SetTextAlignment(TextAlignment.CENTER).SetKeepTogether(true));
+
+                        //-------------row 2----------------//
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Name: ")).SetBold().SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add(EmpName)).SetBold().SetKeepTogether(true));
+
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("AT No: ")).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add(ATNo)).SetKeepTogether(true));
+
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Emp No: ")).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add(" ")).SetKeepTogether(true));
+
+                        //-------------row 3----------------//
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Department: ")).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add(Department)).SetKeepTogether(true));
+
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Designation: ")).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add(Designation)).SetKeepTogether(true));
+
+                        //-------------row 4----------------//
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Basic Salary: ")).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add(string.Format("{0:n0}", BasicWage))).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Loan Bal: ").Add(LoanBalance)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("WD: ").Add(WD).Add("   OT: ").Add(OT)).SetKeepTogether(true));
+
+
+
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("A: ").Add(A).Add("   AP: ").Add(AP)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("HS: ").Add(HS).Add("   HSP: ").Add(HSP)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Paid Leaves: ").Add(PL)).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add("Leave Bal: ").Add(LeaveBalance)).SetKeepTogether(true));
+
+                        //-------------row 5----------------//
+                        pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add("EARNINGS")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 4).Add(new Paragraph().Add("DEDUCTIONS")).SetBold().SetTextAlignment(TextAlignment.CENTER).SetKeepTogether(true));
+
+
+                        //----------------------------------------------row 6--------------------------------------------//
+                        pdftableSub = new Table(4).UseAllAvailableWidth().SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER).SetKeepTogether(true);
+
+                        foreach (var itm in Earnings)
+                        {
+                            if (itm.Item1.Length > 0)
+                            {
+                                pdftableSub.AddCell(new Cell(1, 3).Add(new Paragraph().Add(itm.Item2 + ": ")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                                pdftableSub.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", itm.Item3))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                            }
+
+                        }
+                        pdftableMain.AddCell(new Cell(1, 4).Add(pdftableSub).SetKeepTogether(true));
+
+                        pdftableSub = new Table(4).UseAllAvailableWidth().SetFontSize(6).SetFixedLayout().SetBorder(Border.NO_BORDER).SetKeepTogether(true);
+
+
+                        foreach (var itm in Deductions)
+                        {
+                            if (itm.Item1.Length > 0)
+                            {
+                                pdftableSub.AddCell(new Cell(1, 3).Add(new Paragraph().Add(itm.Item2 + ": ")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+                                pdftableSub.AddCell(new Cell().Add(new Paragraph().Add(string.Format("{0:n0}", itm.Item3))).SetTextAlignment(TextAlignment.RIGHT).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+                            }
+                        }
+
+                        pdftableMain.AddCell(new Cell(1, 4).Add(pdftableSub).SetKeepTogether(true));
+
+
+                        //---------------------------Earning & Deduction Total Row--------------------------//
+                        pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add("Total:")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add(string.Format("{0:n0}", Earnings.Sum(s => s.Item3)))).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+
+                        pdftableMain.AddCell(new Cell(1, 3).Add(new Paragraph().Add("Total:")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add(string.Format("{0:n0}", Deductions.Sum(s => s.Item3)))).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+
+                        //---------------------------Net Salary Row--------------------------//
+                        pdftableMain.AddCell(new Cell(1, 7).Add(new Paragraph().Add("Net Salary:")).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+                        pdftableMain.AddCell(new Cell(1, 1).Add(new Paragraph().Add(
+                            string.Format("{0:n0}", ((double)Earnings.Sum(s => s.Item3) - (double)Deductions.Sum(s => s.Item3)))
+                                                                                    )
+                                                                ).SetBold().SetTextAlignment(TextAlignment.RIGHT).SetKeepTogether(true));
+
+
+                        pdftableMain.AddCell(new Cell(1, 8).Add(new Paragraph().Add("\n")).SetBorder(Border.NO_BORDER).SetKeepTogether(true));
+
+
+
+                    }
+                }
+
+            }
+
+            page.InsertContent(new Cell().Add(pdftableMain).SetBorder(Border.NO_BORDER));
+
+            return page.FinishToGetBytes();
+
+
+
+
         }
         private async Task<byte[]> PayRunSalarySlipRegister(int id = 0, DateTime? datefrom = null, DateTime? datetill = null, string SeekBy = "", string GroupBy = "", string Orderby = "", string uri = "", string rn = "", int GroupID = 0, string userName = "")
         {

@@ -59,7 +59,7 @@ namespace OreasCore.Areas.WPT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [MyAuthorization(FormName = "Email", Operation = "CanPost")]
-        public async Task<string> SendMail([FromBody] VM_Email VM_Email, string operation = "")
+        public async Task<string> SendMail([FromBody] VM_Email VM_Email, string operation = "", bool Unknown = true)
         {
             string rtn = "Failed";
             using (var client = new SmtpClient())
@@ -68,8 +68,11 @@ namespace OreasCore.Areas.WPT.Controllers
                 await client.AuthenticateAsync(Rpt_Shared.LicenseToEmail, Rpt_Shared.LicenseToEmailPswd);
 
                 var message = new MimeMessage();
+                if (Unknown)
+                    message.From.Add(new MailboxAddress("Company", Rpt_Shared.LicenseToEmail));
+                else
+                    message.From.Add(new MailboxAddress(Rpt_Shared.LicenseTo, Rpt_Shared.LicenseToEmail));
 
-                message.From.Add(new MailboxAddress(Rpt_Shared.LicenseTo, Rpt_Shared.LicenseToEmail));
                 message.Subject = VM_Email.Subject;
 
                 var builder = new BodyBuilder();

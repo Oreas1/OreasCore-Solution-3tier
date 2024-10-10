@@ -591,6 +591,9 @@
         $scope.GetPaySlip = function (id) {
             $window.open('/WPT/PayRun/GetReport?rn=PayRun Salary Slip Individual&_for=Emp&id=' + id);
         };
+        $scope.GetPaySlipUnknown = function (id) {
+            $window.open('/WPT/PayRun/GetReport?rn=PayRun Salary Slip Individual Unknown&_for=Emp&id=' + id);
+        };
 
         $scope.tbl_WPT_PayRunDetail_Emp = {
             'ID': 0, 'FK_tbl_WPT_PayRunMaster_ID': $scope.MasterObject.ID,
@@ -673,7 +676,7 @@
 
         };
 
-        $scope.EmailPaySlip = function (id,empName,Email) {
+        $scope.EmailPaySlip = function (id,empName,Email,unknown) {
           
             if (confirm("Are you sure! you want to Email PaySlip ") === true) {
                 var successcallback = function (response) {
@@ -683,7 +686,7 @@
                 };
                 var errorcallback = function (error) { alert(error); };
 
-                $http({ method: "GET", url: "/WPT/PayRun/EmailPaySlip", params: { ID: id, EmpName: empName, EmpEmail: Email, MonthEnd: $scope.MasterObject.EndDate }, headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(successcallback, errorcallback);
+                $http({ method: "GET", url: "/WPT/PayRun/EmailPaySlip", params: { ID: id, EmpName: empName, EmpEmail: Email, MonthEnd: $scope.MasterObject.EndDate, Unknown: unknown }, headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(successcallback, errorcallback);
             }
         };
 
@@ -892,7 +895,7 @@
             { n: 'Employees PayRun', v: 'Employees PayRun' },
             { n: 'Employees PayRun Reversal', v: 'Employees PayRun Reversal' },
             { n: 'Emloyees PaySlip Mailing', v: 'Emloyees PaySlip Mailing' },
-            { n: 'test', v: 'test' }
+            { n: 'Emloyees PaySlip Mailing Unknown', v: 'Emloyees PaySlip Mailing Unknown' }
         ];
         //--------xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx--------//
         //---------------------------------------SignalR------------------------------------------------------------//

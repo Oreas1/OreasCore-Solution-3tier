@@ -736,7 +736,7 @@ namespace OreasCore.Areas.WPT.Controllers
 
         [AjaxOnly]
         [MyAuthorization(FormName = "PayRun", Operation = "CanView")]
-        public async Task<string> EmailPaySlip([FromServices] IPayRun IpayRun, int ID=0, string EmpName="", string EmpEmail="", DateTime MonthEnd= default(DateTime))
+        public async Task<string> EmailPaySlip([FromServices] IPayRun IpayRun, int ID=0, string EmpName="", string EmpEmail="", DateTime MonthEnd= default(DateTime), bool Unknown = true)
         {
             
            return await Task.Run(async () => {
@@ -749,8 +749,10 @@ namespace OreasCore.Areas.WPT.Controllers
                        return "Unable to send mail: Email Not Configured";
 
                    var message = new MimeMessage();
-
-                   message.From.Add(new MailboxAddress(Rpt_Shared.LicenseTo, Rpt_Shared.LicenseToEmail));
+                   if(Unknown)
+                       message.From.Add(new MailboxAddress("Company..", Rpt_Shared.LicenseToEmail));
+                   else
+                       message.From.Add(new MailboxAddress(Rpt_Shared.LicenseTo, Rpt_Shared.LicenseToEmail));
 
                    message.To.Add(new MailboxAddress(EmpName, EmpEmail));
 
@@ -758,14 +760,26 @@ namespace OreasCore.Areas.WPT.Controllers
 
                    var builder = new BodyBuilder();
 
+                   if (!Unknown)
+                   {
+                       builder.HtmlBody = "<b>Dear " + EmpName + "</b><br>" + "Your salary has been generated in the system for the period of "
+                          + MonthEnd.ToString("MMMM-yyyy") + "."
+                          + "<br>" + "Please find attachment of Payslip" +
+                          "<br>" + "Note: This is system generated email doesnot required signature." +
+                          "<hr>" + Rpt_Shared.LicenseToEmailFooter.Replace("@whatsapp", "This is " + EmpName + " ");
 
-                   builder.HtmlBody = "<b>Dear " + EmpName + "</b><br>" + "Your salary has been generated in the system for the period of "
-                       + MonthEnd.ToString("MMMM-yyyy") + "."
-                       + "<br>" + "Please find attachment of Payslip" +
-                       "<br>" + "Note: This is system generated email doesnot required signature." +
-                       "<hr>" + Rpt_Shared.LicenseToEmailFooter.Replace("@whatsapp", "This is " + EmpName + " ");
+                       builder.Attachments.Add("PaySlip", new MemoryStream(await IpayRun.GetPDFFilePayRunDetailAsync("PayRun Salary Slip Individual", ID, 0, 0, DateTime.Now, DateTime.Now, "", "", "", "", 0)).ToArray(), new ContentType("application", "pdf"));
 
-                   builder.Attachments.Add("PaySlip", new MemoryStream(await IpayRun.GetPDFFilePayRunDetailAsync("PayRun Salary Slip Individual", ID, 0, 0, DateTime.Now, DateTime.Now, "", "", "", "", 0)).ToArray(), new ContentType("application", "pdf"));
+                   }
+                   else
+                   {
+                       builder.HtmlBody = "<b>Dear " + EmpName + "</b><br>" + "Your salary has been generated in the system for the period of "
+                          + MonthEnd.ToString("MMMM-yyyy") + "."
+                          + "<br>" + "Please find attachment of Payslip";
+
+                       builder.Attachments.Add("PaySlip", new MemoryStream(await IpayRun.GetPDFFilePayRunDetailAsync("PayRun Salary Slip Individual Unknown", ID, 0, 0, DateTime.Now, DateTime.Now, "", "", "", "", 0)).ToArray(), new ContentType("application", "pdf"));
+                   
+                   }
 
 
                    message.Body = builder.ToMessageBody();

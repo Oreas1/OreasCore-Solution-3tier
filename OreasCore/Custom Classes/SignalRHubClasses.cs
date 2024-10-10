@@ -903,7 +903,9 @@ namespace OreasCore.Custom_Classes
                 else if (_ForProcess == "Employees PayRun Reversal")
                     await EmployeesPayRunReversal(_IPayRun, _MasterID, _ForProcess, token);
                 else if (_ForProcess == "Emloyees PaySlip Mailing")
-                    await EmloyeesPaySlipMailing(_IPayRun, _MasterID, _ForProcess, token);
+                    await EmloyeesPaySlipMailing(_IPayRun, _MasterID, _ForProcess,false, token);
+                else if (_ForProcess == "Emloyees PaySlip Mailing Unknown")
+                    await EmloyeesPaySlipMailing(_IPayRun, _MasterID, _ForProcess,true, token);
                 else if (_ForProcess == "test")
                     await RunConcurrentTasksWithProgress();
                 else
@@ -984,7 +986,7 @@ namespace OreasCore.Custom_Classes
             ReleaseResource(Context.ConnectionId).Wait();
             return base.OnDisconnectedAsync(exception);
         }
-        private async Task EmloyeesPaySlipMailing(IPayRun _IPayRun, int _MasterID, string _ForProcess, CancellationToken token)
+        private async Task EmloyeesPaySlipMailing(IPayRun _IPayRun, int _MasterID, string _ForProcess, bool Unknown, CancellationToken token)
         {
             try
             {
@@ -1012,7 +1014,10 @@ namespace OreasCore.Custom_Classes
                     {
                         var message = new MimeMessage();
 
-                        message.From.Add(new MailboxAddress(Rpt_Shared.LicenseTo, Rpt_Shared.LicenseToEmail));
+                        if (Unknown)
+                            message.From.Add(new MailboxAddress("Company..", Rpt_Shared.LicenseToEmail));
+                        else
+                            message.From.Add(new MailboxAddress(Rpt_Shared.LicenseTo, Rpt_Shared.LicenseToEmail));
                    
                         message.To.Add(new MailboxAddress(PayRunDetail.EmployeeName, PayRunDetail.Email));
 
@@ -1020,15 +1025,26 @@ namespace OreasCore.Custom_Classes
 
                         var builder = new BodyBuilder();
 
-                        builder.HtmlBody = "<b>Dear " + PayRunDetail.EmployeeName + "</b><br>" + "Your salary has been generated in the system for the period of "
-                            + PayRunDetail.MonthYear + "."
-                            + "<br>" + "Please find attachment of Payslip" +
-                            "<br>" + "Note: This is system generated email doesnot required signature." +
-                            "<hr>" + Rpt_Shared.LicenseToEmailFooter.Replace("@whatsapp", "This is " + PayRunDetail.EmployeeName + " ");
+                        if (!Unknown)
+                        {
+                            builder.HtmlBody = "<b>Dear " + PayRunDetail.EmployeeName + "</b><br>" + "Your salary has been generated in the system for the period of "
+                               + PayRunDetail.MonthYear + "."
+                               + "<br>" + "Please find attachment of Payslip" +
+                               "<br>" + "Note: This is system generated email doesnot required signature." +
+                               "<hr>" + Rpt_Shared.LicenseToEmailFooter.Replace("@whatsapp", "This is " + PayRunDetail.EmployeeName + " ");
 
+                            builder.Attachments.Add("PaySlip", new MemoryStream(await _IPayRun.GetPDFFilePayRunDetailAsync("PayRun Salary Slip Individual", PayRunDetail.tbl_WPT_PayRunDetail_Emp_ID, 0, 0, DateTime.Now, DateTime.Now, "", "", "", "", 0)).ToArray(), new ContentType("application", "pdf"));
 
-                        builder.Attachments.Add("PaySlip", new MemoryStream(await _IPayRun.GetPDFFilePayRunDetailAsync("PayRun Salary Slip Individual", PayRunDetail.tbl_WPT_PayRunDetail_Emp_ID, 0, 0, DateTime.Now, DateTime.Now, "", "", "", "", 0)).ToArray(), new ContentType("application", "pdf"));
+                        }
+                        else
+                        {
+                            builder.HtmlBody = "<b>Dear " + PayRunDetail.EmployeeName + "</b><br>" + "Your salary has been generated in the system for the period of "
+                               + PayRunDetail.MonthYear + "."
+                               + "<br>" + "Please find attachment of Payslip";
+                            
+                            builder.Attachments.Add("PaySlip", new MemoryStream(await _IPayRun.GetPDFFilePayRunDetailAsync("PayRun Salary Slip Individual Unknown", PayRunDetail.tbl_WPT_PayRunDetail_Emp_ID, 0, 0, DateTime.Now, DateTime.Now, "", "", "", "", 0)).ToArray(), new ContentType("application", "pdf"));
 
+                        }                       
 
                         message.Body = builder.ToMessageBody();
                         await client.SendAsync(message);

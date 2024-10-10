@@ -18,7 +18,7 @@
     <script src="~/lib/froala-editor/js/plugins/font_size.min.js"></script>
     <script src="~/lib/froala-editor/js/plugins/font_family.min.js"></script>
     <script src="~/lib/froala-editor/js/plugins/colors.min.js"></script>
-    <script src="~/angular.js/Angular-WPT/General/emailindex.0.1.js"></script>
+    <script src="~/angular.js/Angular-WPT/General/emailindex.101024.js"></script>
 
 }
 @section Styles
@@ -108,11 +108,18 @@
                 </div>
             </div>
             <div mycssclass="@MyCSSClassName.RowInForm">
-                <div id="editor" mycssclass="@MyCSSClassName.RowInForm_FormGroup12">                    
+                <div id="editor" mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
                     <form>
                         <textarea id='edit' style="margin-top: 30px;" placeholder="Email Content ....."></textarea>
                         <input type="submit" class="btn btn-outline-primary" value="Send Mail">
                     </form>
+                </div>
+                <div>
+                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req" ng-click="AsUnknownClick();">
+                        As Unknown  &nbsp;
+                        <i ng-hide="!AsUnknown"> <span class="fa fa-toggle-on" style="font-size:large;"></span>  </i>
+                        <i ng-hide="AsUnknown">  <span class="fa fa-toggle-off" style="font-size:large;"></span> </i>
+                    </span>
                 </div>
             </div>
             <div mycssclass="@MyCSSClassName.RowInForm">

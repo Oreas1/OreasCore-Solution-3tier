@@ -23,7 +23,8 @@
         //for list model which will be coming as as data in pageddata
         $scope.EmailTos = [];
         $scope.WithFooter = true;
-
+        $scope.AsUnknown = false;
+      
 
         $scope.clear = function () {
             $scope.EmailTo = { 'Index': null, 'EmailAddress': null, 'EmailType': 'To' };
@@ -42,6 +43,13 @@
                 $scope.WithFooter = false;
             else
                 $scope.WithFooter = true;
+        };
+
+        $scope.AsUnknownClick = function () {
+            if ($scope.AsUnknown === true)
+                $scope.AsUnknown = false;
+            else
+                $scope.AsUnknown = true;
         };
 
         $scope.PostRow = function (op) {            
@@ -90,7 +98,7 @@
             var errorcallback = function (error) { console.log(error); };
             if (confirm("Are you sure! you want to Send Mail") === true) {
                 $http({
-                    method: "POST", url: '/WPT/General/SendMail', async: true, params: { operation :'Save New' }, data: $scope.VM_Email, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
+                    method: "POST", url: '/WPT/General/SendMail', async: true, params: { operation :'Save New', Unknown: $scope.AsUnknown }, data: $scope.VM_Email, headers: { 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }
                 }).then(successcallback, errorcallback);
             }
         };
