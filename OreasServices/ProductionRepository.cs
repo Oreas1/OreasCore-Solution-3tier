@@ -1547,7 +1547,7 @@ namespace OreasServices
             pdftableDetailProcess.AddCell(new Cell(1, 3).Add(new Paragraph().Add("Production Process")).SetTextAlignment(TextAlignment.CENTER).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
             pdftableDetailProcess.AddCell(new Cell().Add(new Paragraph().Add("S. No")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
-            pdftableDetailProcess.AddCell(new Cell().Add(new Paragraph().Add("Process Name")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
+            pdftableDetailProcess.AddCell(new Cell().Add(new Paragraph().Add("Procedure Name")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
             pdftableDetailProcess.AddCell(new Cell().Add(new Paragraph().Add("QC Sample Product")).SetBold().SetBorder(new SolidBorder(0.5f)).SetKeepTogether(true));
 
 
@@ -1653,7 +1653,7 @@ namespace OreasServices
 
                 //----------Packaging detail
                 ReportName.Value = rn + "3"; MasterID.Value = id;
-                SNo = 1;
+                SNo = 1; 
                 using (DbDataReader sqlReader = command.ExecuteReader())
                 {
                     while (sqlReader.Read())
@@ -1669,7 +1669,7 @@ namespace OreasServices
                 }
 
                 //----------Process detail
-                ReportName.Value = rn + "4"; MasterID.Value = FK_tbl_Pro_CompositionMaster_ID;
+                ReportName.Value = rn + "4"; MasterID.Value = id;
                 SNo = 1;
                 using (DbDataReader sqlReader = command.ExecuteReader())
                 {
