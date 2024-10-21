@@ -34,8 +34,6 @@
 
         init_COASearchModalGeneral($scope, $http);
 
-
-
         $scope.tbl_Inv_PurchaseRequestDetail = {
             'ID': 0, 'DocNo': '', 'DocDate': new Date(),
             'FK_tbl_Inv_ProductRegistrationDetail_ID': null, 'FK_tbl_Inv_ProductRegistrationDetail_IDName': '', 'MeasurementUnit': '',
@@ -70,6 +68,13 @@
         $scope.MasterObject = {};
         $scope.$on('PurchaseRequestBidsDetailCtlr', function (e, itm) {
             $scope.MasterObject = itm;
+            if (itm.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
+
             $scope.GetLastPO(itm.FK_tbl_Inv_ProductRegistrationDetail_ID); 
             $scope.pageNavigation('first');
         });

@@ -105,8 +105,12 @@
             $scope.MasterObject = itm;
             $scope.pageNavigation('first');
 
-            if (itm.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (itm.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
         });
 
         $scope.$on('init_PDRequestCFPDetailItemDispensingCtlr', function (e, itm) {

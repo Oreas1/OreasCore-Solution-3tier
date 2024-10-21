@@ -1,5 +1,5 @@
 ﻿MainModule
-    .controller("PurchaseOrderMasterCtlr", function ($scope, $http) {
+    .controller("PurchaseOrderImportMasterCtlr", function ($scope, $http) {
         $scope.DivHideShow = function (v, itm, div_hide, div_show, scope) {
             if (typeof v !== 'undefined' && v !== '' && v !== null) {
                 $scope.$broadcast(v, itm);
@@ -14,28 +14,42 @@
         };
         //////////////////////////////entry panel/////////////////////////
         init_Operations($scope, $http,
-            '/Inventory/Orders/PurchaseOrderMasterLoad', //--v_Load
-            '/Inventory/Orders/PurchaseOrderMasterGet', // getrow
-            '/Inventory/Orders/PurchaseOrderMasterPost' // PostRow
+            '/Inventory/Orders/PurchaseOrderImportMasterLoad', //--v_Load
+            '/Inventory/Orders/PurchaseOrderImportMasterGet', // getrow
+            '/Inventory/Orders/PurchaseOrderImportMasterPost' // PostRow
         );
 
-        init_ViewSetup($scope, $http, '/Inventory/Orders/GetInitializedPurchaseOrder');
+        init_ViewSetup($scope, $http, '/Inventory/Orders/GetInitializedPurchaseOrderImport');
         $scope.init_ViewSetup_Response = function (data) {
-            if (data.find(o => o.Controller === 'PurchaseOrderMasterCtlr') != undefined) {
-                $scope.Privilege = data.find(o => o.Controller === 'PurchaseOrderMasterCtlr').Privilege;
-                init_Filter($scope, data.find(o => o.Controller === 'PurchaseOrderMasterCtlr').WildCard, null, null, data.find(o => o.Controller === 'PurchaseOrderMasterCtlr').LoadByCard);
+            if (data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr') != undefined) {
+                $scope.Privilege = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Privilege;
+                init_Filter($scope, data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').WildCard, null, null, data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').LoadByCard);
 
-                if (data.find(o => o.Controller === 'PurchaseOrderMasterCtlr').Otherdata === null) {
-                    $scope.POTermsConditionsList = [];
+                if (data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata === null) {
+                    $scope.SupplierList = []; 
+                    $scope.ManufacturerList = [];
+                    $scope.IndenterList = [];
+                    $scope.ImportTermList = [];
+                    $scope.CurrencyCodeList = [];
+                    $scope.CountryList = [];
+                    $scope.InternationalCommercialTermList = [];
+                    $scope.TransportList = [];
                 }
                 else {
-                    $scope.POTermsConditionsList = data.find(o => o.Controller === 'PurchaseOrderMasterCtlr').Otherdata.POTermsConditionsList;
+                    $scope.SupplierList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.SupplierList;
+                    $scope.ManufacturerList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.ManufacturerList;
+                    $scope.IndenterList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.IndenterList;
+                    $scope.ImportTermList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.ImportTermList;
+                    $scope.CurrencyCodeList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.CurrencyCodeList;
+                    $scope.CountryList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.CountryList;
+                    $scope.InternationalCommercialTermList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.InternationalCommercialTermList;
+                    $scope.TransportList = data.find(o => o.Controller === 'PurchaseOrderImportMasterCtlr').Otherdata.TransportList;
                 }
 
                 $scope.pageNavigation('first');
             }
-            if (data.find(o => o.Controller === 'PurchaseOrderDetailCtlr') != undefined) {
-                $scope.$broadcast('init_PurchaseOrderDetailCtlr', data.find(o => o.Controller === 'PurchaseOrderDetailCtlr'));
+            if (data.find(o => o.Controller === 'PurchaseOrderImportDetailCtlr') != undefined) {
+                $scope.$broadcast('init_PurchaseOrderImportDetailCtlr', data.find(o => o.Controller === 'PurchaseOrderImportDetailCtlr'));
             }
             if (data.find(o => o.Controller === 'PurchaseOrderDetailPNCtlr') != undefined) {
                 $scope.$broadcast('init_PurchaseOrderDetailPNCtlr', data.find(o => o.Controller === 'PurchaseOrderDetailPNCtlr'));
@@ -65,7 +79,17 @@
             'ID': 0, 'PONo': '', 'PODate': new Date(),
             'FK_tbl_Ac_ChartOfAccounts_ID': null, 'FK_tbl_Ac_ChartOfAccounts_IDName': '',
             'TargetDate': new Date(), 'Remarks': '', 'FK_tbl_Inv_PurchaseOrderTermsConditions_ID': null,
-            'FK_tbl_Inv_PurchaseOrderTermsConditions_IDName': '', 'LocalTrue_ImportFalse': true, 'IsSupervisedAll': true,
+            'FK_tbl_Inv_PurchaseOrderTermsConditions_IDName': '', 'LocalTrue_ImportFalse': false,
+            'FK_tbl_Inv_PurchaseOrder_Supplier_ID': null, 'FK_tbl_Inv_PurchaseOrder_Supplier_IDName': '',
+            'FK_tbl_Inv_PurchaseOrder_Manufacturer_ID': null, 'FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName': '',
+            'FK_tbl_Inv_PurchaseOrder_Indenter_ID': null, 'FK_tbl_Inv_PurchaseOrder_Indenter_IDName': '',
+            'IndentDate': null, 'IndentNo': null,
+            'FK_tbl_Inv_PurchaseOrder_ImportTerms_ID': null, 'FK_tbl_Inv_PurchaseOrder_ImportTerms_IDName': '',
+            'FK_tbl_Ac_CurrencyAndCountry_ID_Currency': null, 'FK_tbl_Ac_CurrencyAndCountry_ID_CurrencyName': '',
+            'FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOrigin': null, 'FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOriginName': '',
+            'ShipmentDate': null, 'NegotiationDate': null,
+            'FK_tbl_Inv_TransportType_ID': null, 'FK_tbl_Inv_TransportType_IDName': '',
+            'FK_tbl_Inv_InternationalCommercialTerm_ID': null, 'FK_tbl_Inv_InternationalCommercialTerm_IDName': '', 'IsSupervisedAll': true,
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -78,7 +102,17 @@
                 'ID': 0, 'PONo': '', 'PODate': new Date(),
                 'FK_tbl_Ac_ChartOfAccounts_ID': null, 'FK_tbl_Ac_ChartOfAccounts_IDName': '',
                 'TargetDate': new Date(), 'Remarks': '', 'FK_tbl_Inv_PurchaseOrderTermsConditions_ID': null,
-                'FK_tbl_Inv_PurchaseOrderTermsConditions_IDName': '', 'LocalTrue_ImportFalse': true, 'IsSupervisedAll': true,
+                'FK_tbl_Inv_PurchaseOrderTermsConditions_IDName': '', 'LocalTrue_ImportFalse': false,
+                'FK_tbl_Inv_PurchaseOrder_Supplier_ID': null, 'FK_tbl_Inv_PurchaseOrder_Supplier_IDName': '',
+                'FK_tbl_Inv_PurchaseOrder_Manufacturer_ID': null, 'FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName': '',
+                'FK_tbl_Inv_PurchaseOrder_Indenter_ID': null, 'FK_tbl_Inv_PurchaseOrder_Indenter_IDName': '',
+                'IndentDate': null, 'IndentNo': null, 
+                'FK_tbl_Inv_PurchaseOrder_ImportTerms_ID': null, 'FK_tbl_Inv_PurchaseOrder_ImportTerms_IDName': '',
+                'FK_tbl_Ac_CurrencyAndCountry_ID_Currency': null, 'FK_tbl_Ac_CurrencyAndCountry_ID_CurrencyName': '',
+                'FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOrigin': null, 'FK_tbl_Ac_CurrencyAndCountry_ID_CountryOfOriginName': '',
+                'ShipmentDate': null, 'NegotiationDate': null,
+                'FK_tbl_Inv_TransportType_ID': null, 'FK_tbl_Inv_TransportType_IDName': '',
+                'FK_tbl_Inv_InternationalCommercialTerm_ID': null, 'FK_tbl_Inv_InternationalCommercialTerm_IDName': '', 'IsSupervisedAll': true,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
         };
@@ -91,6 +125,12 @@
             $scope.tbl_Inv_PurchaseOrderMaster = data;
             $scope.tbl_Inv_PurchaseOrderMaster.PODate = new Date(data.PODate);
             $scope.tbl_Inv_PurchaseOrderMaster.TargetDate = new Date(data.TargetDate); 
+            if (data.IndentDate !== undefined)
+                $scope.tbl_Inv_PurchaseOrderMaster.IndentDate = new Date(data.IndentDate); 
+            if (data.ShipmentDate !== undefined)
+                $scope.tbl_Inv_PurchaseOrderMaster.ShipmentDate = new Date(data.ShipmentDate); 
+            if (data.NegotiationDate !== undefined)
+                $scope.tbl_Inv_PurchaseOrderMaster.NegotiationDate = new Date(data.NegotiationDate); 
         };
       
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID, IsCanViewOnlyOwnData: $scope.Privilege.CanViewOnlyOwnData }; };
@@ -110,25 +150,25 @@
         };
        
     })
-    .controller("PurchaseOrderDetailCtlr", function ($scope, $http) {
+    .controller("PurchaseOrderImportDetailCtlr", function ($scope, $http) {
         
         $scope.MasterObject = {};
-        $scope.$on('PurchaseOrderDetailCtlr', function (e, itm) {
+        $scope.$on('PurchaseOrderImportDetailCtlr', function (e, itm) {
             $scope.MasterObject = itm;
             $scope.pageNavigation('first');
             $scope.rptID = itm.ID;
         });
 
-        $scope.$on('init_PurchaseOrderDetailCtlr', function (e, itm) {
+        $scope.$on('init_PurchaseOrderImportDetailCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, itm.LoadByCard); 
             init_Report($scope, itm.Reports, '/Inventory/Orders/GetPurchaseOrderReport');
             if (itm.Otherdata === null) {
                 $scope.AspNetOreasPriorityList = [];
-                $scope.ManufacturerPOList = [];
+                $scope.MeasurementUnitList = [];
             }
             else {
                 $scope.AspNetOreasPriorityList = itm.Otherdata.AspNetOreasPriorityList;
-                $scope.ManufacturerPOList = itm.Otherdata.ManufacturerPOList;
+                $scope.MeasurementUnitList = itm.Otherdata.MeasurementUnitList;
             }
         });
 
@@ -145,15 +185,19 @@
                 $scope.tbl_Inv_PurchaseOrderDetail.MeasurementUnit = null;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (item.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
             
         };
 
         init_Operations($scope, $http,
-            '/Inventory/Orders/PurchaseOrderDetailLoad', //--v_Load
-            '/Inventory/Orders/PurchaseOrderDetailGet', // getrow
-            '/Inventory/Orders/PurchaseOrderDetailPost' // PostRow
+            '/Inventory/Orders/PurchaseOrderImportDetailLoad', //--v_Load
+            '/Inventory/Orders/PurchaseOrderImportDetailGet', // getrow
+            '/Inventory/Orders/PurchaseOrderImportDetailPost' // PostRow
         );
 
         $scope.tbl_Inv_PurchaseOrderDetail = {
@@ -162,7 +206,9 @@
             'FK_AspNetOreasPriority_ID': null, 'FK_AspNetOreasPriority_IDName': '', 'Quantity': 0, 'Rate': 0,
             'GSTPercentage': 0, 'DiscountAmount': 0, 'WHTPercentage': 0, 'NetAmount': 0, 'Remarks': '',
             'FK_tbl_Inv_PurchaseOrder_Manufacturer_ID': null, 'FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName': '', 'ReceivedQty': 0, 'ClosedTrue_OpenFalse': false, 
-            'Performance_Time': false, 'Performance_Quantity': false, 'Performance_Quality': false, 'FK_tbl_Inv_PurchaseRequestDetail_ID': null, 'IsSupervised': true,
+            'Performance_Time': false, 'Performance_Quantity': false, 'Performance_Quality': false, 'FK_tbl_Inv_PurchaseRequestDetail_ID': null,
+            'FK_tbl_Inv_MeasurementUnit_ID_Supplier': null, 'FK_tbl_Inv_MeasurementUnit_ID_SupplierName': '',
+            'QuantityAsPerSupplierUnit': 0, 'UnitFactorToConvertInLocalUnit': 1, 'Packaging': null, 'BatchNo': null, 'MfgDate': null, 'ExpiryDate': null, 'IsSupervised': true,
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
         };
 
@@ -177,15 +223,22 @@
                 'FK_AspNetOreasPriority_ID': null, 'FK_AspNetOreasPriority_IDName': '', 'Quantity': 0, 'Rate': 0,
                 'GSTPercentage': 0, 'DiscountAmount': 0, 'WHTPercentage': 0, 'NetAmount': 0, 'Remarks': '',
                 'FK_tbl_Inv_PurchaseOrder_Manufacturer_ID': null, 'FK_tbl_Inv_PurchaseOrder_Manufacturer_IDName': '', 'ReceivedQty': 0, 'ClosedTrue_OpenFalse': false,
-                'Performance_Time': false, 'Performance_Quantity': false, 'Performance_Quality': false, 'FK_tbl_Inv_PurchaseRequestDetail_ID': null, 'IsSupervised': true,
+                'Performance_Time': false, 'Performance_Quantity': false, 'Performance_Quality': false, 'FK_tbl_Inv_PurchaseRequestDetail_ID': null,
+                'FK_tbl_Inv_MeasurementUnit_ID_Supplier': null, 'FK_tbl_Inv_MeasurementUnit_ID_SupplierName': '',
+                'QuantityAsPerSupplierUnit': 0, 'UnitFactorToConvertInLocalUnit': 1, 'Packaging': null, 'BatchNo': null, 'MfgDate': null, 'ExpiryDate': null, 'IsSupervised': true,
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': ''
             };
-
         };
 
         $scope.postRowParam = function () { return { validate: true, params: { operation: $scope.ng_entryPanelSubmitBtnText }, data: $scope.tbl_Inv_PurchaseOrderDetail }; };
 
-        $scope.GetRowResponse = function (data, operation) { $scope.tbl_Inv_PurchaseOrderDetail = data; };
+        $scope.GetRowResponse = function (data, operation) {
+            $scope.tbl_Inv_PurchaseOrderDetail = data;
+            if (data.MfgDate !== undefined)
+                $scope.tbl_Inv_PurchaseOrderDetail.MfgDate = new Date(data.MfgDate); 
+            if (data.ExpiryDate !== undefined)
+                $scope.tbl_Inv_PurchaseOrderDetail.ExpiryDate = new Date(data.ExpiryDate); 
+        };
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterObject.ID }; };        
 

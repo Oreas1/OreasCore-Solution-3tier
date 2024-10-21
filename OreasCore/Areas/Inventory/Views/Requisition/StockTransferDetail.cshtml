@@ -65,7 +65,7 @@
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Quantity [Max: {{Balance}}]</span>
-                        <input id="tbl_Inv_StockTransferDetail.Quantity" name="tbl_Inv_StockTransferDetail.Quantity" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_StockTransferDetail.Quantity" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" max="{{Balance}}" required />
+                        <input id="tbl_Inv_StockTransferDetail.Quantity" name="tbl_Inv_StockTransferDetail.Quantity" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_StockTransferDetail.Quantity" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" max="{{Balance}}" required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_StockTransferDetail.Quantity" required="true"></MyValidationSpan>
                     </div>
                 </div>

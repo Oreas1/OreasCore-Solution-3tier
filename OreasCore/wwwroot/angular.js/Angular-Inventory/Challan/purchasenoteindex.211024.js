@@ -143,8 +143,12 @@
                 $scope.tbl_Inv_PurchaseNoteDetail.MeasurementUnit = null;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (item.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
             
         };
 
@@ -186,6 +190,12 @@
 
         $scope.GetRowResponse = function (data, operation) {
             $scope.tbl_Inv_PurchaseNoteDetail = data;
+            if (data.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
             if (data.MfgDate !== null)
                 $scope.tbl_Inv_PurchaseNoteDetail.MfgDate = new Date(data.MfgDate);
             if (data.ExpiryDate !== null)

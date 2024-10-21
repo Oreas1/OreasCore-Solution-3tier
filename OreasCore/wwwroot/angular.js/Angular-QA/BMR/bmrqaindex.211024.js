@@ -15,12 +15,12 @@
         };
         //////////////////////////////entry panel/////////////////////////
         init_Operations($scope, $http,
-            '/Production/BMR/BMRMasterLoad', //--v_Load
-            '/Production/BMR/BMRMasterGet', // getrow
-            '/Production/BMR/BMRMasterPost' // PostRow
+            '/QA/BMR/BMRMasterLoad', //--v_Load
+            '/QA/BMR/BMRMasterGet', // getrow
+            '/QA/BMR/BMRMasterPost' // PostRow
         );
 
-        init_ViewSetup($scope, $http, '/Production/BMR/GetInitializedBMR');
+        init_ViewSetup($scope, $http, '/QA/BMR/GetInitializedBMR');
         $scope.init_ViewSetup_Response = function (data) {
             if (data.find(o => o.Controller === 'BMRMasterCtlr') != undefined) {
                 $scope.Privilege = data.find(o => o.Controller === 'BMRMasterCtlr').Privilege;
@@ -79,8 +79,12 @@
                 $scope.tbl_Pro_BatchMaterialRequisitionMaster.FK_tbl_Pro_CompositionDetail_Coupling_ID = 0;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (item.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
 
         };
 
@@ -132,11 +136,12 @@
                 console.log('Post error', error);
             };
             $http({
-                method: "POST", url: '/Production/BMR/BMRStockIssuanceReservationItemPost', async: false, params: { BMR_RawItemID: BMR_RawItemID, BMR_PackagingItemID: BMR_PackagingItemID, BMR_AdditionalItemID: BMR_AdditionalItemID, OR_ItemID: OR_ItemID, operation: 'Save New' }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'NOSpinner': true, 'RequestVerificationToken': $scope.antiForgeryToken }
+                method: "POST", url: '/QA/BMR/BMRStockIssuanceReservationItemPost', async: false, params: { BMR_RawItemID: BMR_RawItemID, BMR_PackagingItemID: BMR_PackagingItemID, BMR_AdditionalItemID: BMR_AdditionalItemID, OR_ItemID: OR_ItemID, operation: 'Save New' }, headers: { 'X-Requested-With': 'XMLHttpRequest', 'NOSpinner': true, 'RequestVerificationToken': $scope.antiForgeryToken }
             }).then(successcallback, errorcallback);
 
 
         };
+
        
     })
     .controller("BMRDetailRawMasterCtlr", function ($scope, $http) {        
@@ -150,14 +155,14 @@
 
         $scope.$on('init_BMRDetailRawMasterCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null); 
-            init_Report($scope, itm.Reports, '/Production/BMR/GetBMRReport'); 
+            init_Report($scope, itm.Reports, '/QA/BMR/GetBMRReport'); 
             $scope.CompositionFilterList = itm.Otherdata === null ? [] : itm.Otherdata.CompositionFilterList;
         });
 
        init_Operations($scope, $http,
-            '/Production/BMR/BMRDetailRawMasterLoad', //--v_Load
-            '/Production/BMR/BMRDetailRawMasterGet', // getrow
-            '/Production/BMR/BMRDetailRawMasterPost' // PostRow
+            '/QA/BMR/BMRDetailRawMasterLoad', //--v_Load
+            '/QA/BMR/BMRDetailRawMasterGet', // getrow
+            '/QA/BMR/BMRDetailRawMasterPost' // PostRow
         );
 
         $scope.WHMSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
@@ -215,9 +220,9 @@
         });
 
         init_Operations($scope, $http,
-            '/Production/BMR/BMRDetailRawDetailItemLoad', //--v_Load
-            '/Production/BMR/BMRDetailRawDetailItemGet', // getrow
-            '/Production/BMR/BMRDetailRawDetailItemPost' // PostRow
+            '/QA/BMR/BMRDetailRawDetailItemLoad', //--v_Load
+            '/QA/BMR/BMRDetailRawDetailItemGet', // getrow
+            '/QA/BMR/BMRDetailRawDetailItemPost' // PostRow
         );
 
         $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
@@ -233,8 +238,12 @@
                 $scope.tbl_Pro_BatchMaterialRequisitionDetail_RawDetail.MeasurementUnit = null;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (item.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
 
         };
 
@@ -291,9 +300,9 @@
         };
 
         init_Operations($scope, $http,
-            '/Production/BMR/BMRProcessLoad', //--v_Load
-            '/Production/BMR/BMRProcessGet', // getrow
-            '/Production/BMR/BMRProcessPost' // PostRow
+            '/QA/BMR/BMRProcessLoad', //--v_Load
+            '/QA/BMR/BMRProcessGet', // getrow
+            '/QA/BMR/BMRProcessPost' // PostRow
         );
 
         $scope.tbl_Pro_BatchMaterialRequisitionMaster_ProcessBMR = {
@@ -341,13 +350,13 @@
 
         $scope.$on('init_BMRDetailPackagingMasterCtlr', function (e, itm) {
             init_Filter($scope, itm.WildCard, null, null, null);
-            init_Report($scope, itm.Reports, '/Production/BMR/GetBMRReport'); 
+            init_Report($scope, itm.Reports, '/QA/BMR/GetBMRReport'); 
         });
 
         init_Operations($scope, $http,
-            '/Production/BMR/BMRDetailPackagingMasterLoad', //--v_Load
-            '/Production/BMR/BMRDetailPackagingMasterGet', // getrow
-            '/Production/BMR/BMRDetailPackagingMasterPost' // PostRow
+            '/QA/BMR/BMRDetailPackagingMasterLoad', //--v_Load
+            '/QA/BMR/BMRDetailPackagingMasterGet', // getrow
+            '/QA/BMR/BMRDetailPackagingMasterPost' // PostRow
         );
 
         $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
@@ -429,9 +438,9 @@
         });
 
         init_Operations($scope, $http,
-            '/Production/BMR/BMRDetailPackagingDetailFilterLoad', //--v_Load
-            '/Production/BMR/BMRDetailPackagingDetailFilterGet', // getrow
-            '/Production/BMR/BMRDetailPackagingDetailFilterPost' // PostRow
+            '/QA/BMR/BMRDetailPackagingDetailFilterLoad', //--v_Load
+            '/QA/BMR/BMRDetailPackagingDetailFilterGet', // getrow
+            '/QA/BMR/BMRDetailPackagingDetailFilterPost' // PostRow
         );
 
         $scope.WHMSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
@@ -489,9 +498,9 @@
         });
 
         init_Operations($scope, $http,
-            '/Production/BMR/BMRDetailPackagingDetailFilterDetailItemLoad', //--v_Load
-            '/Production/BMR/BMRDetailPackagingDetailFilterDetailItemGet', // getrow
-            '/Production/BMR/BMRDetailPackagingDetailFilterDetailItemPost' // PostRow
+            '/QA/BMR/BMRDetailPackagingDetailFilterDetailItemLoad', //--v_Load
+            '/QA/BMR/BMRDetailPackagingDetailFilterDetailItemGet', // getrow
+            '/QA/BMR/BMRDetailPackagingDetailFilterDetailItemPost' // PostRow
         );
 
         $scope.ProductSearch_CtrlFunction_Ref_InvokeOnSelection = function (item) {
@@ -507,8 +516,12 @@
                 $scope.tbl_Pro_BatchMaterialRequisitionDetail_PackagingDetail_Items.MeasurementUnit = null;
             }
 
-            if (item.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (item.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
 
         };
 
@@ -564,9 +577,9 @@
         };
 
         init_Operations($scope, $http,
-            '/Production/BMR/BPRProcessLoad', //--v_Load
-            '/Production/BMR/BPRProcessGet', // getrow
-            '/Production/BMR/BPRProcessPost' // PostRow
+            '/QA/BMR/BPRProcessLoad', //--v_Load
+            '/QA/BMR/BPRProcessGet', // getrow
+            '/QA/BMR/BPRProcessPost' // PostRow
         );
 
         $scope.tbl_Pro_BatchMaterialRequisitionDetail_PackagingMaster_ProcessBPR = {

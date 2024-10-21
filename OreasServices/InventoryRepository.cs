@@ -2014,7 +2014,8 @@ namespace OreasServices
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.FK_tbl_Qc_ActionType_ID,
                           FK_tbl_Qc_ActionType_IDName = o.tbl_Qc_ActionType.ActionName,
-                          o.QuantitySample
+                          o.QuantitySample,
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
 
             return qry.FirstOrDefault();
@@ -3267,7 +3268,8 @@ namespace OreasServices
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
-                          FK_tbl_Inv_PurchaseNoteDetail_IDName = o.tbl_Inv_PurchaseNoteDetail_RefNo.tbl_Inv_PurchaseNoteMaster.DocNo
+                          FK_tbl_Inv_PurchaseNoteDetail_IDName = o.tbl_Inv_PurchaseNoteDetail_RefNo.tbl_Inv_PurchaseNoteMaster.DocNo,
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
 
             return qry.FirstOrDefault();
@@ -3872,7 +3874,8 @@ namespace OreasServices
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.FK_tbl_Inv_OrderNoteDetail_ID,
-                          FK_tbl_Inv_OrderNoteDetail_IDName = o?.tbl_Inv_OrderNoteDetail?.tbl_Inv_OrderNoteMaster.DocNo.ToString() ?? ""
+                          FK_tbl_Inv_OrderNoteDetail_IDName = o?.tbl_Inv_OrderNoteDetail?.tbl_Inv_OrderNoteMaster.DocNo.ToString() ?? "",
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
 
             return qry.FirstOrDefault();
@@ -4708,7 +4711,8 @@ namespace OreasServices
                           o.CreatedBy,
                           CreatedDate = o.CreatedDate.HasValue ? o.CreatedDate.Value.ToString("dd-MMM-yyyy") : "",
                           o.ModifiedBy,
-                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : ""
+                          ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
 
             return qry.FirstOrDefault();
@@ -14988,7 +14992,6 @@ namespace OreasServices
                                         FilterByText == "byDocNo" && w.tbl_Inv_PurchaseRequestMaster.DocNo.ToString() == FilterValueByText
                                       )
                                   .OrderByDescending(i => i.FK_tbl_Inv_PurchaseRequestMaster_ID).Skip(pageddata.PageSize * (CurrentPage - 1)).Take(pageddata.PageSize).ToListAsync()
-
                       select new
                       {
                           o.ID,
@@ -15009,11 +15012,9 @@ namespace OreasServices
                           o.ModifiedBy,
                           ModifiedDate = o.ModifiedDate.HasValue ? o.ModifiedDate.Value.ToString("dd-MMM-yyyy") : "",
                           PONo = o?.tbl_Inv_PurchaseOrderDetails?.FirstOrDefault()?.tbl_Inv_PurchaseOrderMaster.PONo ?? null,
-                          NoOfBids = o.tbl_Inv_PurchaseRequestDetail_Bidss.Count()
+                          NoOfBids = o.tbl_Inv_PurchaseRequestDetail_Bidss.Count(),
+                          o.tbl_Inv_ProductRegistrationDetail.tbl_Inv_MeasurementUnit.IsDecimal
                       };
-
-
-
 
             pageddata.Data = qry;
 

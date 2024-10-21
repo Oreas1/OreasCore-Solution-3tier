@@ -74,8 +74,12 @@
             if (data.ExpiryDate !== null)
                 $scope.tbl_Inv_PurchaseNoteDetail.ExpiryDate = new Date(data.ExpiryDate);
 
-            if (data.IsDecimal) { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+(\.[0-9]{1,4})?$"); }
-            else { $scope.wholeNumberOrNot = new RegExp("^-?[0-9]+$"); }
+            if (data.IsDecimal) {
+                $scope.wholeNumberOrNot = new RegExp("^(0\\.[0]*[1-9][0-9]{0,4}|[1-9][0-9]*(\\.[0-9]{1,5})?)$");
+            }
+            else {
+                $scope.wholeNumberOrNot = new RegExp("^[1-9][0-9]*$");
+            }
         };
 
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
