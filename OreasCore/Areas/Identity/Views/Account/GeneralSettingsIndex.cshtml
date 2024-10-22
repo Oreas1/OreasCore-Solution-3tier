@@ -2,7 +2,7 @@
     ViewBag.Title = "General Settings";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-Identity/generalsettings.220924.js"></script>
+    <script src="~/angular.js/Angular-Identity/generalsettings.221024.js"></script>
 }
 <div ng-controller="GeneralSettingsIndexCtlr" class="container">
     <div id="GeneralSettingsIndexCtlr">
@@ -92,6 +92,7 @@
                     </div>
                 </div>
 
+
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">PO Local Auto Supervised</span>
@@ -106,6 +107,16 @@
                             <option value="">Select Action</option>
                         </select>
                         <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.PurchaseOrderImportAutoSupervised" required="true"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Can Change Purchase Ref# By QC</span>
+                        <select id="AspNetOreasGeneralSettings.CanChangePurchaseNoteReferenceNoByQC" name="AspNetOreasGeneralSettings.CanChangePurchaseNoteReferenceNoByQC" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'Yes', v: true }, { n: 'No', v: false }]" data-ng-model="AspNetOreasGeneralSettings.CanChangePurchaseNoteReferenceNoByQC" ng-disabled="ng_readOnly" required>
+                            <option value="">Select Action</option>
+                        </select>
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasGeneralSettings.CanChangePurchaseNoteReferenceNoByQC" required="true"></MyValidationSpan>
                     </div>
                 </div>
 

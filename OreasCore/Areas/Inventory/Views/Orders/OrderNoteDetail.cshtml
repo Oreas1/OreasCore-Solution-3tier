@@ -109,12 +109,12 @@
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Manufacturing Qty {{tbl_Inv_OrderNoteDetail.MeasurementUnit}}</span>
-                        <input id="tbl_Inv_OrderNoteDetail.ManufacturingQty" name="tbl_Inv_OrderNoteDetail.ManufacturingQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.ManufacturingQty" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" readonly required />
+                        <input id="tbl_Inv_OrderNoteDetail.ManufacturingQty" name="tbl_Inv_OrderNoteDetail.ManufacturingQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.ManufacturingQty" ng-disabled="ng_readOnly" readonly required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.ManufacturingQty" required="true"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Sold Qty {{tbl_Inv_OrderNoteDetail.MeasurementUnit}}</span>
-                        <input id="tbl_Inv_OrderNoteDetail.SoldQty" name="tbl_Inv_OrderNoteDetail.SoldQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.SoldQty" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" readonly required />
+                        <input id="tbl_Inv_OrderNoteDetail.SoldQty" name="tbl_Inv_OrderNoteDetail.SoldQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_OrderNoteDetail.SoldQty" ng-disabled="ng_readOnly" readonly required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_OrderNoteDetail.SoldQty" required="true"></MyValidationSpan>
                     </div>
                 </div>

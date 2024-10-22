@@ -77,7 +77,7 @@
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">GST %</span>
-                        <input id="tbl_Inv_PurchaseOrderDetail.GSTPercentage" name="tbl_Inv_PurchaseOrderDetail.GSTPercentage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.GSTPercentage" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" max="100" required />
+                        <input id="tbl_Inv_PurchaseOrderDetail.GSTPercentage" name="tbl_Inv_PurchaseOrderDetail.GSTPercentage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.GSTPercentage" ng-disabled="ng_readOnly" min="0" max="100" required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderDetail.GSTPercentage" required="true"></MyValidationSpan>
                     </div>
                 </div>
@@ -85,12 +85,12 @@
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Discount</span>
-                        <input id="tbl_Inv_PurchaseOrderDetail.DiscountAmount" name="tbl_Inv_PurchaseOrderDetail.DiscountAmount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.DiscountAmount" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" max="100" required />
+                        <input id="tbl_Inv_PurchaseOrderDetail.DiscountAmount" name="tbl_Inv_PurchaseOrderDetail.DiscountAmount" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.DiscountAmount" ng-disabled="ng_readOnly" min="0" required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderDetail.DiscountAmount" required="true"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">WHT %&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button" class="btn btn-sm btn-outline-primary" value="Apply WHT {{MasterObject.DefaultWHTPer}}%" ng-click="tbl_Inv_PurchaseOrderDetail.WHTPercentage=MasterObject.DefaultWHTPer;" /></span>
-                        <input id="tbl_Inv_PurchaseOrderDetail.WHTPercentage" name="tbl_Inv_PurchaseOrderDetail.WHTPercentage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.WHTPercentage" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" max="100" required />
+                        <input id="tbl_Inv_PurchaseOrderDetail.WHTPercentage" name="tbl_Inv_PurchaseOrderDetail.WHTPercentage" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.WHTPercentage" ng-disabled="ng_readOnly" min="0" max="100" required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderDetail.WHTPercentage" required="true"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup4">
@@ -117,7 +117,7 @@
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup2">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Received Qty</span>
-                        <input id="tbl_Inv_PurchaseOrderDetail.ReceivedQty" name="tbl_Inv_PurchaseOrderDetail.ReceivedQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.ReceivedQty" ng-pattern="wholeNumberOrNot" ng-disabled="ng_readOnly" min="0" readonly required />
+                        <input id="tbl_Inv_PurchaseOrderDetail.ReceivedQty" name="tbl_Inv_PurchaseOrderDetail.ReceivedQty" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" ng-model="tbl_Inv_PurchaseOrderDetail.ReceivedQty" ng-disabled="ng_readOnly" readonly required />
                         <MyValidationSpan formname="myform" fieldname="tbl_Inv_PurchaseOrderDetail.ReceivedQty" required="true"></MyValidationSpan>
                     </div>
                 </div>

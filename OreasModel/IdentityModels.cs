@@ -86,6 +86,9 @@ namespace OreasModel
         public bool PurchaseOrderImportAutoSupervised { get; set; }
 
         [Required]
+        public bool CanChangePurchaseNoteReferenceNoByQC { get; set; }
+
+        [Required]
         public string LetterHead_PaperSize { get; set; }
 
         [Required]

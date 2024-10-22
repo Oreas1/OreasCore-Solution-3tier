@@ -31,6 +31,7 @@
             'AcPurchaseNoteInvoiceAutoSupervised': false, 'AcPurchaseReturnNoteInvoiceAutoSupervised': false,
             'AcSalesNoteInvoiceAutoSupervised': false, 'AcSalesReturnNoteInvoiceAutoSupervised': false,
             'PurchaseOrderLocalAutoSupervised': false, 'PurchaseOrderImportAutoSupervised': false,
+            'CanChangePurchaseNoteReferenceNoByQC': false,
             'LetterHead_PaperSize': 'A4', 'LetterHead_HeaderHeight': 100, 'LetterHead_FooterHeight': 70
         };
 

@@ -1306,6 +1306,7 @@ namespace OreasServices
                           o.AcSalesReturnNoteInvoiceAutoSupervised,
                           o.PurchaseOrderLocalAutoSupervised,
                           o.PurchaseOrderImportAutoSupervised,
+                          o.CanChangePurchaseNoteReferenceNoByQC,
                           o.LetterHead_PaperSize,
                           o.LetterHead_HeaderHeight,
                           o.LetterHead_FooterHeight
