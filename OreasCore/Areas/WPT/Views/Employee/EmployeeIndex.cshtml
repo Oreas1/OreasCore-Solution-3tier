@@ -2,7 +2,7 @@
     ViewBag.Title = "Employee";
 }
 @section Scripts {
-    <script src="~/angular.js/Angular-WPT/Employee/employeeindex.0.1.js"></script>
+    <script src="~/angular.js/Angular-WPT/Employee/employeeindex.241024.js"></script>
 }
 <div ng-controller="EmployeeIndexCtlr" class="container">
 
@@ -155,27 +155,33 @@
                                 </div>
                                 <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                     <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email</span>
-                                    <input id="tbl_WPT_Employee.Email" name="tbl_WPT_Employee.Email" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. user@oreas.com" value="tbl_WPT_Employee.Email" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" ng-model="tbl_WPT_Employee.Email" ng-disabled="ng_readOnly" minlength="5" maxlength="50" />
+                                    <input id="tbl_WPT_Employee.Email" name="tbl_WPT_Employee.Email" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. user@oreas.com" value="tbl_WPT_Employee.Email" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" ng-model="tbl_WPT_Employee.Email" ng-disabled="ng_readOnly" ng-change="EmailSendAsDisabled();" minlength="5" maxlength="50" />
                                     <MyValidationSpan formname="myform" fieldname="tbl_WPT_Employee.Email" minlength="5" maxlength="50" pattern="wrong Email Format"></MyValidationSpan>
+                                </div>
+                                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                    <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Email Send As</span>
+                                    <select id="tbl_WPT_Employee.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull" name="tbl_WPT_Employee.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Select" ng-options="o.v as o.n for o in [{ n: 'None', v: null }, { n: 'Un-Official', v: false }, { n: 'Official', v: true }]" data-ng-model="tbl_WPT_Employee.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull" ng-disabled="ng_readOnly || SendAsDisabled">
+                                    </select>
+                                    <MyValidationSpan formname="myform" fieldname="tbl_WPT_Employee.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull"></MyValidationSpan>
                                 </div>
                                 <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                     <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Date Of Birth</span>
                                     <input id="tbl_WPT_Employee.DateOfBirth" name="tbl_WPT_Employee.DateOfBirth" type="date" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="{{tbl_WPT_Employee.DateOfBirth}}" ng-model="tbl_WPT_Employee.DateOfBirth" ng-disabled="ng_readOnly" />
                                     <MyValidationSpan formname="myform" fieldname="tbl_WPT_Employee.DateOfBirth"></MyValidationSpan>
                                 </div>
+                            </div>
+                            <div mycssclass="@MyCSSClassName.RowInForm">
                                 <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                     <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Blood Group</span>
                                     <input id="tbl_WPT_Employee.BloodGroup" name="tbl_WPT_Employee.BloodGroup" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="O+" value="tbl_WPT_Employee.BloodGroup" ng-model="tbl_WPT_Employee.BloodGroup" ng-disabled="ng_readOnly" minlength="2" maxlength="3" />
                                     <MyValidationSpan formname="myform" fieldname="tbl_WPT_Employee.BloodGroup" minlength="2" maxlength="3"></MyValidationSpan>
                                 </div>
-                            </div>
-                            <div mycssclass="@MyCSSClassName.RowInForm">
                                 <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                                     <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Emergency No</span>
                                     <input id="tbl_WPT_Employee.EmergencyNo" name="tbl_WPT_Employee.EmergencyNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="etc.. 00923001234567" value="tbl_WPT_Employee.EmergencyNo" ng-model="tbl_WPT_Employee.EmergencyNo" ng-disabled="ng_readOnly" minlength="1" maxlength="14" />
                                     <MyValidationSpan formname="myform" fieldname="tbl_WPT_Employee.EmergencyNo" minlength="1" maxlength="14" pattern="wrong Cell Phone No"></MyValidationSpan>
                                 </div>
-                                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                                <div mycssclass="@MyCSSClassName.RowInForm_FormGroup6">
                                     <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">Remarks</span>
                                     <input id="tbl_WPT_Employee.Remarks" name="tbl_WPT_Employee.Remarks" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" placeholder="...." value="tbl_WPT_Employee.Remarks" ng-model="tbl_WPT_Employee.Remarks" ng-disabled="ng_readOnly" minlength="3" maxlength="50" />
                                     <MyValidationSpan formname="myform" fieldname="tbl_WPT_Employee.Remarks" minlength="3" maxlength="50"></MyValidationSpan>

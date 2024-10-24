@@ -1208,7 +1208,12 @@ namespace OreasServices
                           o.LicenseToEmailPswd,
                           LicenseToLogo = o.LicenseToLogo.Length > 0 ? Convert.ToBase64String(o.LicenseToLogo, 0, o.LicenseToLogo.Length) : "",
                           o.LicenseToNTN,
-                          o.LicenseToSTN
+                          o.LicenseToSTN,
+                          o.LicenseToUnofficialEmail,
+                          o.LicenseToUnofficialEmailPswd,
+                          o.LicenseToUnofficialEmailPortNo,
+                          o.LicenseToUnofficialEmailHostName,
+                          o.LicenseToUnofficialEmailFooter
                       };
             return qry.FirstOrDefault();
         }
@@ -1254,6 +1259,11 @@ namespace OreasServices
                 aspNetCompanyProfile.LicenseToEmailPswd = AspNetOreasCompanyProfile.LicenseToEmailPswd;
                 aspNetCompanyProfile.LicenseToNTN = AspNetOreasCompanyProfile.LicenseToNTN;
                 aspNetCompanyProfile.LicenseToSTN = AspNetOreasCompanyProfile.LicenseToSTN;
+                aspNetCompanyProfile.LicenseToUnofficialEmail = AspNetOreasCompanyProfile.LicenseToUnofficialEmail;
+                aspNetCompanyProfile.LicenseToUnofficialEmailFooter = AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter;
+                aspNetCompanyProfile.LicenseToUnofficialEmailHostName = AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName;
+                aspNetCompanyProfile.LicenseToUnofficialEmailPortNo = AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo;
+                aspNetCompanyProfile.LicenseToUnofficialEmailPswd = AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd;
 
                 db.Entry(aspNetCompanyProfile).State = EntityState.Modified;                
                 await db.SaveChangesAsync();                
@@ -1276,6 +1286,12 @@ namespace OreasServices
 
                 Rpt_Shared.LicenseToNTN = aspNetCompanyProfile.LicenseToNTN;
                 Rpt_Shared.LicenseToSTN = aspNetCompanyProfile.LicenseToSTN;
+
+                Rpt_Shared.LicenseToUnofficialEmail = aspNetCompanyProfile.LicenseToUnofficialEmail;
+                Rpt_Shared.LicenseToUnofficialEmailPswd = aspNetCompanyProfile.LicenseToUnofficialEmailPswd;
+                Rpt_Shared.LicenseToUnofficialEmailPortNo = aspNetCompanyProfile.LicenseToUnofficialEmailPortNo ?? 0;
+                Rpt_Shared.LicenseToUnofficialEmailHostName = aspNetCompanyProfile.LicenseToUnofficialEmailHostName;
+                Rpt_Shared.LicenseToUnofficialEmailFooter = aspNetCompanyProfile.LicenseToUnofficialEmailFooter;
             }
 
             return "OK";

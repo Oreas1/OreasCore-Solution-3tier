@@ -3,7 +3,7 @@
 }
 @section Scripts {
 
-    <script src="~/angular.js/Angular-Identity/companyprofileindex.0.1.js"></script>
+    <script src="~/angular.js/Angular-Identity/companyprofileindex.241024.js"></script>
 }
 <div ng-controller="CompanyProfileIndexCtlr" class="container">
     <div id="CompanyProfileIndexCtlr">
@@ -75,17 +75,22 @@
                         <input id="AspNetOreasCompanyProfile.LicenseToContactNo" name="AspNetOreasCompanyProfile.LicenseToContactNo" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToContactNo" ng-model="AspNetOreasCompanyProfile.LicenseToContactNo" minlength="10" maxlength="50" required />
                         <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToContactNo" required="true" minlength="10" maxlength="50"></MyValidationSpan>
                     </div>
-                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup9">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Email Footer</span>
-                        <input id="AspNetOreasCompanyProfile.LicenseToEmailFooter" name="AspNetOreasCompanyProfile.LicenseToEmailFooter" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmailFooter" ng-model="AspNetOreasCompanyProfile.LicenseToEmailFooter" maxlength="1000" />
-                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmailFooter" maxlength="1000"></MyValidationSpan>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To NTN</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToNTN" name="AspNetOreasCompanyProfile.LicenseToNTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToNTN" ng-model="AspNetOreasCompanyProfile.LicenseToNTN" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToNTN" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To STN</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToSTN" name="AspNetOreasCompanyProfile.LicenseToSTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToSTN" ng-model="AspNetOreasCompanyProfile.LicenseToSTN" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToSTN" maxlength="50"></MyValidationSpan>
                     </div>
                 </div>
 
                 <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
                         <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Email</span>
-                        <input id="AspNetOreasCompanyProfile.LicenseToEmail" name="AspNetOreasCompanyProfile.LicenseToEmail" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmail" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" placeholder="etc.. noreply@oreas.com" ng-model="AspNetOreasCompanyProfile.LicenseToEmail" maxlength="50" required/>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmail" name="AspNetOreasCompanyProfile.LicenseToEmail" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmail" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" placeholder="etc.. noreply@oreas.com" ng-model="AspNetOreasCompanyProfile.LicenseToEmail" maxlength="50" required />
                         <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmail" maxlength="50"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
@@ -105,15 +110,47 @@
                     </div>
                 </div>
                 <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">License To Email Footer</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmailFooter" name="AspNetOreasCompanyProfile.LicenseToEmailFooter" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToEmailFooter" ng-model="AspNetOreasCompanyProfile.LicenseToEmailFooter" maxlength="1000" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToEmailFooter" maxlength="1000"></MyValidationSpan>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                        <hr />
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label_Req">Un-official Email Detail</span>
+                    </div>
+                </div>
+
+                <div mycssclass="@MyCSSClassName.RowInForm">
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To NTN</span>
-                        <input id="AspNetOreasCompanyProfile.LicenseToNTN" name="AspNetOreasCompanyProfile.LicenseToNTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToNTN" ng-model="AspNetOreasCompanyProfile.LicenseToNTN" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToNTN" maxlength="50"></MyValidationSpan>
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Unofficial Email</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToUnofficialEmail" name="AspNetOreasCompanyProfile.LicenseToUnofficialEmail" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToUnofficialEmail" ng-pattern="/^[\w-\.]+@@([\w-]+\.)+[\w-]{2,4}$/" placeholder="etc.. noreply@oreas.com" ng-model="AspNetOreasCompanyProfile.LicenseToUnofficialEmail" maxlength="50" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToUnofficialEmail" maxlength="50"></MyValidationSpan>
                     </div>
                     <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
-                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To STN</span>
-                        <input id="AspNetOreasCompanyProfile.LicenseToSTN" name="AspNetOreasCompanyProfile.LicenseToSTN" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToSTN" ng-model="AspNetOreasCompanyProfile.LicenseToSTN" maxlength="50" />
-                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToSTN" maxlength="50"></MyValidationSpan>
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Unofficial HostName</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName" name="AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName" ng-model="AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName" maxlength="50"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Unofficial Port#</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToEmailPortNo" name="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo" type="number" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo" ng-model="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo" min="0" max="999" required />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo" required="true" minlength="1" maxlength="3"></MyValidationSpan>
+                    </div>
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup3">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Unofficial Password</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd" name="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd" ng-model="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd" maxlength="50" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd" maxlength="50"></MyValidationSpan>
+                    </div>
+                </div>
+                <div mycssclass="@MyCSSClassName.RowInForm">
+                    <div mycssclass="@MyCSSClassName.RowInForm_FormGroup12">
+                        <span mycssclass="@MyCSSClassName.RowInForm_FormGroup_Label">License To Unofficial Email Footer</span>
+                        <input id="AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter" name="AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter" type="text" mycssclass="@MyCSSClassName.RowInForm_FormGroup_Input" value="AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter" ng-model="AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter" maxlength="1000" />
+                        <MyValidationSpan formname="myform" fieldname="AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter" maxlength="1000"></MyValidationSpan>
                     </div>
                 </div>
 

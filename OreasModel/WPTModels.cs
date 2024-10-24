@@ -705,6 +705,9 @@ namespace OreasModel
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Display(Name = "Send Email As OfficialTrue UnofficialFalse NoneNull")]
+        public bool? SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull { get; set; }
+
         [MaxLength(3)]
         [Display(Name = "Blood Group")]
         public string BloodGroup { get; set; }

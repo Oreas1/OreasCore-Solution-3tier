@@ -16,7 +16,9 @@
             'ID': 0, 'LicenseBy': '', 'LicenseByAddress': '', 'LicenseByCellNo': '', 'LicenseByLogo': '',
             'LicenseToID': '', 'LicenseTo': '', 'LicenseToAddress': '', 'LicenseToContactNo': '', 'LicenseToEmail': '',
             'LicenseToEmailFooter': '', 'LicenseToEmailHostName': '', 'LicenseToEmailPortNo': null, 'LicenseToEmailPswd': null,
-            'LicenseToLogo': '', 'LicenseToNTN': '', 'LicenseToSTN': ''
+            'LicenseToLogo': '', 'LicenseToNTN': '', 'LicenseToSTN': '',
+            'LicenseToUnofficialEmail': '', 'LicenseToUnofficialEmailHostName': '', 'LicenseToUnofficialEmailPortNo': null, 'LicenseToUnofficialEmailPswd': null,
+            'LicenseToUnofficialEmailFooter' : ''
         };
 
 
@@ -57,6 +59,12 @@
 
             formData.append("AspNetOreasCompanyProfile.LicenseToNTN", $scope.AspNetOreasCompanyProfile.LicenseToNTN);
             formData.append("AspNetOreasCompanyProfile.LicenseToSTN", $scope.AspNetOreasCompanyProfile.LicenseToSTN);
+
+            formData.append("AspNetOreasCompanyProfile.LicenseToUnofficialEmail", $scope.AspNetOreasCompanyProfile.LicenseToUnofficialEmail);
+            formData.append("AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter", $scope.AspNetOreasCompanyProfile.LicenseToUnofficialEmailFooter);
+            formData.append("AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName", $scope.AspNetOreasCompanyProfile.LicenseToUnofficialEmailHostName);
+            formData.append("AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo", $scope.AspNetOreasCompanyProfile.LicenseToUnofficialEmailPortNo);
+            formData.append("AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd", $scope.AspNetOreasCompanyProfile.LicenseToUnofficialEmailPswd);
 
             var successcallback = function (response) {
                 if (response.data === 'OK') {

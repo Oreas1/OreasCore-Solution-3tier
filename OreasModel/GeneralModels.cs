@@ -253,6 +253,13 @@ namespace OreasModel
         public static string LicenseToEmailHostName = "";
         public static string LicenseToEmailFooter = "";
 
+        //----------------Unofficial Email Settings-------------------//
+        public static string LicenseToUnofficialEmail = "";
+        public static string LicenseToUnofficialEmailPswd = "";
+        public static int LicenseToUnofficialEmailPortNo = 0;
+        public static string LicenseToUnofficialEmailHostName = "";
+        public static string LicenseToUnofficialEmailFooter = "";
+
         //----------------NTN STN-------------------//
         public static string LicenseToNTN = "";
         public static string LicenseToSTN = "";

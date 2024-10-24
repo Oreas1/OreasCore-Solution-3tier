@@ -2885,6 +2885,7 @@ namespace OreasServices
                                         o.CellPhoneNo,
                                         o.HomeAddress,
                                         o.Email,
+                                        o.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull,
                                         o.BloodGroup,
                                         o.EmergencyNo,
                                         o.FK_tbl_WPT_EducationalLevelType_ID,
@@ -2990,6 +2991,7 @@ namespace OreasServices
                           o.CellPhoneNo,
                           o.HomeAddress,
                           o.Email,
+                          o.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull,
                           o.BloodGroup,
                           o.EmergencyNo,
                           o.FK_tbl_WPT_EducationalLevelType_ID,
@@ -3046,16 +3048,16 @@ namespace OreasServices
                   ,@ATEnrollmentNo_Default={10},@FK_tbl_WPT_ATType_ID={11},@JoiningDate={12},@InactiveDate={13},@FK_tbl_WPT_InActiveType_ID={14}
                   ,@IsPensionActive={15},@Remarks={16},@EmployeeName={17},@FatherORHusbandName={18}
                   ,@Gender={19},@MaritalStatus={20},@CNIC={21},@DateOfBirth={22},@CellPhoneNo={23},@HomeAddress={24}
-                  ,@Email={25},@BloodGroup={26},@EmergencyNo={27},@FK_tbl_WPT_EducationalLevelType_ID={28}
-                  ,@CreatedBy={29},@CreatedDate={30},@ModifiedBy={31},@ModifiedDate={32}
-                  ,@WageID={33},@WageDate={34},@BasicWage={35},@OTPolicyID={36},@TranModeID={37},@WageRemarks={38}",
+                  ,@Email={25},@SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull={26},@BloodGroup={27},@EmergencyNo={28},@FK_tbl_WPT_EducationalLevelType_ID={29}
+                  ,@CreatedBy={30},@CreatedDate={31},@ModifiedBy={32},@ModifiedDate={33}
+                  ,@WageID={34},@WageDate={35},@BasicWage={36},@OTPolicyID={37},@TranModeID={38},@WageRemarks={39}",
                 CRUD_Type, CRUD_Msg, CRUD_ID,
                 e.ID,e.EmployeeNo,e.FK_tbl_WPT_EmploymentType_ID,e.FK_tbl_WPT_DepartmentDetail_Section_ID
                 ,e.FK_tbl_WPT_Designation_ID,e.FK_tbl_WPT_EmployeeLevel_ID,e.FK_tbl_WPT_Shift_ID_Default
                 ,e.ATEnrollmentNo_Default,e.FK_tbl_WPT_ATType_ID,e.JoiningDate,e.InactiveDate,e.FK_tbl_WPT_InActiveType_ID
                 ,e.IsPensionActive,e.Remarks,e.EmployeeName,e.FatherORHusbandName
                 ,e.Gender,e.MaritalStatus,e.CNIC,e.DateOfBirth,e.CellPhoneNo,e.HomeAddress
-                ,e.Email,e.BloodGroup,e.EmergencyNo,e.FK_tbl_WPT_EducationalLevelType_ID
+                ,e.Email,e.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull,e.BloodGroup,e.EmergencyNo,e.FK_tbl_WPT_EducationalLevelType_ID
                 ,e.CreatedBy,e.CreatedDate,e.ModifiedBy,e.ModifiedDate
                 ,w.ID,w.EffectiveDate,w.BasicWage,w.FK_tbl_WPT_tbl_OTPolicy_ID,w.FK_tbl_WPT_TransactionMode_ID,w.Remarks
                 );
@@ -3097,16 +3099,16 @@ namespace OreasServices
                       ,@ATEnrollmentNo_Default={10},@FK_tbl_WPT_ATType_ID={11},@JoiningDate={12},@InactiveDate={13},@FK_tbl_WPT_InActiveType_ID={14}
                       ,@IsPensionActive={15},@Remarks={16},@EmployeeName={17},@FatherORHusbandName={18}
                       ,@Gender={19},@MaritalStatus={20},@CNIC={21},@DateOfBirth={22},@CellPhoneNo={23},@HomeAddress={24}
-                      ,@Email={25},@BloodGroup={26},@EmergencyNo={27},@FK_tbl_WPT_EducationalLevelType_ID={28}
-                      ,@CreatedBy={29},@CreatedDate={30},@ModifiedBy={31},@ModifiedDate={32}
-                      ,@WageID={33},@WageDate={34},@BasicWage={35},@OTPolicyID={36},@TranModeID={37},@WageRemarks={38}",
+                      ,@Email={25},@SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull={26},@BloodGroup={27},@EmergencyNo={28},@FK_tbl_WPT_EducationalLevelType_ID={29}
+                      ,@CreatedBy={30},@CreatedDate={31},@ModifiedBy={32},@ModifiedDate={33}
+                      ,@WageID={34},@WageDate={35},@BasicWage={36},@OTPolicyID={37},@TranModeID={38},@WageRemarks={39}",
                     CRUD_Type, CRUD_Msg, CRUD_ID,
                     0, null, item.EmploymentTypeID, item.SectionID
                     , item.DesignationID, item.EmployeeLevelID, item.ShiftID
                     , item.MachineID, 1, item.JoiningDate, null, null
                     , false, null, item.EmployeeName, item.FatherName
                     , item.Gender, item.MaritalStatus, item.CNIC, item.DOB, item.CellNo, item.Address
-                    , item.Email, item.BloodGroup, null, item.EducationID
+                    , item.Email,null, item.BloodGroup, null, item.EducationID
                     , userName, DateTime.Now, null, null
                     , 0, item.JoiningDate, item.BasicSalary, item.OTPolicyID, item.TransactionModeID, null
                     );

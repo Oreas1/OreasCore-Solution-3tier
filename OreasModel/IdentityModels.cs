@@ -162,6 +162,22 @@ namespace OreasModel
         [MaxLength(50)]
         public string LicenseToSTN { get; set; }
 
+        [EmailAddress]
+        [MaxLength(50)]
+        public string LicenseToUnofficialEmail { get; set; }
+
+        [MaxLength(50)]
+        public string LicenseToUnofficialEmailPswd { get; set; }
+
+        public int? LicenseToUnofficialEmailPortNo { get; set; }
+
+        [MaxLength(50)]
+        public string LicenseToUnofficialEmailHostName { get; set; }
+
+        //[AllowHtml]
+        [MaxLength(1000)]
+        public string LicenseToUnofficialEmailFooter { get; set; }
+
 
 
     }

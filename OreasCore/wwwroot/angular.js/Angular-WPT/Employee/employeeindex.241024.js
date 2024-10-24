@@ -77,7 +77,8 @@
             'FK_tbl_WPT_ATType_ID': 1, 'FK_tbl_WPT_ATType_IDName': '',
             'JoiningDate': new Date(), 'InactiveDate': null, 'FK_tbl_WPT_InActiveType_ID': null, 'FK_tbl_WPT_InActiveType_IDName': '', 'IsPensionActive': false, 'Remarks': '',
             'Name': '', 'FatherORHusbandName': '', 'Gender': null, 'MaritalStatus': null,
-            'CNIC': '', 'DateOfBirth': null, 'CellPhoneNo': '', 'HomeAddress': '', 'Email': '', 'BloodGroup': '', 'EmergencyNo': '',
+            'CNIC': '', 'DateOfBirth': null, 'CellPhoneNo': '', 'HomeAddress': '',
+            'Email': '', 'SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull': null, 'BloodGroup': '', 'EmergencyNo': '',
             'FK_tbl_WPT_EducationalLevelType_ID': null, 'FK_tbl_WPT_EducationalLevelType_IDName': '',
             'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 
             'BasicWage': 0, 'OTPolicy': '', 'TotalAllowances': 0, 'TotalDeductibles': 0, 'WageEffective': null, 'TransactionMode': ''
@@ -108,7 +109,8 @@
                 'FK_tbl_WPT_ATType_ID': 1, 'FK_tbl_WPT_ATType_IDName': '',
                 'JoiningDate': new Date(), 'InactiveDate': null, 'FK_tbl_WPT_InActiveType_ID': null, 'FK_tbl_WPT_InActiveType_IDName': '', 'IsPensionActive': false, 'Remarks': '',
                 'Name': '', 'FatherORHusbandName': '', 'Gender': null, 'MaritalStatus': null,
-                'CNIC': '', 'DateOfBirth': null, 'CellPhoneNo': '', 'HomeAddress': '', 'Email': '', 'BloodGroup': '', 'EmergencyNo': '',
+                'CNIC': '', 'DateOfBirth': null, 'CellPhoneNo': '', 'HomeAddress': '',
+                'Email': '', 'SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull': null, 'BloodGroup': '', 'EmergencyNo': '',
                 'FK_tbl_WPT_EducationalLevelType_ID': null, 'FK_tbl_WPT_EducationalLevelType_IDName': '',
                 'CreatedBy': '', 'CreatedDate': '', 'ModifiedBy': '', 'ModifiedDate': '', 
                 'BasicWage': 0, 'OTPolicy': '', 'TotalAllowances': 0, 'TotalDeductibles': 0, 'WageEffective': null, 'TransactionMode': ''
@@ -148,6 +150,7 @@
 
             $scope.VM_EmployeeEnrollment = { 'tbl_WPT_Employee': $scope.tbl_WPT_Employee, 'tbl_WPT_EmployeeSalaryStructure': $scope.tbl_WPT_EmployeeSalaryStructure };
 
+            $scope.EmailSendAsDisabled();
         };
       
         $scope.pageNavigatorParam = function () { return { MasterID: $scope.MasterID }; };
@@ -174,7 +177,26 @@
                 method: "POST", url: "/WPT/Employee/EmployeeUploadExcelFile", params: { operation: 'Save New' }, data: formData, headers: { 'Content-Type': undefined, 'X-Requested-With': 'XMLHttpRequest', 'RequestVerificationToken': $scope.antiForgeryToken }, transformRequest: angular.identity
             }).then(successcallback, errorcallback);
         };
-       
+
+        $scope.SendAsDisabled = true;
+        var emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        $scope.EmailSendAsDisabled = function ()
+        {
+            if ($scope.tbl_WPT_Employee &&
+                typeof $scope.tbl_WPT_Employee.Email === 'string' &&
+                $scope.tbl_WPT_Employee.Email.trim() !== '' &&
+                emailPattern.test($scope.tbl_WPT_Employee.Email)) 
+            {
+                $scope.SendAsDisabled = false;
+                
+            }
+            else
+            {
+                $scope.tbl_WPT_Employee.SendEmailAs_OfficialTrue_UnofficialFalse_NoneNull = null;
+                $scope.SendAsDisabled = true;
+            }
+
+        };
     })
     .controller("EmployeeFFCPTemplateCtlr", function ($scope, $window, $http) {
         $scope.MasterObject = {};
